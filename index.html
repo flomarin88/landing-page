@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Florian Marin — Ingénieur · Triathlète · Papa</title>
+<meta name="description" content="J'aide les pères cadres tech à reprendre le contrôle de leur semaine sport-famille-travail. En 14 jours, garanti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   DESIGN TOKENS
+   Modifier ici pour changer le thème global
+   ============================================ */
+:root {
+  --bg: #1C1C1C;
+  --bg-alt: #161616;
+  --bg-card: #242424;
+  --bg-card-hover: #2a2a2a;
+  --border: #333;
+  --text: #FFFFFF;
+  --text-body: #B8B8B8;
+  --text-dim: #888;
+  --accent: #FF7A00;
+  --accent-light: #FFD84D;
+  --accent-glow: #FF7A0033;
+  --accent-glow-strong: #FF7A0055;
+  --green: #4ade80;
+  --radius: 12px;
+  --max-w: 760px;
+  --font: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--text-body); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+/* ============================================
+   NAV
+   ============================================ */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(28,28,28,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+}
+.nav-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav-name { font-weight: 700; color: var(--text); font-size: 0.95rem; text-decoration: none; }
+.nav-links { display: flex; gap: 6px; }
+.nav-link {
+  font-size: 0.8rem; font-weight: 600; padding: 5px 14px;
+  border-radius: 20px; text-decoration: none; transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-link--primary { background: var(--accent-glow); color: var(--accent); }
+.nav-link--primary:hover { background: var(--accent-glow-strong); }
+.nav-link--secondary { color: var(--text-dim); }
+.nav-link--secondary:hover { color: var(--text); }
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.section { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+.spacer { height: 80px; }
+.spacer-sm { height: 48px; }
+.separator { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+.separator-line { height: 1px; background: var(--border); }
+
+/* ============================================
+   HERO (HUB PERSO)
+   ============================================ */
+.hero { padding-top: 80px; padding-bottom: 64px; text-align: center; }
+.hero-photo {
+  width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 24px;
+  background: var(--bg-card); border: 3px solid var(--border);
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-photo-placeholder { color: var(--text-dim); font-size: 0.8rem; }
+.hero-name {
+  font-size: 2rem; font-weight: 800; color: var(--text);
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.hero-tagline {
+  font-size: 1.05rem; color: var(--text-dim); font-weight: 400; margin-bottom: 24px;
+}
+.hero-tagline strong {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-weight: 700;
+}
+.hero-bio {
+  font-size: 0.95rem; color: var(--text-body); max-width: 560px; margin: 0 auto 32px;
+}
+.hero-stats {
+  display: flex; justify-content: center; gap: 32px; margin-bottom: 32px; flex-wrap: wrap;
+}
+.hero-stat { text-align: center; }
+.hero-stat-val {
+  font-size: 1.4rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-stat-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Social icons */
+.socials { display: flex; justify-content: center; gap: 12px; margin-bottom: 36px; }
+.social-link {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg-card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; transition: all 0.2s; color: var(--text-dim);
+}
+.social-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+.social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* CTA buttons */
+.cta-group { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.cta {
+  display: inline-block; padding: 14px 28px; border-radius: 10px;
+  font-family: var(--font); font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+}
+.cta--primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  color: var(--bg) !important;
+}
+.cta--primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px var(--accent-glow-strong); }
+.cta--secondary {
+  background: var(--bg-card); color: var(--text-body); border: 1px solid var(--border);
+}
+.cta--secondary:hover { border-color: var(--accent); color: var(--text); }
+.cta-sub { text-align: center; margin-top: 12px; font-size: 0.8rem; color: var(--text-dim); }
+
+/* ============================================
+   TRANSITION SECTION
+   ============================================ */
+.transition {
+  background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 40px 24px; text-align: center;
+}
+.transition-inner { max-width: var(--max-w); margin: 0 auto; }
+.transition-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700;
+  color: var(--accent); margin-bottom: 12px;
+}
+.transition-title { font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.transition-sub { font-size: 0.9rem; color: var(--text-dim); }
+
+/* ============================================
+   SALES PAGE SECTIONS
+   ============================================ */
+.sp-section { padding-top: 64px; }
+.sp-label {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--accent); font-weight: 700; margin-bottom: 16px;
+}
+.sp-h2 {
+  font-size: 1.5rem; font-weight: 800; color: var(--text);
+  letter-spacing: -0.02em; margin-bottom: 20px;
+}
+.sp-h3 { font-size: 1.1rem; font-weight: 700; color: #ddd; margin-top: 28px; margin-bottom: 12px; }
+p { margin-bottom: 14px; }
+strong { color: var(--text); font-weight: 700; }
+
+/* Hero Sprint */
+.sprint-hero { padding-top: 64px; }
+.sprint-hero-title {
+  font-size: 2.2rem; font-weight: 800; color: var(--text); line-height: 1.25;
+  letter-spacing: -0.03em; margin-bottom: 16px;
+}
+.sprint-hero-title .accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.sprint-hero-sub { font-size: 1.05rem; color: var(--text-dim); margin-bottom: 40px; }
+
+/* Quotes */
+.quote {
+  border-left: 3px solid var(--accent); padding: 16px 20px; margin: 20px 0;
+  background: var(--bg-card); border-radius: 0 var(--radius) var(--radius) 0;
+}
+.quote p { color: #ddd; font-style: italic; margin: 0; }
+.quote .attr { color: var(--text-dim); font-style: normal; font-size: 0.85rem; margin-top: 10px; }
+
+/* Pillars */
+.pillar { display: grid; grid-template-columns: 4px 1fr; gap: 16px; margin: 16px 0; }
+.pillar-bar { background: linear-gradient(180deg, var(--accent), var(--accent-light)); border-radius: 2px; }
+.pillar-content { padding: 4px 0; }
+.pillar-content p { margin-bottom: 0; }
+
+/* Pattern stats */
+.pattern-stat { display: flex; align-items: start; gap: 12px; margin-bottom: 14px; }
+.pattern-pct {
+  font-weight: 800; font-size: 1.1rem; min-width: 48px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.pattern-desc { font-size: 0.9rem; color: var(--text-body); }
+
+/* Offer list */
+.offer-list { list-style: none; padding: 0; }
+.offer-list li {
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  color: var(--text-body); font-size: 0.95rem;
+}
+.offer-list li:last-child { border-bottom: none; }
+.check { color: var(--accent); font-weight: 700; margin-right: 8px; }
+.bonus-val {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* Price block */
+.price-block {
+  text-align: center; padding: 40px 32px; margin: 40px 0;
+  background: var(--bg-card); border-radius: 16px; border: 2px solid var(--accent);
+  position: relative; overflow: hidden;
+}
+.price-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+}
+.price-old { font-size: 1.1rem; color: var(--text-dim); text-decoration: line-through; }
+.price-val {
+  font-size: 3rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.price-sub { font-size: 0.85rem; color: var(--text-dim); margin-top: 8px; }
+
+/* Guarantee */
+.guarantee {
+  padding: 28px; margin: 28px 0; background: var(--bg-card);
+  border-radius: 14px; border: 2px solid var(--accent);
+}
+.guarantee-name { font-weight: 700; color: var(--accent); margin-bottom: 8px; font-size: 1.05rem; }
+
+/* Urgency */
+.urgency {
+  padding: 24px; margin: 28px 0; background: var(--accent-glow);
+  border-radius: var(--radius); border: 1px solid var(--accent-glow-strong);
+}
+
+/* For who / Not for who */
+.who-card {
+  background: var(--bg-card); padding: 24px; border-radius: var(--radius); margin: 16px 0;
+  border: 1px solid var(--border);
+}
+.not-card {
+  background: var(--bg-card); padding: 24px; border-radius: var(--radius); margin: 16px 0;
+  border: 1px solid #f8717133;
+}
+
+/* Card generic */
+.card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px; margin: 16px 0;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  text-align: center; padding: 48px 24px; margin-top: 80px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim); font-size: 0.8rem;
+}
+.footer a { color: var(--text-dim); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+  .hero-name { font-size: 1.5rem; }
+  .sprint-hero-title { font-size: 1.6rem; }
+  .hero-stats { gap: 20px; }
+  .price-val { font-size: 2.4rem; }
+  .cta-group { flex-direction: column; align-items: center; }
+  .cta { width: 100%; max-width: 320px; text-align: center; }
+  .nav-links { gap: 4px; }
+  .nav-link { font-size: 0.75rem; padding: 4px 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Florian Marin</a>
+    <div class="nav-links">
+      <a href="#sprint" class="nav-link nav-link--secondary">Le Cadre Sprint</a>
+      <a href="https://calendly.com/florian-marin/diagnostic" class="nav-link nav-link--primary" target="_blank" rel="noopener">Audit Triangle →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== HERO (HUB PERSO) ==================== -->
+<div class="section hero">
+
+  <!-- PHOTO : remplace le placeholder par ta vraie photo -->
+  <div class="hero-photo">
+    <!-- <img src="photo-florian.jpg" alt="Florian Marin"> -->
+    <span class="hero-photo-placeholder">Photo</span>
+  </div>
+
+  <h1 class="hero-name">Florian Marin</h1>
+  <p class="hero-tagline">Ingénieur · Triathlète · Papa<br><strong>Performer sans sacrifier l'essentiel</strong></p>
+
+  <p class="hero-bio">15 ans dans la tech (OCTO, Tiime, Aircall, Teads). Ex-Senior Engineering Manager. Triathlon 9h/sem. Père de 2. J'ai fait un burnout, reconstruit un système, et maintenant j'aide les pères cadres tech à faire pareil.</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-val">30+</div>
+      <div class="hero-stat-label">Interviews terrain</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">50+</div>
+      <div class="hero-stat-label">Personnes mentorées</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">2x</div>
+      <div class="hero-stat-label">Guest podcast</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">3</div>
+      <div class="hero-stat-label">Clients accompagnés</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">9h</div>
+      <div class="hero-stat-label">Sport / semaine</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-val">40'11</div>
+      <div class="hero-stat-label">10km</div>
+    </div>
+  </div>
+
+  <!-- SOCIAL LINKS : mets à jour les URLs -->
+  <div class="socials">
+    <a href="https://www.linkedin.com/in/florianmarin/" class="social-link" title="LinkedIn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="https://substack.com/@florianmarin" class="social-link" title="Substack" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/florian.marin.coaching/" class="social-link" title="Instagram" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    </a>
+    <a href="mailto:contact@florianmarin.me" class="social-link" title="Email" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    </a>
+  </div>
+
+  <div class="cta-group">
+    <a href="https://calendly.com/florian-marin/diagnostic" class="cta cta--primary" target="_blank" rel="noopener">Réserve ton Audit Triangle — gratuit</a>
+    <a href="#sprint" class="cta cta--secondary">Découvrir Le Cadre Sprint ↓</a>
+  </div>
+  <p class="cta-sub">30 min · Pas d'engagement · Pas de pitch agressif</p>
+</div>
+
+<!-- ==================== TRANSITION ==================== -->
+<div class="transition" id="sprint">
+  <div class="transition-inner">
+    <div class="transition-label">Mon programme</div>
+    <div class="transition-title">Le Cadre Sprint — <span style="background: linear-gradient(135deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Reprends le contrôle en 14 jours</span></div>
+    <div class="transition-sub">Un système testé pour protéger ton sport, sans renégocier chaque matin avec ton agenda, ta fatigue ou ta famille.</div>
+  </div>
+</div>
+
+<!-- ==================== SPRINT SALES PAGE ==================== -->
+
+<!-- SECTION: TU TE RECONNAIS -->
+<div class="section sp-section">
+  <div class="sprint-hero">
+    <div class="sprint-hero-title">Reprends le contrôle<br>de ta semaine.<br><span class="accent">En 14 jours. Garanti.</span></div>
+    <div class="sprint-hero-sub">Tu étais à 4-6h de sport par semaine. Aujourd'hui tu es à 0, 1, peut-être 2h. Tu n'as pas décidé d'arrêter. Ça s'est imposé. Le Cadre Sprint t'aide à reprendre la main : sur ton temps, ton organisation, et ce qui compte vraiment pour toi.</div>
+  </div>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<div class="section sp-section">
+  <h2 class="sp-h2">Tu te reconnais là-dedans ?</h2>
+
+  <div class="quote">
+    <p>« Il faut une soupape de décompression. On emmagasine comme une cocotte-minute. Et quand elle s'échappe, tout le monde prend dans la tronche. »</p>
+    <p class="attr">Jérémy, manager IT, marié, 4 enfants</p>
+  </div>
+
+  <p>Tu fais du sport « quand tu peux ». Sauf que « quand tu peux », concrètement, ça veut dire : une à deux séances par semaine, parfois zéro. Tu improvises. Tu cales un créneau le midi, « sur ton temps de pause, quand le boulot le permet ». Et quand un imprévu tombe — réunion qui déborde, enfant malade, deadline — c'est toujours le sport qui saute en premier. Toujours.</p>
+
+  <p>Le week-end, c'est pire. Si tu pars 1h, ça passe. Si tu veux faire une sortie de 3h, ça se négocie. Et la négociation, à la longue, ça te fatigue plus que l'entraînement.</p>
+
+  <p>Tu n'as pas un problème de motivation. Tu en as assez pour être frustré chaque semaine où ça ne se passe pas comme prévu. Et tu passes du temps à te traiter de gros nul pour ça.</p>
+
+  <p><strong style="color:var(--accent);">Ton problème, c'est l'absence de cadre.</strong></p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: COÛT DU STATU QUO -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Ce qui se passe quand tu ne changes rien</h2>
+
+  <p>Tu le sais déjà. Ça fait 6 mois, 1 an, peut-être 2 ans que tu te dis « je vais m'y remettre sérieusement ». Chaque dimanche soir, c'est la même phrase : « Demain, je m'organise. » Et chaque lundi, tu décales.</p>
+
+  <p>Pendant ce temps : l'énergie baisse, la frustration monte, et le sport qui était ta soupape devient une source de culpabilité. À la maison, tu sens la friction — pas un conflit ouvert, mais des regards, des soupirs. « Ça tient une semaine, après tu prends des remarques », comme me l'a dit un des 33 pères que j'ai interviewés. 82% décrivent exactement ça : ils ne s'autorisent plus à prendre du temps pour eux.</p>
+
+  <div class="quote">
+    <p>« C'est un peu un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'être. »</p>
+    <p class="attr">Mathieu D., manager tech, 2 enfants</p>
+  </div>
+
+  <p>Le coût du statu quo, c'est pas juste des séances loupées. C'est de l'énergie en moins au boulot. De la lucidité en moins à la maison. C'est la cocotte-minute qui monte. Et un sentiment qui s'installe : <strong>tu subis ta semaine au lieu de la piloter.</strong></p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: CE QUE J'AI DÉCOUVERT -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Ce que j'ai découvert en 33 interviews et 692 conversations</h2>
+
+  <p>En 6 mois, j'ai interviewé 33 pères en profondeur et échangé avec plus de 690 sur LinkedIn et en DM. Des Engineering Managers, des CTOs, des développeurs seniors, des freelances. Running, triathlon, vélo, muscu, crossfit, basket, judo. Tous motivés. Tous frustrés.</p>
+
+  <div class="card" style="border-left: 3px solid var(--accent);">
+    <div class="pattern-stat"><span class="pattern-pct">82%</span><span class="pattern-desc"><strong>La culpabilité comme système de permission.</strong> Le sport n'est pas bloqué par le temps, mais par la culpabilité de « prendre du temps pour soi ».</span></div>
+    <div class="pattern-stat"><span class="pattern-pct">70%</span><span class="pattern-desc"><strong>Absence de vision = situation subie.</strong> Quand on pose la question « à quoi tu veux que ta semaine ressemble ? », la réponse : « Je n'y ai jamais réfléchi. »</span></div>
+    <div class="pattern-stat"><span class="pattern-pct">70%</span><span class="pattern-desc"><strong>Système fragile, un seul créneau.</strong> Quand il saute, c'est zéro sport pour la semaine. Pas de plan B.</span></div>
+    <div class="pattern-stat"><span class="pattern-pct">80%</span><span class="pattern-desc"><strong>Le week-end = zone morte.</strong> « Pas de sport le week-end, c'est trop compliqué. »</span></div>
+    <div class="pattern-stat" style="margin-bottom:0;"><span class="pattern-pct">63%</span><span class="pattern-desc"><strong>Pression conjugale implicite.</strong> Pas un conflit ouvert, mais des micro-agressions. « Ça tient une semaine, après tu prends des remarques. »</span></div>
+  </div>
+
+  <p>La bonne volonté, ça ne tient pas face à un agenda de cadre tech + un enfant de 2 ans qui fait ses dents + une release qui patine.</p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: LA SOLUTION -->
+<div class="section sp-section">
+  <h2 class="sp-h2">La solution : un cadre, pas un plan d'entraînement</h2>
+
+  <p>Je ne suis pas coach sportif. Je ne fais pas de plans d'entraînement ni de prépa physique. Et je ne suis pas coach de vie non plus — je trouve que c'est un mot valise qui ne veut rien dire.</p>
+
+  <p>Ce que je fais, c'est de la productivité appliquée à la vie personnelle. De l'ingénierie de système. Un problème a toujours une ou plusieurs solutions : il faut identifier le blocage, poser un cadre, et l'exécuter.</p>
+
+  <p>Mon système repose sur 3 piliers :</p>
+
+  <div class="pillar">
+    <div class="pillar-bar"></div>
+    <div class="pillar-content">
+      <p><strong>Des créneaux sanctuarisés.</strong> Pas « je verrai lundi matin ». Des blocs fixes dans l'agenda, aussi non-négociables qu'un one-on-one avec ton N+1. Tu ne les déplaces pas. Tu ne les supprimes pas.</p>
+    </div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-bar"></div>
+    <div class="pillar-content">
+      <p><strong>Un plan B structuré.</strong> 70% des systèmes sport que j'analyse reposent sur un seul créneau. Quand il saute, c'est zéro sport pour la semaine. Avec Le Cadre, chaque créneau a un tampon : un créneau de secours, une séance courte de remplacement.</p>
+    </div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-bar"></div>
+    <div class="pillar-content">
+      <p><strong>Un accord explicite avec ta conjointe.</strong> Le sport qui tient, c'est le sport qui a été décidé ensemble — une fois, clairement, sans avoir besoin de renégocier chaque week-end. Pas une autorisation. Un accord.</p>
+    </div>
+  </div>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: TÉMOIGNAGES -->
+<div class="section sp-section">
+  <div class="sp-label">Ce qu'ils en disent</div>
+
+  <div class="quote">
+    <p>« Le fait de le voir le matin dans mon agenda, je me fais une image de la journée et c'est beaucoup plus facile à suivre. Je n'ai pas eu de grosses difficultés à tenir le plan. »</p>
+    <p class="attr">Mathieu, 40 ans, développeur freelance, 1 fils — passé de 0 à 4-5h de sport/semaine</p>
+  </div>
+
+  <div class="quote">
+    <p>« Plus je suis énervé au boulot, plus j'ai besoin de faire du sport. Avec un plan clair, c'est facile — c'est juste les obstacles autour qui me freinaient. »</p>
+    <p class="attr">Guillaume, ingénieur, en couple — plan tenu malgré maladie + conflit pro</p>
+  </div>
+
+  <div class="quote">
+    <p>« C'est requis pour ma santé et pour la santé des gens autour de moi. »</p>
+    <p class="attr">Baptiste, Engineering Manager, 2 enfants</p>
+  </div>
+
+  <div class="quote">
+    <p>« Le coaching m'a enlevé la charge mentale de la planification. Moins tu as à réfléchir, plus tu es efficace. »</p>
+    <p class="attr">Rémi, cadre tech, triathlon</p>
+  </div>
+
+  <div class="quote">
+    <p>« J'ai regouté, je ne peux plus. Si je ne l'ai pas, il manque un truc. »</p>
+    <p class="attr">Anthony, père de famille — a repris le sport après une longue pause</p>
+  </div>
+
+  <div class="quote">
+    <p>« Je ne suis pas trop du genre à aller chercher l'aide à l'extérieur. Mais là, je sens bien que tout seul, je ne m'en sors plus. »</p>
+    <p class="attr">Mathieu D., manager tech, 2 enfants</p>
+  </div>
+
+  <!-- NOTE : demande l'accord de chaque personne avant publication.
+       Si accord non obtenu, anonymise : "Un EM de 38 ans, 2 enfants" -->
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: COMMENT ÇA MARCHE -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Le Cadre Sprint — <span style="background: linear-gradient(135deg, var(--accent), var(--accent-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">14 jours</span></h2>
+
+  <p>En 14 jours, tu passes de « je fais du sport quand je peux » à « j'ai un système testé et validé qui protège mon sport ». Et surtout : tu reprends le contrôle de ta semaine.</p>
+
+  <h3 class="sp-h3">Comment ça marche</h3>
+
+  <p><strong>Avant le sprint — Questionnaire diagnostic (15 min)</strong><br>
+  Tu remplis un questionnaire structuré : ton agenda réel, tes contraintes, ton sport, ta famille, tes blocages. J'arrive en session 1 avec une analyse déjà faite.</p>
+
+  <p><strong>J1 — Session diagnostic + construction (60 min)</strong><br>
+  On analyse ta semaine ensemble. On identifie les points de friction. On construit ton cadre en live : créneaux fixes, plans B, stratégie accord famille. <strong style="color:var(--accent);">Tu repars avec ton planning semaine configuré dans Google Calendar.</strong> Pas un document théorique — ton vrai agenda, avec tes vrais créneaux, bloqués.</p>
+
+  <p><strong>J2 à J7 — Tu testes ton cadre.</strong><br>
+  Tu vis ta première semaine avec le système. Un screenshot de ton Garmin ou Strava suffit.</p>
+
+  <p><strong>J7 — Check-in structuré</strong><br>
+  Débrief de la première semaine. Ce qui a tenu, ce qui a sauté, pourquoi. J'ajuste le cadre en fonction de ta vraie vie.</p>
+
+  <p><strong>J8 à J14 — Deuxième semaine de test.</strong><br>
+  Tu retestes le cadre ajusté. C'est là que le système se solidifie.</p>
+
+  <p><strong>J14 — Session ajustement + livrable final (45 min)</strong><br>
+  Débrief complet. Je te livre ton document récap : « Ton Cadre Semaine » — le système complet, validé par 2 semaines de test réel. C'est ton système. Il t'appartient.</p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: CE QUE TU REÇOIS -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Ce que tu reçois</h2>
+
+  <ul class="offer-list">
+    <li><span class="check">✓</span> <strong>2 sessions 1:1</strong> (60 min + 45 min) en visio</li>
+    <li><span class="check">✓</span> <strong>1 check-in structuré à J7</strong> — débrief + ajustements personnalisés</li>
+    <li><span class="check">✓</span> <strong>Ton planning semaine</strong> configuré dans Google Calendar — créneaux fixes + plans B</li>
+    <li><span class="check">✓</span> <strong>Document « Ton Cadre Semaine »</strong> — récap personnalisé de ton système validé</li>
+  </ul>
+
+  <p style="margin-top:24px; font-weight:700; color:var(--text);">+ 4 bonus inclus :</p>
+
+  <ul class="offer-list">
+    <li><span class="check">✓</span> <strong>Le Script Conversation Couple</strong> — le script mot-pour-mot pour poser un accord sport-famille avec ta conjointe <span class="bonus-val">(valeur 150€)</span></li>
+    <li><span class="check">✓</span> <strong>Le Template « Mon Cadre Sport »</strong> (Notion) — ta structure de semaine complète, prête à dupliquer <span class="bonus-val">(valeur 100€)</span></li>
+    <li><span class="check">✓</span> <strong>Le Protocole Anti-Chaos</strong> — que faire quand tout saute : enfant malade, deadline, déplacement pro <span class="bonus-val">(valeur 100€)</span></li>
+    <li><span class="check">✓</span> <strong>Le Guide Google Calendar Sport</strong> — le setup exact pour que tes créneaux soient visibles et partagés <span class="bonus-val">(valeur 50€)</span></li>
+  </ul>
+
+  <p style="margin-top:20px;"><strong style="color:var(--text);">Valeur totale : <span class="bonus-val" style="font-size:1.1rem;">900€</span></strong></p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: PRIX -->
+<div class="section sp-section">
+  <div class="price-block">
+    <div class="price-old">500 €</div>
+    <div class="price-val">200 €</div>
+    <div class="price-sub">Tarif Fondateur — pour les 10 premiers clients uniquement<br>Paiement unique. Pas d'abonnement. Pas d'engagement.</div>
+  </div>
+
+  <div class="guarantee">
+    <div class="guarantee-name">La Garantie « Cadre ou Remboursé »</div>
+    <p>Si à J14 tu n'as pas un cadre testé qui protège au moins 4h de sport par semaine, je te rembourse intégralement.</p>
+    <p>Seule condition : avoir fait les 2 sessions et testé le cadre pendant les 2 semaines.</p>
+    <p style="margin:0;">Je prends ce risque parce que le système marche. Je le vis tous les jours depuis 3 ans.</p>
+  </div>
+
+  <div class="urgency">
+    <p><strong>Places limitées.</strong> J'accompagne maximum 5 nouveaux clients par mois. C'est pas un effet de rareté artificielle — je suis seul, et je refuse de sacrifier la qualité du suivi. <strong style="color:var(--accent);">Il reste X places pour [mois].</strong></p>
+    <p style="margin:0;"><strong>Bonus early bird :</strong> les 2 premiers inscrits reçoivent un appel de suivi à J30 (15 min) pour vérifier que le cadre tient dans la durée.</p>
+  </div>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: POUR QUI -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Pour qui c'est fait</h2>
+
+  <div class="who-card">
+    <p><strong>Ce sprint est fait pour toi si :</strong></p>
+    <p style="margin:0;">Tu es père, tu bosses dans la tech (Engineering Manager, CTO, développeur senior, freelance), tu as au moins un enfant en bas âge. Tu faisais 4 à 6h de sport par semaine avant. Tu es maintenant à 0-2h, ou tu as complètement arrêté sans vraiment l'avoir décidé. Tu ne cherches pas des conseils — tu cherches un système.</p>
+  </div>
+
+  <div class="not-card">
+    <p><strong>Ce sprint n'est PAS fait pour toi si :</strong></p>
+    <p style="margin:0;">Tu cherches un plan d'entraînement ou un coach sportif. Tu fais déjà plus de 5h de sport par semaine. Tu n'es pas prêt à avoir une conversation honnête avec ta conjointe sur l'organisation de la semaine. Tu veux du « mindset » et de la motivation — je ne fais pas ça.</p>
+  </div>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: CE QUE CE N'EST PAS -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Ce que ce n'est PAS</h2>
+  <p>Ce n'est pas du coaching sportif — je ne touche pas à ton entraînement. J'ai un coach pour ça moi-même (MyTribe).</p>
+  <p>Ce n'est pas du coaching de vie — pas de méditation, pas de journaling, pas de « travaille ton mindset ». Je trouve ça creux quand il n'y a pas de données et de vécu derrière.</p>
+  <p>Ce n'est pas du conseil en management.</p>
+  <p><strong style="color:var(--accent);">C'est de l'ingénierie appliquée à ta vie perso. Un cadre construit pour ta vie. Testé dans ta vie. Qui protège ce qui compte pour toi quand tout devient urgent.</strong></p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: QUI SUIS-JE -->
+<div class="section sp-section">
+  <h2 class="sp-h2">Qui suis-je</h2>
+
+  <p><strong>Florian Marin.</strong> 37 ans, 193cm, 82kg. Marié à Audrey (kinésithérapeute du sport). Père de Gaspard (5 ans) et Nathan (3 ans).</p>
+
+  <p>15 ans dans la tech. Software engineer chez OCTO Technology, CTO chez Tiime, Engineering Manager chez Aircall, Senior Engineering Manager chez Teads. J'ai managé des équipes, livré des projets, fait des conférences. Et j'ai fait un burnout chez Aircall en 2019.</p>
+
+  <p>Le sport a été le premier à sauter. J'avais fait 15 ans de volleyball (des Cadets à la Nationale 1), je m'étais mis au triathlon en arrivant chez Aircall. Et quand le burnout est arrivé, tout s'est écroulé : le sport d'abord, puis l'énergie, puis la lucidité. À la même période, ma mère a eu un cancer de la peau.</p>
+
+  <p>Quand j'ai reconstruit, j'ai compris que le problème n'était pas le temps. C'était l'absence de cadre. J'ai construit le mien. Pas à coup de motivation — à coup de système.</p>
+
+  <p>Ce cadre tient depuis 3 ans. À travers un déménagement (Paris → Montpellier), 2 naissances, un changement de job, et un lancement d'entreprise en solo où j'ai quitté un salaire de 5k€/mois pour me prouver que je peux être bon partout : famille, carrière, sport.</p>
+
+  <p>Aujourd'hui : <strong style="color:var(--accent);">9h de sport par semaine. 40min11 au 10km. Objectif 2026 : passer sous les 40 minutes en triathlon M.</strong> Je suis coaché par MyTribe (Mathilde Gauthier). Je cuisine tous les soirs. Je dépose mes fils à l'école le matin. Je travaille moins de 30h par semaine.</p>
+
+  <p>Ce n'est pas de la chance. C'est un cadre.</p>
+
+  <p>33 interviews terrain. 8 calls de vente analysés. 692 conversations. 6 clients accompagnés. Une méthode construite sur des données réelles, pas sur des posts LinkedIn.</p>
+
+  <p><strong>Je ne vends pas de la motivation. Je construis des systèmes qui tiennent.</strong></p>
+</div>
+
+<div class="separator"><div class="separator-line"></div></div>
+
+<!-- SECTION: CTA FINAL -->
+<div class="section sp-section" style="text-align:center; padding-bottom: 20px;">
+  <h2 class="sp-h2">Prochaine étape</h2>
+  <p><strong>Réserve un Audit Triangle de 30 minutes.</strong> C'est un call gratuit où on analyse ta situation : ton agenda, tes contraintes, tes blocages. On vérifie ensemble si le Sprint est pertinent pour toi. Si c'est pas le cas, je te le dis.</p>
+
+  <div class="cta-group" style="margin-top:32px;">
+    <a href="https://calendly.com/florian-marin/diagnostic" class="cta cta--primary" target="_blank" rel="noopener">Réserver mon Audit Triangle →</a>
+  </div>
+  <p class="cta-sub">Pas d'engagement. Pas de pitch agressif. Juste une conversation entre deux personnes qui prennent le sport au sérieux.</p>
+
+  <div style="margin-top:40px;">
+    <p style="color:var(--text-dim); font-size:0.9rem;">Pas encore prêt ? Rejoins la newsletter — un email par semaine avec des insights terrain.</p>
+    <!-- SUBSTACK : remplace l'URL par ton lien exact -->
+    <a href="https://florianmarin.substack.com" class="cta cta--secondary" style="margin-top:8px;" target="_blank" rel="noopener">S'abonner sur Substack →</a>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<p style="text-align:center; color:var(--text-dim); font-style:italic; padding: 0 24px;">Le sport ne disparaît pas par manque de motivation. Il disparaît faute de cadre.</p>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+  <p>© Florian Marin — Solopreneur, Triathlète, Ingénieur et Papa.</p>
+  <p style="margin-top:8px;"><a href="mailto:contact@florianmarin.me">contact@florianmarin.me</a> · Montpellier, France</p>
+</footer>
+
+</body>
+</html>
