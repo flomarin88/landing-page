@@ -140,6 +140,27 @@
       width: auto;
     }
 
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: #ffffff0a;
+    }
+
     .nav-cta {
       font-size: 0.78rem;
       font-weight: 700;
@@ -149,6 +170,7 @@
       background: var(--accent-glow);
       color: var(--accent);
       transition: background 0.2s;
+      margin-left: 4px;
     }
 
     .nav-cta:hover {
@@ -993,9 +1015,16 @@
      ================================================ -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-name"><img src="assets/logo.png" alt="FM" class="nav-logo">Florian Marin</a>
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="nav-cta" data-umami-event="nav-cta-diagnostic"
-        target="_blank" rel="noopener">Réserve ton diagnostic</a>
+      <a href="#" class="nav-name"><img src="assets/logo.png" alt="FM" class="nav-logo">Florian Marin</a>
+      <div class="nav-links">
+        <a href="#probleme" class="nav-link">Problème</a>
+        <a href="#resultats" class="nav-link">Résultats</a>
+        <a href="#comment" class="nav-link">Comment</a>
+        <a href="#pricing" class="nav-link nav-link-mobile">Tarif</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+        <a href="https://calendly.com/florian-marin/audit-triangle" class="nav-cta"
+          data-umami-event="nav-cta-diagnostic" target="_blank" rel="noopener">Diagnostic</a>
+      </div>
     </div>
   </nav>
 
@@ -1915,9 +1944,8 @@
       <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto 20px;">7 questions sur ta semaine réelle. Tu reçois
         ton score de vulnérabilité + les 2 leviers prioritaires à activer — directement dans ta boîte. Basé sur 33
         interviews terrain.</p>
-      <!-- REMPLACER #TALLY_LINK par ton lien Tally -->
-      <a href="#TALLY_LINK" class="cta-primary" style="max-width: 360px;" data-umami-event="lead-magnet-cta">Faire mon
-        diagnostic semaine</a>
+      <a href="https://tally.so/r/68OLD5" class="cta-primary" style="max-width: 360px;" data-umami-event="lead-magnet-cta">Faire mon
+        auto diagnostic</a>
       <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam.
         Un email avec ton résultat. C'est tout.</p>
     </div>
