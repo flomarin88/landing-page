@@ -4,26 +4,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Cadre Sprint - Reprends le contrôle de ta semaine en 14 jours</title>
+  <title>Le Cadre Sprint — Reprends le contrôle de ta semaine en 14 jours</title>
   <meta name="description"
-    content="Tu étais à +4h de sport par semaine. Aujourd'hui tu es à 0. Le Cadre Sprint t'aide à reprendre la main en 14 jours. Garanti.">
+    content="Tu étais à 4-6h de sport par semaine. Aujourd'hui tu es à 0. Le Cadre Sprint t'aide à reprendre la main en 14 jours. Garanti.">
   <meta property="og:title" content="Le Cadre Sprint — Reprends le contrôle de ta semaine en 14 jours">
   <meta property="og:description"
-    content="Coaching d'organisation pour pères cadres tech. 14 jours. 200€. Garanti ou remboursé.">
-
+    content="Coaching d'organisation pour pères cadres tech. 14 jours. 200 €. Garanti ou remboursé.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://florianmarin.me">
   <meta property="og:locale" content="fr_FR">
   <link rel="canonical" href="https://florianmarin.me">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Le Cadre Sprint - 14 jours pour reprendre le contrôle">
-  <meta name="twitter:description" content="De 0 à +5h de sport/semaine. Un système, pas un plan d'entraînement.">
+  <meta name="twitter:title" content="Le Cadre Sprint — 14 jours pour reprendre le contrôle">
+  <meta name="twitter:description" content="De 0 à 5h+ de sport/semaine. Un système, pas un plan d'entraînement.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
     rel="stylesheet">
+
   <script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+
+  <!-- ================================================
+     A/B/C TEST — Hero headline + sous-titre
+     Variante A : contrôle (version actuelle — sport)
+     Variante B : factuelle quantifiée (1 journée, 50 jours/an)
+     Variante C : cinématique (vendredi 17h, baskets)
+
+     Routage : ?v=a|b|c dans l'URL > localStorage (sticky) > aléatoire
+     Events Umami : ab_exposed, ab_cta_click, ab_lead_magnet_click
+     ================================================ -->
+  <script>
+    (function () {
+      var VARIANTS = {
+        a: {
+          headline: 'Reprends <span class="accent">5h+ de sport</span><br>par semaine.<br>En 14 jours. Garanti.',
+          sub: "Tu faisais plus de 4h de sport avant les enfants. Aujourd'hui tu es à moins de 2h voire 0. Le Cadre Sprint pose un système qui protège ton sport, même quand tout le reste déraille."
+        },
+        b: {
+          headline: 'Reprends <span class="accent">1 journée par semaine</span><br>rien que pour toi.<br>En 14 jours. Garanti.',
+          sub: "Soit 50 jours par an. Pour courir, pédaler, souffler. Sans voler une minute à ton boulot ni à ta famille."
+        },
+        c: {
+          headline: 'Dans 14 jours, tu fermes ton laptop<br>le vendredi à <span class="accent">17h</span><br>et tu enfiles tes baskets.',
+          sub: "Et personne au boulot ne s'en est rendu compte. 1 journée par semaine récupérée — 50 jours par an."
+        }
+      };
+
+      // 1. Priorité à ?v= dans l'URL (utile pour QA + routage manuel LinkedIn/email)
+      var urlV = new URLSearchParams(window.location.search).get('v');
+      // 2. Sinon on reprend la variante déjà assignée (sticky)
+      var variant = null;
+      try { variant = localStorage.getItem('lcs_variant'); } catch (e) { }
+      // 3. Sinon tirage au sort équiprobable
+      if (urlV && VARIANTS[urlV]) {
+        variant = urlV;
+      } else if (!variant || !VARIANTS[variant]) {
+        var keys = Object.keys(VARIANTS);
+        variant = keys[Math.floor(Math.random() * keys.length)];
+      }
+      try { localStorage.setItem('lcs_variant', variant); } catch (e) { }
+      window.__LCS_VARIANT = variant;
+
+      function applyVariant() {
+        var headlineEl = document.querySelector('[data-ab="headline"]');
+        var subEl = document.querySelector('[data-ab="sub"]');
+        if (headlineEl) headlineEl.innerHTML = VARIANTS[variant].headline;
+        if (subEl) subEl.textContent = VARIANTS[variant].sub;
+        document.body.setAttribute('data-variant', variant);
+
+        // Event d'exposition (1 par session, envoyé une fois le DOM prêt)
+        if (window.umami && typeof window.umami.track === 'function') {
+          window.umami.track('ab_exposed', { variant: variant });
+        }
+
+        var ctas = document.querySelectorAll('a[href*="stripe.com"]');
+        ctas.forEach(function (el) {
+          el.addEventListener('click', function () {
+            if (window.umami && typeof window.umami.track === 'function') {
+              window.umami.track('ab_cta_click', { variant: variant, label: (el.textContent || '').trim().slice(0, 40) });
+            }
+          });
+        });
+
+        var diags = document.querySelectorAll('a[href*="calendly.com"]');
+        diags.forEach(function (el) {
+          el.addEventListener('click', function () {
+            if (window.umami && typeof window.umami.track === 'function') {
+              window.umami.track('ab_diag_click', { variant: variant });
+            }
+          });
+        });
+
+        var leads = document.querySelectorAll('a[href*="tally.so"]');
+        leads.forEach(function (el) {
+          el.addEventListener('click', function () {
+            if (window.umami && typeof window.umami.track === 'function') {
+              window.umami.track('ab_lead_magnet_click', { variant: variant });
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyVariant);
+      } else {
+        applyVariant();
+      }
+    })();
+  </script>
+
   <style>
     /* ============================================
    DESIGN TOKENS
@@ -73,6 +162,15 @@
 
     img {
       max-width: 100%;
+    }
+
+    a {
+      color: var(--body);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent)
     }
 
     /* ============================================
@@ -175,6 +273,16 @@
 
     .nav-cta:hover {
       background: var(--accent-glow-strong);
+    }
+
+    @media (max-width: 640px) {
+      .nav-links .nav-link {
+        display: none;
+      }
+
+      .nav-links .nav-link.nav-link-mobile {
+        display: inline-block;
+      }
     }
 
     /* ============================================
@@ -914,19 +1022,6 @@
       border-top: 1px solid var(--border);
     }
 
-    .profile-photo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin: 0 auto 24px;
-      background: var(--bg-card);
-      border: 3px solid var(--border);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     /* ============================================
    FOOTER
    ============================================ */
@@ -1010,9 +1105,6 @@
 
 <body>
 
-  <!-- ================================================
-     NAV
-     ================================================ -->
   <nav class="nav">
     <div class="nav-inner">
       <a href="#" class="nav-name"><img src="assets/logo.png" alt="FM" class="nav-logo">Florian Marin</a>
@@ -1022,8 +1114,7 @@
         <a href="#comment" class="nav-link">Comment</a>
         <a href="#pricing" class="nav-link nav-link-mobile">Tarif</a>
         <a href="#faq" class="nav-link">FAQ</a>
-        <a href="https://calendly.com/florian-marin/audit-triangle" class="nav-cta"
-          data-umami-event="nav-cta-diagnostic" target="_blank" rel="noopener">Diagnostic</a>
+        <a href="#pricing" class="nav-cta" data-umami-event="nav-cta-click">Diagnostic</a>
       </div>
     </div>
   </nav>
@@ -1032,955 +1123,720 @@
      HERO — Proposition de valeur, PAS la bio
      ================================================ -->
   <div class="hero" id="hero">
-    <div class="hero-category">Coaching d'organisation pour pères cadres tech</div>
-    <div class="hero-headline">
-      Reprends le contrôle<br>de ta semaine.<br><span class="accent">En 14 jours. Garanti.</span>
+    <div
+      style="width: 80px; height: 80px; border-radius: 50%; background: var(--bg-card); border: 3px solid var(--accent); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--text-dim); overflow: hidden;">
+      <img src="assets/profile.png" alt="Florian Marin" style="width:100%;height:100%;object-fit:cover;">
     </div>
-    <div class="hero-sub">
-      Tu étais à 4-6h de sport par semaine. Aujourd'hui tu es à 0, 1, peut-être 2h. Tu n'as pas décidé d'arrêter. Ça
-      s'est imposé. Le Cadre Sprint t'aide à reprendre la main — sur ton temps, ton organisation, et ce qui compte pour
-      toi.
+    <div class="hero-category">Système d'organisation pour pères cadres tech</div>
+    <div class="hero-headline" data-ab="headline">
+      Reprends <span class="accent">5h+ de sport</span><br>par semaine.<br>En 14 jours. Garanti.
     </div>
-    <div class="hero-proof">
-      <strong>Mathieu, développeur freelance, 1 fils :</strong> passé de 0 à 5h de sport/semaine en 2 semaines avec Le
-      Cadre Sprint.
+    <div class="hero-sub" data-ab="sub">
+      Tu faisais 4h+ de sport avant les enfants. Aujourd'hui tu es à <2h. Le Cadre Sprint pose un système qui protège
+        ton sport, même quand tout le reste déraille. </div>
+        <div class="hero-proof">
+          <strong>Mathieu, développeur freelance, 1 fils :</strong> passé de 0 à 5h/semaine en 2 semaines.
+        </div>
+        <div class="hero-stats">
+          <div><span class="hero-stat-num">30+</span> interviews terrain</div>
+          <div><span class="hero-stat-num">500+</span> conversations</div>
+          <div><span class="hero-stat-num">100%</span> de 8 clients ont tenu leur cadre à J14</div>
+        </div>
+        <div class="cta-group">
+          <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
+            data-umami-event="hero-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
+        </div>
     </div>
-    <div class="hero-stats">
-      <div><span class="hero-stat-num">+30</span> interviews terrain</div>
-      <div><span class="hero-stat-num">+500</span> conversations</div>
-      <div><span class="hero-stat-num">100%</span> des clients ont tenu à J14</div>
-    </div>
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener" class="cta-primary"
-        data-umami-event="hero-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
-      <span class="cta-note">Pas d'engagement. Toi. Moi. Ton agenda. Tes contraintes. Tu repars avec 3 actions
-        concrètes</span>
-      <a href="https://buy.stripe.com/00wcN56aIaCgdtA09kf7i04" target="_blank" rel="noopener" class="cta-secondary"
-        data-umami-event="hero-cta-stripe">Acheter maintenant (200€)</a>
-    </div>
-  </div>
 
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
 
-  <!-- ================================================
-     PROBLÈME — Tu te reconnais ?
+    <!-- ================================================
+     PROBLÈME — condensé
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="probleme">
-    <h2>Tu te reconnais là-dedans ?</h2>
+    <div class="spacer-sm"></div>
+    <div class="section" id="probleme">
+      <h2>Tu te reconnais ?</h2>
 
-    <div class="quote">
-      <p>« Il faut une soupape de décompression. On emmagasine comme une cocotte-minute. Et quand elle s'échappe, tout
-        le monde prend dans la tronche. »</p>
-      <span class="attr">Jérémy, manager IT, marié, 4 enfants</span>
+      <div class="quote">
+        <p>« C'est un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'être. »</p>
+        <span class="attr">Mathieu D., manager tech, 2 enfants</span>
+      </div>
+
+      <!-- Jaw-dropping stat (SUCCESs · Unexpected) -->
+      <div
+        style="background: var(--bg-card); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+        <p style="margin: 0; font-size: 0.95rem; color: var(--text);">Sur <strong>33 pères</strong> interviewés,
+          <strong>33</strong> avaient essayé de s'organiser seuls. <strong>33</strong> ont échoué en moins de 3
+          semaines.
+        </p>
+        <p style="margin: 6px 0 0; font-size: 0.88rem; color: var(--text-dim);">Le problème n'est jamais la volonté —
+          toujours le cadre.</p>
+      </div>
+
+      <p>Tu fais du sport « quand tu peux » — une à deux séances, parfois zéro. Quand un imprévu tombe, c'est toujours
+        le
+        sport qui saute. Le week-end, si tu veux une sortie longue, ça se négocie. Et la négociation te fatigue plus que
+        l'entraînement.</p>
+
+      <p>Ça fait combien de temps que tu te dis « lundi, je m'y remets » ? 82% des pères que j'ai interviewés décrivent
+        la
+        même chose : <strong>ils ne s'autorisent plus à prendre du temps pour eux.</strong></p>
+
+      <p><strong style="color:var(--accent);">Ton problème, c'est pas la motivation. C'est l'absence de cadre.</strong>
+      </p>
+
+      <!-- Positive emotion / transformation promise (SUCCESs · Emotional) -->
+      <div
+        style="background: linear-gradient(135deg, rgba(255,122,0,0.06), rgba(74,222,128,0.05)); border: 1px solid rgba(255,122,0,0.2); border-radius: 12px; padding: 20px 22px; margin: 24px 0 0;">
+        <p
+          style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700;">
+          Et de l'autre côté</p>
+        <p style="margin: 0; color: var(--text); font-size: 0.95rem;">Te lever le lundi en sachant que ta semaine tient.
+          Arriver au travail avec de l'énergie au lieu d'en chercher. Dormir le dimanche soir sans culpabilité ni liste
+          mentale. <strong>Être le père et l'homme que tu veux être — sans choisir entre ta famille, ton boulot et ton
+            corps.</strong></p>
+      </div>
     </div>
 
-    <p>Tu fais du sport « quand tu peux ». Sauf que « quand tu peux », concrètement, ça veut dire : une à deux séances
-      par semaine, parfois zéro. Tu improvises. Tu cales un créneau le midi, « sur ton temps de pause, quand le boulot
-      le permet ». Et quand un imprévu tombe — réunion qui déborde, enfant malade, deadline — c'est toujours le sport
-      qui saute en premier. Toujours.</p>
-
-    <p>Le week-end, c'est pire. Si tu pars 1h, ça passe. Si tu veux faire une sortie de 3h, ça se négocie. Et la
-      négociation, à la longue, ça te fatigue plus que l'entraînement.</p>
-
-    <p>Tu n'as pas un problème de motivation. Tu en as assez pour être frustré chaque semaine où ça ne se passe pas
-      comme prévu. Et tu passes du temps à te traiter de gros nul pour ça.</p>
-
-    <p><strong style="color:var(--accent);">Ton problème, c'est l'absence de cadre.</strong></p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     COÛT DE L'INACTION
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="cout-inaction">
-    <h2>Ce qui se passe quand tu ne changes rien</h2>
-
-    <p>Tu le sais déjà. Ça fait 6 mois, 1 an, peut-être 2 ans que tu te dis « je vais m'y remettre sérieusement ».
-      Chaque dimanche soir, c'est la même phrase : « Demain, je m'organise. » Et chaque lundi, tu décales.</p>
-
-    <p>Pendant ce temps : l'énergie baisse, la frustration monte, et le sport qui était ta soupape devient une source de
-      culpabilité. À la maison, tu sens la friction — pas un conflit ouvert, mais des regards, des soupirs. « Ça tient
-      une semaine, après tu prends des remarques », comme me l'a dit un des 33 pères que j'ai interviewés. 82% décrivent
-      exactement ça : ils ne s'autorisent plus à prendre du temps pour eux.</p>
-
-    <div class="quote">
-      <p>« C'est un peu un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'être. »</p>
-      <span class="attr">Guillaume F., manager tech, 2 enfants</span>
-    </div>
-
-    <p>Le coût du statu quo, c'est pas juste des séances loupées. C'est de l'énergie en moins au boulot. De la lucidité
-      en moins à la maison. C'est la cocotte-minute qui monte. Et un sentiment qui s'installe : <strong>tu subis ta
-        semaine au lieu de la piloter.</strong></p>
-  </div>
-
-  <!-- ================================================
+    <!-- ================================================
      POUR QUI — Qualification filter (placé tôt)
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="pour-qui">
-    <div class="who-block">
-      <p><strong style="color: var(--accent);">✓ Ce sprint est fait pour toi si :</strong></p>
-      <p style="margin: 0;">Tu es père, tu bosses dans la tech (Engineering Manager, CTO, développeur senior,
-        freelance), tu as au moins un enfant en bas âge. Tu faisais 4 à 6h de sport par semaine avant. Tu es maintenant
-        à 0-2h, ou tu as complètement arrêté sans vraiment l'avoir décidé. Tu ne cherches pas des conseils, tu cherches
-        un système.</p>
+    <div class="spacer-sm"></div>
+    <div class="section" id="pour-qui">
+      <div class="who-block">
+        <p><strong style="color: var(--accent);">✓ Ce sprint est fait pour toi si :</strong></p>
+        <p style="margin: 0;">Tu es père, tu bosses dans la tech (Engineering Manager, CTO, développeur senior,
+          freelance), tu as au moins un enfant en bas âge. Tu faisais 4 à 6h de sport par semaine avant. Tu es
+          maintenant
+          à 0-2h, ou tu as complètement arrêté sans vraiment l'avoir décidé. Tu ne cherches pas des conseils — tu
+          cherches
+          un système.</p>
+      </div>
+
+      <div class="not-block">
+        <p><strong>✗ Ce sprint n'est PAS fait pour toi si :</strong></p>
+        <p style="margin: 0;">Tu cherches un plan d'entraînement ou un coach sportif. Tu fais déjà plus de 5h de sport
+          par
+          semaine. Tu veux du « mindset » et de la motivation, passe ton chemin. <strong>Ici, c'est du système.</strong></p>
+      </div>
     </div>
 
-    <div class="not-block">
-      <p><strong>✗ Ce sprint n'est PAS fait pour toi si :</strong></p>
-      <p style="margin: 0;">Tu cherches un plan d'entraînement ou un coach sportif. Tu fais déjà plus de 5h de sport par
-        semaine. Tu veux du « mindset » et de la motivation. Ici, c'est du système.</p>
-    </div>
-  </div>
-
-  <!-- CTA après qualification — pour les visiteurs chauds -->
-  <div class="section">
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener" class="cta-primary"
-        data-umami-event="post-problem-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
-    </div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     SOCIAL PROOF — Ce que les interviews révèlent
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="terrain">
-    <h2>Ce que j'ai découvert en 30+ interviews et 500+ conversations</h2>
-
-    <p>En 6 mois, j'ai interviewé 30+ pères en profondeur et échangé avec plus de 500+ sur LinkedIn et en DM. Des
-      Engineering Managers, des CTOs, des développeurs seniors, des freelances. Running, triathlon, vélo, muscu,
-      crossfit. Tous motivés. Tous frustrés.</p>
-
-    <div class="quote">
-      <p>« Si je suis pas bien dans ma peau, je peux pas être bien avec elle ou l'enfant. Le sport, c'est primordial. »
-      </p>
-      <span class="attr">Nicolas, commercial B2B freelance, premier enfant prévu en mai</span>
+    <!-- CTA après qualification — pour les visiteurs chauds -->
+    <div class="section">
+      <div class="cta-group">
+        <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
+          data-umami-event="post-problem-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
+      </div>
     </div>
 
-    <p>Le pattern est toujours le même : pas de créneaux protégés, pas de plan B quand ça saute, pas d'accord explicite
-      avec la conjointe. Et quand je pose la question « à quoi tu veux que ta semaine ressemble ? », la réponse la plus
-      fréquente : « Je n'y ai jamais réfléchi. »</p>
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
 
-    <p>La bonne volonté, ça ne tient pas face à un agenda de cadre tech + un enfant de 2 ans qui fait ses dents + une
-      release qui patine.</p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
+    <!-- ================================================
      SOLUTION — Les 3 piliers
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="solution">
-    <h2>La solution : un cadre, pas un plan d'entraînement</h2>
+    <div class="spacer-sm"></div>
+    <div class="section" id="solution">
+      <h2>Le système en 3 piliers</h2>
 
-    <p>Je ne suis pas coach sportif. Je ne fais pas de plans d'entraînement ni de prépa physique. Et je ne suis pas
-      coach de vie non plus — je trouve que c'est un mot valise qui ne veut rien dire.</p>
+      <p>Pas du coaching sportif. Pas du coaching de vie. De l'ingénierie appliquée à ta vie perso.</p>
 
-    <p>Ce que je fais, c'est de la productivité appliquée à la vie personnelle. De l'ingénierie de système. Un problème
-      a toujours une ou plusieurs solutions : il faut identifier le blocage, poser un cadre, et l'exécuter.</p>
-
-    <p>Mon système repose sur 3 piliers :</p>
-
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong>Des créneaux sanctuarisés.</strong> Pas « je verrai lundi matin ». Des blocs fixes dans l'agenda,
-          aussi non-négociables qu'un one-on-one avec ton N+1. Tu ne les déplaces pas. Si quelqu'un te propose une
-          réunion, c'est non — comme si tu avais déjà un call.</p>
+      <div class="pillar">
+        <div class="pillar-bar"></div>
+        <div class="pillar-content">
+          <p><strong>Créneaux sanctuarisés.</strong> Des blocs fixes dans l'agenda, aussi non-négociables qu'un 1:1 avec
+            ton N+1.</p>
+        </div>
       </div>
-    </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong>Un plan B structuré.</strong> 70% des systèmes sport que j'analyse reposent sur un seul créneau.
-          Quand il saute (et il saute), c'est zéro sport pour la semaine. Avec Le Cadre, chaque créneau a un tampon : un
-          créneau de secours, une séance courte de remplacement, zéro renégociation.</p>
+      <div class="pillar">
+        <div class="pillar-bar"></div>
+        <div class="pillar-content">
+          <p><strong>Plan B structuré.</strong> Chaque créneau a un tampon. Quand ça saute, tu bascules — zéro
+            renégociation.</p>
+        </div>
       </div>
-    </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong>Un accord explicite avec ta conjointe.</strong> Le sport qui tient, c'est le sport qui a été décidé
-          ensemble — une fois, clairement, sans avoir besoin de renégocier chaque week-end. Pas une autorisation. Un
-          accord.</p>
+      <div class="pillar">
+        <div class="pillar-bar"></div>
+        <div class="pillar-content">
+          <p><strong>Accord couple explicite.</strong> Posé une fois, en 20 minutes. 100% de 8 clients l'ont fait sans
+            tension.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Inline counter-objection : "ça va être compliqué" → CO Only -->
-    <div class="card" style="margin-top: 20px; border-left: 3px solid var(--green);">
-      <p style="margin: 0; font-size: 0.92rem;"><strong style="color: var(--green);">Résultat terrain :</strong> sur les
-        6 clients accompagnés, <strong>100% ont posé un accord couple en moins de 20 minutes</strong> grâce au Script
-        Conversation Couple. Aucun conflit. Aucune tension. La plupart des conjointes ont répondu : « Mais pourquoi tu
-        ne l'as pas fait plus tôt ? »</p>
+    <div class="separator">
+      <div class="separator-line"></div>
     </div>
-  </div>
 
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
+    <!-- ================================================
      RÉSULTATS CLIENTS — dispersés
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="resultats">
-    <h2>Ce qu'ils en disent</h2>
+    <div class="spacer-sm"></div>
+    <div class="section" id="resultats">
+      <h2>Résultats</h2>
 
-    <div class="quote">
-      <p>« Le fait de le voir le matin dans mon agenda, je me fais une image de la journée et c'est beaucoup plus facile
-        à suivre. Je n'ai pas eu de grosses difficultés à tenir le plan. »</p>
-      <span class="attr">Mathieu, 40 ans, développeur freelance, 1 fils — passé de 0 à 5h de sport/semaine en 2
-        semaines</span>
-    </div>
-
-    <div class="quote">
-      <p>« Plus je suis énervé au boulot, plus j'ai besoin de faire du sport. Avec un plan clair, c'est facile — c'est
-        juste les obstacles autour qui me freinaient. »</p>
-      <span class="attr">Guillaume, ingénieur, en couple — plan tenu malgré maladie + conflit pro + déplacements</span>
-    </div>
-
-    <div class="quote">
-      <p>« J'ai regoûté, je ne peux plus. Si je ne l'ai pas, il manque un truc. »</p>
-      <span class="attr">Anthony, père de famille — a repris le sport après une longue pause</span>
-    </div>
-
-    <div class="quote">
-      <p>« Le coaching m'a enlevé la charge mentale de la planification. Moins tu as à réfléchir, plus tu es efficace. »
-      </p>
-      <span class="attr">Rémi, cadre tech, triathlon</span>
-    </div>
-
-    <!-- MINI CASE STUDY — Proof sandwich : Claim → Proof → Reinforcement -->
-    <div class="case-study">
-      <div class="case-study-label">Cas client — Mathieu, 40 ans, développeur freelance, 1 fils</div>
-      <p><strong>Avant :</strong> Zéro sport depuis des mois. Un seul créneau le midi qui sautait dès qu'un call
-        débordait. Culpabilité permanente. « C'est un cercle vicieux de merde. »</p>
-      <div class="case-study-result">
-        <span class="case-study-num before">0h</span>
-        <span class="case-study-arrow">→</span>
-        <span class="case-study-num after">5h</span>
-        <span style="color: var(--text-dim); font-size: 0.85rem;">/semaine</span>
+      <!-- Case study principal — compact -->
+      <div class="case-study">
+        <div class="case-study-label">Mathieu, 40 ans, dev freelance, 1 fils</div>
+        <div class="case-study-result">
+          <span class="case-study-num before">0h</span>
+          <span class="case-study-arrow">→</span>
+          <span class="case-study-num after">5h</span>
+          <span style="color: var(--text-dim); font-size: 0.85rem;">/semaine en 2 semaines</span>
+        </div>
+        <p style="margin: 0; font-size: 0.92rem;">Semaine 1, sa fille tombe malade → il bascule sur son créneau de
+          secours. Zéro renégociation. Le cadre tient toujours 3 mois après.</p>
       </div>
-      <p><strong>Pendant le Sprint :</strong> Semaine 1, sa fille tombe malade mardi. Il bascule sur son créneau de
-        secours — aucune renégociation. Le Protocole Anti-Chaos en action.</p>
-      <p style="margin: 0;"><strong>Après :</strong> « Le fait de le voir le matin dans mon agenda, je me fais une image
-        de la journée et c'est beaucoup plus facile. » Le cadre tient toujours 3 mois après.</p>
-    </div>
 
-    <!-- MINI CASE STUDY 2 — Guillaume -->
-    <div class="case-study">
-      <div class="case-study-label">Cas client — Guillaume, ingénieur, en couple</div>
-      <p><strong>Avant :</strong> Du sport irrégulier, 1 à 2h par semaine « quand ça passe ». Aucun créneau fixe. Chaque
-        semaine, c'est la négociation : « J'y vais si… » Résultat : frustration permanente, énergie au boulot en chute
-        libre.</p>
-      <div class="case-study-result">
-        <span class="case-study-num before">
-          <2h< /span>
-            <span class="case-study-arrow">→</span>
-            <span class="case-study-num after">4h+</span>
-            <span style="color: var(--text-dim); font-size: 0.85rem;">/semaine</span>
+      <div class="case-study">
+        <div class="case-study-label">Guillaume, ingénieur, en couple</div>
+        <div class="case-study-result">
+          <span class="case-study-num before">2h</span>
+          <span class="case-study-arrow">→</span>
+          <span class="case-study-num after">6h</span>
+          <span style="color: var(--text-dim); font-size: 0.85rem;">/semaine — maintenu malgré maladie + conflit pro +
+            déplacements</span>
+        </div>
+        <p style="margin: 0; font-size: 0.92rem;">3 imprévus enchaînés en plein Sprint. Le cadre a tenu — plans B +
+          accord
+          couple déjà posé.</p>
       </div>
-      <p><strong>Le test du système :</strong> En plein Sprint, Guillaume enchaîne : maladie, conflit au travail,
-        déplacement professionnel. Le cadre a tenu parce que chaque créneau avait un plan B et que l'accord avec sa
-        conjointe était déjà posé.</p>
-      <p style="margin: 0;"><strong>Dans ses mots :</strong> « Plus je suis énervé au boulot, plus j'ai besoin de faire
-        du sport. Avec un plan clair, c'est facile. C'est juste les obstacles autour qui me freinaient. »</p>
-    </div>
 
-    <!-- WHATSAPP PROOF — Message réel d'un client pendant le Sprint -->
-    <div class="wa-container">
-      <div class="wa-container-label">Message WhatsApp réel — pendant le Sprint</div>
-      <div class="wa-chat">
-        <div class="wa-bubble">
-          Salut Florian, désolé un peu sous l'eau cette semaine ! Pas mal d'imprévus.<br><br>
-          <span class="wa-green">Points positifs :</span> l'extinction des feux à 23h30 porte ses fruits ; on a fait le
-          planning de ma femme sur son calendrier Google et on essaie de rester synchronisés !<br><br>
-          <span class="wa-orange">Points négatifs :</span> pas fait toutes les séances de sport que j'aurais aimé faire
-          (mais j'en ai quand même fait 2 + kiné, et j'ai encore espoir d'aller courir aujourd'hui !)
-          <div class="wa-time">11:16</div>
+      <!-- WhatsApp proof — compact -->
+      <div class="wa-container">
+        <div class="wa-container-label">Message WhatsApp d'un client — pendant le Sprint</div>
+        <div class="wa-chat">
+          <div class="wa-bubble">
+            <span class="wa-green">Points positifs :</span> l'extinction des feux à 23h30 porte ses fruits ; on a fait
+            le
+            planning de ma femme sur son calendrier Google et on essaie de rester synchronisés !<br><br>
+            <span class="wa-orange">Points négatifs :</span> pas fait toutes les séances que j'aurais aimé faire (mais
+            j'en ai quand même fait 2 + kiné, et j'ai encore espoir d'aller courir aujourd'hui !)
+            <div class="wa-time">11:16</div>
+          </div>
         </div>
       </div>
-      <div class="wa-caption">Ce message résume le Sprint en action : des imprévus (comme toujours), mais le système
-        tient — planning couple synchronisé, 2 séances + kiné malgré une semaine chaotique, et l'extinction des feux qui
-        protège le sommeil.</div>
-    </div>
 
-    <!-- PREUVE VISUELLE — Agenda réel d'un client -->
-    <h3 style="margin-top: 32px;">L'agenda réel d'un client après Le Cadre Sprint</h3>
-    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 16px;">Ce n'est pas un mockup. C'est le vrai
-      Google Calendar d'un client accompagné — avec ses créneaux sport bloqués, ses plans B visibles, et sa semaine
-      organisée.</p>
-    <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 32px;">
-      <img src="assets/client-agenda-01.jpeg"
-        alt="Agenda Google Calendar réel d'un client Le Cadre Sprint — créneaux sport sanctuarisés"
-        style="width: 100%; display: block;" loading="lazy">
-    </div>
+      <!-- Agenda réel -->
+      <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin: 24px 0;">
+        <div
+          style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; padding: 12px 16px; background: var(--bg-card);">
+          Google Calendar d'un client après la Session 1</div>
+        <img src="assets/client-agenda-01.jpeg" alt="Agenda réel d'un client Le Cadre Sprint"
+          style="width: 100%; display: block;" loading="lazy">
+      </div>
 
-    <!-- BEFORE/AFTER VISUAL — Semaine-type -->
-    <h3 style="margin-top: 32px;">Semaine-type : avant vs. après Le Cadre Sprint</h3>
-    <div class="ba-grid">
-      <div class="ba-col ba-before">
-        <h3>Avant</h3>
-        <div class="ba-row"><span class="day">Lun</span><span class="activity empty">— rien (réunions)</span></div>
-        <div class="ba-row"><span class="day">Mar</span><span class="activity">Midi : footing « si le call finit à temps
-            »</span></div>
-        <div class="ba-row"><span class="day">Mer</span><span class="activity empty">— rien (enfant malade)</span></div>
-        <div class="ba-row"><span class="day">Jeu</span><span class="activity empty">— rien (deadline)</span></div>
-        <div class="ba-row"><span class="day">Ven</span><span class="activity empty">— rien (fatigue)</span></div>
-        <div class="ba-row"><span class="day">Sam</span><span class="activity empty">— « j'essaierai demain »</span>
-        </div>
-        <div class="ba-row"><span class="day">Dim</span><span class="activity empty">— culpabilité</span></div>
-        <div class="ba-row" style="border-top: 1px solid var(--red); margin-top: 8px; padding-top: 8px;"><span
-            class="day" style="color: var(--red); font-weight: 700;">Total</span><span class="activity"
-            style="color: var(--red); font-weight: 700;">0-1h / semaine</span></div>
-      </div>
-      <div class="ba-col ba-after">
-        <h3>Après</h3>
-        <div class="ba-row"><span class="day">Lun</span><span class="activity sport">7h00 — Natation (45 min)</span>
-        </div>
-        <div class="ba-row"><span class="day">Mar</span><span class="activity">Repos ou marche</span></div>
-        <div class="ba-row"><span class="day">Mer</span><span class="activity sport">12h30 — Course (40 min)</span>
-        </div>
-        <div class="ba-row"><span class="day"></span><span class="activity backup">↳ Plan B : jeudi 7h si imprévu</span>
-        </div>
-        <div class="ba-row"><span class="day">Jeu</span><span class="activity sport">7h00 — Muscu (50 min)</span></div>
-        <div class="ba-row"><span class="day">Ven</span><span class="activity">Repos</span></div>
-        <div class="ba-row"><span class="day">Sam</span><span class="activity sport">9h00 — Sortie longue (1h30)</span>
-        </div>
-        <div class="ba-row"><span class="day"></span><span class="activity backup">↳ Accord couple : validé le dimanche
-            soir</span></div>
-        <div class="ba-row" style="border-top: 1px solid var(--green); margin-top: 8px; padding-top: 8px;"><span
-            class="day" style="color: var(--green); font-weight: 700;">Total</span><span class="activity"
-            style="color: var(--green); font-weight: 700;">5h / semaine, protégées</span></div>
-      </div>
-    </div>
+      <!-- VIDEO PLACEHOLDER — futur témoignage
+       MASQUÉ : admettre un gap de preuve sociale est pire que ne pas en parler.
+       Décommenter UNIQUEMENT quand la vidéo est disponible.
+  <div style="border-radius: 12px; border: 2px dashed var(--border); padding: 40px 24px; text-align: center; margin: 24px 0;">
+    <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0;">📹 Témoignage vidéo — bientôt disponible</p>
   </div>
+  -->
 
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
 
-  <!-- ================================================
+      <!-- Before/After compact -->
+      <div class="ba-grid">
+        <div class="ba-col ba-before">
+          <h3>Avant</h3>
+          <div class="ba-row"><span class="day">Lun</span><span class="activity empty">rien (réunions)</span></div>
+          <div class="ba-row"><span class="day">Mar</span><span class="activity empty">rien (pluie)</span></div>
+          <div class="ba-row"><span class="day">Mer</span><span class="activity empty">rien (enfant malade)</span>
+          </div>
+          <div class="ba-row"><span class="day">Jeu</span><span class="activity empty">rien (enfant malade)</span>
+          </div>
+          <div class="ba-row"><span class="day">Ven</span><span class="activity empty">rien (fatigue)</span>
+          </div>
+          <div class="ba-row"><span class="day">Sam</span><span class="activity empty">rien (repas en famille)</span>
+          </div>
+          <div class="ba-row"><span class="day">Dim</span><span class="activity empty">« j'essaierai demain »</span>
+          </div>
+          <div class="ba-row" style="border-top: 1px solid var(--red); margin-top: 8px; padding-top: 8px;"><span
+              class="day" style="color: var(--red); font-weight: 700;">Total</span><span class="activity"
+              style="color: var(--red); font-weight: 700;">0-1h / semaine</span></div>
+        </div>
+        <div class="ba-col ba-after">
+          <h3>Après</h3>
+          <div class="ba-row"><span class="day">Lun</span><span class="activity sport">7h — Natation (45 min)</span>
+          </div>
+          <div class="ba-row"><span class="day">Mar</span><span class="activity sport">12h30 — Course (45 min)</span>
+          </div>
+          <div class="ba-row"><span class="day">Mer</span><span class="activity sport">8h - Marche active (30
+              min)</span>
+          </div>
+          <div class="ba-row"><span class="day">Jeu</span><span class="activity sport">18h — Vélo (45 min)</span>
+          </div>
+          <div class="ba-row"><span class="day">Ven</span><span class="activity sport">12h30 — Course (45 min)</span>
+          </div>
+          <div class="ba-row"><span class="day">Sam</span><span class="activity sport">9h — Sortie longue (1h30)</span>
+          </div>
+          <div class="ba-row"><span class="day">Dim</span><span class="activity sport">Repos ou marche active</span>
+          </div>
+          <div class="ba-row" style="border-top: 1px solid var(--green); margin-top: 8px; padding-top: 8px;"><span
+              class="day" style="color: var(--green); font-weight: 700;">Total</span><span class="activity"
+              style="color: var(--green); font-weight: 700;">5h / semaine, protégées</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
      COMMENT ÇA MARCHE (effort quantifié)
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="comment">
-    <h2>Le Cadre Sprint — <span class="gradient-text">14 jours</span></h2>
+    <div class="spacer-sm"></div>
+    <div class="section" id="comment">
+      <h2>Comment ça marche - <span class="gradient-text">14 jours</span></h2>
 
-    <p>En 14 jours, tu passes de « je fais du sport quand je peux » à « j'ai un système testé et validé qui protège mon
-      sport ». Et surtout : tu reprends le contrôle de ta semaine.</p>
-
-    <p><strong>Avant le sprint : Questionnaire diagnostic (15 min)</strong><br>
-      Tu remplis un questionnaire structuré : ton agenda réel, tes contraintes, ton sport, ta famille, tes blocages.
-      J'arrive en session 1 avec une analyse déjà faite de ta situation.</p>
-
-    <p><strong>J1 : Session diagnostic + construction (60 min)</strong><br>
-      On analyse ta semaine ensemble. On identifie les points de friction. On construit ton cadre en live : créneaux
-      fixes, plans B, stratégie accord famille. <strong style="color:var(--accent);">Tu repars avec ton planning semaine
-        configuré dans Google Calendar.</strong> Pas un document théorique — ton vrai agenda, avec tes vrais créneaux,
-      bloqués.</p>
-
-    <p><strong>J2 à J7 : Tu testes ton cadre.</strong><br>
-      Tu vis ta première semaine avec le système. Pas besoin de remplir un tableur — un screenshot de ton Garmin ou
-      Strava suffit.</p>
-
-    <p><strong>J7 : Check-in structuré</strong><br>
-      Débrief de la première semaine. Ce qui a tenu, ce qui a sauté, pourquoi. J'ajuste le cadre en fonction de ce qui
-      s'est passé dans ta vraie vie.</p>
-
-    <p><strong>J14 : Session ajustement + livrable final (45 min)</strong><br>
-      Débrief complet. Je te livre ton document récap : « Ton Cadre Semaine » — le système complet, validé par 2
-      semaines de test réel.</p>
-
-    <div class="card" style="margin-top: 24px; text-align: center;">
-      <p style="margin: 0 0 12px; color: var(--text);"><strong>Temps total investi :</strong> 2h30 de session + ~10
-        min/jour d'application<br>
-        <span style="color: var(--accent); font-weight: 700;">= moins de 4h sur 14 jours. Moins qu'un épisode Netflix
-          par soir.</span>
-      </p>
-      <p style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">Pas de journal à tenir. Un screenshot Garmin ou
-        Strava suffit pour le suivi. Tu fais tes sessions, tu vis ta semaine. Le cadre fait le reste.</p>
-    </div>
-
-    <!-- TRACKING TABLE — Preuve de la rigueur méthodologique -->
-    <div class="track-container">
-      <div class="track-label">Extrait du suivi réel d'un client — Semaines 1 et 2</div>
-      <div style="overflow-x: auto;">
-        <table class="track-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Jour</th>
-              <th>Énergie</th>
-              <th>Plan tenu ?</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="week-label" rowspan="5">S1</td>
-              <td>Lundi</td>
-              <td><span class="track-energy energy-high">Très haute</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">1h de tapis au lieu de squash (annulé) — plan B activé</td>
-            </tr>
-            <tr>
-              <td>Mardi</td>
-              <td><span class="track-energy energy-high">Très haute</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Journée découpée → décaler la pause repas post kiné</td>
-            </tr>
-            <tr>
-              <td>Mercredi</td>
-              <td><span class="track-energy energy-fatigue">Fatigue</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Mal dormi, début difficile. Sport 30 min running. Journée bien passée malgré tout !
-              </td>
-            </tr>
-            <tr>
-              <td>Jeudi</td>
-              <td><span class="track-energy energy-stable">Stable</span></td>
-              <td></td>
-              <td class="track-note">Mal dormi mais ça va. Pings à 6h45 → va bloquer les notifications</td>
-            </tr>
-            <tr>
-              <td>Vendredi</td>
-              <td><span class="track-energy energy-stable">Stable</span></td>
-              <td></td>
-              <td class="track-note"></td>
-            </tr>
-            <tr style="border-top: 2px solid var(--border);">
-              <td class="week-label" rowspan="5">S2</td>
-              <td>Lundi</td>
-              <td><span class="track-energy energy-high">Très haute</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Running entre midi et deux</td>
-            </tr>
-            <tr>
-              <td>Mardi</td>
-              <td><span class="track-energy energy-high">Très haute</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Kiné (intense) le matin, 1h de squash le soir</td>
-            </tr>
-            <tr>
-              <td>Mercredi</td>
-              <td><span class="track-energy energy-pressure">Sous pression</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Pas spécialement fatigué mais trop de choses en tête</td>
-            </tr>
-            <tr>
-              <td>Jeudi</td>
-              <td><span class="track-energy energy-stable">Stable</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">1h15 de tapis. Raté un RDV kiné pourtant noté :o</td>
-            </tr>
-            <tr>
-              <td>Vendredi</td>
-              <td><span class="track-energy energy-stable">Stable</span></td>
-              <td><span class="track-check">✓</span></td>
-              <td class="track-note">Journée assez tranquille</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card" style="border-left: 3px solid var(--accent);">
+        <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J0</strong> : Questionnaire diagnostic <span
+            style="color: var(--text-dim);">(15 min)</span></p>
+        <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J1</strong> : Débrief diagnostic +
+          construction
+          du cadre</p>
+        <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J2-J7</strong> : Tu testes le cadre dans ta
+          vraie vie</p>
+        <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J7</strong> : Check-in + ajustements <span
+            style="color: var(--text-dim);">(ce qui a tenu, ce qui a sauté, pourquoi)</span></p>
+        <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J8-J14</strong> : Tu testes le cadre ajusté
+        </p>
+        <p style="margin: 0;"><strong style="color: var(--accent);">J14</strong> : Session finale + livrable « Ton Cadre
+          Semaine » <span style="color: var(--text-dim);">(45 min)</span></p>
       </div>
-      <div class="track-caption">Semaine 1 : le client s'adapte, active ses premiers plans B. Semaine 2 : 5 jours sur 5
-        avec le plan tenu, même sous pression. Le cadre est installé.</div>
+
+      <div class="card" style="text-align: center; margin-top: 16px;">
+        <p style="margin: 0; color: var(--text);"><strong>Temps total :</strong> 2h30 de session + ~5 min/jour<br>
+          <span style="color: var(--accent); font-weight: 700;">= moins de 4h sur 14 jours</span>
+        </p>
+      </div>
     </div>
-  </div>
 
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
 
-  <!-- ================================================
+    <!-- ================================================
      CE QUE TU REÇOIS + BONUS STACK
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="offre">
-    <h2>Ce que tu reçois</h2>
+    <div class="spacer-sm"></div>
+    <div class="section" id="offre">
+      <h2>Ce que tu reçois</h2>
 
-    <ul class="check-list">
-      <li><span class="check">✓</span> <strong>2 sessions 1:1</strong> (60 min + 45 min) en visio</li>
-      <li><span class="check">✓</span> <strong>1 check-in structuré à J7</strong> — débrief + ajustements personnalisés
-      </li>
-      <li><span class="check">✓</span> <strong>Ton planning semaine</strong> configuré dans Google Calendar — créneaux
-        fixes + plans B</li>
-      <li><span class="check">✓</span> <strong>Document « Ton Cadre Semaine »</strong> — récap personnalisé de ton
-        système validé</li>
-    </ul>
+      <ul class="check-list">
+        <li><span class="check">✓</span> <strong>2 sessions 1:1</strong> (60 + 45 min) : diagnostic + construction du
+          cadre</li>
+        <li><span class="check">✓</span> <strong>Check-in J7</strong> : ajustements en conditions réelles</li>
+        <li><span class="check">✓</span> <strong>Google Calendar configuré</strong> : créneaux fixes + plans B</li>
+        <li><span class="check">✓</span> <strong>Livrable « Ton Cadre Semaine »</strong> : ton système validé, documenté
+        </li>
+      </ul>
 
-    <p style="margin-top: 24px; font-weight: 700; color: var(--text);">+ 4 bonus inclus :</p>
+      <p style="margin-top: 16px; font-weight: 700; color: var(--text); font-size: 0.92rem;">+ 6 bonus :</p>
 
-    <ul class="check-list">
-      <li><span class="check">✓</span> <strong>Le Script Conversation Couple</strong> — le script mot-pour-mot pour
-        poser un accord sport-famille avec ta conjointe. 63% des pères que j'ai interviewés bloquent sur ce point. <span
-          class="bonus-val">(valeur 150 €)</span></li>
-      <li><span class="check">✓</span> <strong>Le Template « Mon Cadre Sport »</strong> (Notion) — ta structure de
-        semaine complète, prête à dupliquer <span class="bonus-val">(valeur 100 €)</span></li>
-      <li><span class="check">✓</span> <strong>Le Protocole Anti-Chaos</strong> — que faire quand tout saute : enfant
-        malade, deadline, déplacement pro. Parce que 70% des systèmes que j'analyse n'ont qu'un seul créneau et zéro
-        plan B. <span class="bonus-val">(valeur 100 €)</span></li>
-      <li><span class="check">✓</span> <strong>Le Guide Google Calendar Sport</strong> — le setup exact pour que tes
-        créneaux soient visibles et partagés <span class="bonus-val">(valeur 50 €)</span></li>
-    </ul>
-
-    <p style="margin-top: 20px;"><strong style="color: var(--text);">Valeur totale : <span class="gradient-text">900
-          €</span></strong></p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     COMPARAISON ALTERNATIVES
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="comparaison">
-    <h2>Pourquoi pas les alternatives ?</h2>
-
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th style="color: var(--accent);">Le Cadre Sprint</th>
-          <th>Coach sportif</th>
-          <th>Faire seul</th>
-          <th>App (Freeletics...)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Traite l'organisation</strong></td>
-          <td class="yes">✓</td>
-          <td class="no">✗</td>
-          <td class="no">✗</td>
-          <td class="no">✗</td>
-        </tr>
-        <tr>
-          <td><strong>Plans B intégrés</strong></td>
-          <td class="yes">✓</td>
-          <td class="no">✗</td>
-          <td class="partial">~</td>
-          <td class="no">✗</td>
-        </tr>
-        <tr>
-          <td><strong>Accord couple</strong></td>
-          <td class="yes">✓</td>
-          <td class="no">✗</td>
-          <td class="no">✗</td>
-          <td class="no">✗</td>
-        </tr>
-        <tr>
-          <td><strong>Adapté vie de père</strong></td>
-          <td class="yes">✓</td>
-          <td class="partial">~</td>
-          <td class="partial">~</td>
-          <td class="no">✗</td>
-        </tr>
-        <tr>
-          <td><strong>Résultats en 14 jours</strong></td>
-          <td class="yes">✓</td>
-          <td class="partial">~</td>
-          <td class="no">✗</td>
-          <td class="no">✗</td>
-        </tr>
-        <tr>
-          <td><strong>Système qui reste</strong></td>
-          <td class="yes">✓</td>
-          <td class="no">✗</td>
-          <td class="partial">~</td>
-          <td class="no">✗</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p style="font-size: 0.88rem; color: var(--text-dim);">Un coach sportif te dit <em>quoi faire</em>. Une app te donne
-      un plan. Le Cadre Sprint construit le <strong style="color: var(--text);">système qui protège ton sport</strong>
-      quand tout le reste de ta vie essaie de le faire sauter.</p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     PRICING + DUAL CTA
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="pricing">
-    <!-- Témoignage d'entrée : adresse l'objection "cher" par le coût du statu quo -->
-    <div class="quote" style="margin-bottom: 28px;">
-      <p>« Ça fait 2 ans que ça dure. Et pendant ces 2 ans, j'ai lâché 600 € en salles de sport où j'allais jamais,
-        acheté un vélo d'appart qui prend la poussière, et j'ai toujours zéro système. »</p>
-      <span class="attr">— Verbatim agrégé, interviews terrain 2024-2025</span>
+      <ul class="check-list" style="font-size: 0.9rem;">
+        <li><span class="check">✓</span> <strong>Script Conversation Couple</strong> : accord sport-famille en 20 min
+          <span class="bonus-val">(150 €)</span>
+        </li>
+        <li><span class="check">✓</span> <strong>Template Notion</strong> : structure de semaine prête à dupliquer <span
+            class="bonus-val">(100 €)</span></li>
+        <li><span class="check">✓</span> <strong>Protocole Anti-Chaos</strong> : enfant malade, deadline, déplacement
+          <span class="bonus-val">(100 €)</span>
+        </li>
+        <li><span class="check">✓</span> <strong>Guide Calendar Sport</strong> : setup créneaux visibles et partagés
+          <span class="bonus-val">(50 €)</span>
+        </li>
+        <li><span class="check">✓</span> <strong>Follow-up J30</strong> : session visio 45 min pour ajuster ton cadre 2
+          semaines après <span class="bonus-val">(300 €)</span></li>
+        <li><span class="check">✓</span> <strong>Accès Communauté WhatsApp</strong> : canal privé,
+          réponses directes, entraide entre pères cadres tech <span class="bonus-val">(500 €)</span></li>
+      </ul>
     </div>
 
-    <!-- Value stack recap avant le prix -->
-    <div class="card" style="margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;">
-      <p style="margin: 0 0 12px; font-weight: 700; color: var(--text); font-size: 0.95rem;">Ce que tu reçois pour 200€
-        :</p>
-      <div style="font-size: 0.88rem;">
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>2 sessions 1:1 (60 min + 45 min)</span><span class="gradient-text" style="font-weight: 700;">500€</span>
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     COMPARAISON ALTERNATIVES
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section" id="comparaison">
+      <h2>Pourquoi pas les alternatives ?</h2>
+
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th style="color: var(--accent);">Sprint</th>
+            <th>Coach sportif</th>
+            <th>Seul</th>
+            <th>App</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Organisation</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Plans B</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="partial">~</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Accord couple</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Vie de père</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">~</td>
+            <td class="partial">~</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>14 jours</strong></td>
+            <td class="yes">✓</td>
+            <td class="partial">~</td>
+            <td class="no">✗</td>
+            <td class="no">✗</td>
+          </tr>
+          <tr>
+            <td><strong>Système durable</strong></td>
+            <td class="yes">✓</td>
+            <td class="no">✗</td>
+            <td class="partial">~</td>
+            <td class="no">✗</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0;">Un coach te dit <em>quoi faire</em>. Le Sprint
+        construit le <strong style="color: var(--text);">système qui tient</strong> quand ta semaine déraille.</p>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     COST OF INACTION — juste avant le prix (Loss Aversion)
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section">
+      <div
+        style="background: rgba(248,113,113,0.06); border-left: 3px solid var(--red); border-radius: 0 10px 10px 0; padding: 18px 22px;">
+        <p
+          style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); font-weight: 700;">
+          Avant de parler prix</p>
+        <p style="margin: 0 0 10px; color: var(--text); font-size: 0.95rem;">Combien tu as déjà dépensé en salles
+          inutilisées, vélos d'appart, abonnements qui dorment ? Combien de dimanches soirs à te dire « lundi je m'y
+          remets » ?</p>
+        <p style="margin: 0; color: var(--text-dim); font-size: 0.9rem;">Le vrai prix, c'est celui que tu paies depuis 2
+          ans — en salles, en énergie, en dimanches soirs gâchés. <strong style="color: var(--text);">Le Cadre Sprint,
+            c'est le prix pour arrêter le compteur.</strong></p>
+      </div>
+    </div>
+
+    <!-- ================================================
+     PRICING + DUAL CTA
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section" id="pricing">
+      <!-- Value stack compact -->
+      <div class="card" style="margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;">
+        <p style="margin: 0 0 10px; font-weight: 700; color: var(--text); font-size: 0.92rem;">Récap pour 200 € :</p>
+        <div style="font-size: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>2 sessions 1:1 (60 + 45 min)</span><span class="gradient-text" style="font-weight: 700;">500 €</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>Script Conversation Couple</span><span class="gradient-text" style="font-weight: 700;">150 €</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>Template Notion + Protocole Anti-Chaos</span><span class="gradient-text" style="font-weight: 700;">200
+              €</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>Guide Calendar Sport</span><span class="gradient-text" style="font-weight: 700;">50 €</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>Follow-up J30 (visio 45 min)</span><span class="gradient-text" style="font-weight: 700;">300 €</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
+            <span>Accès Communauté Whatsapp</span><span class="gradient-text" style="font-weight: 700;">500
+              €</span>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; padding: 6px 0; margin-top: 4px; border-top: 2px solid var(--border);">
+            <span style="font-weight: 700; color: var(--text);">Valeur totale</span><span class="gradient-text"
+              style="font-weight: 800; font-size: 1.05rem;">1 700 €</span>
+          </div>
+          <div
+            style="display: flex; justify-content: space-between; padding: 4px 0 0; font-size: 0.78rem; color: var(--text-dim);">
+            <span>Ratio valeur/prix</span><span style="font-weight: 700; color: var(--green);">8,5 : 1</span>
+          </div>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Script Conversation Couple</span><span class="gradient-text" style="font-weight: 700;">150€</span>
+      </div>
+
+      <div class="price-block" style="margin-top: 0; border-radius: 0 0 16px 16px;">
+        <div class="price-val">200 €</div>
+        <div class="price-sub">Paiement unique. Pas d'abonnement.</div>
+      </div>
+
+      <div class="cta-group">
+        <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
+          data-umami-event="pricing-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
+        <a href="https://buy.stripe.com/00wcN56aIaCgdtA09kf7i04" class="cta-secondary"
+          data-umami-event="pricing-cta-stripe">Acheter maintenant — 200 €</a>
+        <span class="cta-note">= 3,85 €/semaine pour un système permanent. Une salle à 50 €/mois ne résout pas le
+          problème
+          d'organisation.</span>
+      </div>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     GARANTIE
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section" id="garantie">
+      <div class="guarantee">
+        <div class="guarantee-name">🛡️ Double garantie « Cadre ou Remboursé »</div>
+        <p>À J14, ton cadre ne protège pas 5h de sport/semaine ? <strong style="color: var(--text);">Remboursement
+            intégral sous 48h.</strong> Pas de formulaire. Un message. Un virement.</p>
+        <p style="margin: 8px 0 0; color: var(--text);"><strong style="color: var(--accent);">Et tu gardes les 6
+            bonus</strong> (valeur 1 200 €). Script Couple, Template Notion, Protocole Anti-Chaos, Guide Calendar,
+          Follow-up J30 et accès Communauté WhatsApp — tu ne rends rien.</p>
+        <p style="margin: 10px 0 0; font-size: 0.92rem; color: var(--text);"><em>Dans le pire scénario, tu repars
+            <strong style="color: var(--text);">gagnant de 1 200 €</strong>. Je prends 100% du risque.</em></p>
+        <p style="margin: 12px 0 0; font-size: 0.88rem; color: var(--text-dim);">100% de 8 clients ont tenu leur cadre à
+          J14. Je vis ce système depuis 3 ans. Avec 2 naissances, 2 déménagements et un changement de carrière.
+        </p>
+      </div>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     SCARCITY
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section">
+      <div class="urgency">
+        <p style="margin: 0 0 8px;"><strong>5 places max par mois</strong> : au-delà, je ne peux plus personnaliser.</p>
+        <p style="margin: 0;"><strong style="color: var(--accent);">Il reste 3 places pour avril.</strong> Après → liste
+          d'attente mai.</p>
+      </div>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     FAQ — les 5 objections des calls
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section" id="faq">
+      <h2>Questions fréquentes</h2>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi exactement le Sprint ?</div>
+        <div class="faq-a">
+          <p>14 jours. 2 sessions visio + check-in J7 + 6 bonus. À J14, tu as un système validé par 2 semaines de test
+            réel. Pas un plan d'entraînement — un cadre d'organisation.</p>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Template Notion + Protocole Anti-Chaos</span><span class="gradient-text"
-            style="font-weight: 700;">200€</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Et si mon planning saute dès la semaine
+          1
+          ?</div>
+        <div class="faq-a">
+          <p>C'est prévu. Le système intègre des plans B pour chaque créneau. Mathieu, semaine 1 : son fils tombe malade
+            →
+            il bascule sur son créneau de secours, sans renégociation.</p>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Guide Google Calendar Sport</span><span class="gradient-text" style="font-weight: 700;">50€</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ma femme va réagir comment ?</div>
+        <div class="faq-a">
+          <p>Le Sprint inclut un script mot-pour-mot pour poser un accord sport-famille en 20 min. Pas de thérapie — un
+            cadre clair. Le sport qui tient, c'est celui qui a été décidé ensemble.</p>
         </div>
-        <div
-          style="display: flex; justify-content: space-between; padding: 8px 0; margin-top: 4px; border-top: 2px solid var(--border);">
-          <span style="font-weight: 700; color: var(--text);">Valeur totale</span><span class="gradient-text"
-            style="font-weight: 800; font-size: 1.05rem;">900€</span>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas du coaching de vie ?</div>
+        <div class="faq-a">
+          <p>Non. Zéro méditation, zéro journaling. De l'ingénierie appliquée à ta vie perso. Le livrable : ton Google
+            Calendar configuré — pas un PDF de développement personnel.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">14 jours, c'est assez ?</div>
+        <div class="faq-a">
+          <p>Le Sprint construit un cadre testé, pas un changement de vie. Le cadre reste après — c'est ton système. Et
+            si
+            à J14 il ne protège pas 4h/semaine, remboursement intégral.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je peux m'organiser seul, non ?</div>
+        <div class="faq-a">
+          <p>Depuis combien de temps tu essaies ? Ça tient 1-2 semaines, puis un imprévu → retour à zéro. Un système
+            solo
+            n'intègre ni les plans B, ni la dimension couple, ni la résistance aux imprévus.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas le bon moment</div>
+        <div class="faq-a">
+          <p>2h30 de session sur 14 jours. Format conçu pour des agendas de cadres tech. Et si tu attends « le bon
+            moment
+            » — ça fait combien de dimanches soirs que tu te dis « lundi, je m'y remets » ?</p>
         </div>
       </div>
     </div>
 
-    <div class="price-block" style="margin-top: 0; border-radius: 0 0 16px 16px;">
-      <div class="price-old">500€</div>
-      <div class="price-val">200€</div>
-      <div class="price-sub">Tarif Fondateur — pour les 10 premiers clients uniquement<br>Paiement unique. Pas
-        d'abonnement.</div>
+    <div class="separator">
+      <div class="separator-line"></div>
     </div>
 
-    <!-- Témoignage près du prix (justification) -->
-    <div class="quote">
-      <p>« Je ne suis pas trop du genre à aller chercher l'aide à l'extérieur. Mais là, je sens bien que tout seul, je
-        ne m'en sors plus. »</p>
-      <span class="attr">Mathieu D., manager tech, en couple, 2 enfants</span>
-    </div>
-
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener" class="cta-primary"
-        data-umami-event="pricing-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
-      <span class="cta-note">L'audit est gratuit et sans engagement. Si le Sprint n'est pas fait pour toi, je te
-        le dis. Tu repars avec 3 actions concrètes</span>
-      <a href="https://buy.stripe.com/00wcN56aIaCgdtA09kf7i04" target="_blank" rel="noopener" class="cta-secondary"
-        data-umami-event="pricing-cta-stripe">Acheter maintenant (200€)</a>
-
-    </div>
-
-    <div class="card" style="margin-top: 16px;">
-      <p style="margin: 0 0 12px; font-size: 0.9rem;"><strong style="color: var(--text);">Le calcul :</strong></p>
-      <p style="margin: 0 0 8px; font-size: 0.9rem;">• 200€ ÷ 52 semaines dans l'année = <strong
-          style="color: var(--accent);">3,85 €/semaine</strong> pour un système permanent.</p>
-      <p style="margin: 0 0 8px; font-size: 0.9rem;">• Une salle de sport à 50 €/mois ne résout pas le problème
-        d'organisation. Un coach sportif à 60 €/session ne touche pas à ta semaine.</p>
-      <p style="margin: 0; font-size: 0.9rem;">• Chaque semaine sans cadre, c'est 5h de sport en moins, de la
-        frustration en plus, et un cercle vicieux qui se renforce. <strong style="color: var(--text);">Tu as déjà « payé
-          » le statu quo pendant combien de mois ?</strong></p>
-    </div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     GARANTIE
+    <!-- ================================================
+     QUI SUIS-JE — Bio déplacée en bas
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="garantie">
-    <div class="guarantee">
-      <div class="guarantee-name">🛡️ La Garantie « Cadre ou Remboursé »</div>
-      <p>Si à J14 tu n'as pas un cadre testé qui protège au moins 4h de sport par semaine, je te rembourse
-        intégralement. 200€. Sur ton compte. Sans négociation.</p>
-      <p><strong style="color: var(--text);">Comment ça marche concrètement :</strong></p>
-      <p style="margin-bottom: 8px;">1. Tu fais les 2 sessions et tu testes le cadre pendant 14 jours.<br>
-        2. À J14, ton cadre ne protège pas 4h/semaine ? Tu m'envoies un message.<br>
-        3. Remboursement intégral sous 48h. Pas de formulaire. Pas de questions. Un virement.</p>
-      <p style="margin: 0;">Je prends ce risque parce que le système marche — 100% de mes clients ont tenu leur cadre à
-        J14. Et je le vis moi-même depuis 3 ans, à travers 2 naissances, un déménagement et un changement de carrière.
+    <div class="spacer-sm"></div>
+    <div class="section" id="qui">
+      <h2>Qui suis-je</h2>
+
+      <p><strong><a href="https://www.linkedin.com/in/florian-marin/" class="link">Florian Marin</a>.</strong> 37 ans. Père de 2 enfants (5 et 3 ans). 15 ans dans la tech (OCTO, Tiime,
+        Aircall, Teads). Burnout en 2019. Le sport a été le premier à sauter.</p>
+
+      <!-- Employer logo bar -->
+      <div
+        style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 16px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <span
+          style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">OCTO
+          Technology</span>
+        <span
+          style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Tiime</span>
+        <span
+          style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Aircall</span>
+        <span
+          style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Teads</span>
+
+      </div>
+
+      <p>J'ai reconstruit en posant un cadre, pas en trouvant la motivation. Ce cadre tient depuis 3 ans, à travers 2
+        naissances, un déménagement et un lancement d'entreprise solo.</p>
+
+      <p>Aujourd'hui : <strong style="color: var(--accent);">9h de sport/semaine. 40min11 au 10km.</strong> Je cuisine
+        tous les soirs, je dépose mes fils à l'école. <strong>Je construis des systèmes qui tiennent.</strong></p>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- ================================================
+     CTA FINAL
+     ================================================ -->
+    <div class="spacer-sm"></div>
+    <div class="section" id="cta-final">
+      <h2>Prochaine étape</h2>
+
+      <div class="cta-group">
+        <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
+          data-umami-event="final-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
+        <a href="https://buy.stripe.com/00wcN56aIaCgdtA09kf7i04" class="cta-secondary"
+          data-umami-event="final-cta-stripe">Acheter maintenant — 200 €</a>
+        <span class="cta-note">Pas de pitch. On regarde ta situation. Si c'est pas pour toi, je te le dis.</span>
+      </div>
+
+      <p style="text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--text-dim);">
+        Une question ? <a href="https://bit.ly/4dwpmlD" style="color: var(--accent); text-decoration: underline;"
+          data-umami-event="whatsapp-click">Écris-moi sur WhatsApp</a>
       </p>
     </div>
 
-    <!-- Témoignage après la garantie (preuve que c'est réel) -->
-    <div class="quote">
-      <p>« C'est requis pour ma santé et pour la santé des gens autour de moi. »</p>
-      <span class="attr">Baptiste, Engineering Manager, 2 enfants</span>
+    <div class="separator">
+      <div class="separator-line"></div>
     </div>
 
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener" class="cta-primary"
-        data-umami-event="post-guarantee-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
-    </div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     SCARCITY
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section">
-    <div class="urgency">
-      <p><strong>Places limitées.</strong> J'accompagne maximum 5 nouveaux clients par mois. Le calcul : 2h30 de
-        sessions 1:1 par client + le check-in + le suivi = ~4h par client. 5 clients × 4h = 20h/mois dédiées au
-        coaching. Au-delà, je ne peux plus personnaliser. Alors je refuse.</p>
-      <p><strong style="color: var(--accent);">Il reste 4 places pour Avril.</strong> Si les places sont prises, tu
-        seras sur liste d'attente pour Mai.</p>
-      <p style="margin: 0;"><strong>Bonus early bird :</strong> les 2 premiers inscrits reçoivent un appel de suivi à
-        J30 (30 min) pour vérifier que le cadre tient dans la durée.</p>
-    </div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     FAQ — les 5 objections des calls
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="faq">
-    <h2>Questions fréquentes</h2>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi exactement le Sprint ?</div>
-      <div class="faq-a">
-        <p>Un programme de 14 jours pour construire et tester un système qui protège ton sport. 2 sessions en visio (60
-          min + 45 min), un check-in à J7, et 4 bonus (Script Conversation Couple, Template Notion, Protocole
-          Anti-Chaos, Guide Calendar). À J14, tu as un système validé par 2 semaines de test réel. Ce n'est pas un plan
-          d'entraînement — c'est un cadre d'organisation.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Et si mon planning saute dès la semaine 1
-        ?</div>
-      <div class="faq-a">
-        <p>C'est prévu. 80% des pères que j'ai interviewés mentionnent les imprévus enfants comme premier destructeur de
-          leur sport. Le système intègre des plans B pour chaque créneau. Exemple concret : Mathieu, semaine 1, son fils
-          est tombée malade mardi — il a basculé sur son créneau de secours sans aucune renégociation. C'est le
-          Protocole Anti-Chaos en action.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ma femme va réagir comment ?</div>
-      <div class="faq-a">
-        <p>63% des pères que j'ai interviewés décrivent une forme de pression conjugale autour du sport. Pas un conflit
-          ouvert, des regards, des soupirs, des remarques. Le Sprint inclut le Script Conversation Couple : un script
-          mot-pour-mot pour poser un accord sport-famille en 20 minutes. Pas de la thérapie, un cadre clair. Le sport
-          qui tient, c'est le sport qui a été décidé ensemble.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas du coaching de vie ?</div>
-      <div class="faq-a">
-        <p>Non. Pas de méditation, pas de journaling, pas de « travaille ton mindset ». C'est de l'ingénierie appliquée
-          à ta vie perso. Un problème d'organisation a toujours une solution structurelle. On analyse ta semaine réelle,
-          on identifie les blocages, on pose un cadre avec des créneaux fixes, des plans B et un accord famille. Le
-          livrable, c'est ton Google Calendar configuré — pas un PDF de développement personnel.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">14 jours, c'est assez ?</div>
-      <div class="faq-a">
-        <p>Le Sprint n'est pas un changement de vie, c'est un cadre testé. Mathieu est passé de 0 à 5h en 4 semaines.
-          Guillaume a tenu son plan malgré maladie, conflits au boulot et déplacements. Le cadre reste après le Sprint,
-          c'est ton système, il t'appartient. Et si à J14 tu n'as pas un cadre qui protège au moins 4h par semaine, je
-          te rembourse. Garanti.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je peux m'organiser seul, non ?</div>
-      <div class="faq-a">
-        <p>Bien sûr. La question c'est : depuis combien de temps tu essaies ? Sur les 33 pères que j'ai interviewés,
-          100% avaient essayé de se réorganiser seuls avant. Résultat moyen : ça tient 1 à 2 semaines, puis un imprévu
-          arrive, et c'est retour à zéro. Le problème n'est pas la discipline, c'est qu'un système d'une personne
-          n'intègre ni les plans B, ni la dimension couple, ni la résistance aux imprévus. Mathieu D. l'a résumé : « Je
-          ne suis pas du genre à chercher de l'aide. Mais là, tout seul, je ne m'en sors plus. »</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas le bon moment, j'ai trop de
-        choses en ce moment</div>
-      <div class="faq-a">
-        <p>C'est justement quand ta semaine est la plus chargée que le cadre a le plus de valeur. Le Sprint ne te
-          demande pas de libérer du temps, il t'aide à protéger celui que tu as déjà. 2h30 de session sur 14 jours.
-          Aucun de mes clients n'a annulé une session pour surcharge, parce que le format est conçu pour des agendas de
-          cadres tech. Et si tu attends « le bon moment », la vérité c'est qu'il ne viendra pas. Ça fait combien de
-          dimanches soirs que tu te dis « lundi, je m'y remets » ?</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     QUI SUIS-JE — Bio déplacée en bas
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="qui">
-    <h2>Qui suis-je</h2>
-
-    <div class="profile-photo">
-      <img src="assets/profile.png" alt="Florian Marin">
-    </div>
-
-    <p><strong>Florian Marin.</strong> 37 ans. Marié à Audrey (kinésithérapeute du sport). Père de Gaspard (5 ans) et
-      Nathan (3 ans).</p>
-
-    <p>15 ans dans la tech. Software engineer chez OCTO Technology, CTO chez Tiime, Engineering Manager chez Aircall,
-      Senior Engineering Manager chez Teads. J'ai managé des équipes, livré des projets, fait des conférences. Et j'ai
-      fait un burnout chez Aircall en 2019.</p>
-
-    <!-- Employer logo bar — authority signal -->
-    <div
-      style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin: 20px 0; padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-      <span
-        style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;">OCTO
-        Technology</span>
-      <span
-        style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;">Tiime</span>
-      <span
-        style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;">Aircall</span>
-      <span
-        style="font-size: 0.78rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; border: 1px solid var(--border); border-radius: 6px;">Teads</span>
-    </div>
-
-    <p>Le sport a été le premier à sauter. J'avais fait 15 ans de volleyball (des Cadets à la Nationale 1), je m'étais
-      mis au triathlon en arrivant chez Aircall. Et quand le burnout est arrivé, tout s'est écroulé : le sport d'abord,
-      puis l'énergie, puis la lucidité. À la même période, ma mère a eu un cancer de la peau.</p>
-
-    <p>Quand j'ai reconstruit, j'ai compris que le problème n'était pas le temps. C'était l'absence de cadre. J'ai
-      construit le mien. Pas à coup de motivation — à coup de système.</p>
-
-    <p>Ce cadre tient depuis 3 ans. À travers un déménagement (Paris → Montpellier), 2 naissances, un changement de job,
-      et un lancement d'entreprise en solo où j'ai quitté un salaire de 5k€/mois.</p>
-
-    <p>Aujourd'hui : <strong style="color: var(--accent);">9h de sport par semaine. 40min11 au 10km.</strong> Je cuisine
-      tous les soirs. Je dépose mes fils à l'école le matin.</p>
-
-    <p>Ce n'est pas de la chance. C'est un cadre.</p>
-
-    <p><strong>Je ne vends pas de la motivation. Je construis des systèmes qui tiennent.</strong></p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
-     CTA FINAL
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="cta-final">
-    <h2>Prochaine étape</h2>
-
-    <p><strong>Option 1 : Diagnostic gratuit (30 min).</strong> On analyse ta situation : ton agenda, tes
-      contraintes,
-      tes blocages. On vérifie ensemble si le Sprint est pertinent pour toi. Si ce n'est pas le cas, je te le dis. Tu
-      repars avec 3 actions concrètes</p>
-
-    <p><strong>Option 2 : Tu sais déjà que c'est pour toi.</strong> Tu peux acheter directement et on se cale la
-      première session cette semaine.</p>
-
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener" class="cta-primary"
-        data-umami-event="final-cta-diagnostic">Réserve ton diagnostic gratuit (30 min)</a>
-      <span class="cta-note">Juste une conversation entre deux personnes qui prennent le sport au
-        sérieux.</span>
-      <a href="https://buy.stripe.com/00wcN56aIaCgdtA09kf7i04" target="_blank" rel="noopener" class="cta-secondary"
-        data-umami-event="final-cta-stripe">Acheter maintenant (200€)</a>
-    </div>
-
-    <!-- WhatsApp fallback -->
-    <p style="text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--text-dim);">
-      Une question avant de te décider ? <a href="https://bit.ly/4dwpmlD" target="_blank" rel="noopener"
-        style="color: var(--accent); text-decoration: underline;" data-umami-event="whatsapp-click">Écris-moi sur
-        WhatsApp</a>
-    </p>
-  </div>
-
-  <div class="separator">
-    <div class="separator-line"></div>
-  </div>
-
-  <!-- ================================================
+    <!-- ================================================
      LEAD MAGNET — Capture email pour visiteurs froids
      ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="lead-magnet">
-    <div class="card" style="text-align: center; border: 1px solid var(--accent-glow-strong);">
-      <p
-        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; margin-bottom: 12px;">
-        Pas encore prêt ? Commence ici.</p>
-      <h3 style="margin-bottom: 8px;">Ton système sport va-t-il tenir ? Fais le diagnostic en 3 min.</h3>
-      <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto 20px;">7 questions sur ta semaine réelle. Tu reçois
-        ton score de vulnérabilité + les 2 leviers prioritaires à activer — directement dans ta boîte. Basé sur 33
-        interviews terrain.</p>
-      <a href="https://tally.so/r/68OLD5" class="cta-primary" style="max-width: 360px;" data-umami-event="lead-magnet-cta">Faire mon
-        auto diagnostic</a>
-      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam.
-        Un email avec ton résultat. C'est tout.</p>
+    <div class="spacer-sm"></div>
+    <div class="section" id="lead-magnet">
+      <div class="card" style="text-align: center; border: 1px solid var(--accent-glow-strong);">
+        <p
+          style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; margin-bottom: 12px;">
+          Pas encore prêt ? Commence ici.</p>
+        <h3 style="margin-bottom: 8px;">Ton système sport va-t-il tenir ?</h3>
+        <div style="font-size: 0.88rem; max-width: 480px; margin: 0 auto 16px;">
+          <p style="margin: 0;">7 questions. 3 min.</p>
+          <p>Tu reçois ton score +
+            les 2 leviers prioritaires à activer.</p>
+        </div>
+        <a href="https://tally.so/r/68OLD5" class="cta-primary" style="max-width: 360px;"
+          data-umami-event="lead-magnet-cta">Passer le test</a>
+        <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam.
+          Un email avec ton résultat. C'est tout.</p>
+      </div>
     </div>
-  </div>
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
 
-  <!-- ================================================
+    <!-- ================================================
      CLOSING LINE
      ================================================ -->
-  <div class="section" style="text-align: center;">
-    <p style="color: var(--text-dim); font-style: italic; margin: 0;">Le sport ne disparaît pas par manque de
-      motivation. Il disparaît faute de cadre.</p>
-  </div>
+    <div class="section" style="text-align: center;">
+      <p style="color: var(--text-dim); font-style: italic; margin: 0;">Le sport ne disparaît pas par manque de
+        motivation. Il disparaît faute de cadre.</p>
+    </div>
 
-  <!-- ================================================
+    <!-- ================================================
      FOOTER
      ================================================ -->
-  <div class="footer">
-    <p><strong>Florian Marin</strong> · Ingénieur · Papa · Triathlète · Montpellier</p>
-    <p style="margin-top: 8px;">Basé sur +30 interviews terrain · +500 conversations LinkedIn · 100%
-      des clients ont maintenu leur cadre à J14</p>
-    <p style="margin-top: 12px;"><a href="https://substack.com/@lecadrenotes"
-        style="color: var(--accent); text-decoration: none; font-weight: 600;">Newsletter Le Cadre</a> : je partage mes
-      apprentissages et systèmes chaque semaine (mardi 8h)</p>
-  </div>
+    <div class="footer">
+      <p><a href="https://www.linkedin.com/in/florian-marin/" style="text-decoration: none;">Florian Marin</a> · Montpellier · <a href="https://florianmarin.me">florianmarin.me</a></p>
+      <p style="margin-top: 8px;">100% de 8 clients ont maintenu leur cadre à J14</p>
+      <p style="margin-top: 12px;"><a href="https://substack.com/@lecadrenotes"
+          style="color: var(--accent); text-decoration: none; font-weight: 600;">Le Cadre Notes</a> — je partage mes
+        apprentissages chaque semaine sur Substack</p>
+    </div>
 
-  <!-- ================================================
+    <!-- ================================================
      STICKY MOBILE CTA
      ================================================ -->
-  <div class="sticky-cta">
-    <a href="https://calendly.com/florian-marin/audit-triangle" target="_blank" rel="noopener"
-      data-umami-event="sticky-cta-diagnostic">Réserve ton
-      diagnostic gratuit</a>
-  </div>
+    <div class="sticky-cta">
+      <a href="https://calendly.com/florian-marin/audit-triangle" data-umami-event="sticky-cta-diagnostic">Réserve ton
+        diagnostic gratuit/a>
+    </div>
 
 </body>
 
