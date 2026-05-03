@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les 5 pièges du Cadre — Florian Marin</title>
+  <meta name="description"
+    content="36 pères tech interviewés. 0 a tenu seul + de 3 semaines. Les 5 mécaniques cognitives qui font sauter le sport, une par pilier du Cadre. Florian Marin.">
+  <meta name="color-scheme" content="light">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #FF7A00;
+      --accent-light: #FFD84D;
+      --accent-soft: #FFF3E6;
+      --ink: #1C1C1C;
+      --ink-2: #2B2B2B;
+      --ink-3: #555555;
+      --ink-4: #888888;
+      --line: #EAEAEA;
+      --line-2: #DDDDDD;
+      --card: #F7F7F7;
+      --card-2: #FAFAFA;
+      --page: #FFFFFF;
+      --bg: #ECECEC;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      color: var(--ink-2);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ================== PAGE LAYOUT ================== */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 26mm 22mm 22mm 22mm;
+      margin: 14mm auto;
+      background: var(--page);
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08), 0 10px 40px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    .page-number {
+      position: absolute;
+      bottom: 14mm;
+      left: 22mm;
+      right: 22mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+    }
+
+    .page-number .dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 8px 2px 8px;
+    }
+
+    /* ================== TYPOGRAPHY ================== */
+    .eyebrow {
+      display: inline-block;
+      font-size: 9.5pt;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 3px;
+    }
+
+    h1.page-title {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 28pt;
+      line-height: 1.08;
+      letter-spacing: -0.8px;
+      color: var(--ink);
+      margin: 0 0 22px 0;
+    }
+
+    h1.page-title .accent { color: var(--accent); }
+
+    h2.chapter-title {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 22pt;
+      line-height: 1.12;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+      margin: 0 0 16px 0;
+    }
+
+    h3.sub-title {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 700;
+      font-size: 14pt;
+      line-height: 1.25;
+      color: var(--ink);
+      margin: 26px 0 10px 0;
+    }
+
+    p {
+      font-size: 10.5pt;
+      line-height: 1.62;
+      color: var(--ink-2);
+      margin: 0 0 11px 0;
+    }
+
+    p.lead {
+      font-size: 12pt;
+      line-height: 1.55;
+      color: var(--ink-2);
+      margin-bottom: 18px;
+    }
+
+    strong { font-weight: 700; color: var(--ink); }
+    em { font-style: italic; }
+
+    /* ================== QUOTE ================== */
+    blockquote.quote {
+      margin: 0 0 24px 0;
+      padding: 16px 20px 16px 22px;
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      font-family: "Montserrat", sans-serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 12pt;
+      line-height: 1.5;
+      color: var(--ink);
+      border-radius: 2px 6px 6px 2px;
+    }
+
+    cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      font-size: 9.5pt;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      color: var(--ink-4);
+    }
+
+    cite::before {
+      content: "— ";
+      color: var(--accent);
+    }
+
+    /* ================== COVER ================== */
+    .cover {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 297mm;
+    }
+
+    .cover-top { padding: 28mm 22mm 0 22mm; }
+
+    .cover-brand {
+      font-size: 11.5pt;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+    }
+
+    .cover-brand .accent { color: var(--accent); }
+
+    .cover-middle {
+      padding: 0 22mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cover-label {
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .cover-title {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 46pt;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      color: var(--ink);
+      margin: 0 0 32px 0;
+      text-transform: uppercase;
+    }
+
+    .cover-title .br { display: block; }
+    .cover-title .accent { color: var(--accent); }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      line-height: 1.35;
+      font-weight: 500;
+      color: var(--ink-3);
+      max-width: 140mm;
+      font-style: italic;
+    }
+
+    .cover-rule {
+      width: 60mm;
+      height: 3px;
+      background: var(--accent);
+      margin: 36px 0 0 0;
+    }
+
+    .cover-bottom {
+      padding: 0 22mm 28mm 22mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .cover-author {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--ink);
+    }
+
+    .cover-author .role {
+      display: block;
+      font-weight: 500;
+      color: var(--ink-4);
+      font-size: 9.5pt;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .cover-edition {
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      text-align: right;
+    }
+
+    /* ================== STATS ================== */
+    .stat-grid {
+      margin: 26px 0 22px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat-num {
+      font-family: "Montserrat", sans-serif;
+      font-weight: 800;
+      font-size: 54pt;
+      line-height: 0.9;
+      letter-spacing: -2.5px;
+      color: var(--ink);
+      min-width: 145px;
+      flex-shrink: 0;
+    }
+
+    .stat-num.accent { color: var(--accent); }
+
+    .stat-text {
+      padding-top: 8px;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+
+    .stat-text strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 11pt;
+    }
+
+    .stat-highlight {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 14px 20px;
+      margin: 18px 0 0 0;
+      border-radius: 2px 6px 6px 2px;
+    }
+
+    .stat-highlight .big {
+      font-weight: 800;
+      font-size: 13pt;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin: 0 0 6px 0;
+    }
+
+    .stat-highlight p {
+      font-size: 9.5pt;
+      color: var(--ink-3);
+      margin: 0;
+    }
+
+    /* ================== PIÈGE HEADER ================== */
+    .piege-pilier-label {
+      font-size: 9.5pt;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .piege-pilier-label::before {
+      content: "";
+      display: inline-block;
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 3px;
+    }
+
+    /* ================== SIGNAL LIST ================== */
+    .signal-block {
+      margin: 18px 0 18px 0;
+      padding: 16px 20px;
+      background: var(--card-2);
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    .signal-label {
+      display: block;
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .signal-list {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .signal-list li {
+      padding: 6px 0 6px 26px;
+      position: relative;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      color: var(--ink-2);
+    }
+
+    .signal-list li::before {
+      content: "▸";
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    /* ================== INVISIBLE BOX ================== */
+    .invisible-box {
+      margin: 16px 0 0 0;
+      padding: 14px 20px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      border-radius: 2px 6px 6px 2px;
+    }
+
+    .invisible-box .label {
+      display: block;
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .invisible-box p {
+      margin: 0;
+      font-size: 10.5pt;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ================== CTA / OPTIONS ================== */
+    .declic-block {
+      margin: 18px 0 22px 0;
+      padding: 18px 22px;
+      background: var(--card);
+      border-radius: 8px;
+    }
+
+    .declic-block h4 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 8px 0;
+      letter-spacing: -0.2px;
+    }
+
+    .declic-block h4::before {
+      content: "▸ ";
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .declic-block p {
+      margin: 0;
+      font-size: 10pt;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+
+    .option-block {
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-2);
+    }
+
+    .option-block.highlight {
+      background: var(--page);
+      border: 2px solid var(--accent);
+      box-shadow: 0 2px 14px rgba(255, 122, 0, 0.08);
+    }
+
+    .option-label {
+      display: block;
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .option-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 8px 0;
+      line-height: 1.25;
+    }
+
+    .option-block p {
+      font-size: 9.5pt;
+      line-height: 1.5;
+      color: var(--ink-3);
+      margin: 0;
+    }
+
+    .option-block p + p {
+      margin-top: 6px;
+    }
+
+    .option-cta {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 18px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+      font-size: 10pt;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    .closer {
+      margin-top: 22px;
+      padding: 22px 24px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .closer p {
+      font-family: "Montserrat", sans-serif;
+      font-size: 12pt;
+      font-weight: 700;
+      line-height: 1.35;
+      color: #fff;
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .closer p .accent {
+      color: var(--accent);
+    }
+
+    /* ================== INTRO PARAGRAPHS ================== */
+    .verbatim-row {
+      margin: 12px 0 18px 0;
+    }
+
+    @media print {
+      body { background: white; }
+      .page {
+        margin: 0 auto;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============== PAGE 1 — COVER ============== -->
+  <section class="page cover">
+    <div class="cover-top">
+      <div class="cover-brand">Florian Marin · Le <span class="accent">Cadre</span></div>
+    </div>
+
+    <div class="cover-middle">
+      <div class="cover-label">Diagnostic terrain · Édition 1 · Mai 2026</div>
+      <h1 class="cover-title">
+        Les 5 pièges <span class="br"></span>
+        du <span class="accent">Cadre</span>.
+      </h1>
+      <p class="cover-subtitle">
+        Pourquoi 35 pères tech sur 36 ont décroché de leur sport — et le piège qui te coûte le plus.
+      </p>
+      <div class="cover-rule"></div>
+    </div>
+
+    <div class="cover-bottom">
+      <div class="cover-author">
+        Florian Marin
+        <span class="role">Le Cadre · ingénieur de vie</span>
+      </div>
+      <div class="cover-edition">
+        36 entretiens<br>
+        oct 2025 — avr 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 2 — POURQUOI / LOI DU TÉMOIN ============== -->
+  <section class="page">
+    <span class="eyebrow">Pourquoi ce rapport existe</span>
+    <h1 class="page-title">36 pères. 0 a tenu seul plus de <span class="accent">3 semaines.</span></h1>
+
+    <p class="lead">
+      Burn-out en 2019. J'ai mis 5 ans à reconstruire un système qui tient — sport, famille, carrière. Pour valider ce que j'avais bâti chez moi, j'ai conduit 36 entretiens entre octobre 2025 et avril 2026 : engineering managers, CTOs, founders, principal engineers, devs senior. Tous avec au moins un enfant en bas âge. Tous, à un moment, ont essayé de garder une routine sport stable.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-row">
+        <div class="stat-num accent">36</div>
+        <div class="stat-text">
+          <strong>Pères tech interviewés.</strong>
+          Tous avec au moins un enfant en bas âge. Tous engagés dans des fonctions à charge mentale élevée.
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num">0</div>
+        <div class="stat-text">
+          <strong>N'a tenu seul plus de 3 semaines.</strong>
+          Aucun, sur 36 entretiens. Le pattern est mécanique. Ce n'est pas une question de discipline ou de temps : les deux jouent à la marge.
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num accent">5</div>
+        <div class="stat-text">
+          <strong>Mécaniques cognitives identifiées.</strong>
+          Toujours les mêmes. Une par pilier d'un Cadre qui tient. Chacune ressemble à du bon sens — c'est ce qui la rend invisible.
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">La Loi du Témoin.</h3>
+    <p>
+      Tout ce qui tient dans ta semaine a un point commun : un engagement envers quelqu'un d'autre. La réunion client, le 1:1 avec ton N+1, le dîner de famille, le standup de 10h. Ces choses ne sautent pas parce qu'elles sont importantes — <strong>elles ne sautent pas parce que quelqu'un t'attend</strong>.
+    </p>
+    <p>
+      Sans témoin, pas de coût social à sauter. Sans coût social, l'agenda te rend l'heure. Le sport, lui, n'appartient qu'à toi. Donc il est disponible. Et donc il saute. C'est mécanique, pas de la paresse. Un Cadre, c'est l'opération inverse : donner au sport la même existence concrète que le reste. Cinq piliers, cinq pièges. Si tu te reconnais dans <strong>2 pièges ou plus</strong>, tu fais partie des 35 sur 36.
+    </p>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>02 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 3 — PILIER 1 / DETTE PUBLIQUE ============== -->
+  <section class="page">
+    <span class="piege-pilier-label">Pilier 1 · Vision</span>
+    <h1 class="page-title">Le piège de la <span class="accent">dette publique.</span></h1>
+
+    <blockquote class="quote">
+      Je m'inscris à une course puis je discute avec ma femme.
+      <cite>Verbatim corpus · 2 occurrences directes, 11 cas indirects</cite>
+    </blockquote>
+
+    <p>
+      Ce verbatim est le plus frappant du corpus. L'inversion totale : l'engagement public <strong>précède</strong> la négociation. La dette est contractée avant que l'accord soit obtenu.
+    </p>
+    <p>
+      Pourquoi ? Parce que tu n'as pas de <strong>vision personnelle</strong> du sport. Tu as des <strong>dettes ponctuelles</strong>. Tu ne t'autorises pas le sport pour toi — il te faut une dette externe pour légitimer le créneau. Le dossard, le plan d'entraînement payant, l'app premium, le coach. Tu paies d'abord, ça t'oblige. Et tu négocies après — ou pas du tout.
+    </p>
+
+    <div class="signal-block">
+      <span class="signal-label">Le signal d'alerte — tu fais ça si</span>
+      <ul class="signal-list">
+        <li>Tu t'es inscrit à au moins une course dans l'année passée "pour te motiver"</li>
+        <li>Tu as souscrit à une app fitness ou un coach payant en te disant "le fait d'avoir payé va m'obliger"</li>
+        <li>Tu annonces tes objectifs sportifs publiquement avant d'avoir bloqué les créneaux</li>
+        <li>Tu dois "rentabiliser" un investissement sportif (matos, dossard) plus que tu n'as envie de l'activité</li>
+      </ul>
+    </div>
+
+    <div class="invisible-box">
+      <span class="label">Pourquoi c'est invisible</span>
+      <p>
+        Parce que ça produit du résultat à court terme. La dette publique fonctionne — mais elle a un coût caché : couple (ta partenaire qui découvre l'engagement après-coup), sommeil (les longues sorties qui empiètent), charge mentale (tu vis la course comme une obligation). Quand la course est passée, la motivation s'écroule. La dette était la seule structure.
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>03 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 4 — PILIER 2 / NÉGOCIATION DU JOUR J ============== -->
+  <section class="page">
+    <span class="piege-pilier-label">Pilier 2 · Agenda</span>
+    <h1 class="page-title">Le piège de la <span class="accent">négociation du jour J.</span></h1>
+
+    <blockquote class="quote">
+      On verra demain matin comment je me sens.
+      <cite>Verbatim récurrent · 22 cas sur 36</cite>
+    </blockquote>
+
+    <p>
+      Tu ne décides pas de ne pas faire de sport. Tu décides chaque matin <strong>de ne pas y aller aujourd'hui</strong>. C'est très différent. Sans créneau bunkerisé à l'avance, tu te réveilles et tu entres en négociation avec toi-même au pire moment — fatigue, début de journée, raisons faciles. Le sport est soumis à un vote quotidien qu'il perd 4 fois sur 5.
+    </p>
+    <p>
+      Trois sous-pièges s'enchaînent. <strong>L'agenda partagé qui ne suffit jamais</strong> — tu mets ton sport dans Google Cal en pensant que ça suffit. <em>"Ça tient une semaine. Après, tu prends des remarques."</em> L'agenda rend visible le conflit, il ne le résout pas. <strong>Le créneau-piège du midi</strong> — quand tout s'écroule, il reste le midi. C'est un réduit, pas un système. Un meeting qui dérape, et le créneau saute. Sans rattrapage. <strong>La discipline militaire qui craque</strong> — rigidité confondue avec structure. Système tendu à 100%, aucune marge d'absorption. Premier imprévu : tout craque.
+    </p>
+
+    <div class="signal-block">
+      <span class="signal-label">Le signal d'alerte — tu fais ça si</span>
+      <ul class="signal-list">
+        <li>Tu décides chaque matin si tu vas au sport ou pas</li>
+        <li>Tu n'as qu'un seul créneau hebdo (généralement le midi) et tu l'appelles "ma routine"</li>
+        <li>Tu n'as pas de Plan B (créneau de rattrapage 48h) ni de Plan C (version 20 min à la maison)</li>
+        <li>Tu raccourcis ta séance dès qu'un meeting déborde et tu acceptes ça comme normal</li>
+      </ul>
+    </div>
+
+    <div class="invisible-box">
+      <span class="label">Pourquoi c'est invisible</span>
+      <p>
+        Parce que tu fais du sport. Tu coches la case. Mais 30 minutes raccourcies à 18, faites 2 fois par semaine au lieu de 4, ne produisent aucun bénéfice mesurable. Tu maintiens l'illusion d'une routine qui n'en est pas une. <strong>C'est un SPOF — un système à un seul point de défaillance.</strong>
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>04 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 5 — PILIER 3 / DISPONIBILITÉ FANTÔME ============== -->
+  <section class="page">
+    <span class="piege-pilier-label">Pilier 3 · Sommeil</span>
+    <h1 class="page-title">Le piège de la <span class="accent">disponibilité fantôme.</span></h1>
+
+    <blockquote class="quote">
+      Je ne travaille pas, hein, je check juste vite fait.
+      <cite>Verbatim récurrent dans les entretiens</cite>
+    </blockquote>
+
+    <p>
+      Tu ne travailles pas après 22h. Tu <strong>surveilles</strong>. Slack ouvert, laptop sur la table basse, un œil toutes les 15 minutes "juste au cas où". Ça te coûte zéro effort apparent — c'est exactement pour ça que tu ne vois pas le dégât.
+    </p>
+    <p>
+      Ce que tu perds : 45 minutes de sommeil réel (ton cerveau ne descend pas en mode récupération tant que le canal de vigilance est ouvert), un coucher qui dérive de 23h à minuit, un réveil à 7h au lieu de 6h qui écrase ton seul créneau sport du matin. La disponibilité fantôme ne te prend rien. Elle te prend tout.
+    </p>
+
+    <div class="signal-block">
+      <span class="signal-label">Le signal d'alerte — tu fais ça si</span>
+      <ul class="signal-list">
+        <li>Tu ouvres Slack après 22h "juste pour vérifier"</li>
+        <li>Tu gardes ton téléphone pro sur ta table de nuit</li>
+        <li>Tu te dis "je ne travaille pas, je check juste"</li>
+        <li>Tu te lèves entre 6h45 et 7h30 alors que tu visais 6h</li>
+        <li>Tu te sens "fatigué de fond" sans que rien d'objectif ne le justifie</li>
+      </ul>
+    </div>
+
+    <div class="invisible-box">
+      <span class="label">Pourquoi c'est invisible</span>
+      <p>
+        Ce n'est pas ta faute. Personne ne t'a appris à séparer "être disponible" de "être compétent". Au bureau, les deux sont fusionnés depuis le premier oncall de ta carrière. La vigilance silencieuse ressemble à du professionnalisme — c'est une forme d'évitement déguisée en vertu. Sans extinction des feux, aucun plan sport ne tient. C'est physiologique, pas une question de volonté.
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>05 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 6 — PILIER 4 / CUISINE-DÉCOMPRESSION ============== -->
+  <section class="page">
+    <span class="piege-pilier-label">Pilier 4 · Nutrition</span>
+    <h1 class="page-title">Le piège de la <span class="accent">cuisine-décompression.</span></h1>
+
+    <blockquote class="quote">
+      Quand je cuisine, j'oublie tout le reste.<br>
+      Le batch cooking, ça ne marche jamais. En théorie ça a l'air super, en pratique c'est un peu dur.
+      <cite>2 verbatims · interviews avril 2026</cite>
+    </blockquote>
+
+    <p>
+      Ce piège est le moins discuté du corpus. C'est aussi celui qui <strong>bouffe ton créneau sport quand tout le reste tient</strong>. Les pères tech ont un point commun avec leur métier : ils s'évadent dans une activité qui leur libère le cerveau. Pour beaucoup, c'est la cuisine.
+    </p>
+    <p>
+      Pas mauvais en soi — mais quand la cuisine devient le seul espace de décompression, elle déborde sur tout : sur le créneau sport du midi (avalé en 12 minutes pour cuisiner long le soir), sur le sommeil (couché à minuit après la vaisselle), sur la charge mentale (le "qu'est-ce qu'on mange ce soir" devient le single point of failure quotidien).
+    </p>
+
+    <div class="signal-block">
+      <span class="signal-label">Le signal d'alerte — tu fais ça si</span>
+      <ul class="signal-list">
+        <li>Tu te sens détendu quand tu cuisines, mais tu finis tard</li>
+        <li>Tu décides du repas du soir entre 18h et 19h chaque jour</li>
+        <li>Tu as essayé le batch cooking et ça n'a pas tenu</li>
+        <li>Tu fais les courses à plusieurs reprises dans la semaine</li>
+        <li>Tu bois ou tu grignotes pendant que tu cuisines (compensation invisible)</li>
+      </ul>
+    </div>
+
+    <div class="invisible-box">
+      <span class="label">Pourquoi c'est invisible</span>
+      <p>
+        Parce que cuisiner est socialement valorisé. Personne ne te dira que tu utilises la cuisine comme drogue de décompression. Tu ne le formules pas comme ça non plus — tu te dis "j'aime cuisiner pour ma famille". C'est vrai en partie. C'est aussi un piège. La cuisine non-systémisée érode ton sport par les marges.
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>06 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 7 — PILIER 5 / CULPABILITÉ FABRIQUÉE ============== -->
+  <section class="page">
+    <span class="piege-pilier-label">Pilier 5 · Couple</span>
+    <h1 class="page-title">Le piège de la <span class="accent">culpabilité fabriquée.</span></h1>
+
+    <blockquote class="quote">
+      Il est invivable quand il ne fait pas de sport. Je ne lui ai jamais rien reproché.
+      <cite>Claire, partenaire d'un interviewé</cite>
+    </blockquote>
+
+    <p>
+      Antoine est ingénieur chez un éditeur SaaS. Quatre enfants. Il faisait du vélo sérieusement avant les enfants, et il a tout lâché il y a deux ans. Quand je lui ai demandé pourquoi : <em>"Parce que ma femme m'en voulait de partir le samedi matin."</em>
+    </p>
+    <p>
+      Je lui ai posé deux questions. <strong>Elle te l'a dit explicitement ?</strong> Non. <strong>Tu lui as demandé ce qu'elle pensait, à froid, une fois ?</strong> Non plus. Alors on a appelé Claire ensemble. Sa réponse, ci-dessus. Antoine a passé deux ans à s'empêcher pour une raison qui n'existait pas dans la tête de la seule personne concernée.
+    </p>
+
+    <div class="signal-block">
+      <span class="signal-label">Le signal d'alerte — tu fais ça si</span>
+      <ul class="signal-list">
+        <li>Tu hésites à partir au sport "parce que tu sens que ça pèse"</li>
+        <li>Tu n'as jamais posé la question explicitement, à froid, à ta partenaire</li>
+        <li>Tu raccourcis ou annules pour anticiper une remarque qui n'est jamais venue</li>
+        <li>Tu vis dans une économie de dette ("je lui dois quelque chose à chaque fois que je pars")</li>
+        <li>Ta partenaire n'a pas, elle aussi, ses créneaux protégés explicites</li>
+      </ul>
+    </div>
+
+    <div class="invisible-box">
+      <span class="label">Pourquoi c'est invisible</span>
+      <p>
+        Parce que tu transformes une supposition en certitude, et tu appelles ça "de la considération". Le sport disparaît par évitement, pas par interdiction. <strong>56% des pères du corpus qui ont arrêté sont dans ce piège</strong> — et la grande majorité n'a jamais reçu de reproche explicite. Le piège ne se résout pas par plus de discipline. Il se résout par un accord explicite, écrit, réciproque — Le Pacte. Une fois posé, il tourne en fond.
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre</span>
+      <span>07 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+  <!-- ============== PAGE 8 — ET MAINTENANT / CTA ============== -->
+  <section class="page">
+    <span class="eyebrow">Et maintenant ?</span>
+    <h1 class="page-title">Tu peux décider du déclic <span class="accent">au lieu de l'attendre.</span></h1>
+
+    <p>
+      Si tu te reconnais dans <strong>2 pièges ou plus</strong>, tu fais partie des 35 sur 36. Toutes les solutions ponctuelles que tu testes — la nouvelle app, la nouvelle inscription, la nouvelle discipline — sont des aspirines sur 5 mécaniques systémiques. Ça soulage 3 semaines. Ça ne soigne rien.
+    </p>
+
+    <p>
+      Sur les 36, <strong>un seul cas n'a pas eu besoin d'un déclic médical pour basculer.</strong> Il avait fait une chose simple, tôt : il avait systémisé son sport <em>avant</em> d'avoir des enfants. Pour les 35 autres, le déclic a coûté un infarctus à 41 ans, un pacemaker à 37 ans, un burn-out (j'y suis passé en 2019), ou la honte du miroir un matin. Toujours médical, toujours trop tard.
+    </p>
+
+    <div class="option-block highlight">
+      <span class="option-label">Étape suivante · gratuite</span>
+      <p class="option-title">Le call de cadrage — 30 minutes.</p>
+      <p>
+        On regarde ensemble lequel de tes pièges dominants te coûte le plus, on définit à quoi ressemblerait un système installé chez toi, et tu décides ensuite si tu veux qu'on le construise.
+      </p>
+      <a class="option-cta" href="https://florianmarin.me">Réserver le call</a>
+    </div>
+
+    <div class="option-block">
+      <span class="option-label">Si tu veux aller plus loin</span>
+      <p class="option-title">Le Cadre Endurance — promotion fondateur.</p>
+      <p>
+        12 semaines pour installer chez toi le système qui résout les 5 pièges à la racine. Je ne fais pas de coaching et encore moins du développement personnel. Je fais de l'<strong>ingénierie de vie</strong> : architecture, software développé sur mesure, système qui tourne après moi (et continue de tourner sans moi).
+      </p>
+      <p>
+        <strong>4 places fondateur · 2 500 € HT</strong> (au lieu de 3 500 € HT après) · Deadline 30 mai 2026.
+      </p>
+    </div>
+
+    <div class="closer">
+      <p>
+        N'attends pas <span class="accent">ton déclic</span> pour comprendre.<br>
+        Tu peux décider du tien — maintenant.
+      </p>
+    </div>
+
+    <div class="page-number">
+      <span>Les 5 pièges du Cadre · Florian Marin</span>
+      <span>08 <span class="dot"></span> 08</span>
+    </div>
+  </section>
+
+</body>
+
+</html>

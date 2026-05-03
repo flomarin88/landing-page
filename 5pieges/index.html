@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les 5 pièges du Cadre - Florian Marin</title>
+  <meta name="description" content="36 pères tech interviewés. Aucun n'a tenu seul plus de 3 semaines. Voici les 5 mécaniques cognitives qui font sauter ton sport et le piège qui te coûte le plus, en 30 secondes.">
+  <meta name="color-scheme" content="light">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Les 5 pièges du Cadre">
+  <meta property="og:description" content="36 pères tech. 5 mécaniques cognitives. Le piège qui te coûte le plus, en 30 secondes.">
+  <meta property="og:url" content="https://florianmarin.me/5pieges">
+  <meta property="og:image" content="https://florianmarin.me/assets/5pieges.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Les 5 pièges du Cadre — étude qualitative sur 36 pères tech">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://florianmarin.me/assets/5pieges.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #FF7A00;
+      --accent-light: #FFD84D;
+      --accent-soft: #FFF3E6;
+      --ink: #1C1C1C;
+      --ink-2: #2B2B2B;
+      --ink-3: #555555;
+      --ink-4: #888888;
+      --line: #EAEAEA;
+      --line-2: #DDDDDD;
+      --card: #F7F7F7;
+      --card-2: #FAFAFA;
+      --page: #FFFFFF;
+      --bg: #ECECEC;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      color: var(--ink-2);
+      background: var(--page);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ================== TYPOGRAPHY ================== */
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 3px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: "Montserrat", sans-serif;
+      letter-spacing: -0.4px;
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.62;
+      color: var(--ink-2);
+      margin: 0 0 14px 0;
+    }
+
+    p.lead {
+      font-size: 19px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      margin-bottom: 22px;
+    }
+
+    strong {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    blockquote.quote {
+      margin: 0 0 26px 0;
+      padding: 18px 22px;
+      background: var(--card);
+      border-left: 4px solid var(--accent);
+      font-family: "Montserrat", sans-serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--ink);
+      border-radius: 2px 6px 6px 2px;
+    }
+
+    cite {
+      display: block;
+      margin-top: 12px;
+      font-style: normal;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      color: var(--ink-4);
+    }
+
+    cite::before {
+      content: "— ";
+      color: var(--accent);
+    }
+
+    /* ================== HERO / COVER ================== */
+    .hero {
+      background: var(--page);
+      padding: 56px 0 64px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-brand {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+
+    .hero-brand .accent {
+      color: var(--accent);
+    }
+
+    .hero-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-weight: 800;
+      font-size: 56px;
+      line-height: 0.98;
+      letter-spacing: -2px;
+      color: var(--ink);
+      margin: 0 0 22px 0;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--ink-3);
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    .hero-rule {
+      width: 80px;
+      height: 3px;
+      background: var(--accent);
+      margin: 0 0 30px 0;
+    }
+
+    .hero-meta {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+    }
+
+    .hero-meta span {
+      color: var(--accent);
+    }
+
+    /* ================== STATS HIGHLIGHT ================== */
+    section.stats {
+      padding: 56px 0 48px 0;
+      background: var(--page);
+    }
+
+    .stat-grid {
+      margin: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat-num {
+      font-weight: 800;
+      font-size: 76px;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      color: var(--ink);
+      min-width: 160px;
+      flex-shrink: 0;
+    }
+
+    .stat-num.accent {
+      color: var(--accent);
+    }
+
+    .stat-text {
+      padding-top: 6px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+
+    .stat-text strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 18px;
+    }
+
+    .stat-highlight {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 18px 22px;
+      margin: 26px 0 0 0;
+      border-radius: 2px 6px 6px 2px;
+    }
+
+    .stat-highlight .big {
+      font-weight: 800;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin: 0 0 6px 0;
+    }
+
+    .stat-highlight p {
+      font-size: 14px;
+      color: var(--ink-3);
+      margin: 0;
+    }
+
+    /* ================== METHOD INTRO ================== */
+    section.method {
+      padding: 48px 0 56px 0;
+      background: var(--card-2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    section.method h2 {
+      font-weight: 800;
+      font-size: 36px;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin: 0 0 22px 0;
+    }
+
+    section.method p {
+      font-size: 17px;
+      line-height: 1.62;
+    }
+
+    /* ================== INSTRUCTIONS ================== */
+    section.instructions {
+      padding: 56px 0 24px 0;
+      text-align: center;
+    }
+
+    section.instructions .eyebrow {
+      margin-bottom: 22px;
+    }
+
+    section.instructions h2 {
+      font-weight: 800;
+      font-size: 40px;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      color: var(--ink);
+      margin: 0 0 18px 0;
+    }
+
+    section.instructions p {
+      font-size: 17px;
+      max-width: 560px;
+      margin: 0 auto 18px auto;
+      color: var(--ink-3);
+    }
+
+    /* ================== PIÈGE / PILIER BLOCKS ================== */
+    .piege {
+      padding: 56px 0;
+      border-top: 1px solid var(--line);
+      background: var(--page);
+    }
+
+    .piege:nth-of-type(even) {
+      background: var(--card-2);
+    }
+
+    .piege-header {
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+      margin-bottom: 26px;
+    }
+
+    .piege-num {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--page);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: -0.5px;
+    }
+
+    .piege-body {
+      flex: 1;
+      padding-top: 6px;
+    }
+
+    .piege-pilier {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .piege-name {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+      letter-spacing: -0.8px;
+      margin: 0;
+    }
+
+    .piege-explain {
+      font-size: 16px;
+      line-height: 1.62;
+      color: var(--ink-2);
+      margin-bottom: 22px;
+    }
+
+    /* ================== CHECKBOX DIAGNOSTIC ================== */
+    .diag {
+      background: var(--page);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px 22px 16px 22px;
+      margin-top: 16px;
+    }
+
+    .piege:nth-of-type(even) .diag {
+      background: var(--page);
+    }
+
+    .diag-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 14px 0;
+    }
+
+    .diag-q {
+      display: block;
+      cursor: pointer;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 15.5px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      transition: color 0.15s ease;
+    }
+
+    .diag-q:last-of-type {
+      border-bottom: none;
+    }
+
+    .diag-q input {
+      margin-right: 12px;
+      width: 18px;
+      height: 18px;
+      vertical-align: -3px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .diag-q input:checked + .diag-text {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .diag-q .diag-text {
+      transition: all 0.15s ease;
+    }
+
+    .diag-result {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--card);
+      border-radius: 6px;
+      font-size: 14px;
+      color: var(--ink-3);
+      transition: all 0.2s ease;
+    }
+
+    .diag-result.active {
+      background: var(--accent-soft);
+      color: var(--ink);
+      font-weight: 600;
+      border-left: 3px solid var(--accent);
+    }
+
+    .diag-result.active::before {
+      content: "▸ ";
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    /* ================== SCORE REVEAL ================== */
+    section.score {
+      padding: 72px 0;
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      border-top: 4px solid var(--accent);
+    }
+
+    section.score .eyebrow {
+      color: var(--accent-light);
+    }
+
+    section.score .eyebrow::before {
+      background: var(--accent-light);
+    }
+
+    section.score h2 {
+      font-weight: 800;
+      font-size: 44px;
+      line-height: 1.05;
+      letter-spacing: -1.2px;
+      color: #fff;
+      margin: 0 0 32px 0;
+    }
+
+    .score-display {
+      display: inline-block;
+      background: rgba(255, 122, 0, 0.15);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 28px 40px;
+      margin-bottom: 32px;
+      min-width: 260px;
+    }
+
+    .score-num {
+      display: block;
+      font-size: 88px;
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .score-num .of {
+      font-size: 36px;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600;
+      letter-spacing: -1px;
+    }
+
+    .score-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .score-dominant {
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 520px;
+      margin: 0 auto 8px auto;
+    }
+
+    .score-dominant strong {
+      color: var(--accent-light);
+      display: block;
+      font-size: 22px;
+      margin-top: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .score-verdict {
+      font-size: 17px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 520px;
+      margin: 24px auto 0 auto;
+      font-style: italic;
+    }
+
+    /* ================== CAPTURE FORM ================== */
+    section.capture {
+      padding: 72px 0 64px 0;
+      background: var(--page);
+      border-top: 1px solid var(--line);
+    }
+
+    section.capture h2 {
+      font-weight: 800;
+      font-size: 38px;
+      line-height: 1.05;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin: 0 0 18px 0;
+    }
+
+    section.capture p.lead {
+      font-size: 18px;
+      color: var(--ink-3);
+      max-width: 560px;
+    }
+
+    .capture-form {
+      margin-top: 32px;
+      max-width: 520px;
+    }
+
+    .capture-form label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 8px;
+    }
+
+    .capture-form input[type="email"] {
+      width: 100%;
+      padding: 16px 18px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      border: 2px solid var(--line-2);
+      border-radius: 8px;
+      background: var(--page);
+      color: var(--ink);
+      transition: border-color 0.15s ease;
+      margin-bottom: 14px;
+    }
+
+    .capture-form input[type="email"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .capture-form button {
+      width: 100%;
+      padding: 18px 22px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      text-transform: uppercase;
+    }
+
+    .capture-form button:hover {
+      background: #E66D00;
+    }
+
+    .capture-form button:active {
+      transform: translateY(1px);
+    }
+
+    .capture-fineprint {
+      font-size: 13px;
+      color: var(--ink-4);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    /* ================== SHARE ================== */
+    section.share {
+      padding: 56px 0 64px 0;
+      background: var(--card-2);
+      border-top: 1px solid var(--line);
+      text-align: center;
+    }
+
+    section.share h3 {
+      font-weight: 800;
+      font-size: 26px;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin: 0 0 12px 0;
+    }
+
+    section.share p {
+      font-size: 16px;
+      color: var(--ink-3);
+      max-width: 520px;
+      margin: 0 auto 28px auto;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--page);
+      border: 2px solid var(--line-2);
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .share-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .share-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ================== FOOTER ================== */
+    footer {
+      padding: 48px 0 56px 0;
+      background: var(--page);
+      border-top: 1px solid var(--line);
+      color: var(--ink-3);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    footer .footer-brand {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+      letter-spacing: -0.2px;
+    }
+
+    footer .footer-brand .accent {
+      color: var(--accent);
+    }
+
+    footer .meta-line {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 22px;
+    }
+
+    footer .footer-bio {
+      max-width: 600px;
+      margin: 22px 0;
+    }
+
+    footer .footer-links {
+      margin-top: 22px;
+      font-size: 13px;
+    }
+
+    footer .footer-links a {
+      color: var(--ink-3);
+      text-decoration: none;
+      margin-right: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    footer .footer-links a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ================== MOBILE ================== */
+    @media (max-width: 720px) {
+      .container {
+        padding: 0 22px;
+      }
+
+      .hero {
+        padding: 40px 0 48px 0;
+      }
+
+      .hero-title {
+        font-size: 36px;
+        letter-spacing: -1.4px;
+      }
+
+      .hero-subtitle {
+        font-size: 17px;
+      }
+
+      .stat-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .stat-num {
+        font-size: 56px;
+        min-width: 0;
+      }
+
+      section.method h2 {
+        font-size: 26px;
+      }
+
+      section.instructions h2 {
+        font-size: 28px;
+      }
+
+      .piege {
+        padding: 40px 0;
+      }
+
+      .piege-header {
+        gap: 16px;
+      }
+
+      .piege-num {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+      }
+
+      .piege-name {
+        font-size: 22px;
+        letter-spacing: -0.4px;
+      }
+
+      blockquote.quote {
+        font-size: 16px;
+        padding: 14px 18px;
+      }
+
+      section.score h2 {
+        font-size: 30px;
+      }
+
+      .score-num {
+        font-size: 64px;
+      }
+
+      .score-num .of {
+        font-size: 28px;
+      }
+
+      section.capture h2 {
+        font-size: 26px;
+      }
+
+      .share-buttons {
+        flex-direction: column;
+      }
+
+      .share-btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================== HERO ================== -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-brand">Florian Marin · Le <span class="accent">Cadre</span></div>
+      <div class="hero-label">Diagnostic · 30 secondes</div>
+      <h1 class="hero-title">
+        Les 5 pièges<br>
+        du <span class="accent">Cadre</span>.
+      </h1>
+      <p class="hero-subtitle">
+        Pourquoi 35 pères tech sur 36 ont décroché de leur sport — et le piège qui te coûte le plus.
+      </p>
+      <div class="hero-rule"></div>
+      <div class="hero-meta">
+        Étude terrain · <span>36 entretiens</span> · oct 2025 — avr 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== STATS ================== -->
+  <section class="stats">
+    <div class="container">
+      <span class="eyebrow">Le constat</span>
+
+      <div class="stat-grid">
+        <div class="stat-row">
+          <div class="stat-num accent">36</div>
+          <div class="stat-text">
+            <strong>Pères tech interviewés.</strong>
+            Engineering managers, CTOs, founders, principal engineers, devs senior. Tous avec au moins un enfant en bas âge.
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-num">0</div>
+          <div class="stat-text">
+            <strong>N'a tenu seul plus de 3 semaines.</strong>
+            Aucun, sur 36. Le pattern est mécanique. Ce n'est pas une question de discipline ou de temps : les deux jouent à la marge.
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-num accent">5</div>
+          <div class="stat-text">
+            <strong>Mécaniques cognitives identifiées.</strong>
+            Toujours les mêmes. Une par pilier d'un Cadre qui tient. Chacun ressemble à du bon sens — c'est ce qui le rend invisible.
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-highlight">
+        <p class="big">Si tu te reconnais dans 2 pièges ou plus, tu fais partie des 35.</p>
+        <p>Sur les 36, un seul cas n'a pas eu besoin d'un déclic médical pour basculer. Les 35 autres ont basculé après un infarctus, un pacemaker à 37 ans, ou un burn-out (j'y suis passé en 2019). Toujours trop tard.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== METHOD ================== -->
+  <section class="method">
+    <div class="container">
+      <span class="eyebrow">Le mécanisme</span>
+      <h2>La <span class="accent">Loi du Témoin</span>.</h2>
+      <p>
+        Tout ce qui tient dans ta semaine a un point commun : un engagement envers quelqu'un d'autre. La réunion client, le 1:1 avec ton N+1, le dîner de famille, le standup de 10h. Ces choses ne sautent pas parce qu'elles sont importantes — <strong>elles ne sautent pas parce que quelqu'un t'attend</strong>.
+      </p>
+      <p>
+        Sans témoin, pas de coût social à sauter. Sans coût social, l'agenda te rend l'heure. Le sport, lui, n'appartient qu'à toi. Donc il est disponible. Et donc il saute. C'est mécanique, pas de la paresse.
+      </p>
+      <p>
+        Un Cadre, c'est l'opération inverse : donner au sport la même existence concrète que le reste. <strong>Cinq piliers, cinq pièges</strong>. Un piège par pilier — celui qui te fait décrocher avant même que tu t'en rendes compte.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================== INSTRUCTIONS ================== -->
+  <section class="instructions">
+    <div class="container">
+      <span class="eyebrow">Mode d'emploi</span>
+      <h2>Coche les phrases qui te ressemblent.</h2>
+      <p>
+        Pour chaque piège, 3 questions. Si tu en coches 2 sur 3, le piège est <strong>actif</strong> chez toi. À la fin, tu vois ton score et le piège qui te coûte le plus.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================== PIÈGE 1 — VISION ================== -->
+  <section class="piege" id="piege-1">
+    <div class="container">
+      <div class="piege-header">
+        <div class="piege-num">1</div>
+        <div class="piege-body">
+          <span class="piege-pilier">Pilier 1 · Vision</span>
+          <h3 class="piege-name">Le piège de la <span class="accent">dette publique</span>.</h3>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        Je m'inscris à une course puis je discute avec ma femme.
+        <cite>Verbatim corpus · 2 occurrences</cite>
+      </blockquote>
+
+      <p class="piege-explain">
+        L'inversion totale : l'engagement public <strong>précède</strong> la négociation. Tu ne t'autorises pas le sport pour toi — il te faut une dette externe (dossard, app premium, coach) pour légitimer le créneau. Tu paies d'abord, ça t'oblige. Tu négocies après — ou pas du tout.
+      </p>
+
+      <div class="diag" data-piege="1">
+        <p class="diag-title">Tu fais ça si…</p>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu t'es inscrit à une course cette année "pour t'obliger à t'y mettre"</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu as souscrit à une app fitness ou un coach payant en te disant "le fait d'avoir payé va m'obliger"</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu annonces tes objectifs sportifs publiquement avant d'avoir bloqué les créneaux</span>
+        </label>
+        <p class="diag-result" data-default="Pas coché — piège inactif chez toi." data-active="Piège n°1 actif. Tu as un problème de vision, pas de motivation.">Pas coché — piège inactif chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PIÈGE 2 — AGENDA ================== -->
+  <section class="piege" id="piege-2">
+    <div class="container">
+      <div class="piege-header">
+        <div class="piege-num">2</div>
+        <div class="piege-body">
+          <span class="piege-pilier">Pilier 2 · Agenda</span>
+          <h3 class="piege-name">Le piège de la <span class="accent">négociation du jour J</span>.</h3>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        On verra demain matin comment je me sens.
+        <cite>Verbatim récurrent · 22 / 36</cite>
+      </blockquote>
+
+      <p class="piege-explain">
+        Tu ne décides pas de ne pas faire de sport. Tu décides chaque matin de <strong>ne pas y aller aujourd'hui</strong>. C'est très différent. Sans créneau bunkerisé à l'avance, tu te réveilles et tu entres en négociation avec toi-même au pire moment — fatigue, début de journée, raisons faciles. Le sport est soumis à un vote quotidien qu'il perd 4 fois sur 5.
+      </p>
+
+      <div class="diag" data-piege="2">
+        <p class="diag-title">Tu fais ça si…</p>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu décides chaque matin si tu vas au sport ou pas</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu n'as qu'un seul créneau hebdo (souvent le midi) et il saute dès qu'un meeting déborde</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu n'as pas de Plan B (créneau de rattrapage 48h) ni de Plan C (version 20 min à la maison)</span>
+        </label>
+        <p class="diag-result" data-default="Pas coché — piège inactif chez toi." data-active="Piège n°2 actif. Ton agenda sport est un SPOF — un système à un seul point de défaillance.">Pas coché — piège inactif chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PIÈGE 3 — SOMMEIL ================== -->
+  <section class="piege" id="piege-3">
+    <div class="container">
+      <div class="piege-header">
+        <div class="piege-num">3</div>
+        <div class="piege-body">
+          <span class="piege-pilier">Pilier 3 · Sommeil</span>
+          <h3 class="piege-name">Le piège de la <span class="accent">disponibilité fantôme</span>.</h3>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        Je ne travaille pas, hein, je check juste vite fait.
+        <cite>Verbatim récurrent dans les entretiens</cite>
+      </blockquote>
+
+      <p class="piege-explain">
+        Tu ne travailles pas après 22h. Tu <strong>surveilles</strong>. Slack ouvert, laptop sur la table basse, un œil toutes les 15 minutes "juste au cas où". Ça te coûte zéro effort apparent — et c'est exactement pour ça que tu ne vois pas le dégât. 45 minutes de sommeil réel perdues, coucher qui dérive vers minuit, réveil à 7h au lieu de 6h, créneau sport du matin écrasé.
+      </p>
+
+      <div class="diag" data-piege="3">
+        <p class="diag-title">Tu fais ça si…</p>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu ouvres Slack après 22h "juste pour vérifier"</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Ton téléphone pro est sur ta table de nuit (ou dans ta poche) la nuit</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu te lèves systématiquement plus tard que tu ne voulais</span>
+        </label>
+        <p class="diag-result" data-default="Pas coché — piège inactif chez toi." data-active="Piège n°3 actif. Sans extinction des feux, aucun plan sport ne tient. C'est physiologique, pas une question de volonté.">Pas coché — piège inactif chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PIÈGE 4 — NUTRITION ================== -->
+  <section class="piege" id="piege-4">
+    <div class="container">
+      <div class="piege-header">
+        <div class="piege-num">4</div>
+        <div class="piege-body">
+          <span class="piege-pilier">Pilier 4 · Nutrition</span>
+          <h3 class="piege-name">Le piège de la <span class="accent">cuisine-décompression</span>.</h3>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        Quand je cuisine, j'oublie tout le reste.
+        <cite>Verbatim — interview avril 2026</cite>
+      </blockquote>
+
+      <p class="piege-explain">
+        Le tech s'évade dans une activité qui lui libère le cerveau. Pour beaucoup, c'est la cuisine. Pas mauvais en soi — mais quand la cuisine devient le seul espace de décompression, elle déborde sur tout : sur le sport du midi (avalé en 12 minutes pour cuisiner long le soir), sur le sommeil (couché à minuit après la vaisselle), sur la charge mentale (le "qu'est-ce qu'on mange" devient le single point of failure quotidien).
+      </p>
+
+      <div class="diag" data-piege="4">
+        <p class="diag-title">Tu fais ça si…</p>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu décides du repas du soir entre 18h et 19h chaque jour</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu as essayé le batch cooking et ça n'a pas tenu</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu finis tard à cause de la cuisine et tu te couches après 23h</span>
+        </label>
+        <p class="diag-result" data-default="Pas coché — piège inactif chez toi." data-active="Piège n°4 actif. La cuisine non-systémisée est la variable cachée qui érode ton sport par les marges.">Pas coché — piège inactif chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== PIÈGE 5 — COUPLE ================== -->
+  <section class="piege" id="piege-5">
+    <div class="container">
+      <div class="piege-header">
+        <div class="piege-num">5</div>
+        <div class="piege-body">
+          <span class="piege-pilier">Pilier 5 · Couple</span>
+          <h3 class="piege-name">Le piège de la <span class="accent">culpabilité fabriquée</span>.</h3>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        Il est invivable quand il ne fait pas de sport. Je ne lui ai jamais rien reproché.
+        <cite>Claire, partenaire d'un interviewé</cite>
+      </blockquote>
+
+      <p class="piege-explain">
+        Tu transformes une supposition en certitude, et tu appelles ça "de la considération". Antoine a passé 2 ans à s'empêcher pour une raison qui n'existait pas dans la tête de la seule personne concernée. Le sport disparaît par évitement, pas par interdiction. <strong>56% des pères du corpus qui ont arrêté sont dans ce piège</strong> — et la grande majorité n'a jamais reçu de reproche explicite.
+      </p>
+
+      <div class="diag" data-piege="5">
+        <p class="diag-title">Tu fais ça si…</p>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu hésites à partir au sport "parce que tu sens que ça pèse"</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Tu n'as jamais posé la question explicitement, à froid, à ta partenaire</span>
+        </label>
+        <label class="diag-q">
+          <input type="checkbox">
+          <span class="diag-text">Ta partenaire n'a pas, elle aussi, ses propres créneaux protégés</span>
+        </label>
+        <p class="diag-result" data-default="Pas coché — piège inactif chez toi." data-active="Piège n°5 actif. C'est le piège le plus discret du corpus. Il fait sauter le sport en silence.">Pas coché — piège inactif chez toi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== SCORE REVEAL ================== -->
+  <section class="score" id="score">
+    <div class="container">
+      <span class="eyebrow">Ton diagnostic</span>
+      <h2>Voici ton <span class="accent">Cadre actuel</span>.</h2>
+
+      <div class="score-display">
+        <span class="score-num"><span id="score-active">0</span><span class="of"> / 5</span></span>
+        <span class="score-label">Pièges actifs</span>
+      </div>
+
+      <p class="score-dominant" id="score-dominant-text">
+        Coche les phrases qui te ressemblent dans les 5 sections au-dessus. Ton diagnostic se construit en temps réel.
+      </p>
+
+      <p class="score-verdict" id="score-verdict">
+        Réponds aux 15 questions pour voir le piège qui te coûte le plus.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================== EMAIL CAPTURE ================== -->
+  <section class="capture">
+    <div class="container">
+      <span class="eyebrow">Le rapport complet</span>
+      <h2>Le PDF · 8 pages · contre ton email.</h2>
+      <p class="lead">
+        Pour chaque piège : la mécanique précise, les signaux d'alerte détaillés, pourquoi c'est invisible (la vertu apparente qui le déguise), le verbatim signature et l'archétype du corpus. Plus l'analyse du seul cas qui s'en est sorti sans déclic médical — et ce qui a fait basculer les 35 autres.
+      </p>
+
+      <form class="capture-form" id="capture-form" method="POST" action="https://YOUR_LOOPS_OR_N8N_WEBHOOK_URL_HERE">
+        <label for="email">Ton email</label>
+        <input type="email" id="email" name="email" placeholder="ton.email@exemple.com" required>
+        <input type="hidden" id="score-payload" name="score" value="">
+        <input type="hidden" id="dominant-payload" name="dominant_pilier" value="">
+        <button type="submit">Recevoir le rapport (PDF 8 pages)</button>
+        <p class="capture-fineprint">
+          Tu reçois le PDF dans 30 secondes. Pas de spam — un lien de désabonnement en bas de chaque email.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================== SHARE ================== -->
+  <section class="share">
+    <div class="container">
+      <h3>Tu connais un père tech qui se reconnaîtrait ?</h3>
+      <p>
+        Envoie-lui cette page. C'est souvent comme ça que ça bascule — avant la claque, pas après.
+      </p>
+      <div class="share-buttons">
+        <a href="#" class="share-btn" id="share-linkedin" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.56c0-1.32-.02-3.03-1.85-3.03-1.85 0-2.13 1.45-2.13 2.94v5.65H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 11-.01-4.13 2.07 2.07 0 010 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .77 0 1.73v20.54C0 23.23.8 24 1.78 24h20.44c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          LinkedIn
+        </a>
+        <a href="#" class="share-btn" id="share-whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.7 2.7.8 3.6.7.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.2-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.4 1.3 4.9L2 22l5.2-1.4c1.4.8 3.1 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+          WhatsApp
+        </a>
+        <button class="share-btn" id="share-copy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 1H4c-1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1 0-2 .9-2 2v14c0 1 .9 2 2 2h11c1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          <span id="copy-label">Copier le lien</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== FOOTER ================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-brand">Florian Marin · Le <span class="accent">Cadre</span></div>
+      <div class="meta-line">36 entretiens · oct 2025 — avril 2026 · Pères tech avec enfants 0-8 ans</div>
+      <p class="footer-bio">
+        Je ne suis ni coach sportif, ni thérapeute. J'ai analysé 692 conversations et 414 DMs avec des pères cadres tech qui n'arrivaient plus à caser leur sport depuis l'arrivée des enfants. <strong>Le Cadre, c'est ce que j'en ai tiré.</strong>
+      </p>
+      <div class="footer-links">
+        <a href="https://florianmarin.me">Page de vente</a>
+        <a href="https://substack.com/@lecadrenotes">Substack</a>
+        <a href="https://www.linkedin.com/in/florian-marin/">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================== JS ================== -->
+  <script>
+    const piegeNames = {
+      1: "Pilier 1 — La dette publique",
+      2: "Pilier 2 — La négociation du jour J",
+      3: "Pilier 3 — La disponibilité fantôme",
+      4: "Pilier 4 — La cuisine-décompression",
+      5: "Pilier 5 — La culpabilité fabriquée"
+    };
+
+    const piegeDescriptions = {
+      1: "Tu importes des dettes externes pour t'autoriser le sport. Tu n'as pas un problème de motivation — tu as un problème de vision.",
+      2: "Ton agenda sport est un SPOF. Sans Plan B et Plan C, le créneau saute au premier imprévu et ne se rattrape jamais.",
+      3: "Sans extinction des feux après 22h, ton sommeil dégrade et le sport saute physiologiquement. Aucune motivation ne le compense.",
+      4: "La cuisine non-systémisée érode ton sport par les marges. Tu ne le vois pas parce que cuisiner est socialement valorisé.",
+      5: "Tu t'empêches pour des raisons qui n'existent pas chez ta partenaire. Le sport disparaît par évitement, pas par interdiction."
+    };
+
+    function updateScore() {
+      const piegeStates = {};
+      let totalActive = 0;
+      let dominantPiege = null;
+      let dominantCount = 0;
+
+      // Compute state for each piège
+      for (let i = 1; i <= 5; i++) {
+        const piegeBlock = document.querySelector(`.diag[data-piege="${i}"]`);
+        if (!piegeBlock) continue;
+        const checkboxes = piegeBlock.querySelectorAll('input[type="checkbox"]');
+        const checkedCount = Array.from(checkboxes).filter(c => c.checked).length;
+        piegeStates[i] = checkedCount;
+
+        const isActive = checkedCount >= 2;
+        if (isActive) totalActive++;
+
+        // Update inline result
+        const resultEl = piegeBlock.querySelector('.diag-result');
+        if (resultEl) {
+          if (isActive) {
+            resultEl.textContent = resultEl.dataset.active;
+            resultEl.classList.add('active');
+          } else {
+            resultEl.textContent = resultEl.dataset.default;
+            resultEl.classList.remove('active');
+          }
+        }
+
+        // Track dominant (most boxes checked, ties broken by lowest pilier number)
+        if (checkedCount > dominantCount) {
+          dominantCount = checkedCount;
+          dominantPiege = i;
+        }
+      }
+
+      // Update score num
+      document.getElementById('score-active').textContent = totalActive;
+
+      // Update dominant text
+      const dominantTextEl = document.getElementById('score-dominant-text');
+      const verdictEl = document.getElementById('score-verdict');
+
+      const totalChecked = Object.values(piegeStates).reduce((a, b) => a + b, 0);
+
+      if (totalChecked === 0) {
+        dominantTextEl.innerHTML = "Coche les phrases qui te ressemblent dans les 5 sections au-dessus. Ton diagnostic se construit en temps réel.";
+        verdictEl.textContent = "Réponds aux 15 questions pour voir le piège qui te coûte le plus.";
+      } else if (dominantPiege && dominantCount > 0) {
+        dominantTextEl.innerHTML = `Le piège qui te coûte le plus : <strong>${piegeNames[dominantPiege]}</strong>`;
+
+        if (totalActive === 0) {
+          verdictEl.textContent = "Aucun piège pleinement actif. Tu es plus solide que la moyenne — ou tu es encore dans le déni.";
+        } else if (totalActive === 1) {
+          verdictEl.textContent = `Un piège actif. Tu as une faille — ${piegeDescriptions[dominantPiege]}`;
+        } else if (totalActive === 2 || totalActive === 3) {
+          verdictEl.textContent = `${totalActive} pièges actifs. Tu fais partie des 35 sur 36. Le décrochage est mécanique, pas une question de discipline. ${piegeDescriptions[dominantPiege]}`;
+        } else {
+          verdictEl.textContent = `${totalActive} pièges actifs. Tu n'as pas un problème de motivation — tu n'as pas de Cadre du tout. Le rapport complet est pour toi.`;
+        }
+      }
+
+      // Update hidden form payload
+      document.getElementById('score-payload').value = totalActive;
+      document.getElementById('dominant-payload').value = dominantPiege ? piegeNames[dominantPiege] : '';
+    }
+
+    document.querySelectorAll('.diag input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', updateScore);
+    });
+
+    // Share
+    const pageUrl = window.location.href;
+    const shareText = "36 pères tech. 0 a tenu seul plus de 3 semaines. 5 mécaniques cognitives. Voici lesquelles.";
+
+    document.getElementById('share-linkedin').href =
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+
+    document.getElementById('share-whatsapp').href =
+      `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
+
+    document.getElementById('share-copy').addEventListener('click', () => {
+      navigator.clipboard.writeText(pageUrl).then(() => {
+        const label = document.getElementById('copy-label');
+        const original = label.textContent;
+        label.textContent = 'Copié ✓';
+        setTimeout(() => label.textContent = original, 2000);
+      });
+    });
+
+    // Init
+    updateScore();
+  </script>
+
+</body>
+</html>
