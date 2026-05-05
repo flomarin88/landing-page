@@ -537,6 +537,55 @@
       flex-shrink: 0;
       vertical-align: middle;
     }
+
+    /* ── ÉTAPES ── */
+    .steps-title {
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin: 12px 0 8px 0;
+    }
+
+    .steps-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .steps-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 9pt;
+      line-height: 1.5;
+      color: var(--ink-2);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .steps-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 20px;
+    }
   </style>
 </head>
 
@@ -707,8 +756,20 @@
         <td class="qty">1 c.c.</td>
       </tr>
     </table>
-    <div class="tip-block">Texture chunky appréciée des enfants. Mixer légèrement 30 sec seulement. Servir avec tranches
-      de pain complet.</div>
+    <div class="steps-title">Préparation</div>
+    <ul class="steps-list">
+      <li><span class="step-num">1</span><span>Éplucher et tailler les carottes en rondelles de 1 cm, les courgettes en
+          demi-lunes, le céleri en tronçons. Émincer les oignons.</span></li>
+      <li><span class="step-num">2</span><span>Dans une grande casserole, faire revenir les oignons dans l'huile d'olive
+          à feu moyen 3–4 min jusqu'à translucidité.</span></li>
+      <li><span class="step-num">3</span><span>Ajouter carottes et céleri, faire revenir 3 min supplémentaires.
+          Incorporer les tomates pelées écrasées à la main, les courgettes, les herbes de Provence.</span></li>
+      <li><span class="step-num">4</span><span>Verser le bouillon, porter à ébullition puis réduire à feu doux. Laisser
+          mijoter 20 min à couvert.</span></li>
+      <li><span class="step-num">5</span><span>Ajouter les haricots blancs, prolonger 5 min. Mixer brièvement 15–20 sec
+          avec un mixeur plongeant pour épaissir sans perdre la texture chunky. Rectifier l'assaisonnement.</span></li>
+    </ul>
+    <div class="tip-block">Texture chunky appréciée des enfants. Servir avec tranches de pain complet.</div>
 
     <hr class="divider">
 
@@ -777,8 +838,39 @@
       <div class="macro-chip">L <span>22g</span></div>
       <div class="macro-chip">⚡ <span>~575 kcal</span>/portion adulte</div>
     </div>
-    <div class="tip-block">Polenta au lait de coco = crémeux garanti sans PLV. Enfants adorent la texture. Four 200°C,
-      30 min pour le poulet. Polenta à préparer en dernier (10 min).</div>
+    <div class="steps-title">Préparation</div>
+    <div class="steps-two-col">
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Poulet</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Préchauffer le four à 200°C. Écraser l'ail, effeuiller le thym et le
+              romarin.</span></li>
+          <li><span class="step-num">2</span><span>Enduire les cuisses d'huile d'olive, ail, thym, romarin, sel et
+              poivre. Laisser mariner 10 min à température ambiante.</span></li>
+          <li><span class="step-num">3</span><span>Enfourner 30–35 min sur grille jusqu'à peau dorée et jus clair à la
+              piqûre. Laisser reposer 5 min avant de servir.</span></li>
+          <li><span class="step-num">4</span><span>Cuire les haricots verts à l'eau bouillante salée 6 min, égoutter,
+              assaisonner d'un filet d'huile d'olive.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Polenta</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Verser le lait de coco et l'eau dans une grande casserole, saler
+              légèrement. Porter à ébullition douce.</span></li>
+          <li><span class="step-num">2</span><span>Verser la polenta en pluie fine en remuant constamment au fouet pour
+              éviter les grumeaux.</span></li>
+          <li><span class="step-num">3</span><span>Réduire à feu doux, remuer à la spatule 5–8 min jusqu'à ce que la
+              polenta se détache des parois. Rectifier sel et poivre. Servir immédiatement.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-block">Polenta au lait de coco = crémeux garanti sans PLV. Commencer le poulet d'abord (30 min),
+      lancer la polenta 10 min avant de servir.</div>
 
     <div class="page-number">
       <span>Menu Semaine Famille</span>
@@ -829,8 +921,20 @@
         <td class="qty">1 gousse</td>
       </tr>
     </table>
-    <div class="tip-block">Sauce enfants : huile d'olive + citron + sel uniquement (sans yaourt si PLV stricte).
-      Parmesan servi séparément.</div>
+    <div class="steps-title">Préparation</div>
+    <ul class="steps-list">
+      <li><span class="step-num">1</span><span>Couper le pain en cubes de 1,5 cm, faire dorer à sec ou avec un filet
+          d'huile d'olive dans une poêle à feu moyen 5 min en remuant. Réserver.</span></li>
+      <li><span class="step-num">2</span><span>Préparer la sauce : écraser l'ail en purée, mélanger avec le yaourt grec,
+          le jus de citron et la moutarde. Assaisonner. Réserver une version nature (sans ail) pour les enfants.</span>
+      </li>
+      <li><span class="step-num">3</span><span>Laver et essorer la romaine, déchirer les feuilles en morceaux. Dresser
+          dans un grand saladier ou directement dans les assiettes.</span></li>
+      <li><span class="step-num">4</span><span>Napper de sauce, ajouter croûtons et parmesan pour les adultes. Assiettes
+          enfants : romaine + croûtons + huile d'olive + jus de citron.</span></li>
+    </ul>
+    <div class="tip-block">Sauce enfants : huile d'olive + citron + sel uniquement. Parmesan servi séparément à table.
+    </div>
 
     <hr class="divider">
 
@@ -884,8 +988,41 @@
       <div class="macro-chip">L <span>14g</span></div>
       <div class="macro-chip">⚡ <span>~570 kcal</span>/portion adulte</div>
     </div>
-    <div class="tip-block">Purée patate douce montée au lait de coco à la place du beurre-lait. Plat 100% PLV-free, zéro
-      résistance des enfants. Préparer le gratin la veille, réchauffer 20 min à 180°C.</div>
+    <div class="steps-title">Préparation</div>
+    <div class="steps-two-col">
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Farce dinde</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Émincer oignons et ail. Faire revenir dans l'huile d'olive 4 min à
+              feu moyen.</span></li>
+          <li><span class="step-num">2</span><span>Ajouter la dinde hachée, faire dorer en émiettant à la spatule
+              pendant 6–8 min.</span></li>
+          <li><span class="step-num">3</span><span>Incorporer tomates concassées, lentilles corail cuites, sel, poivre,
+              persil. Laisser mijoter 10 min à couvert jusqu'à absorption.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Purée patate douce</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Éplucher les patates douces, couper en morceaux. Cuire à l'eau
+              bouillante salée 18–20 min jusqu'à tendreté.</span></li>
+          <li><span class="step-num">2</span><span>Égoutter et écraser au presse-purée. Incorporer le lait de coco chaud
+              progressivement, muscade, sel et poivre. La purée doit être lisse et souple.</span></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="steps-list" style="margin-top:8px;">
+      <li><span class="step-num">4</span><span>Préchauffer le four à 190°C. Dans un plat à gratin, étaler la farce dinde
+          en couche uniforme, recouvrir de la purée à la spatule.</span></li>
+      <li><span class="step-num">5</span><span>Enfourner 20–25 min jusqu'à légère coloration dorée en surface. Laisser
+          reposer 5 min avant de servir.</span></li>
+    </ul>
+    <div class="tip-block">Peut se préparer la veille et se réchauffer 20 min à 180°C. Les lentilles sont invisibles
+      dans la farce — zéro résistance des enfants.</div>
 
     <div class="page-number">
       <span>Menu Semaine Famille</span>
@@ -932,9 +1069,19 @@
         <td class="qty">q.s.</td>
       </tr>
     </table>
-    <div class="tip-block">Trancher les courgettes à la mandoline (2mm) ou au couteau économe. Mariner 15 min dans
-      citron + huile + sel avant service — elles s'attendrissent légèrement. Enfants : servir sans menthe, pignons à
-      part.</div>
+    <div class="steps-title">Préparation</div>
+    <ul class="steps-list">
+      <li><span class="step-num">1</span><span>Laver les courgettes, éliminer les extrémités. Trancher à la mandoline
+          réglée à 2 mm, ou utiliser un couteau économe en passant sur toute la longueur.</span></li>
+      <li><span class="step-num">2</span><span>Disposer les tranches en rosace légèrement superposées dans les assiettes
+          ou sur un plat de service.</span></li>
+      <li><span class="step-num">3</span><span>Mélanger jus de citron, huile d'olive et fleur de sel. Verser en filet
+          sur les courgettes. Laisser mariner 15 min à température ambiante.</span></li>
+      <li><span class="step-num">4</span><span>Au moment de servir : ajouter le zeste de citron, les feuilles de menthe
+          fraîche (adultes), et les pignons toastés 2 min à sec dans une poêle.</span></li>
+    </ul>
+    <div class="tip-block">Trancher à la mandoline (2mm) ou au couteau économe. Enfants : servir sans menthe, pignons à
+      part. Peut se préparer 1h à l'avance au frigo.</div>
 
     <hr class="divider">
 
@@ -1002,8 +1149,40 @@
       <div class="macro-chip">L <span>20g</span></div>
       <div class="macro-chip">⚡ <span>~545 kcal</span>/portion adulte</div>
     </div>
-    <div class="tip-block">Mariner le tofu 30 min (soja + miel + sésame), rôtir 25 min à 200°C. Enfants : servir les
-      éléments séparément dans l'assiette. Graines de sésame en option si allergie.</div>
+    <div class="steps-title">Préparation</div>
+    <div class="steps-two-col">
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Tofu & riz</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Égoutter le tofu, l'emballer dans du papier absorbant et presser 10
+              min pour éliminer l'excès d'eau. Couper en cubes de 2 cm.</span></li>
+          <li><span class="step-num">2</span><span>Préparer la marinade : mélanger sauce soja, huile de sésame et miel.
+              Faire mariner les cubes de tofu 30 min minimum.</span></li>
+          <li><span class="step-num">3</span><span>Préchauffer le four à 200°C. Étaler le tofu sur plaque, enfourner 25
+              min en retournant à mi-cuisson jusqu'à coloration dorée et texture légèrement croustillante.</span></li>
+          <li><span class="step-num">4</span><span>Cuire le riz complet selon les instructions (environ 35–40 min).
+              Garder au chaud.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Garniture & dressage</p>
+        <ul class="steps-list">
+          <li><span class="step-num">5</span><span>Râper les carottes finement. Cuire les edamame 3 min à l'eau
+              bouillante salée, égoutter.</span></li>
+          <li><span class="step-num">6</span><span>Trancher les avocats en éventail. Préparer une sauce citron : jus de
+              citron restant + filet d'huile de sésame + sel.</span></li>
+          <li><span class="step-num">7</span><span>Dresser les bols : base de riz, puis disposer le tofu, les carottes
+              râpées, l'edamame et l'avocat en quartiers. Arroser de sauce, parsemer de graines de sésame.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-block">Enfants : servir les éléments séparément dans l'assiette, sauce à part. Graines de sésame en
+      option. Lancer le riz en premier (40 min), puis le tofu (marinade 30 min + cuisson 25 min) — tout arrive en même
+      temps.</div>
 
     <div class="page-number">
       <span>Menu Semaine Famille</span>
@@ -1054,8 +1233,19 @@
         <td class="qty">2 c.s.</td>
       </tr>
     </table>
-    <div class="tip-block">Adultes : servi froid. Enfants : même base réchauffée avec 200ml bouillon chaud. Préparer la
-      veille pour que les saveurs se développent.</div>
+    <div class="steps-title">Préparation</div>
+    <ul class="steps-list">
+      <li><span class="step-num">1</span><span>Faire tremper le pain rassis 5 min dans un peu d'eau froide, puis
+          essorer.</span></li>
+      <li><span class="step-num">2</span><span>Couper les tomates en quartiers, épépiner le concombre et le poivron,
+          éplucher l'ail.</span></li>
+      <li><span class="step-num">3</span><span>Mixer l'ensemble avec le pain, l'huile d'olive et le vinaigre jusqu'à
+          obtenir une texture lisse. Passer au tamis si désiré pour plus de finesse.</span></li>
+      <li><span class="step-num">4</span><span>Assaisonner, réfrigérer minimum 2h (idéalement la veille). Pour les
+          enfants : prélever une portion, réchauffer avec 200ml de bouillon chaud et servir en soupe tiède.</span></li>
+    </ul>
+    <div class="tip-block">Préparer la veille pour que les saveurs se développent. Adultes : servi froid avec un filet
+      d'huile. Enfants : version tiède avec bouillon.</div>
 
     <hr class="divider">
 
@@ -1115,8 +1305,38 @@
       <div class="macro-chip">L <span>16g</span></div>
       <div class="macro-chip">⚡ <span>~545 kcal</span>/portion adulte</div>
     </div>
-    <div class="tip-block">Quinoa cuit dans le bouillon = goût amplifié. Cabillaud vapeur 8 min max. Pignons pour
-      adultes uniquement (vérifier allergies). Épinards incorporés chauds au quinoa à la fin.</div>
+    <div class="steps-title">Préparation</div>
+    <div class="steps-two-col">
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Quinoa épinards</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Rincer le quinoa à l'eau froide sous un tamis fin 30 sec pour
+              éliminer l'amertume.</span></li>
+          <li><span class="step-num">2</span><span>Dans une casserole, verser le bouillon, ajouter le quinoa. Porter à
+              ébullition, réduire à feu doux, couvrir et cuire 14–16 min jusqu'à absorption complète et apparition des
+              germes blancs.</span></li>
+          <li><span class="step-num">3</span><span>Hors du feu, incorporer les épinards frais, couvrir 2 min — ils
+              tombent à la chaleur résiduelle. Mélanger, assaisonner d'huile de colza et citron.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Cabillaud vapeur</p>
+        <ul class="steps-list">
+          <li><span class="step-num">4</span><span>Sécher les filets avec du papier absorbant. Déposer dans le panier
+              vapeur, assaisonner sel, poivre, tranches de citron et ail émincé par-dessus.</span></li>
+          <li><span class="step-num">5</span><span>Cuire à la vapeur 7–8 min selon l'épaisseur. Le cabillaud est cuit
+              quand la chair s'effiloche facilement à la fourchette et perd sa translucidité.</span></li>
+          <li><span class="step-num">6</span><span>Dresser : base de quinoa, poser le filet de cabillaud par-dessus,
+              filet d'huile de colza, pignons pour les adultes.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-block">Lancer le quinoa (16 min) puis le cabillaud (8 min) pour que tout soit prêt simultanément. Ne
+      jamais surcuire le cabillaud — chair sèche non récupérable.</div>
 
     <div class="page-number">
       <span>Menu Semaine Famille</span>
@@ -1167,8 +1387,21 @@
         <td class="qty">2 c.s.</td>
       </tr>
     </table>
-    <div class="tip-block">Enfants : sans roquette (amer). Dresser les assiettes séparément. Avocat en dés, noix
-      concassées. 100% PLV-free.</div>
+    <div class="steps-title">Préparation</div>
+    <ul class="steps-list">
+      <li><span class="step-num">1</span><span>Couper la betterave en dés de 1,5 cm ou en lamelles fines selon
+          préférence. Trancher les pommes vertes en fines lamelles, arroser aussitôt d'un trait de jus de citron pour
+          éviter l'oxydation.</span></li>
+      <li><span class="step-num">2</span><span>Couper les avocats en deux, dénoyauter, trancher en éventail dans la peau
+          puis récupérer à la cuillère.</span></li>
+      <li><span class="step-num">3</span><span>Préparer la vinaigrette : mélanger vinaigre balsamique, huile d'olive,
+          sel et poivre.</span></li>
+      <li><span class="step-num">4</span><span>Dresser : lit de mâche, betterave, pomme, avocat et noix grossièrement
+          concassées. Arroser de vinaigrette au moment de servir. Assiettes enfants : sans mâche (ou roquette),
+          betterave + pomme + avocat.</span></li>
+    </ul>
+    <div class="tip-block">Assiettes enfants sans roquette (amer). 100% PLV-free. Préparer les éléments à l'avance, ne
+      dresser qu'au dernier moment.</div>
 
     <hr class="divider">
 
@@ -1240,8 +1473,40 @@
       <div class="macro-chip">L <span>16g</span></div>
       <div class="macro-chip">⚡ <span>~590 kcal</span>/portion adulte</div>
     </div>
-    <div class="tip-block">Soba 100% sarrasin = naturellement sans gluten ET sans PLV. Saisir le bœuf à feu très vif, 2
-      min max. Légumes en julienne fine pour cuisson rapide et acceptation enfants.</div>
+    <div class="steps-title">Préparation</div>
+    <div class="steps-two-col">
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Mise en place</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Émincer le bœuf en fines lanières de 5 mm dans le sens contraire des
+              fibres. Tailler les légumes en julienne fine (carottes, courgettes, poivrons) et trancher les champignons.
+              Émincer ail et râper le gingembre.</span></li>
+          <li><span class="step-num">2</span><span>Mélanger sauce soja, huile de sésame et gingembre dans un bol. Faire
+              mariner le bœuf 10 min minimum.</span></li>
+          <li><span class="step-num">3</span><span>Cuire les nouilles soba selon le paquet (généralement 4–5 min),
+              rincer immédiatement à l'eau froide pour stopper la cuisson. Réserver.</span></li>
+        </ul>
+      </div>
+      <div>
+        <p
+          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
+          Cuisson wok</p>
+        <ul class="steps-list">
+          <li><span class="step-num">4</span><span>Chauffer le wok ou une grande poêle à feu très vif avec l'huile
+              neutre jusqu'à légère fumée. C'est essentiel pour la saisie.</span></li>
+          <li><span class="step-num">5</span><span>Saisir le bœuf en une seule couche, 1–2 min sans toucher, puis remuer
+              30 sec. Retirer et réserver.</span></li>
+          <li><span class="step-num">6</span><span>Dans le même wok, faire sauter l'ail 30 sec, ajouter les légumes durs
+              (carottes, poivrons) 3 min, puis les courgettes et champignons 2 min supplémentaires.</span></li>
+          <li><span class="step-num">7</span><span>Remettre le bœuf, ajouter les nouilles soba et la sauce soja
+              restante. Mélanger 1 min à feu vif. Servir immédiatement.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-block">La clé du wok : feu maximal et cuisson rapide. Tout préparer (mise en place complète) avant
+      de lancer la cuisson — une fois le wok chaud, les étapes s'enchaînent en 8 min.</div>
 
     <div class="page-number">
       <span>Menu Semaine Famille</span>
@@ -1286,7 +1551,7 @@
 
         <div class="shop-cat">
           <div class="shop-cat-title">🌾 Féculents & céréales</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Polenta</span><span
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Polenta (vérifier sans PLV)</span><span
               class="shop-qty">480g</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Riz complet cru</span><span
               class="shop-qty">400g</span></div>
@@ -1302,39 +1567,24 @@
 
         <div class="shop-cat">
           <div class="shop-cat-title">🥫 Conserves & condiments</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates pelées boîte</span><span
+              class="shop-qty">2 boîtes · 800g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates concassées boîte</span><span
+              class="shop-qty">1 boîte · 400g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait de coco (polenta + hachis)</span><span
+              class="shop-qty">2 boîtes · 1L</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Sauce soja (vérifier PLV)</span><span
+              class="shop-qty">150ml</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon légumes</span><span
+              class="shop-qty">1,5 L</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon volaille (vérifier PLV)</span><span
+              class="shop-qty">960ml</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre balsamique</span><span
+              class="shop-qty">3 c.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre de vin</span><span class="shop-qty">2
+              c.s.</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Moutarde</span><span class="shop-qty">1
               c.c.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Maquereaux</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Sardines</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🍯 Sucrants, graines & snacks</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Miel</span><span class="shop-qty">60ml +
-              stock</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Beurre de cacahuète</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Véritable Petit Beurre LU</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pignons de pin (adultes)</span><span
-              class="shop-qty">30g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Noix (salade vendredi)</span><span
-              class="shop-qty">60g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Compote à boire</span><span
-              class="shop-qty">—</span></div>
-        </div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">🏠 Maison & divers</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Recharge plumeau Swiffer</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Couches</span><span class="shop-qty">—</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Détartrant DeLonghi</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Ficelle jardin</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Guide Athènes</span><span
-              class="shop-qty">—</span></div>
         </div>
       </div>
 
@@ -1380,12 +1630,6 @@
               class="shop-qty">2</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Gingembre frais</span><span class="shop-qty">1
               morceau</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons</span><span class="shop-qty">6</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bananes</span><span class="shop-qty">—</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Fruits de saison</span><span
-              class="shop-qty">—</span></div>
         </div>
 
         <div class="shop-cat">
@@ -1396,38 +1640,79 @@
               class="shop-qty">50ml</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Huile de sésame</span><span
               class="shop-qty">50ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait de coco (polenta + hachis)</span><span
-              class="shop-qty">2 boîtes · 1L</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Huile neutre (wok)</span><span
               class="shop-qty">30ml</span></div>
         </div>
 
         <div class="shop-cat">
-          <div class="shop-cat-title">🧀 Yaourts / Fromages</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs</span><span class="shop-qty">30</span>
+          <div class="shop-cat-title">🍋 Fruits & divers frais</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons</span><span class="shop-qty">6</span>
           </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt grec</span><span
-              class="shop-qty">200g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt nature - Lait de vache</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Skyr</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Fromage blanc</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt - Lait de chèvre</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Parmesan râpé </span><span
-              class="shop-qty">60g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Chèvre râpé</span><span
-              class="shop-qty">60g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🧂 Épices & aromates secs</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Persil séché</span><span
-              class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Bananes</span><span class="shop-qty">—</span>
+          </div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Fruits de saison</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs</span><span class="shop-qty">—</span>
+          </div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Compote à boire</span><span
+              class="shop-qty">—</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Thym frais</span><span class="shop-qty">3
               branches</span></div>
           <div class="shop-item"><span><span class="shop-checkbox"></span>Romarin</span><span class="shop-qty">2
               branches</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt grec (caesar adultes)</span><span
+              class="shop-qty">200g</span></div>
         </div>
 
+        <div class="shop-cat">
+          <div class="shop-cat-title">🧂 Épices & aromates secs</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Herbes de Provence</span><span
+              class="shop-qty">1 c.c.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Cumin en poudre</span><span class="shop-qty">1
+              c.c.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Muscade</span><span
+              class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Persil séché</span><span
+              class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Sel, poivre</span><span
+              class="shop-qty">q.s.</span></div>
+        </div>
+
+        <div class="shop-cat">
+          <div class="shop-cat-title">🍯 Sucrants, graines & snacks</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Miel</span><span class="shop-qty">60ml +
+              stock</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Beurre de cacahuète</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Véritable Petit Beurre LU</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Graines de sésame</span><span
+              class="shop-qty">20g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pignons de pin (adultes)</span><span
+              class="shop-qty">30g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Noix (salade vendredi)</span><span
+              class="shop-qty">60g</span></div>
+        </div>
+
+        <div class="shop-cat">
+          <div class="shop-cat-title">🧀 Adultes uniquement (contient PLV)</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Parmesan râpé (caesar mardi)</span><span
+              class="shop-qty">60g</span></div>
+        </div>
+
+        <div class="shop-cat">
+          <div class="shop-cat-title">🏠 Maison & divers</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Recharge plumeau Swiffer</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Couches</span><span class="shop-qty">—</span>
+          </div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Détartrant de sonnerie</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Ficelle jardin</span><span
+              class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Guide Athènes</span><span
+              class="shop-qty">—</span></div>
+        </div>
       </div>
 
     </div>
