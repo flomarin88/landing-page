@@ -1,841 +1,371 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Cadre Endurance — Redeviens le père présent que tu veux être. En 3 mois. Garanti.</title>
-  <meta name="description"
-    content="Ingénierie de vie pour pères cadres. Je construis ton système personnalisé et je l'installe chez toi en 12 semaines. 4 places fondateur à 2 500€ HT. Garanti.">
-  <meta property="og:title" content="Le Cadre Endurance — Ingénierie de vie. Pas du coaching.">
-  <meta property="og:description"
-    content="Je construis ton système personnalisé et je l'installe chez toi en 3 mois. 4 places fondateur. 2 500€ HT. Garanti.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://florianmarin.me">
-  <meta property="og:locale" content="fr_FR">
-  <meta property="og:image" content="assets/opengraph.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="627" />
-  <meta property="og:image:alt" content="Le Cadre Endurance — Ingénierie de vie pour pères cadres. 2 500€ HT." />
-  <link rel="canonical" href="https://florianmarin.me">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Le Cadre Endurance — Redeviens le père présent que tu veux être.">
-  <meta name="twitter:description" content="Ingénierie de vie pour pères cadres. Un système construit et installé chez toi en 3 mois. Garanti.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-    rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Cadre Endurance — Reprends le contrôle de ta semaine en 12 semaines</title>
+<meta name="description" content="12 semaines pour installer un système qui protège ton sport, ton sommeil et ta présence en famille. Ingénierie de vie, pas du coaching.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #111111;
+    --bg-card: #1a1a1a;
+    --bg-alt: #222222;
+    --text: #f0f0f0;
+    --text-body: #cccccc;
+    --text-dim: #888888;
+    --accent: #FF7A00;
+    --accent-light: #ff9a40;
+    --accent-glow: rgba(255, 122, 0, 0.06);
+    --green: #4ade80;
+    --red: #f87171;
+    --border: #2a2a2a;
+  }
 
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <!-- ================================================
-     A/B/C TEST — Hero headline + sous-titre
-     Variante A : ingénieur système (contrôle)
-     Variante B : factuelle quantifiée (1 journée/semaine)
-     Variante C : sacrifice progressif (émotionnel)
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--text-body);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    -webkit-font-smoothing: antialiased;
+  }
 
-     Routage : ?v=a|b|c dans l'URL > localStorage (sticky) > aléatoire
-     Events Umami : ab_exposed, ab_cta_click, ab_diag_click
-     ================================================ -->
-  <script>
-    (function () {
-      var VARIANTS = {
-        a: {
-          headline: 'Je construis ton <span class="accent">système</span>.<br>Je l\'installe chez toi.<br>En 3 mois. Garanti.',
-          sub: "Agenda, sommeil, nutrition, sport, couple : un système personnalisé qui tient quand ta semaine déraille. De l'ingénierie de vie, pas du coaching."
-        },
-        b: {
-          headline: 'Récupère <span class="accent">1 journée par semaine</span><br>rien que pour toi.<br>En 3 mois. Garanti.',
-          sub: "52 journées par an. Sans sacrifier ta carrière ni ta famille. Un système construit et installé chez toi."
-        },
-        c: {
-          headline: 'Tu sacrifies le sport en premier.<br>Puis le sommeil. <span class="accent">Puis toi.</span>',
-          sub: "Le Cadre Endurance installe un système qui tient — en 3 mois. Construit par un ingénieur. Pas du coaching. Garanti."
-        }
-      };
+  a { color: var(--accent); text-decoration: none; }
 
-      var urlV = new URLSearchParams(window.location.search).get('v');
-      var variant = null;
-      try { variant = localStorage.getItem('lce_variant'); } catch (e) { }
-      if (urlV && VARIANTS[urlV]) {
-        variant = urlV;
-      } else if (!variant || !VARIANTS[variant]) {
-        var keys = Object.keys(VARIANTS);
-        variant = keys[Math.floor(Math.random() * keys.length)];
-      }
-      try { localStorage.setItem('lce_variant', variant); } catch (e) { }
-      window.__LCE_VARIANT = variant;
+  .section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
 
-      function applyVariant() {
-        var headlineEl = document.querySelector('[data-ab="headline"]');
-        var subEl = document.querySelector('[data-ab="sub"]');
-        if (headlineEl) headlineEl.innerHTML = VARIANTS[variant].headline;
-        if (subEl) subEl.textContent = VARIANTS[variant].sub;
-        document.body.setAttribute('data-variant', variant);
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
 
-        if (window.umami && typeof window.umami.track === 'function') {
-          window.umami.track('ab_exposed', { variant: variant });
-        }
+  .accent { color: var(--accent); }
 
-        var ctas = document.querySelectorAll('a[href*="calendly.com"]');
-        ctas.forEach(function (el) {
-          el.addEventListener('click', function () {
-            if (window.umami && typeof window.umami.track === 'function') {
-              window.umami.track('ab_cta_click', { variant: variant, label: (el.textContent || '').trim().slice(0, 40) });
-            }
-          });
-        });
+  .spacer { height: 64px; }
+  .spacer-sm { height: 40px; }
 
-        var diags = document.querySelectorAll('a[href*="tally.so"]');
-        diags.forEach(function (el) {
-          el.addEventListener('click', function () {
-            if (window.umami && typeof window.umami.track === 'function') {
-              window.umami.track('ab_lead_magnet_click', { variant: variant });
-            }
-          });
-        });
-      }
+  .separator {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .separator-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', applyVariant);
-      } else {
-        applyVariant();
-      }
-    })();
-  </script>
+  /* ============ NAV ============ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(17,17,17,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 24px;
+  }
+  .nav-name {
+    font-weight: 800; font-size: 0.9rem; color: var(--text);
+    text-decoration: none; display: flex; align-items: center; gap: 8px;
+  }
+  .nav-links { display: flex; align-items: center; gap: 20px; }
+  .nav-link {
+    font-size: 0.78rem; color: var(--text-dim); text-decoration: none;
+    font-weight: 600; letter-spacing: 0.02em;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-cta {
+    font-size: 0.78rem; font-weight: 700;
+    background: var(--accent); color: var(--bg) !important;
+    padding: 8px 16px; border-radius: 6px; text-decoration: none;
+  }
 
-  <style>
-    :root {
-      --bg: #1C1C1C;
-      --bg-card: #242424;
-      --text: #F5F5F5;
-      --text-dim: #A3A3A3;
-      --accent: #FF7A00;
-      --accent-light: #FFD84D;
-      --green: #4ADE80;
-      --red: #F87171;
-      --border: #333;
-      --font: 'Montserrat', system-ui, -apple-system, sans-serif;
-      --max-w: 720px;
-      --radius: 12px;
-    }
+  /* ============ HERO ============ */
+  .hero {
+    text-align: center;
+    padding: 120px 24px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero-category {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .hero-headline {
+    font-size: 2.4rem; font-weight: 900;
+    color: var(--text); line-height: 1.15;
+    letter-spacing: -1px; margin-bottom: 18px;
+  }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--text-body);
+    max-width: 560px; margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+  .hero-empathy {
+    font-size: 0.92rem; font-style: italic;
+    color: var(--text-dim); margin-bottom: 20px;
+  }
+  .hero-proof {
+    font-size: 0.9rem; color: var(--text-body);
+    margin-bottom: 28px; line-height: 1.6;
+  }
+  .hero-proof em { color: var(--text); }
+  .hero-proof strong { color: var(--text-dim); font-weight: 600; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  .hero-stats {
+    display: flex; gap: 24px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 32px;
+    font-size: 0.82rem; color: var(--text-dim);
+  }
+  .hero-stat-num {
+    color: var(--accent); font-weight: 800; font-size: 1.1rem;
+    display: block;
+  }
 
-    html { scroll-behavior: smooth; }
+  /* ============ CTA ============ */
+  .cta-group { text-align: center; margin: 28px 0; }
+  .cta-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--bg) !important;
+    padding: 14px 36px; border-radius: 8px;
+    font-weight: 800; font-size: 0.95rem;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: transform 0.15s;
+  }
+  .cta-primary:hover { transform: translateY(-1px); }
+  .cta-note {
+    display: block; font-size: 0.78rem;
+    color: var(--text-dim); margin-top: 10px;
+  }
+  .escape-hatch {
+    display: block; font-size: 0.82rem;
+    color: var(--text-dim); margin-top: 10px;
+    text-decoration: underline;
+  }
 
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
+  /* ============ CARDS ============ */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
 
-    ::selection { background: var(--accent); color: var(--bg); }
+  /* ============ QUOTE ============ */
+  .quote {
+    border-left: 3px solid var(--accent);
+    padding: 14px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .quote .attr {
+    display: block; font-style: normal;
+    font-size: 0.78rem; color: var(--text-dim);
+    margin-top: 8px;
+  }
 
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+  /* ============ PILLARS ============ */
+  .pillar {
+    display: flex; gap: 16px;
+    margin-bottom: 16px;
+  }
+  .pillar-bar {
+    width: 3px; flex-shrink: 0;
+    background: var(--accent); border-radius: 2px;
+  }
+  .pillar-content { flex: 1; }
+  .pillar-content p { margin: 0; }
 
-    .accent { color: var(--accent); }
-    .gradient-text {
-      background: linear-gradient(135deg, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+  /* ============ CHECK LIST ============ */
+  .check-list {
+    list-style: none; padding: 0; margin: 0;
+  }
+  .check-list li {
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.92rem; color: var(--text-body);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check { color: var(--accent); font-weight: 700; flex-shrink: 0; }
 
-    /* ============ NAV ============ */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(28,28,28,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-    }
-    .nav-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-    }
-    .nav-name {
-      font-weight: 700; font-size: 0.92rem; color: var(--text);
-      text-decoration: none;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-logo { height: 28px; width: 28px; border-radius: 50%; }
-    .nav-links { display: flex; align-items: center; gap: 18px; }
-    .nav-link {
-      font-size: 0.78rem; color: var(--text-dim);
-      text-decoration: none; font-weight: 500;
-    }
-    .nav-link:hover { color: var(--text); }
-    .nav-cta {
-      font-size: 0.78rem; font-weight: 700;
-      color: var(--bg); background: var(--accent);
-      padding: 6px 14px; border-radius: 8px;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.9; text-decoration: none; }
-    .nav-link-mobile { display: none; }
+  /* ============ GUARANTEE ============ */
+  .guarantee {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .guarantee-name {
+    font-weight: 800; font-size: 1.1rem;
+    color: var(--text); margin-bottom: 14px;
+  }
+  .guarantee p {
+    font-size: 0.9rem; color: var(--text-body);
+    margin-bottom: 10px; line-height: 1.6;
+  }
 
-    /* ============ HERO ============ */
-    .hero {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 64px 20px 48px;
-      text-align: center;
-    }
-    .hero-empathy {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      font-style: italic;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-    .hero-category {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    .hero-headline {
-      font-size: 2.4rem;
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      letter-spacing: -0.02em;
-    }
-    .hero-sub {
-      font-size: 1rem;
-      color: var(--text-dim);
-      max-width: 560px;
-      margin: 0 auto 24px;
-      line-height: 1.6;
-    }
-    .hero-proof {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-    .hero-proof strong { color: var(--text); }
-    .hero-stats {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-    }
-    .hero-stat-num {
-      font-weight: 800;
-      color: var(--accent);
-      font-size: 1.1rem;
-      display: block;
-    }
+  /* ============ FAQ ============ */
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+  }
+  .faq-q {
+    font-weight: 700; font-size: 0.92rem;
+    color: var(--text); cursor: pointer;
+    display: flex; justify-content: space-between;
+    align-items: center;
+  }
+  .faq-q::after {
+    content: '+'; font-size: 1.2rem;
+    color: var(--accent); font-weight: 300;
+    transition: transform 0.2s;
+  }
+  .faq-item.open .faq-q::after {
+    content: '−';
+  }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq-item.open .faq-a {
+    max-height: 400px;
+  }
+  .faq-a p {
+    padding-top: 12px; font-size: 0.88rem;
+    color: var(--text-body); line-height: 1.6;
+    margin: 0;
+  }
 
-    /* ============ CTAs ============ */
-    .cta-group { text-align: center; margin: 24px 0; }
-    .cta-primary {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent), #FF9A3E);
-      color: var(--bg);
-      font-weight: 800;
-      font-size: 1rem;
-      padding: 14px 32px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 20px rgba(255,122,0,0.3);
-    }
-    .cta-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(255,122,0,0.45);
-      text-decoration: none;
-    }
-    .cta-note {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      margin-top: 10px;
-    }
-    .escape-hatch {
-      display: block;
-      margin-top: 12px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      text-decoration: underline;
-    }
-    .escape-hatch:hover { color: var(--text); }
-    .cta-secondary {
-      display: inline-block;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 0.92rem;
-      padding: 12px 28px;
-      border-radius: 10px;
-      text-decoration: none;
-      transition: background 0.2s, color 0.2s;
-    }
-    .cta-secondary:hover {
-      background: var(--accent);
-      color: var(--bg);
-      text-decoration: none;
-    }
+  /* ============ MATHIEU ============ */
+  .mathieu-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px;
+  }
+  .mathieu-identity {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 24px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mathieu-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--bg-alt);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.2rem; color: var(--accent);
+    flex-shrink: 0;
+  }
+  .mathieu-name { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+  .mathieu-role { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
 
-    /* ============ SECTIONS ============ */
-    .section {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    .section h2 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      margin-bottom: 16px;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
-    .section p { margin-bottom: 14px; }
+  .metrics-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 24px;
+  }
+  .metric-box {
+    background: var(--bg-alt);
+    border-radius: 8px; padding: 16px;
+    text-align: center;
+  }
+  .metric-box .label {
+    font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-dim); margin-bottom: 6px;
+  }
+  .metric-box .shift {
+    font-size: 0.92rem; color: var(--text);
+  }
+  .metric-box .shift s { color: var(--text-dim); }
+  .metric-box .shift b { color: var(--green); font-weight: 700; }
 
-    .spacer { height: 64px; }
-    .spacer-sm { height: 40px; }
+  .mathieu-verbatim {
+    font-size: 1.05rem; font-style: italic;
+    line-height: 1.6; border-left: 3px solid var(--accent);
+    color: var(--text); padding: 6px 0 6px 20px;
+  }
+  .mathieu-source {
+    color: var(--text-dim); font-size: 0.75rem;
+    font-style: normal; margin-top: 8px;
+  }
 
-    .separator { padding: 0 20px; max-width: var(--max-w); margin: 0 auto; }
-    .separator-line { border-top: 1px solid var(--border); }
+  /* ============ WHO BLOCKS ============ */
+  .who-block, .not-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+  }
+  .who-block { border-left: 3px solid var(--accent); }
+  .not-block { border-left: 3px solid var(--text-dim); }
 
-    /* ============ CARDS ============ */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 16px;
-    }
+  /* ============ FOOTER ============ */
+  .footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    padding: 48px 24px 32px;
+  }
+  .footer a { color: var(--text-dim); text-decoration: underline; }
 
-    /* ============ QUOTE ============ */
-    .quote {
-      border-left: 3px solid var(--accent);
-      padding-left: 16px;
-      margin: 20px 0;
-      font-style: italic;
-      color: var(--text-dim);
-    }
-    .quote .attr {
-      display: block;
-      margin-top: 8px;
-      font-size: 0.82rem;
-      font-style: normal;
-      color: var(--text-dim);
-    }
-
-    /* ============ PILIERS ============ */
-    .pillar {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-      align-items: stretch;
-    }
-    .pillar-bar {
-      width: 4px;
-      background: var(--accent);
-      border-radius: 2px;
-      flex-shrink: 0;
-    }
-    .pillar-content {
-      font-size: 0.92rem;
-    }
-    .pillar-content p { margin: 0; }
-
-    /* ============ CHECKLIST ============ */
-    .check-list { list-style: none; padding: 0; }
-    .check-list li {
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.92rem;
-    }
-    .check { color: var(--green); font-weight: 700; margin-right: 8px; }
-    .bonus-val {
-      color: var(--text-dim);
-      font-size: 0.78rem;
-      margin-left: 4px;
-    }
-
-    /* ============ WHO / NOT WHO ============ */
-    .who-block, .not-block {
-      padding: 20px;
-      border-radius: var(--radius);
-      margin-bottom: 12px;
-      font-size: 0.92rem;
-    }
-    .who-block {
-      background: rgba(74,222,128,0.06);
-      border: 1px solid rgba(74,222,128,0.15);
-    }
-    .not-block {
-      background: rgba(248,113,113,0.06);
-      border: 1px solid rgba(248,113,113,0.15);
-    }
-
-    /* ============ COMPARISON TABLE ============ */
-    .compare-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-      margin: 16px 0;
-    }
-    .compare-table th, .compare-table td {
-      padding: 10px 8px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .compare-table th { font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
-    .compare-table td:first-child { text-align: left; }
-    .yes { color: var(--green); font-weight: 700; }
-    .no { color: var(--red); }
-    .partial { color: var(--accent-light); }
-
-    /* ============ PRICE BLOCK ============ */
-    .price-block {
-      background: linear-gradient(135deg, rgba(255,122,0,0.08), rgba(255,216,77,0.04));
-      border: 2px solid var(--accent);
-      border-radius: 16px;
-      text-align: center;
-      padding: 32px 24px;
-      margin: 16px 0;
-    }
-    .price-val {
-      font-size: 2.4rem;
-      font-weight: 800;
-      color: var(--accent);
-    }
-    .price-sub {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      margin-top: 4px;
-    }
-    .price-old {
-      font-size: 1.1rem;
-      color: var(--text-dim);
-      text-decoration: line-through;
-      margin-bottom: 4px;
-    }
-
-    /* ============ GUARANTEE ============ */
-    .guarantee {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-    }
-    .guarantee-name {
-      font-weight: 800;
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-    }
-
-    /* ============ URGENCY ============ */
-    .urgency {
-      background: rgba(255,122,0,0.06);
-      border: 1px solid rgba(255,122,0,0.2);
-      border-radius: var(--radius);
-      padding: 20px;
-      font-size: 0.92rem;
-    }
-
-    /* ============ FAQ ============ */
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-      padding: 14px 0;
-    }
-    .faq-q {
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.92rem;
-      padding-right: 24px;
-      position: relative;
-    }
-    .faq-q::after {
-      content: '+';
-      position: absolute;
-      right: 0;
-      top: 0;
-      font-size: 1.2rem;
-      color: var(--accent);
-      transition: transform 0.2s;
-    }
-    .faq-item.open .faq-q::after { content: '\2212'; }
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-    .faq-item.open .faq-a { max-height: 500px; }
-    .faq-a p {
-      padding-top: 10px;
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      line-height: 1.6;
-    }
-
-    /* ============ VOICES GRID ============ */
-    .voices-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .voice-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-    }
-    .voice-quote {
-      font-size: 0.88rem;
-      font-style: italic;
-      color: var(--text);
-      margin-bottom: 8px;
-      line-height: 1.5;
-    }
-    .voice-attr {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin: 0;
-    }
-    .voices-intro {
-      font-size: 0.92rem;
-      color: var(--text-dim);
-    }
-    .voices-footnote {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-top: 8px;
-    }
-
-    /* ============ VALUE STACK ============ */
-    .stack-layer {
-      margin-bottom: 24px;
-    }
-    .stack-layer-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .stack-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 7px 0;
-      border-bottom: 1px solid #2a2a2a;
-      font-size: 0.85rem;
-    }
-    .stack-item-name { color: var(--text); flex: 1; }
-    .stack-item-val { font-weight: 700; margin-left: 12px; white-space: nowrap; }
-
-    /* ============ MATHIEU SECTION ============ */
-    .mathieu-section {
-      background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
-      padding: 56px 20px;
-    }
-    .mathieu-section .container { max-width: var(--max-w); margin: 0 auto; }
-    .mathieu-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .mathieu-heading {
-      font-size: 2rem;
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 12px;
-    }
-    .mathieu-intro {
-      font-size: 0.95rem;
-      color: var(--text-dim);
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-    .mathieu-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-    }
-    .mathieu-identity {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .mathieu-avatar {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.1rem;
-    }
-    .mathieu-name { font-weight: 700; font-size: 1rem; }
-    .mathieu-role { font-size: 0.82rem; color: var(--text-dim); }
-
-    .timeline {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-    .timeline-time {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .timeline-title {
-      font-weight: 700;
-      font-size: 0.92rem;
-      margin-bottom: 10px;
-    }
-    .timeline-list {
-      list-style: none; padding: 0;
-      font-size: 0.85rem; color: var(--text-dim);
-    }
-    .timeline-list li {
-      padding: 4px 0;
-      padding-left: 16px;
-      position: relative;
-    }
-    .timeline-list li::before {
-      content: '\2192';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-    }
-    .bigshift {
-      display: block;
-      font-size: 0.82rem;
-      margin-top: 2px;
-    }
-
-    .mathieu-verbatim {
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      padding: 20px;
-      font-style: italic;
-      font-size: 0.92rem;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-    .mathieu-source {
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      font-style: normal;
-      margin-top: 8px;
-    }
-
-    .mathieu-wa {
-      background: var(--bg-card);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-top: 16px;
-    }
-    .mathieu-wa-label {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--green);
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .mathieu-wa-heading {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
-    .mathieu-wa blockquote {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      border-left: 3px solid var(--green);
-      padding-left: 14px;
-      margin: 0;
-      line-height: 1.6;
-    }
-    .mathieu-wa-source { color: var(--text-dim); font-size: 0.78rem; margin-top: 12px; }
-
-    /* ============ AUTHORITY BLOCK ============ */
-    .authority-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 20px 0;
-    }
-    .authority-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      text-align: center;
-    }
-    .authority-num {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--accent);
-      display: block;
-    }
-    .authority-label {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      margin-top: 4px;
-    }
-
-    /* ============ ANTI-POSITIONING ============ */
-    .anti-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin: 20px 0;
-      font-size: 0.85rem;
-    }
-    .anti-col-header {
-      padding: 10px 14px;
-      font-weight: 700;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .anti-col-no { background: rgba(248,113,113,0.08); color: var(--red); }
-    .anti-col-yes { background: rgba(74,222,128,0.08); color: var(--green); }
-    .anti-row {
-      padding: 8px 14px;
-      border-top: 1px solid var(--border);
-    }
-    .anti-row-no { color: var(--text-dim); text-decoration: line-through; }
-    .anti-row-yes { color: var(--text); }
-
-    /* ============ GUARANTEE STACK ============ */
-    .guarantee-stack-item {
-      display: flex;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.88rem;
-    }
-    .guarantee-step {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(255,122,0,0.12);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.75rem;
-    }
-
-    /* ============ FOOTER ============ */
-    .footer {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 32px 20px;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-    }
-    .footer a { color: var(--text-dim); }
-    .footer a:hover { color: var(--text); }
-
-    /* ============ STICKY MOBILE CTA ============ */
-    .sticky-cta {
-      display: none;
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      z-index: 99;
-      padding: 10px 16px;
-      background: rgba(28,28,28,0.95);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--border);
-    }
-    .sticky-cta a {
-      display: block;
-      text-align: center;
-      background: linear-gradient(135deg, var(--accent), #FF9A3E);
-      color: var(--bg);
-      font-weight: 800;
-      font-size: 0.88rem;
-      padding: 12px;
-      border-radius: 10px;
-      text-decoration: none;
-    }
-
-    /* ============ LINK STYLE ============ */
-    .link { color: var(--accent); text-decoration: underline; }
-    .link:hover { color: var(--accent-light); }
-
-    /* ============ VILLAIN LINE ============ */
-    .villain-line {
-      font-size: 1.1rem;
-      line-height: 1.4;
-      margin-bottom: 16px;
-    }
-
-    /* ============ RESPONSIVE ============ */
-    @media (max-width: 640px) {
-      .hero-headline { font-size: 1.7rem; }
-      .hero-stats { flex-direction: column; gap: 12px; }
-      .voices-grid { grid-template-columns: 1fr; }
-      .authority-grid { grid-template-columns: 1fr; }
-      .anti-block { grid-template-columns: 1fr; }
-      .compare-table { font-size: 0.72rem; }
-      .compare-table th, .compare-table td { padding: 8px 4px; }
-      .nav-link:not(.nav-link-mobile) { display: none; }
-      .nav-link-mobile { display: inline; }
-      .sticky-cta { display: block; }
-      body { padding-bottom: 64px; }
-      .timeline { grid-template-columns: 1fr; gap: 16px; }
-      .mathieu-section { padding: 56px 16px; }
-      .mathieu-heading { font-size: 1.7rem; }
-      .mathieu-card { padding: 22px; }
-    }
-  </style>
+  /* ============ STICKY MOBILE CTA ============ */
+  .sticky-cta {
+    display: none; position: fixed;
+    bottom: 0; left: 0; right: 0; z-index: 99;
+    background: rgba(17,17,17,0.96);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .sticky-cta a {
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--bg) !important;
+    padding: 12px 24px; border-radius: 8px;
+    font-weight: 800; font-size: 0.9rem;
+    text-decoration: none;
+  }
+  @media (max-width: 640px) {
+    .sticky-cta { display: block; }
+    body { padding-bottom: 70px; }
+    .hero-headline { font-size: 1.7rem; }
+    .metrics-grid { grid-template-columns: 1fr; }
+    .nav-link { display: none; }
+  }
+</style>
 </head>
-
 <body>
 
   <nav class="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-name"><img src="assets/logo.png" alt="FM" class="nav-logo">Florian Marin</a>
+      <a href="#" class="nav-name">Florian Marin</a>
       <div class="nav-links">
-        <a href="#probleme" class="nav-link">Probl&egrave;me</a>
-        <a href="#resultats" class="nav-link">R&eacute;sultats</a>
-        <a href="#systeme" class="nav-link">Syst&egrave;me</a>
-        <a href="#pricing" class="nav-link nav-link-mobile">Tarif</a>
+        <a href="#probleme" class="nav-link">Problème</a>
+        <a href="#resultats" class="nav-link">Résultats</a>
+        <a href="#systeme" class="nav-link">Système</a>
         <a href="#faq" class="nav-link">FAQ</a>
-        <a href="https://calendly.com/florian-marin/audit-triangle" class="nav-cta" data-umami-event="nav-cta-click">Diagnostic gratuit</a>
+        <a href="https://tally.so/r/68OLD5" class="nav-cta" data-umami-event="nav-cta-click">Vérifier mon éligibilité</a>
       </div>
     </div>
   </nav>
@@ -844,86 +374,70 @@
      HERO
      ================================================ -->
   <div class="hero" id="hero">
-    <div
-      style="width: 80px; height: 80px; border-radius: 50%; background: var(--bg-card); border: 3px solid var(--accent); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-      <img src="assets/profile.png" alt="Florian Marin" style="width:100%;height:100%;object-fit:cover;">
+    <div class="hero-empathy">« Je sais ce que c'est d'ouvrir Slack à 23h pour faire ton vrai boulot. J'ai arrêté en 2019. »</div>
+    <div class="hero-category">Le Cadre · Endurance · 12 semaines</div>
+    <div class="hero-headline">
+      Reprends le <span class="accent">contrôle</span> de ta semaine<br>et ta présence en famille.
     </div>
-    <div class="hero-empathy">&laquo;&nbsp;Je sais ce que c'est d'ouvrir Slack &agrave; 23h pour faire ton vrai boulot. J'ai arr&ecirc;t&eacute; en 2019.&nbsp;&raquo;</div>
-    <div class="hero-category">Ing&eacute;nierie de vie &middot; 12 semaines &middot; P&egrave;res cadres</div>
-    <div class="hero-headline" data-ab="headline">
-      Je construis ton <span class="accent">syst&egrave;me</span>.<br>Je l'installe chez toi.<br>En 3 mois. Garanti.
+    <div class="hero-sub">
+      J'installe un système personnalisé qui protège ton sport, ton sommeil et ta vie de famille — avec du software que je développe moi-même. En 12 semaines, c'est construit. Après, ça tourne sans moi.
     </div>
-    <div class="hero-sub" data-ab="sub">
-      Agenda, sommeil, nutrition, sport, couple : un syst&egrave;me personnalis&eacute; qui tient quand ta semaine d&eacute;raille. De l'ing&eacute;nierie de vie, pas du coaching.
-    </div>
+
     <div class="hero-proof">
-      <em>&laquo;&nbsp;Je pensais que j'en &eacute;tais incapable. Aujourd'hui j'ai plus envie de revenir en arri&egrave;re.&nbsp;&raquo;</em><br>
-      <strong>&mdash; Mathieu D., dev freelance, 3 mois apr&egrave;s</strong>
+      <em>« Je pensais que j'en étais incapable. Aujourd'hui j'ai plus envie de revenir en arrière. »</em><br>
+      <strong>— Mathieu D., dev freelance, 3 mois après</strong>
     </div>
+
     <div class="hero-stats">
-      <div><span class="hero-stat-num">33/33</span> p&egrave;res ont &eacute;chou&eacute; seuls en moins de 3&nbsp;semaines</div>
-      <div><span class="hero-stat-num">12 sem.</span> pour installer un syst&egrave;me qui dure</div>
-      <div><span class="hero-stat-num">50+</span> personnes mentor&eacute;es en carri&egrave;re tech</div>
+      <div><span class="hero-stat-num">0 → 5h</span> de sport/sem en 14 jours</div>
+      <div><span class="hero-stat-num">36</span> pères interviewés, même pattern</div>
+      <div><span class="hero-stat-num">5 ans</span> à construire ce système</div>
     </div>
-    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
-      <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Manager tech</span>
-      <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">D&eacute;veloppeur</span>
-      <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">50+ mentor&eacute;s</span>
-      <span style="font-size: 0.7rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">OCTO &middot; Aircall &middot; Teads</span>
-    </div>
+
     <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
-        data-umami-event="hero-cta-diagnostic">Diagnostic Cadre Offert &mdash; 30 min</a>
-      <span class="cta-note">Gratuit. Je diagnostique ton syst&egrave;me et je t'offre 1 action concr&egrave;te &agrave; tester cette semaine.</span>
-      <a href="#pricing" class="escape-hatch"
-        data-umami-event="hero-cta-pricing">Voir l'offre Fondateur (4 places) &rarr;</a>
+      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="hero-cta">Vérifier mon éligibilité</a>
+      <span class="cta-note">5 questions · 1 minute · Je te réponds personnellement.</span>
+      <a href="https://calendly.com/florian-marin/audit-triangle" class="escape-hatch" data-umami-event="hero-cta-diagnostic">Tu préfères en discuter ? Diagnostic gratuit (30 min) →</a>
     </div>
   </div>
 
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
-     PROBLEME
+     PROBLÈME
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="probleme">
-    <h2>Tu te reconnais&nbsp;?</h2>
+    <h2>Tu te reconnais ?</h2>
 
-    <p class="villain-line"><strong>Ton vrai boss, c'est plus ton CEO. C'est l'agenda qui d&eacute;cide &agrave; 14h57 &agrave; ta place.</strong></p>
+    <p>Mardi, 6h45. L'alarme sonne. Tu l'éteins. Le petit s'est réveillé deux fois. Tu te dis « demain ».</p>
+
+    <p>Ça fait 14 mois que tu te dis demain.</p>
+
+    <p>Tu faisais 6 à 8h de sport par semaine. Aujourd'hui tu en fais 1h30 — quand tout va bien. Le week-end, si tu veux une sortie longue, ça se négocie. Et la négociation te fatigue plus que l'entraînement.</p>
 
     <div class="quote">
-      <p>&laquo;&nbsp;C'est un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'&ecirc;tre.&nbsp;&raquo;</p>
-      <span class="attr">Mathieu D., dev freelance, 1 enfant</span>
+      <p>« C'est un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'être. »</p>
+      <span class="attr">— Mathieu D., dev freelance, 1 enfant</span>
     </div>
 
-    <div
-      style="background: var(--bg-card); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
-      <p style="margin: 0; font-size: 0.95rem; color: var(--text);">Sur <strong>33 p&egrave;res</strong> interview&eacute;s,
-        <strong>33</strong> avaient essay&eacute; de s'organiser seuls. <strong>33</strong> ont &eacute;chou&eacute; en moins de 3&nbsp;semaines.
-      </p>
-      <p style="margin: 6px 0 0; font-size: 0.88rem; color: var(--text-dim);">Le probl&egrave;me n'est jamais la volont&eacute; &mdash;
-        toujours l'architecture.</p>
+    <div style="background: var(--bg-card); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
+      <p style="margin: 0; font-size: 0.95rem; color: var(--text);">Sur <strong>33 pères</strong> interviewés, <strong>33</strong> avaient essayé de s'organiser seuls. <strong>33</strong> ont échoué en moins de 3 semaines.</p>
+      <p style="margin: 6px 0 0; font-size: 0.88rem; color: var(--text-dim);">Le problème n'est jamais la volonté — toujours le cadre.</p>
     </div>
 
-    <p>Tu fais du sport &laquo;&nbsp;quand tu peux&nbsp;&raquo; &mdash; une &agrave; deux s&eacute;ances, parfois z&eacute;ro. Quand un impr&eacute;vu tombe, c'est toujours
-      le sport qui saute. Le week-end, si tu veux une sortie longue, &ccedil;a se n&eacute;gocie. Et la n&eacute;gociation te fatigue plus que
-      l'entra&icirc;nement.</p>
+    <p>Tu as déjà essayé. Freeletics. Un coach perso. Un planning Notion couleur pastel. Ça a tenu 3 semaines — puis une gastro du petit, un sprint au boulot, et c'est fini.</p>
 
-    <p>&Ccedil;a fait combien de temps que tu te dis &laquo;&nbsp;lundi, je m'y remets&nbsp;&raquo;&nbsp;? 82% des p&egrave;res que j'ai interview&eacute;s d&eacute;crivent
-      la m&ecirc;me chose&nbsp;: <strong>ils ne s'autorisent plus &agrave; prendre du temps pour eux.</strong></p>
+    <p>Ce n'est pas ta discipline qui a lâché. C'est que personne ne t'a jamais aidé à résoudre le vrai problème : <strong style="color:var(--accent);">négocier un créneau protégé et construire un système qui tient quand tout part en vrille.</strong></p>
 
-    <p><strong style="color:var(--accent);">Ton probl&egrave;me, c'est pas la motivation. C'est l'absence de syst&egrave;me.</strong></p>
-
-    <div
-      style="background: linear-gradient(135deg, rgba(255,122,0,0.06), rgba(74,222,128,0.05)); border: 1px solid rgba(255,122,0,0.2); border-radius: 12px; padding: 20px 22px; margin: 24px 0 0;">
-      <p
-        style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700;">
-        Et de l'autre c&ocirc;t&eacute;</p>
-      <p style="margin: 0; color: var(--text); font-size: 0.95rem;">Te lever le lundi en sachant que ta semaine tient.
-        Arriver au travail avec de l'&eacute;nergie au lieu d'en chercher. Dormir le dimanche soir sans culpabilit&eacute; ni liste
-        mentale. <strong>&Ecirc;tre le p&egrave;re pr&eacute;sent que tu veux &ecirc;tre &mdash; et r&eacute;cup&eacute;rer 1 journ&eacute;e par semaine pour le prouver.</strong></p>
+    <div style="background: linear-gradient(135deg, rgba(255,122,0,0.06), rgba(74,222,128,0.05)); border: 1px solid rgba(255,122,0,0.2); border-radius: 12px; padding: 20px 22px; margin: 24px 0 0;">
+      <p style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700;">Et de l'autre côté</p>
+      <p style="margin: 0; color: var(--text); font-size: 0.95rem;">Te lever le lundi en sachant que ta semaine tient. Arriver au travail avec de l'énergie au lieu d'en chercher. Dormir le dimanche soir sans culpabilité ni liste mentale. <strong>Être le père et l'homme que tu veux être — sans choisir.</strong></p>
     </div>
   </div>
+
+  <div class="spacer-sm"></div>
+  <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
      POUR QUI
@@ -931,502 +445,199 @@
   <div class="spacer-sm"></div>
   <div class="section" id="pour-qui">
     <div class="who-block">
-      <p><strong style="color: var(--accent);">&#10003; Ce programme est fait pour toi si&nbsp;:</strong></p>
-      <p style="margin: 0;">Tu es p&egrave;re, tu bosses (cadre, manager, freelance, entrepreneur &mdash; tous secteurs), tu as au moins un enfant en bas &acirc;ge (0-6 ans). Tu faisais du sport avant. Tu es maintenant &agrave; 0-2h par semaine, ou tu as compl&egrave;tement arr&ecirc;t&eacute;. Tu ne cherches pas des conseils &mdash; tu cherches un syst&egrave;me construit pour toi.</p>
+      <p><strong style="color: var(--accent);">✓ Le Cadre est fait pour toi si :</strong></p>
+      <p style="margin: 0;">Tu es père, tu as au moins un enfant en bas âge. Tu faisais 4 à 6h de sport par semaine avant. Tu es maintenant à 0-2h, ou tu as complètement arrêté sans vraiment l'avoir décidé. Tu ne cherches pas des conseils — tu cherches un système.</p>
     </div>
 
     <div class="not-block">
-      <p><strong>&#10007; Ce programme n'est PAS fait pour toi si&nbsp;:</strong></p>
-      <p style="margin: 0;">Tu cherches un plan d'entra&icirc;nement ou un coach sportif. Tu fais d&eacute;j&agrave; plus de 5h de sport par semaine. Tu veux du &laquo;&nbsp;mindset&nbsp;&raquo; et de la motivation. <strong>Ici, c'est de l'ing&eacute;nierie. Pas du d&eacute;veloppement personnel.</strong></p>
+      <p><strong>✗ Le Cadre n'est PAS fait pour toi si :</strong></p>
+      <p style="margin: 0;">Tu cherches un plan d'entraînement ou un coach sportif. Tu fais déjà plus de 5h de sport par semaine. Tu veux du « mindset » et de la motivation. <strong>Ici, c'est du système.</strong></p>
     </div>
   </div>
 
-  <div class="section">
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
-        data-umami-event="post-problem-cta-diagnostic">Diagnostic Cadre Offert &mdash; 30 min</a>
-      <span class="cta-note">Je diagnostique, tu d&eacute;cides. Sans engagement.</span>
-    </div>
-  </div>
-
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
-     CE QUI EST DIFFERENT — Anti-positionnement
+     RÉSULTATS — Mathieu (Sinatra Test)
      ================================================ -->
   <div class="spacer-sm"></div>
-  <div class="section">
-    <h2>Ing&eacute;nierie de vie. Pas du coaching.</h2>
+  <div class="section" id="resultats">
+    <h2>« Je pensais que j'en étais <span class="accent">incapable</span>. »</h2>
+    <p style="margin-bottom: 24px;">Voilà ce que Mathieu a installé — et ce qui tient 3 mois après.</p>
 
-    <p>Je ne suis pas coach. Je suis ing&eacute;nieur. Ancien manager tech, d&eacute;veloppeur, mentor de 50+ personnes. En 2019, j'ai fait un burn-out. J'ai fait ce que n'importe quel ing&eacute;nieur ferait&nbsp;: <strong>j'ai construit un syst&egrave;me.</strong></p>
+    <div class="mathieu-card">
+      <div class="mathieu-identity">
+        <div class="mathieu-avatar">M</div>
+        <div>
+          <div class="mathieu-name">Mathieu D.</div>
+          <div class="mathieu-role">Dev freelance · 40 ans · 1 enfant · Télétravail</div>
+        </div>
+      </div>
 
-    <div class="anti-block">
-      <div class="anti-col-header anti-col-no">Le Cadre n'est PAS</div>
-      <div class="anti-col-header anti-col-yes">Le Cadre EST</div>
-      <div class="anti-row anti-row-no">Du d&eacute;veloppement personnel</div>
-      <div class="anti-row anti-row-yes">De l'ing&eacute;nierie de vie</div>
-      <div class="anti-row anti-row-no">Du coaching feel-good</div>
-      <div class="anti-row anti-row-yes">Un syst&egrave;me construit et install&eacute;</div>
-      <div class="anti-row anti-row-no">Des templates &agrave; remplir</div>
-      <div class="anti-row anti-row-yes">Du software d&eacute;velopp&eacute; sur mesure</div>
-      <div class="anti-row anti-row-no">De la motivation</div>
-      <div class="anti-row anti-row-yes">De l'architecture</div>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="label">Sport / semaine</div>
+          <div class="shift"><s>0</s> → <b>5h</b></div>
+        </div>
+        <div class="metric-box">
+          <div class="label">Heure de coucher</div>
+          <div class="shift"><s>2h00</s> → <b>23h30</b></div>
+        </div>
+        <div class="metric-box">
+          <div class="label">Créneaux protégés</div>
+          <div class="shift"><s>0</s> → <b>6 / semaine</b></div>
+        </div>
+        <div class="metric-box">
+          <div class="label">Système stable</div>
+          <div class="shift"><b>3 mois+</b></div>
+        </div>
+      </div>
+
+      <div class="mathieu-verbatim">
+        « Je pensais que je n'y arriverais pas, ça me paraissait impossible. Aujourd'hui ça me paraît à la fois possible et tellement bénéfique que j'ai plus envie de revenir en arrière. »
+        <div class="mathieu-source">— Mathieu, 3 mois de pratique · avril 2026</div>
+      </div>
     </div>
 
-    <div class="authority-grid">
-      <div class="authority-card">
-        <span class="authority-num">15+</span>
-        <div class="authority-label">ans dans la tech</div>
-      </div>
-      <div class="authority-card">
-        <span class="authority-num">50+</span>
-        <div class="authority-label">personnes mentor&eacute;es</div>
-      </div>
-      <div class="authority-card">
-        <span class="authority-num">33</span>
-        <div class="authority-label">p&egrave;res interview&eacute;s</div>
-      </div>
+    <div class="card" style="margin-top: 16px;">
+      <div style="color: var(--text-dim); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">Ce qu'il m'écrit en vrai</div>
+      <p style="font-style: italic; font-size: 0.88rem; color: var(--text-body); margin: 0;">« Semaine un peu pourrie côté sport : j'ai été malade toute la semaine. Mais j'ai quand même gardé les kinés, le squash, et les balades du chien. Pâques + imprévus + fatigue, et le cadre tient. C'est ça qui me rassure le plus. »</p>
+      <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 10px;">— Mathieu, WhatsApp · 11 avril 2026</p>
     </div>
   </div>
 
+  <div class="spacer-sm"></div>
+
+  <!-- CTA intermédiaire -->
+  <div class="section">
+    <div class="cta-group">
+      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="mid-cta">Vérifier mon éligibilité</a>
+      <span class="cta-note">5 questions · 1 minute · 4 places fondateur.</span>
+    </div>
+  </div>
+
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
-     LE SYSTEME EN 5 PILIERS
+     LE SYSTÈME — 5 piliers
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="systeme">
-    <h2>Le syst&egrave;me en 5 piliers</h2>
+    <h2>Un système en <span class="accent">5 piliers</span>, installé en 12 semaines</h2>
 
-    <p>Pas du coaching sportif. Pas du coaching de vie. De l'ing&eacute;nierie appliqu&eacute;e &agrave; ta vie perso. Je construis chaque pilier et je l'installe chez toi.</p>
+    <p style="margin-bottom: 24px;">Pas du coaching sportif. Pas du coaching de vie. De l'ingénierie appliquée à ta vie perso.</p>
 
     <div class="pillar">
       <div class="pillar-bar"></div>
       <div class="pillar-content">
-        <p><strong>Vision &amp; Objectifs.</strong> J'audite ta vie comme j'auditais un syst&egrave;me en production&nbsp;: inputs, outputs, bottlenecks, single points of failure. Tu repars avec ton architecture cible.</p>
+        <p><strong style="color: var(--text);">Vision & Objectifs.</strong> J'audite ta vie comme j'auditais un système en production : inputs, outputs, bottlenecks, single points of failure. Tu repars avec ton architecture cible.</p>
       </div>
     </div>
     <div class="pillar">
       <div class="pillar-bar"></div>
       <div class="pillar-content">
-        <p><strong>Agenda &amp; Blocs prot&eacute;g&eacute;s.</strong> Chez Mathieu&nbsp;: 3 cr&eacute;neaux sport + 2 kin&eacute;s + 1 musique, bloqu&eacute;s dans Google Calendar et partag&eacute;s avec sa femme. Aussi non-n&eacute;gociables qu'un 1:1 avec ton N+1.</p>
+        <p><strong style="color: var(--text);">Agenda & Blocs protégés.</strong> Créneaux aussi non-négociables qu'un 1:1 avec ton N+1. Chaque bloc a un plan B intégré. Chez Mathieu : 3 sport + 2 kinés + 1 musique, partagés avec sa femme.</p>
       </div>
     </div>
     <div class="pillar">
       <div class="pillar-bar"></div>
       <div class="pillar-content">
-        <p><strong>Sommeil.</strong> L'extinction des feux. Chez Mathieu&nbsp;: coucher &agrave; 23h30 tous les soirs (il &eacute;tait &agrave; 2h du matin). Sans ce pilier, tout le reste se casse en 72h.</p>
+        <p><strong style="color: var(--text);">Sommeil.</strong> L'extinction des feux. Sans ce pilier, tout le reste se casse en 72h. Protocole basé sur données réelles (Garmin, Withings, Apple Watch), monitoring automatisé.</p>
       </div>
     </div>
     <div class="pillar">
       <div class="pillar-bar"></div>
       <div class="pillar-content">
-        <p><strong>Nutrition.</strong> Meal Planner IA + liste de courses familiale partag&eacute;e qui s'alimente automatiquement via Shortcut iOS. Plus de charge mentale sur &laquo;&nbsp;qu'est-ce qu'on mange&nbsp;&raquo;.</p>
+        <p><strong style="color: var(--text);">Nutrition.</strong> Meal Planner IA configuré + liste de courses familiale partagée qui s'alimente automatiquement. Plus de charge mentale « qu'est-ce qu'on mange ».</p>
       </div>
     </div>
     <div class="pillar">
       <div class="pillar-bar"></div>
       <div class="pillar-content">
-        <p><strong>Accord couple.</strong> Pos&eacute; une fois, en 20 minutes. Le cadre que tu poses tout seul ne tient jamais une semaine. Celui qu'elle a valid&eacute;, oui.</p>
+        <p><strong style="color: var(--text);">Accord couple.</strong> Le cadre que tu poses tout seul ne tient jamais une semaine. Celui qu'elle a validé, oui. Session conjointe + scripts structurés + système de sync familial.</p>
       </div>
     </div>
   </div>
 
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     VOICES FROM THE FIELD
-     ================================================ -->
   <div class="spacer-sm"></div>
-  <div class="section voices-section" id="voices">
-    <h2>&laquo;&nbsp;Tu d&eacute;cris exactement ma semaine.&nbsp;&raquo;</h2>
-    <p class="voices-intro">33 interviews de p&egrave;res cadres en 6 mois. 4 voix, un m&ecirc;me diagnostic.</p>
-
-    <div class="voices-grid">
-      <div class="voice-card">
-        <p class="voice-quote">&laquo;&nbsp;Je me suis inscrit en boxe, 2 soirs par semaine. &Ccedil;a a tenu une semaine. Apr&egrave;s tu prends des remarques.&nbsp;&raquo;</p>
-        <p class="voice-attr">&mdash; Cadre, 2 enfants</p>
-      </div>
-      <div class="voice-card">
-        <p class="voice-quote">&laquo;&nbsp;Des fois tout fonctionne. Des fois tout d&eacute;borde. Je sacrifie en premier&nbsp;: le temps perso, puis la todo, puis le sport.&nbsp;&raquo;</p>
-        <p class="voice-attr">&mdash; Cadre, 1 enfant, objectif trail</p>
-      </div>
-      <div class="voice-card">
-        <p class="voice-quote">&laquo;&nbsp;Tout est dans ma t&ecirc;te. J'ai l'impression de ne plus rien faire de mes journ&eacute;es.&nbsp;&raquo;</p>
-        <p class="voice-attr">&mdash; Manager, 3 enfants</p>
-      </div>
-      <div class="voice-card">
-        <p class="voice-quote">&laquo;&nbsp;Moins t'es organis&eacute;, moins t'as de temps. On se laisse vite d&eacute;border.&nbsp;&raquo;</p>
-        <p class="voice-attr">&mdash; Cadre, 3 enfants, t&eacute;l&eacute;travail</p>
-      </div>
-    </div>
-
-    <p class="voices-footnote">Verbatims issus d'entretiens 1:1 conduits entre octobre 2025 et mars 2026. Pr&eacute;noms anonymis&eacute;s, contexte authentique.</p>
-  </div>
-
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
-     RESULTATS — Mathieu, Endurance framing
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <section class="mathieu-section" id="resultats">
-    <div class="container">
-      <div class="mathieu-label">Client Fondateur #1 &mdash; Endurance 12 semaines</div>
-      <h2 class="mathieu-heading">&laquo;&nbsp;Je pensais que j'en &eacute;tais <em>incapable</em>.&nbsp;&raquo;</h2>
-      <p class="mathieu-intro">
-        Voil&agrave; ce que le syst&egrave;me a install&eacute; chez Mathieu en 14 jours &mdash; et comment il tient 3 mois apr&egrave;s, sans moi.
-      </p>
-
-      <div class="mathieu-card">
-        <div class="mathieu-identity">
-          <div class="mathieu-avatar">M</div>
-          <div>
-            <div class="mathieu-name">Mathieu D.</div>
-            <div class="mathieu-role">Dev freelance &middot; 37h/sem &middot; 1 fils (3 ans) &middot; En couple</div>
-          </div>
-        </div>
-
-        <div class="timeline">
-          <div class="timeline-col left">
-            <div class="timeline-time">Semaine 1-2</div>
-            <div class="timeline-title">Le syst&egrave;me install&eacute; &mdash; <span style="color: var(--accent);">6h+ bloqu&eacute;es</span></div>
-            <ul class="timeline-list">
-              <li>Agenda restructur&eacute; et partag&eacute; avec sa femme</li>
-              <li>3 cr&eacute;neaux sport + 2 kin&eacute;s + 1 musique, bloqu&eacute;s</li>
-              <li>
-                <strong>Coucher &agrave; heure fixe</strong>
-                <span class="bigshift"><s>2h du matin</s> &rarr; <b>23h30 tous les soirs</b></span>
-              </li>
-              <li>Shutdown 18h30 instaur&eacute;</li>
-            </ul>
-          </div>
-          <div class="timeline-col right">
-            <div class="timeline-time">3 mois apr&egrave;s</div>
-            <div class="timeline-title">Le syst&egrave;me tient &mdash; <span style="color: var(--accent);">sans moi</span></div>
-            <ul class="timeline-list">
-              <li>Sport quotidien devenu rituel</li>
-              <li>Mardi apr&egrave;s-midi lib&eacute;r&eacute; pour sa femme</li>
-              <li>Pacte Couple install&eacute; et fonctionnel</li>
-              <li>Le syst&egrave;me absorbe les impr&eacute;vus sans s'effondrer</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mathieu-verbatim">
-          &laquo;&nbsp;Je pensais que je n'y arriverais pas, &ccedil;a me paraissait impossible. Aujourd'hui &ccedil;a me para&icirc;t &agrave; la fois possible et tellement b&eacute;n&eacute;fique que j'ai plus envie de revenir en arri&egrave;re.&nbsp;&raquo;
-          <div class="mathieu-source">&mdash; Mathieu, 3 mois de pratique &middot; avril 2026</div>
-        </div>
-
-        <div style="background: var(--bg-card); border-radius: var(--radius); padding: 16px 18px; margin-top: 12px;">
-          <strong style="font-size: 0.88rem;">Ce que Le Cadre Endurance installe&nbsp;:</strong>
-          <span style="font-size: 0.85rem; color: var(--text-dim);"> le syst&egrave;me complet en 12 semaines (colonne de gauche). </span>
-          <strong style="font-size: 0.88rem;">Ce qui dure apr&egrave;s&nbsp;:</strong>
-          <span style="font-size: 0.85rem; color: var(--text-dim);"> le software tourne &agrave; vie, le syst&egrave;me tient sans moi (colonne de droite). C'est du delivery, pas du coaching.</span>
-        </div>
-      </div>
-
-      <div class="mathieu-wa">
-        <div class="mathieu-wa-label">Ce qu'il m'&eacute;crit en vrai</div>
-        <div class="mathieu-wa-heading">M&ecirc;me les semaines imparfaites comptent</div>
-        <blockquote>
-          &laquo;&nbsp;Points positifs&nbsp;: l'extinction des feux &agrave; 23h30 porte ses fruits&nbsp;; on a fait le planning de ma femme sur son calendrier Google et on essaie de rester synchronis&eacute;s.<br><br>
-          Points n&eacute;gatifs&nbsp;: pas fait toutes les s&eacute;ances que j'aurais aim&eacute; faire (mais j'en ai quand m&ecirc;me fait 2 + kin&eacute;, et j'ai encore espoir d'aller courir aujourd'hui&nbsp;!)&nbsp;&raquo;
-        </blockquote>
-        <div class="mathieu-wa-source">&mdash; Mathieu, WhatsApp &middot; 20 mars 2026</div>
-      </div>
-
-      <div class="mathieu-wa">
-        <div class="mathieu-wa-label">3 semaines plus tard &mdash; le syst&egrave;me absorbe l'impr&eacute;vu</div>
-        <div class="mathieu-wa-heading">Malade une semaine, P&acirc;ques, multiples impr&eacute;vus. Le syst&egrave;me tient.</div>
-        <blockquote>
-          &laquo;&nbsp;Semaine un peu pourrie c&ocirc;t&eacute; sport&nbsp;: j'ai &eacute;t&eacute; malade toute la semaine. Mais j'ai quand m&ecirc;me gard&eacute; les kin&eacute;s, le squash, et les balades du chien. J'ai d&eacute;cal&eacute; la course du matin vers midi &mdash; &ccedil;a me va mieux quand je suis fatigu&eacute;.<br><br>
-          P&acirc;ques + impr&eacute;vus + fatigue, et le cadre tient. C'est &ccedil;a qui me rassure le plus.&nbsp;&raquo;
-        </blockquote>
-        <div class="mathieu-wa-source">&mdash; Mathieu, WhatsApp &middot; 11 avril 2026</div>
-      </div>
-
-      <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--border); margin: 32px 0 0;">
-        <div
-          style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); font-weight: 700; padding: 12px 16px; background: var(--bg-card);">
-          Google Calendar de Mathieu apr&egrave;s la Session 1</div>
-        <img src="assets/client-agenda-01.jpeg" alt="Agenda r&eacute;el de Mathieu apr&egrave;s Session 1"
-          style="width: 100%; display: block;" loading="lazy">
-      </div>
-    </div>
-  </section>
-
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     COMMENT CA MARCHE — 12 semaines
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="comment">
-    <h2>Comment &ccedil;a marche &mdash; <span class="gradient-text">12 semaines</span></h2>
-
-    <div class="card" style="border-left: 3px solid var(--accent);">
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">Avant</strong> : Diagnostic Cadre Offert <span
-          style="color: var(--text-dim);">(30 min, gratuit)</span></p>
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">S1</strong> : Diagnostic 360&deg; + Architecture de vision + Restructuration agenda <span style="color: var(--text-dim);">(Session 1, 45 min &mdash; sans engagement)</span></p>
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">J7</strong> : Quick Win garanti &mdash; 3 cr&eacute;neaux prot&eacute;g&eacute;s bloqu&eacute;s et tenus</p>
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">S2-S4</strong> : Construction des piliers Sommeil, Nutrition, Accord Couple. Installation du software.</p>
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">S4</strong> : Checkpoint &mdash; le syst&egrave;me est ancr&eacute;. Remboursement si ce n'est pas le cas.</p>
-      <p style="margin: 0 0 16px;"><strong style="color: var(--accent);">S6-S12</strong> : Optimisation, maintenance, debugging du syst&egrave;me en conditions r&eacute;elles.</p>
-      <p style="margin: 0;"><strong style="color: var(--accent);">M4</strong> : Session SAV &mdash; 1 mois apr&egrave;s la fin, j'audite et je reconfigure ce qui a drift&eacute;.</p>
-    </div>
-
-    <div class="card" style="text-align: center; margin-top: 16px;">
-      <p style="margin: 0; color: var(--text);"><strong>6 sessions de construction</strong> (S1, S2, S4, S6, S8, S12) + support WhatsApp continu<br>
-        <span style="color: var(--accent); font-weight: 700;">= un syst&egrave;me construit, install&eacute;, et qui tourne apr&egrave;s moi</span>
-      </p>
-    </div>
-  </div>
-
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     CE QUE TU RECOIS — VALUE STACK 3 COUCHES
+     CE QUE TU REÇOIS
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="offre">
-    <h2>Ce que je construis pour toi</h2>
+    <h2>Ce que je construis et j'installe chez toi</h2>
 
-    <p style="font-size: 0.92rem; color: var(--text-dim); margin-bottom: 20px;">3 couches&nbsp;: le syst&egrave;me que je construis, le software que je d&eacute;veloppe, l'&eacute;cosyst&egrave;me que je maintiens.</p>
+    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px;">Le Système</p>
 
-    <!-- Couche 1 -->
-    <div class="stack-layer">
-      <div class="stack-layer-label">Couche 1 &mdash; Le Syst&egrave;me (construction en 12 semaines)</div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Diagnostic Cadre 360&deg;</strong> &mdash; Architecture de vision + priorisation des 5 piliers</span><span class="stack-item-val gradient-text">1 500 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Restructuration Agenda</strong> &mdash; Audit IA + Blocs prot&eacute;g&eacute;s + Shield Calendar</span><span class="stack-item-val gradient-text">1 500 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>6 sessions de construction</strong> (S1, S2, S4, S6, S8, S12)</span><span class="stack-item-val gradient-text">2 400 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Pilier Sommeil</strong> &mdash; Audit + protocole + monitoring automatis&eacute;</span><span class="stack-item-val gradient-text">800 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Pilier Nutrition</strong> &mdash; Meal Planner IA + Liste de courses auto partag&eacute;e</span><span class="stack-item-val gradient-text">1 200 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Pilier Sport &amp; Loisirs</strong> &mdash; Reprise progressive + plan B par cr&eacute;neau</span><span class="stack-item-val gradient-text">800 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Support WhatsApp 12 sem.</strong> &mdash; Maintenance &amp; debugging du syst&egrave;me</span><span class="stack-item-val gradient-text">1 800 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Pacte Couple</strong> &mdash; Session conjointe + scripts + sync familial</span><span class="stack-item-val gradient-text">600 &euro;</span></div>
-      <div class="stack-item" style="border-top: 2px solid var(--border); border-bottom: none; padding-top: 8px;">
-        <span class="stack-item-name" style="font-weight: 700;">Sous-total Syst&egrave;me</span>
-        <span class="stack-item-val gradient-text" style="font-size: 1rem;">10 600 &euro;</span>
-      </div>
-    </div>
+    <ul class="check-list">
+      <li><span class="check">✓</span> <strong>Diagnostic Cadre 360°</strong> — audit complet de ton système actuel</li>
+      <li><span class="check">✓</span> <strong>6 sessions de construction</strong> (S1, S2, S4, S6, S8, S12) — on build, chaque session a un livrable</li>
+      <li><span class="check">✓</span> <strong>Restructuration Agenda</strong> — blocs protégés avec plans B intégrés</li>
+      <li><span class="check">✓</span> <strong>Protocole Sommeil</strong> — basé sur tes données réelles, monitoring automatisé</li>
+      <li><span class="check">✓</span> <strong>Pacte Couple</strong> — session conjointe + scripts + sync familial</li>
+      <li><span class="check">✓</span> <strong>Support WhatsApp 12 semaines</strong> — tu me signales un bug, je te donne le fix sous 24h</li>
+    </ul>
 
-    <!-- Couche 2 -->
-    <div class="stack-layer">
-      <div class="stack-layer-label">Couche 2 &mdash; Le Software (ce que je d&eacute;veloppe et j'installe)</div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Cadre Tracker</strong> &mdash; Dashboard auto (Google Cal, Strava, Garmin, Withings)</span><span class="stack-item-val gradient-text">2 400 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Cadre Shield</strong> &mdash; Protection automatique des cr&eacute;neaux</span><span class="stack-item-val gradient-text">1 200 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Cadre Review</strong> &mdash; Bilan hebdo IA automatis&eacute;</span><span class="stack-item-val gradient-text">800 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Cadre Planner</strong> &mdash; Nutrition IA + Liste de courses partag&eacute;e</span><span class="stack-item-val gradient-text">900 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Data Pipeline Cadre</strong> &mdash; Collecte, analyse, &eacute;crit dans ton agenda</span><span class="stack-item-val gradient-text">2 500 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Shortcuts Cadre</strong> &mdash; Pack automations iOS/Android (Quick Log, Courses, Bloc D&eacute;fense)</span><span class="stack-item-val gradient-text">600 &euro;</span></div>
-      <div class="stack-item" style="border-top: 2px solid var(--border); border-bottom: none; padding-top: 8px;">
-        <span class="stack-item-name" style="font-weight: 700;">Sous-total Software</span>
-        <span class="stack-item-val gradient-text" style="font-size: 1rem;">8 400 &euro;</span>
-      </div>
-    </div>
+    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 28px 0 16px;">Le Software (ce que je code pour toi)</p>
 
-    <!-- Couche 3 -->
-    <div class="stack-layer">
-      <div class="stack-layer-label">Couche 3 &mdash; L'&Eacute;cosyst&egrave;me (ce qui dure apr&egrave;s les 3 mois)</div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Mises &agrave; jour &agrave; vie</strong> &mdash; Chaque nouvelle feature d&eacute;ploy&eacute;e chez toi</span><span class="stack-item-val gradient-text">1 500 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Le Cercle Cadre</strong> &mdash; Communaut&eacute; WhatsApp des membres Endurance</span><span class="stack-item-val gradient-text">2 400 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Protocole Anti-Chaos</strong> &mdash; Playbook de r&eacute;installation (disaster recovery)</span><span class="stack-item-val gradient-text">600 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Session M4</strong> &mdash; Checkpoint 1 mois post-programme</span><span class="stack-item-val gradient-text">400 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Cadre OS</strong> &mdash; Documentation technique compl&egrave;te de TON syst&egrave;me</span><span class="stack-item-val gradient-text">1 500 &euro;</span></div>
-      <div class="stack-item"><span class="stack-item-name"><strong>Acc&egrave;s Fondateur &agrave; Vie</strong> &mdash; Prix garanti + features prioritaires</span><span class="stack-item-val gradient-text">500 &euro;</span></div>
-      <div class="stack-item" style="border-top: 2px solid var(--border); border-bottom: none; padding-top: 8px;">
-        <span class="stack-item-name" style="font-weight: 700;">Sous-total &Eacute;cosyst&egrave;me</span>
-        <span class="stack-item-val gradient-text" style="font-size: 1rem;">6 900 &euro;</span>
-      </div>
-    </div>
+    <ul class="check-list">
+      <li><span class="check">✓</span> <strong>Cadre Tracker</strong> — agrège agenda, sport, sommeil, humeur. Se remplit à 80% auto. Bilan hebdo généré.</li>
+      <li><span class="check">✓</span> <strong>Cadre Shield</strong> — détecte les conflits avec tes créneaux protégés et alerte avant qu'un meeting les écrase</li>
+      <li><span class="check">✓</span> <strong>Cadre Review</strong> — analyse tes données chaque dimanche, détecte les patterns de décrochage</li>
+      <li><span class="check">✓</span> <strong>Cadre Planner</strong> — génère les repas de la semaine + pousse la liste de courses automatiquement</li>
+    </ul>
+
+    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 28px 0 16px;">L'Écosystème (ce qui dure après)</p>
+
+    <ul class="check-list">
+      <li><span class="check">✓</span> <strong>Mises à jour à vie</strong> — chaque amélioration du software déployée automatiquement</li>
+      <li><span class="check">✓</span> <strong>Le Cercle Cadre</strong> — groupe privé WhatsApp, uniquement les pères avec le système installé</li>
+      <li><span class="check">✓</span> <strong>Protocole Anti-Chaos</strong> — déménagement, nouveau job, naissance : ton disaster recovery plan</li>
+      <li><span class="check">✓</span> <strong>Session M4</strong> — audit 1 mois après la fin, reconfiguration de ce qui a drifté</li>
+      <li><span class="check">✓</span> <strong>Cadre OS</strong> — la documentation technique complète de TON système. Le README de ta vie.</li>
+    </ul>
   </div>
 
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
-     COMPARAISON ALTERNATIVES
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="comparaison">
-    <h2>Pourquoi pas les alternatives&nbsp;?</h2>
-
-    <table class="compare-table">
-      <thead>
-        <tr>
-          <th></th>
-          <th style="color: var(--accent);">Endurance</th>
-          <th>Coach sportif</th>
-          <th>Nutritionniste</th>
-          <th>Seul</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Syst&egrave;me complet</strong></td>
-          <td class="yes">&#10003;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-        </tr>
-        <tr>
-          <td><strong>Software sur mesure</strong></td>
-          <td class="yes">&#10003;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-        </tr>
-        <tr>
-          <td><strong>Plans B int&eacute;gr&eacute;s</strong></td>
-          <td class="yes">&#10003;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-          <td class="partial">~</td>
-        </tr>
-        <tr>
-          <td><strong>Accord couple</strong></td>
-          <td class="yes">&#10003;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-          <td class="no">&#10007;</td>
-        </tr>
-        <tr>
-          <td><strong>Tient apr&egrave;s 3 mois</strong></td>
-          <td class="yes">&#10003;</td>
-          <td class="no">&#10007;</td>
-          <td class="partial">~</td>
-          <td class="no">&#10007;</td>
-        </tr>
-        <tr>
-          <td><strong>Co&ucirc;t r&eacute;el sur 12 mois</strong></td>
-          <td class="yes" style="font-size: 0.8rem;">2 500 &euro;</td>
-          <td class="no" style="font-size: 0.8rem;">1 200 &euro;+</td>
-          <td class="no" style="font-size: 0.8rem;">720 &euro;+</td>
-          <td class="no" style="font-size: 0.8rem;">salles + abos</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0;">Un coach te dit <em>quoi faire</em>. Un ing&eacute;nieur
-      construit le <strong style="color: var(--text);">syst&egrave;me qui tient</strong> quand ta semaine d&eacute;raille &mdash; et le software qui le fait tourner apr&egrave;s lui.</p>
-  </div>
-
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     COST OF INACTION
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section">
-    <div
-      style="background: rgba(248,113,113,0.06); border-left: 3px solid var(--red); border-radius: 0 10px 10px 0; padding: 18px 22px;">
-      <p
-        style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); font-weight: 700;">
-        Avant de parler prix</p>
-      <p style="margin: 0 0 10px; color: var(--text); font-size: 0.95rem;">1 journ&eacute;e par semaine &times; 52 semaines = <strong>52 journ&eacute;es de ta vie par an</strong>. C'est ce que tu perds chaque ann&eacute;e sans syst&egrave;me. &Ccedil;a fait combien de dimanches soirs &agrave; te dire &laquo;&nbsp;lundi je m'y remets&nbsp;&raquo;&nbsp;?</p>
-      <p style="margin: 0; color: var(--text-dim); font-size: 0.9rem;">Le vrai prix, c'est celui que tu paies depuis 2 ans &mdash; en &eacute;nergie, en culpabilit&eacute;, en dimanches soirs g&acirc;ch&eacute;s. <strong style="color: var(--text);">Le Cadre Endurance, c'est 48&euro; par journ&eacute;e r&eacute;cup&eacute;r&eacute;e. Et le syst&egrave;me continue apr&egrave;s parce qu'il est automatis&eacute;.</strong></p>
-    </div>
-  </div>
-
-  <!-- ================================================
-     PRICING + FONDATEUR
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="pricing">
-
-    <div class="card" style="margin-bottom: 0; border-bottom: none; border-radius: 12px 12px 0 0;">
-      <p style="margin: 0 0 10px; font-weight: 700; color: var(--text); font-size: 0.92rem;">R&eacute;capitulatif &mdash; Prix Fondateur&nbsp;:</p>
-      <div style="font-size: 0.85rem;">
-        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Couche 1 &mdash; Le Syst&egrave;me (12 semaines)</span><span class="gradient-text" style="font-weight: 700;">10 600 &euro;</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Couche 2 &mdash; Le Software (dev &amp; installation)</span><span class="gradient-text" style="font-weight: 700;">8 400 &euro;</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #2a2a2a;">
-          <span>Couche 3 &mdash; L'&Eacute;cosyst&egrave;me (&agrave; vie)</span><span class="gradient-text" style="font-weight: 700;">6 900 &euro;</span>
-        </div>
-        <div
-          style="display: flex; justify-content: space-between; padding: 6px 0; margin-top: 4px; border-top: 2px solid var(--border);">
-          <span style="font-weight: 700; color: var(--text);">Valeur totale</span><span class="gradient-text"
-            style="font-weight: 800; font-size: 1.05rem;">25 900 &euro;</span>
-        </div>
-        <div
-          style="display: flex; justify-content: space-between; padding: 4px 0 0; font-size: 0.78rem; color: var(--text-dim);">
-          <span>Ratio valeur/prix</span><span style="font-weight: 700; color: var(--green);">10,4 : 1</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="price-block" style="margin-top: 0; border-radius: 0 0 16px 16px;">
-      <div class="price-old">Prix standard : 3 500 &euro; HT</div>
-      <div class="price-val">2 500 &euro; HT</div>
-      <div class="price-sub">Prix Fondateur &middot; ou 3 &times; 870 &euro; HT</div>
-    </div>
-
-    <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
-        data-umami-event="pricing-cta-diagnostic">Diagnostic Cadre Offert &mdash; 30 min</a>
-      <span class="cta-note">Gratuit et sans engagement. Tu ne paies qu'apr&egrave;s avoir vu ton plan personnalis&eacute;.</span>
-      <a href="https://bit.ly/4dwpmlD" class="escape-hatch"
-        data-umami-event="pricing-cta-whatsapp">Une question&nbsp;? &Eacute;cris-moi sur WhatsApp &rarr;</a>
-    </div>
-  </div>
-
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     6 COUCHES DE GARANTIE
+     GARANTIES
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="garantie">
     <div class="guarantee">
-      <div class="guarantee-name">6 couches de protection &mdash; tu ne peux pas perdre</div>
+      <div class="guarantee-name">🛡️ Tu ne peux pas perdre.</div>
 
-      <div class="guarantee-stack-item">
-        <div class="guarantee-step">1</div>
-        <div><strong>Diagnostic Offert</strong> &mdash; 30 min de vraie valeur gratuite, avant de parler de quoi que ce soit.</div>
-      </div>
-      <div class="guarantee-stack-item">
-        <div class="guarantee-step">2</div>
-        <div><strong>Session 1 sans engagement</strong> &mdash; Je construis ton plan personnalis&eacute;. Si tu ne vois pas comment &ccedil;a marche pour toi, on s'arr&ecirc;te. Tu ne paies rien.</div>
-      </div>
-      <div class="guarantee-stack-item">
-        <div class="guarantee-step">3</div>
-        <div><strong>Quick Win J7</strong> &mdash; 3 cr&eacute;neaux prot&eacute;g&eacute;s dans ton agenda, bloqu&eacute;s et tenus au moins une fois. En 7 jours.</div>
-      </div>
-      <div class="guarantee-stack-item">
-        <div class="guarantee-step">4</div>
-        <div><strong>Cadre Ancr&eacute; S4</strong> &mdash; Si &agrave; la semaine 4 tu n'as pas ta journ&eacute;e prot&eacute;g&eacute;e install&eacute;e, <strong style="color: var(--accent);">remboursement int&eacute;gral</strong>.</div>
-      </div>
-      <div class="guarantee-stack-item">
-        <div class="guarantee-step">5</div>
-        <div><strong>Tenue M4</strong> &mdash; 1 mois apr&egrave;s la fin, si le syst&egrave;me a saut&eacute;, je reviens le r&eacute;installer. Comme un SAV.</div>
-      </div>
-      <div class="guarantee-stack-item" style="border-bottom: none;">
-        <div class="guarantee-step">6</div>
-        <div><strong>Software &agrave; Vie</strong> &mdash; Dans tous les cas, tu gardes le software que j'ai d&eacute;velopp&eacute; pour toi. &Agrave; vie. M&ecirc;me en cas de remboursement.</div>
-      </div>
+      <p><strong style="color: var(--accent);">Session 1 sans engagement.</strong> Je construis ton architecture personnalisée. Si à la fin tu ne vois pas comment le système va marcher chez toi, on s'arrête — tu ne paies rien.</p>
 
-      <p style="margin: 16px 0 0; font-size: 0.92rem; color: var(--text);"><em>Je prends 100% du risque. Tu ne peux litt&eacute;ralement pas perdre.</em></p>
+      <p><strong style="color: var(--accent);">Quick Win J7.</strong> 3 créneaux protégés bloqués et tenus en 7 jours.</p>
+
+      <p><strong style="color: var(--accent);">Cadre Ancré S4.</strong> Si à la semaine 4 le cadre n'est pas installé et fonctionnel, remboursement intégral.</p>
+
+      <p><strong style="color: var(--accent);">Tenue M4.</strong> 1 mois après la fin, si le système a sauté, je reviens le réinstaller — comme un SAV.</p>
+
+      <p><strong style="color: var(--accent);">Software à vie.</strong> Tu gardes tout le software que j'ai développé pour toi — dans tous les cas, même en cas de remboursement.</p>
+
+      <p style="margin: 0; font-size: 0.88rem; color: var(--text-dim);">Je vis ce système depuis 5 ans. Avec 2 naissances, 2 déménagements et un changement de carrière. Je prends 100% du risque.</p>
     </div>
   </div>
 
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     SCARCITY — Fondateur
-     ================================================ -->
   <div class="spacer-sm"></div>
+
+  <!-- CTA après garantie -->
   <div class="section">
-    <div class="urgency">
-      <p style="margin: 0 0 8px;"><strong>Promo Fondateur&nbsp;: 4 places &agrave; 2 500 &euro; HT</strong> au lieu de 3 500 &euro;.</p>
-      <p style="margin: 0 0 8px; color: var(--text);">Mathieu est le Fondateur #1. Je cherche 4 p&egrave;res cadres pour compl&eacute;ter la promo. Quand les 5 places sont prises, le prix passe &agrave; 3 500 &euro; et n'y revient pas.</p>
-      <p style="margin: 0 0 8px; color: var(--text);">En &eacute;change du prix fondateur, je te demande un <strong>feedback honn&ecirc;te</strong> et un <strong>t&eacute;moignage</strong> &agrave; la fin du programme.</p>
-      <p style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">Deadline&nbsp;: <strong style="color: var(--accent);">30 mai 2026</strong>. Apr&egrave;s cette date, passage au tarif standard.</p>
+    <div class="cta-group">
+      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="post-guarantee-cta">Vérifier mon éligibilité</a>
+      <span class="cta-note">4 places fondateur · Je te réponds personnellement sous 24h.</span>
     </div>
   </div>
 
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
@@ -1434,65 +645,52 @@
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="faq">
-    <h2>Questions fr&eacute;quentes</h2>
+    <h2>Questions fréquentes</h2>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi exactement Le Cadre Endurance&nbsp;?</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi exactement Le Cadre Endurance ?</div>
       <div class="faq-a">
-        <p>12 semaines. 6 sessions de construction. Du software d&eacute;velopp&eacute; sur mesure. Un syst&egrave;me complet install&eacute; chez toi &mdash; agenda, sommeil, nutrition, sport, accord couple. &Agrave; la fin, le syst&egrave;me tourne sans moi. C'est de l'ing&eacute;nierie de vie, pas du coaching.</p>
+        <p>12 semaines. 6 sessions de construction. Du software développé sur mesure. À S12, tu as un système complet — agenda, sommeil, nutrition, sport, accord couple — qui tourne sans moi. Pas un plan d'entraînement : un cadre d'ingénierie de vie.</p>
       </div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas du coaching de vie&nbsp;?</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Et si mon planning saute dès la semaine 1 ?</div>
       <div class="faq-a">
-        <p>Non. Z&eacute;ro m&eacute;ditation, z&eacute;ro journaling, z&eacute;ro mindset. Je suis ing&eacute;nieur &mdash; ancien manager tech, d&eacute;veloppeur, 50+ personnes mentor&eacute;es. Je construis un syst&egrave;me et je l'installe chez toi. Le livrable&nbsp;: un software personnalis&eacute; qui tourne, pas un PDF de d&eacute;veloppement personnel.</p>
+        <p>C'est le scénario normal. Mathieu, semaine 4 : malade, Pâques, imprévus en cascade. Il a gardé kiné + squash + balades, et décalé sa course du matin vers midi. Un cadre qui tient, c'est un cadre qui absorbe la perturbation sans s'effondrer. C'est ce qu'on installe.</p>
       </div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Et si mon planning saute d&egrave;s la semaine 1&nbsp;?</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas du coaching de vie ?</div>
       <div class="faq-a">
-        <p>C'est le sc&eacute;nario normal, pas le sc&eacute;nario rat&eacute;. Mathieu, semaine 4&nbsp;: malade toute la semaine, P&acirc;ques, impr&eacute;vus en cascade. Il a gard&eacute; kin&eacute; + squash + balades, et a d&eacute;cal&eacute; sa course du matin vers midi. Un syst&egrave;me qui tient, ce n'est pas un syst&egrave;me jamais perturb&eacute; &mdash; c'est un syst&egrave;me qui absorbe la perturbation sans s'effondrer. Chaque cr&eacute;neau a un plan B int&eacute;gr&eacute;.</p>
+        <p>Non. Je suis ingénieur. Zéro méditation, zéro journaling. De l'ingénierie appliquée à ta vie perso. Les livrables : du software configuré, un agenda restructuré, des protocoles installés — pas un PDF de développement personnel.</p>
       </div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Ma femme va r&eacute;agir comment&nbsp;?</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je peux m'organiser seul, non ?</div>
       <div class="faq-a">
-        <p>Le programme inclut le Pacte Couple &mdash; une session conjointe + scripts structur&eacute;s pour poser un accord sport-famille en 20 min. C'est le syst&egrave;me qui a le mieux march&eacute; chez Mathieu. Le sport qui tient, c'est celui qui a &eacute;t&eacute; d&eacute;cid&eacute; ensemble. Et si tu veux, je propose un appel de 15 minutes &agrave; 3 avant que tu d&eacute;cides.</p>
+        <p>Depuis combien de temps tu essaies ? Sur les 36 pères interviewés, 36 avaient tenté de s'organiser seuls. 35 ont échoué en moins de 3 semaines. Un système solo n'intègre ni les plans B, ni la dimension couple, ni le software qui automatise le suivi.</p>
       </div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">2 500&euro;, c'est cher</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je fais du foot / de la muscu / du vélo, pas du triathlon</div>
       <div class="faq-a">
-        <p>Parlons des chiffres. Un nutritionniste&nbsp;: 720&euro;/an. Un coach sportif&nbsp;: 600&euro;. Un accompagnement sommeil&nbsp;: 400&euro;. Des apps&nbsp;: 180&euro;. Total&nbsp;: 1 900&euro; &mdash; et tu g&egrave;res la coordination toi-m&ecirc;me, sans outils, sans syst&egrave;me. Le Cadre Endurance, c'est 25 900&euro; de valeur int&eacute;gr&eacute;e dans un seul syst&egrave;me, &agrave; 2 500&euro; en prix fondateur. Et le vrai calcul&nbsp;: 52 journ&eacute;es r&eacute;cup&eacute;r&eacute;es par an = 48&euro; par journ&eacute;e. Le software continue apr&egrave;s parce qu'il est automatis&eacute;.</p>
+        <p>Le sport est le révélateur, pas le sujet. Le commun entre tous les profils : l'écart entre avant les enfants et maintenant. Pas la discipline.</p>
       </div>
     </div>
 
     <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">&Ccedil;a marche uniquement pour les cadres tech&nbsp;?</div>
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas le bon moment</div>
       <div class="faq-a">
-        <p>Non. Le syst&egrave;me marche pour tout p&egrave;re cadre avec au moins un enfant en bas &acirc;ge &mdash; tech, finance, conseil, industrie, freelance. L'ICP commun&nbsp;: tu bosses beaucoup, tu as une vie de famille, et tu as laiss&eacute; le temps pour toi dispara&icirc;tre. Le c&ocirc;t&eacute; tech de la m&eacute;thode (software, automations, data pipeline), c'est mon diff&eacute;renciant &mdash; pas un pr&eacute;requis pour toi.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je peux m'organiser seul, non&nbsp;?</div>
-      <div class="faq-a">
-        <p>Depuis combien de temps tu essaies&nbsp;? Sur les 33 p&egrave;res interview&eacute;s, 33 avaient tent&eacute; de s'organiser seuls. 33 ont &eacute;chou&eacute; en moins de 3 semaines. Un syst&egrave;me solo n'int&egrave;gre ni les plans B, ni la dimension couple, ni la r&eacute;sistance aux impr&eacute;vus, ni le software qui automatise le suivi.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Pas le bon moment</div>
-      <div class="faq-a">
-        <p>C'est exactement ce que les 33 p&egrave;res m'ont dit. En moyenne depuis 18 mois. Le bon moment n'existe pas &mdash; il y a toujours un projet en cours, une deadline, un enfant malade. Le syst&egrave;me est con&ccedil;u pour d&eacute;marrer dans le chaos, pas apr&egrave;s.</p>
+        <p>C'est exactement ce que les 36 pères interviewés m'ont dit. En moyenne depuis 18 mois. Le bon moment n'existe pas — il y a toujours un projet, une deadline, un enfant malade. Le système est conçu pour démarrer dans le chaos, pas après.</p>
       </div>
     </div>
   </div>
 
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
@@ -1500,23 +698,25 @@
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="qui">
-    <h2>Qui construit ton syst&egrave;me</h2>
+    <h2>Qui suis-je</h2>
 
-    <p><strong><a href="https://www.linkedin.com/in/florian-marin/" class="link">Florian Marin</a>.</strong> 37 ans. P&egrave;re de 2 enfants (5 et 3 ans). 15 ans dans la tech. Ancien manager tech. D&eacute;veloppeur. Mentor de 50+ personnes. Burn-out en 2019.</p>
+    <p><strong><a href="https://www.linkedin.com/in/florian-marin/">Florian Marin</a>.</strong> 37 ans. Père de 2 garçons (5 et 3 ans). 15 ans dans la tech. Ancien manager, développeur, mentor de 50+ personnes.</p>
 
-    <div
-      style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 16px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">OCTO Technology</span>
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Tiime</span>
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Aircall</span>
-      <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Teads</span>
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 16px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">OCTO Technology</span>
+      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Tiime</span>
+      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Aircall</span>
+      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Teads</span>
     </div>
 
-    <p>J'ai reconstruit ma vie en posant un syst&egrave;me, pas en trouvant la motivation. Ce syst&egrave;me tient depuis 3 ans, &agrave; travers 2 naissances, un d&eacute;m&eacute;nagement et un lancement d'entreprise solo.</p>
+    <p>Burn-out en 2019. Le sport a été le premier à sauter. J'ai fait ce que n'importe quel ingénieur ferait quand un système plante : j'ai tout redesigné. Pas du développement personnel — de l'ingénierie de vie. 5 piliers. Du software que je développe moi-même. De l'IA qui automatise le suivi.</p>
 
-    <p>Aujourd'hui&nbsp;: <strong style="color: var(--accent);">9h de sport/semaine. 40min11 au 10km.</strong> Je cuisine tous les soirs, je d&eacute;pose mes fils &agrave; l'&eacute;cole. <strong>Je construis des syst&egrave;mes qui tiennent &mdash; et je les installe chez toi.</strong></p>
+    <p>Ça m'a pris 5 ans.</p>
+
+    <p>Aujourd'hui : <strong style="color: var(--accent);">9h de triathlon par semaine. 40min11s au 10km.</strong> Je cuisine tous les soirs avec mes 2 garçons. <strong>Je construis des systèmes qui tiennent.</strong></p>
   </div>
 
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
@@ -1524,21 +724,22 @@
      ================================================ -->
   <div class="spacer-sm"></div>
   <div class="section" id="cta-final">
-    <h2>Prochaine &eacute;tape</h2>
+    <h2>Prochaine étape</h2>
+
+    <p style="margin-bottom: 20px;">Je cherche <strong style="color: var(--accent);">4 pères</strong> pour la promotion fondateur. En échange du tarif fondateur, je te demande un retour honnête et un témoignage à la fin.</p>
 
     <div class="cta-group">
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="cta-primary"
-        data-umami-event="final-cta-diagnostic">Diagnostic Cadre Offert &mdash; 30 min</a>
-      <span class="cta-note">Gratuit. Je diagnostique ton syst&egrave;me et je te donne 1 action concr&egrave;te. Sans engagement.</span>
-      <a href="https://bit.ly/4dwpmlD" class="escape-hatch"
-        data-umami-event="final-cta-whatsapp">Une question&nbsp;? &Eacute;cris-moi sur WhatsApp &rarr;</a>
+      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="final-cta">Vérifier mon éligibilité</a>
+      <span class="cta-note">5 questions · 1 minute · Je te réponds personnellement sous 24h.</span>
+      <a href="https://calendly.com/florian-marin/audit-triangle" class="escape-hatch" data-umami-event="final-cta-diagnostic">Des questions ? Diagnostic gratuit (30 min)</a>
     </div>
 
-    <div style="text-align: center; margin-top: 16px;">
-      <p style="font-size: 0.82rem; color: var(--text-dim);">4 places fondateur &middot; 2 500 &euro; HT &middot; Deadline 30 mai 2026</p>
-    </div>
+    <p style="text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--text-dim);">
+      Une question ? <a href="https://bit.ly/4dwpmlD" style="color: var(--accent); text-decoration: underline;" data-umami-event="whatsapp-click">Écris-moi sur WhatsApp</a>
+    </p>
   </div>
 
+  <div class="spacer-sm"></div>
   <div class="separator"><div class="separator-line"></div></div>
 
   <!-- ================================================
@@ -1547,16 +748,11 @@
   <div class="spacer-sm"></div>
   <div class="section" id="lead-magnet">
     <div class="card" style="text-align: center; border: 1px solid var(--border);">
-      <p
-        style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); font-weight: 700; margin-bottom: 12px;">
-        Pas pr&ecirc;t pour un appel&nbsp;?</p>
-      <h3 style="margin-bottom: 8px;">Passe le Diagnostic Cadre (5 min).</h3>
-      <div style="font-size: 0.88rem; max-width: 480px; margin: 0 auto 16px;">
-        <p style="margin: 0;">20 questions. Tu re&ccedil;ois ton score + un PDF de 24 pages pour mettre en place ton syst&egrave;me.</p>
-      </div>
-      <a href="https://tally.so/r/68OLD5" class="cta-secondary" style="max-width: 360px;"
-        data-umami-event="lead-magnet-cta">Passe le test</a>
-      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam. Un email avec ton r&eacute;sultat. C'est tout.</p>
+      <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); font-weight: 700; margin-bottom: 12px;">Pas prêt pour un appel ?</p>
+      <h3 style="margin-bottom: 8px; color: var(--text);">Passe le Diagnostic Semaine.</h3>
+      <p style="font-size: 0.88rem; max-width: 480px; margin: 0 auto 16px;">20 questions. Tu reçois ton score + Le Pacte Famille-Sport (PDF 24 pages) pour commencer à poser ton cadre.</p>
+      <a href="https://tally.so/r/68OLD5" style="display: inline-block; background: var(--bg-alt); border: 1px solid var(--accent); color: var(--accent); padding: 10px 28px; border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-decoration: none;" data-umami-event="lead-magnet-cta">Passe le test</a>
+      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam. Un email avec ton résultat.</p>
     </div>
   </div>
 
@@ -1566,28 +762,29 @@
      CLOSING LINE
      ================================================ -->
   <div class="section" style="text-align: center;">
-    <p style="color: var(--text-dim); font-style: italic; margin: 0;">Le sport ne dispara&icirc;t pas par manque de
-      motivation. Il dispara&icirc;t faute de syst&egrave;me.</p>
+    <p style="color: var(--text-dim); font-style: italic; margin: 0;">Le sport ne disparaît pas par manque de motivation. Il disparaît faute de cadre.</p>
   </div>
 
   <!-- ================================================
      FOOTER
      ================================================ -->
   <div class="footer">
-    <p><a href="https://www.linkedin.com/in/florian-marin/" style="text-decoration: none;">Florian Marin</a> &middot; Montpellier &middot; <a href="https://florianmarin.me">florianmarin.me</a></p>
-    <p style="margin-top: 8px;">Endurance 12 semaines &middot; Ing&eacute;nierie de vie &middot; 6 couches de garantie</p>
-    <p style="margin-top: 12px;"><a href="https://substack.com/@lecadrenotes"
-        style="color: var(--accent); text-decoration: none; font-weight: 600;">Le Cadre Notes</a> &mdash; je partage mes
-      apprentissages chaque semaine sur Substack</p>
+    <p><a href="https://www.linkedin.com/in/florian-marin/" style="text-decoration: none;">Florian Marin</a> · Montpellier · <a href="https://florianmarin.me">florianmarin.me</a></p>
+    <p style="margin-top: 8px;">Le Cadre Endurance · 12 semaines · Ingénierie de vie</p>
+    <p style="margin-top: 12px;"><a href="https://substack.com/@lecadrenotes" style="color: var(--accent); text-decoration: none; font-weight: 600;">Le Cadre Notes</a> — je partage mes apprentissages chaque semaine sur Substack</p>
   </div>
 
   <!-- ================================================
      STICKY MOBILE CTA
      ================================================ -->
   <div class="sticky-cta">
-    <a href="https://calendly.com/florian-marin/audit-triangle" data-umami-event="sticky-cta-diagnostic">Diagnostic Cadre Offert &mdash; Gratuit</a>
+    <a href="https://tally.so/r/68OLD5" data-umami-event="sticky-cta">Vérifier mon éligibilité · 4 places</a>
   </div>
 
-</body>
+  <!-- ================================================
+     UMAMI ANALYTICS (self-hosted)
+     ================================================ -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR_WEBSITE_ID"></script>
 
+</body>
 </html>
