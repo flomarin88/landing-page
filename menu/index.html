@@ -4,1725 +4,1892 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Semaine Famille — Florian Marin</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
-    rel="stylesheet">
-
+  <title>Menu de la semaine — Famille · Florian Marin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --accent: #FF7A00;
-      --accent-light: #FFD84D;
-      --accent-soft: #FFF3E6;
-      --ink: #1C1C1C;
-      --ink-2: #2B2B2B;
-      --ink-3: #555555;
-      --ink-4: #888888;
-      --line: #EAEAEA;
-      --line-2: #DDDDDD;
-      --card: #F7F7F7;
-      --card-2: #FAFAFA;
-      --page: #FFFFFF;
-      --bg: #ECECEC;
+      --bg: #FAF8F5;
+      --ink: #1A1A1A;
+      --accent: #C2410C;
+      --muted: #555;
+      --light: #888;
+      --border: #D4CFC8;
+      --card-bg: #F2EFE9;
+      --white: #FFFFFF;
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html,
     body {
-      margin: 0;
-      padding: 0;
-      font-family: "Montserrat", Arial, Helvetica, sans-serif;
-      font-weight: 400;
-      color: var(--ink-2);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
-    @page {
-      size: A4 portrait;
-      margin: 0;
-    }
-
+    /* ── LAYOUT ── */
     .page {
-      width: 210mm;
-      min-height: 297mm;
-      padding: 24mm 22mm 20mm 22mm;
-      margin: 14mm auto;
-      background: var(--page);
-      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08), 0 10px 40px rgba(0, 0, 0, 0.05);
-      position: relative;
-      overflow: hidden;
-      page-break-after: always;
-      break-after: page;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 64px 40px;
     }
 
-    .page:last-child {
-      page-break-after: auto;
-      break-after: auto;
+    /* ── HEADER ── */
+    .site-header {
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 32px;
+      margin-bottom: 56px;
     }
 
-    @media print {
-      body {
-        background: none;
-      }
-
-      .page {
-        margin: 0;
-        box-shadow: none;
-      }
-    }
-
-    /* ── PAGE NUMBER ── */
-    .page-number {
-      position: absolute;
-      bottom: 12mm;
-      left: 22mm;
-      right: 22mm;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 9pt;
-      font-weight: 600;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: var(--ink-4);
-    }
-
-    .page-number .dot {
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      background: var(--accent);
-      border-radius: 50%;
-      vertical-align: middle;
-      margin: 0 8px 2px 8px;
-    }
-
-    /* ── EYEBROW ── */
-    .eyebrow {
-      display: inline-block;
-      font-size: 9.5pt;
+    .brand-mark {
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 1.6px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
+      color: var(--light);
+      margin-bottom: 24px;
     }
 
-    .eyebrow::before {
-      content: "";
-      display: inline-block;
-      width: 22px;
-      height: 2px;
-      background: var(--accent);
-      vertical-align: middle;
-      margin-right: 12px;
-      margin-bottom: 3px;
-    }
-
-    /* ── COVER ── */
-    .cover {
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 297mm;
-    }
-
-    .cover-top {
-      padding: 28mm 22mm 0 22mm;
-    }
-
-    .cover-brand {
-      font-size: 11.5pt;
+    .doc-title {
+      font-size: 52px;
       font-weight: 800;
-      letter-spacing: -0.2px;
-      color: var(--ink);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
     }
 
-    .cover-brand .accent {
-      color: var(--accent);
-    }
-
-    .cover-middle {
-      padding: 0 22mm;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .cover-label {
-      font-size: 10pt;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 18px;
-    }
-
-    .cover-title {
-      font-weight: 800;
-      font-size: 46pt;
-      line-height: 0.95;
-      letter-spacing: -2px;
-      color: var(--ink);
-      margin: 0 0 28px 0;
-      text-transform: uppercase;
-    }
-
-    .cover-title .accent {
-      color: var(--accent);
-    }
-
-    .cover-title .br {
-      display: block;
-    }
-
-    .cover-subtitle {
-      font-size: 14pt;
-      line-height: 1.4;
+    .doc-subtitle {
+      font-size: 16px;
+      color: var(--muted);
       font-weight: 500;
-      color: var(--ink-3);
-      max-width: 140mm;
     }
 
-    .cover-rule {
-      width: 60mm;
-      height: 3px;
-      background: var(--accent);
-      margin: 32px 0 0 0;
-    }
-
-    .cover-bottom {
-      padding: 0 22mm 28mm 22mm;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .cover-meta {
-      display: flex;
-      gap: 32px;
-      align-items: flex-end;
-    }
-
-    .cover-meta-item {
-      font-size: 9pt;
-      color: var(--ink-4);
-      font-weight: 600;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-    }
-
-    .cover-meta-item strong {
-      display: block;
-      font-size: 20pt;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -1px;
-      line-height: 1;
-      margin-bottom: 3px;
-    }
-
-    .cover-meta-item strong .accent {
+    .doc-subtitle span {
       color: var(--accent);
-    }
-
-    .cover-author {
-      font-size: 11pt;
       font-weight: 700;
-      letter-spacing: 0.2px;
-      color: var(--ink);
-    }
-
-    .cover-author .role {
-      display: block;
-      font-weight: 500;
-      color: var(--ink-4);
-      font-size: 9.5pt;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      margin-top: 4px;
     }
 
     /* ── OVERVIEW TABLE ── */
-    .overview-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-
-    .overview-table thead tr {
-      background: var(--ink);
-    }
-
-    .overview-table thead th {
-      color: #fff;
-      font-size: 8.5pt;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 10px 14px;
-      text-align: left;
-    }
-
-    .overview-table tbody tr {
-      border-bottom: 1px solid var(--line);
-    }
-
-    .overview-table tbody tr:nth-child(even) {
-      background: var(--card);
-    }
-
-    .overview-table tbody td {
-      padding: 11px 14px;
-      font-size: 9.5pt;
-      color: var(--ink-2);
-      vertical-align: top;
-    }
-
-    .overview-table tbody td strong {
-      color: var(--ink);
-      font-weight: 700;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 8pt;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 10px;
-    }
-
-    .badge-modere {
-      background: #FFF8E1;
-      color: #B07800;
-    }
-
-    .badge-intense {
-      background: #FDECEA;
-      color: #B03A2E;
-    }
-
-    .badge-leger {
-      background: #E8F5E9;
-      color: #2E7D32;
-    }
-
-    /* ── ALLERGIE NOTE ── */
-    .allergy-note {
-      background: var(--accent-soft);
-      border-left: 4px solid var(--accent);
-      padding: 12px 18px;
-      border-radius: 2px 6px 6px 2px;
-      font-size: 9.5pt;
-      color: var(--ink);
-      font-weight: 500;
-      line-height: 1.5;
-      margin: 20px 0;
-    }
-
-    .allergy-note .label {
-      display: block;
-      font-size: 8.5pt;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 5px;
-    }
-
-    /* ── RECIPE PAGE ── */
-    h1.page-title {
-      font-weight: 800;
-      font-size: 26pt;
-      line-height: 1.08;
-      letter-spacing: -0.8px;
-      color: var(--ink);
-      margin: 0 0 4px 0;
-    }
-
-    h1.page-title .accent {
-      color: var(--accent);
-    }
-
-    .day-meta {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .day-tag {
-      font-size: 9pt;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--ink-4);
-    }
-
     .section-label {
-      font-size: 9pt;
-      font-weight: 800;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-label::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--line);
-    }
-
-    .dish-title {
+      font-size: 11px;
       font-weight: 700;
-      font-size: 14pt;
-      color: var(--ink);
-      margin: 0 0 12px 0;
-      line-height: 1.2;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 20px;
     }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 18px;
-    }
-
-    .ing-table {
+    .overview {
       width: 100%;
       border-collapse: collapse;
+      margin-bottom: 64px;
     }
 
-    .ing-table tr {
-      border-bottom: 1px solid var(--line);
+    .overview thead th {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+      padding: 0 0 12px 0;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
     }
 
-    .ing-table tr:last-child {
+    .overview tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .overview tbody tr:last-child {
       border-bottom: none;
     }
 
-    .ing-table td {
-      padding: 5px 0;
-      font-size: 9.5pt;
-      color: var(--ink-2);
+    .overview tbody td {
+      padding: 14px 0;
+      font-size: 15px;
+      vertical-align: top;
     }
 
-    .ing-table td.qty {
-      text-align: right;
+    .overview tbody td:first-child {
       font-weight: 700;
-      color: var(--accent);
-      white-space: nowrap;
-      padding-left: 10px;
+      width: 120px;
+      color: var(--ink);
     }
 
-    .tip-block {
-      background: var(--card);
-      border-left: 3px solid var(--accent);
-      padding: 9px 14px;
-      font-size: 9pt;
-      color: var(--ink-3);
-      border-radius: 2px 6px 6px 2px;
-      margin-top: 10px;
-      line-height: 1.5;
-      font-style: italic;
+    .overview tbody td:nth-child(2) {
+      color: var(--muted);
+      padding-right: 24px;
     }
 
-    .macros-bar {
+    .day-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    /* ── DAY SECTION ── */
+    .day-section {
+      margin-bottom: 72px;
+    }
+
+    .day-header {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
+      align-items: baseline;
+      gap: 16px;
+      border-top: 3px solid var(--ink);
+      padding-top: 24px;
+      margin-bottom: 40px;
     }
 
-    .macro-chip {
-      background: var(--accent-soft);
-      border: 1px solid #FFD0A0;
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 8.5pt;
+    .day-name {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .day-type {
+      font-size: 12px;
       font-weight: 700;
-      color: var(--ink-3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light);
     }
 
-    .macro-chip span {
+    /* ── RECIPE BLOCK ── */
+    .recipe {
+      margin-bottom: 48px;
+    }
+
+    .recipe-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .recipe-type {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .recipe-type.entree {
+      background: var(--muted);
+    }
+
+    .recipe-type.plat {
+      background: var(--accent);
+    }
+
+    .recipe-timing {
+      font-size: 13px;
+      color: var(--light);
+      font-weight: 500;
+    }
+
+    .recipe-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      line-height: 1.2;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Ingredients */
+    .ingredients-block {}
+
+    .block-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 12px;
+    }
+
+    .ingredients-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .ingredients-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ingredients-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .ingredients-table td {
+      padding: 7px 0;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .ingredients-table td:first-child {
+      color: var(--ink);
+      padding-right: 12px;
+    }
+
+    .ingredients-table td:last-child {
+      font-weight: 600;
+      color: var(--accent);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .ingredients-table .section-row td {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+      padding-top: 14px;
+      border-bottom: none;
+    }
+
+    /* Steps */
+    .steps-block {}
+
+    .steps-list {
+      list-style: none;
+      counter-reset: steps;
+    }
+
+    .steps-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .steps-list li::before {
+      content: counter(steps);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      min-width: 20px;
+      padding-top: 1px;
+    }
+
+    .steps-list li strong {
+      font-weight: 700;
+    }
+
+    /* Macros */
+    .macros-row {
+      display: flex;
+      gap: 0;
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .macro-item {
+      flex: 1;
+      padding: 10px 14px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .macro-item:last-child {
+      border-right: none;
+    }
+
+    .macro-val {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .macro-val.accent {
       color: var(--accent);
     }
 
-    .divider {
+    .macro-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    /* Kids tip */
+    .kids-tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: var(--card-bg);
+      border-left: 3px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 16px;
+    }
+
+    .kids-tip-icon {
+      font-style: normal;
+      flex-shrink: 0;
+    }
+
+    /* Warning tip */
+    .warn-tip {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #FFF4EE;
+      border-left: 3px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      font-size: 13px;
+      color: var(--ink);
+      margin-top: 16px;
+    }
+
+    .warn-tip-icon {
+      flex-shrink: 0;
+    }
+
+    /* Day total */
+    .day-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 16px 24px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    .day-total-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .day-total-macros {
+      display: flex;
+      gap: 24px;
+    }
+
+    .day-total-item {
+      text-align: center;
+    }
+
+    .day-total-val {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--bg);
+    }
+
+    .day-total-val.acc {
+      color: #F97316;
+    }
+
+    .day-total-lbl {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+
+    .recipe-divider {
       border: none;
-      border-top: 2px solid var(--line);
-      margin: 16px 0;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
     }
 
     /* ── SHOPPING LIST ── */
-    h2.section-head {
-      font-weight: 800;
-      font-size: 13pt;
-      color: var(--ink);
-      margin: 18px 0 10px 0;
-      letter-spacing: -0.3px;
+    .shopping-section {
+      margin-top: 80px;
     }
 
-    h2.section-head .accent {
-      color: var(--accent);
+    .shopping-header {
+      border-top: 3px solid var(--ink);
+      padding-top: 24px;
+      margin-bottom: 40px;
+    }
+
+    .shopping-title {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .shopping-subtitle {
+      font-size: 14px;
+      color: var(--muted);
     }
 
     .shop-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0 28px;
+      gap: 32px;
     }
 
-    .shop-cat {
-      margin-bottom: 14px;
+    .shop-category {
+      break-inside: avoid;
     }
 
-    .shop-cat-title {
-      font-size: 8.5pt;
-      font-weight: 800;
-      letter-spacing: 1.5px;
+    .shop-category-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 6px;
-      padding-bottom: 4px;
       border-bottom: 2px solid var(--accent);
-      display: inline-block;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
     }
 
-    .shop-item {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      font-size: 9.5pt;
-      color: var(--ink-2);
-      padding: 4px 0;
-      border-bottom: 1px dashed var(--line-2);
+    .shop-table {
+      width: 100%;
+      border-collapse: collapse;
     }
 
-    .shop-item:last-child {
+    .shop-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shop-table tr:last-child {
       border-bottom: none;
     }
 
-    .shop-item .shop-qty {
-      font-weight: 700;
-      color: var(--ink);
-      white-space: nowrap;
-      margin-left: 10px;
+    .shop-table td {
+      padding: 8px 0;
+      font-size: 14px;
     }
 
-    .shop-checkbox {
-      display: inline-block;
-      width: 11px;
-      height: 11px;
-      border: 1.5px solid var(--line-2);
-      border-radius: 2px;
-      margin-right: 7px;
-      flex-shrink: 0;
-      vertical-align: middle;
+    .shop-table td:last-child {
+      font-weight: 600;
+      text-align: right;
+      color: var(--muted);
+      padding-left: 16px;
     }
 
-    /* ── ÉTAPES ── */
-    .steps-title {
-      font-size: 8.5pt;
-      font-weight: 800;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--ink-4);
-      margin: 12px 0 8px 0;
+    .shop-epices {
+      grid-column: 1 / -1;
+      background: var(--card-bg);
+      padding: 16px 20px;
+      border-radius: 4px;
     }
 
-    .steps-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    .shop-epices .shop-category-title {
+      margin-bottom: 10px;
+    }
+
+    .shop-epices p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      margin-top: 64px;
       display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .steps-list li {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      font-size: 9pt;
-      line-height: 1.5;
-      color: var(--ink-2);
-    }
-
-    .step-num {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 8pt;
-      font-weight: 800;
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      margin-top: 1px;
     }
 
-    .steps-two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 20px;
+    .footer-brand {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--light);
+    }
+
+    .footer-date {
+      font-size: 12px;
+      color: var(--light);
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        padding: 32px;
+      }
+
+      .recipe-grid {
+        grid-template-columns: 240px 1fr;
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .page {
+        padding: 32px 20px;
+      }
+
+      .doc-title {
+        font-size: 32px;
+      }
+
+      .recipe-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shop-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .day-total-macros {
+        gap: 12px;
+      }
+
+      .day-total-val {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <div class="page">
 
-  <!-- ================================================================ -->
-  <!-- PAGE 1 — COUVERTURE                                              -->
-  <!-- ================================================================ -->
-  <section class="page cover">
-    <div class="cover-top">
-      <div class="cover-brand">Le <span class="accent">Cadre</span> · Florian Marin</div>
-    </div>
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="brand-mark">Le Cadre — Nutrition</div>
+      <h1 class="doc-title">Menu de la semaine<br>Famille</h1>
+      <p class="doc-subtitle">Mercredi → Dimanche &nbsp;·&nbsp; <span>6 portions</span> par recette &nbsp;·&nbsp; Entrée
+        + Plat chaque soir</p>
+    </header>
 
-    <div class="cover-middle">
-      <div class="cover-label">Plan nutrition famille</div>
-      <h1 class="cover-title">
-        <span class="br">Menu</span>
-        <span class="br"><span class="accent">Semaine</span></span>
-        <span class="br">Famille</span>
-      </h1>
-      <p class="cover-subtitle">5 dîners · Entrée + Plat · 6 portions<br>Sans protéine de lait de vache · Adapté
-        triathlon</p>
-      <div class="cover-rule"></div>
-    </div>
-
-    <div class="cover-bottom">
-      <div class="cover-meta">
-        <div class="cover-meta-item">
-          <strong>5</strong>Dîners
-        </div>
-        <div class="cover-meta-item">
-          <strong>6</strong>Portions
-        </div>
-        <div class="cover-meta-item">
-          <strong><span class="accent">0</span></strong>PLV
-        </div>
-      </div>
-      <div class="cover-author">
-        Florian Marin
-        <span class="role">Triathlète · Papa · Le Cadre</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 2 — VUE D'ENSEMBLE                                          -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Vue d'ensemble</div>
-    <h1 class="page-title">Les <span class="accent">5 dîners</span> de la semaine.</h1>
-
-    <div class="allergy-note">
-      <span class="label">⚠️ Allergie PLV</span>
-      Tous les plats sont formulés sans protéine de lait de vache. Vérifier systématiquement les étiquettes : polenta,
-      bouillons industriels, sauce soja (traces possibles selon marque).
-    </div>
-
-    <table class="overview-table">
+    <!-- VUE D'ENSEMBLE -->
+    <div class="section-label">Vue d'ensemble</div>
+    <table class="overview">
       <thead>
         <tr>
           <th>Jour</th>
-          <th>Intensité</th>
           <th>Entrée</th>
           <th>Plat</th>
-          <th>Macros plat</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Lundi</strong></td>
-          <td><span class="badge badge-modere">🟡 Modérée</span></td>
-          <td>Minestrone de légumes</td>
-          <td>Poulet rôti & polenta lait de coco</td>
-          <td>P36 · G58 · L22<br><strong>~575 kcal</strong></td>
+          <td><span class="day-dot" style="background:#3B82F6"></span>Mercredi</td>
+          <td>Assiette de crudités &amp; houmous</td>
+          <td>Poulet rôti, pommes de terre &amp; carottes</td>
         </tr>
         <tr>
-          <td><strong>Mardi</strong></td>
-          <td><span class="badge badge-intense">🔴 Intense</span></td>
-          <td>Salade caesar légère</td>
-          <td>Hachis parmentier dinde & patate douce</td>
-          <td>P38 · G72 · L14<br><strong>~570 kcal</strong></td>
+          <td><span class="day-dot" style="background:#22C55E"></span>Jeudi</td>
+          <td>Salade de lentilles tièdes</td>
+          <td>Saumon en papillote, riz basmati &amp; brocolis</td>
         </tr>
         <tr>
-          <td><strong>Mercredi</strong></td>
-          <td><span class="badge badge-leger">🟢 Légère</span></td>
-          <td>Carpaccio de courgettes · citron · menthe</td>
-          <td>Buddha bowl tofu rôti & riz complet</td>
-          <td>P30 · G62 · L20<br><strong>~545 kcal</strong></td>
+          <td><span class="day-dot" style="background:#EF4444"></span>Vendredi</td>
+          <td>Velouté de courgettes</td>
+          <td>Pâtes bolognaise maison</td>
         </tr>
         <tr>
-          <td><strong>Jeudi</strong></td>
-          <td><span class="badge badge-modere">🟡 Modérée</span></td>
-          <td>Gaspacho (ou soupe tomate tiède)</td>
-          <td>Cabillaud vapeur & quinoa épinards</td>
-          <td>P40 · G60 · L16<br><strong>~545 kcal</strong></td>
+          <td><span class="day-dot" style="background:#EAB308"></span>Samedi</td>
+          <td>Taboulé maison</td>
+          <td>Poulet mariné grillé, pois chiches épicés &amp; légumes rôtis</td>
         </tr>
         <tr>
-          <td><strong>Vendredi</strong></td>
-          <td><span class="badge badge-intense">🔴 Intense</span></td>
-          <td>Salade betterave-noix-avocat</td>
-          <td>Wok de bœuf & nouilles soba</td>
-          <td>P42 · G68 · L16<br><strong>~590 kcal</strong></td>
+          <td><span class="day-dot" style="background:#A855F7"></span>Dimanche</td>
+          <td>Salade de concombre menthe &amp; yaourt grec</td>
+          <td>Tofu mariné soja-sésame, patates douces &amp; haricots verts</td>
         </tr>
       </tbody>
     </table>
 
-    <p style="font-size:9pt; color:var(--ink-4); margin-top:12px; line-height:1.5;">
-      <strong style="color:var(--ink-3);">Note portions :</strong> Macros calculées pour une portion adulte (plat
-      uniquement). Ajouter ~80–120 kcal pour l'entrée. Portions enfants naturellement inférieures. Recettes pour
-      <strong>6 personnes</strong> (2 adultes + 2 enfants + 2 portions adulte de réserve/lunch du lendemain).
-    </p>
 
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>2<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 3 — LUNDI                                                   -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Lundi · Journée modérée</div>
-    <h1 class="page-title">Poulet rôti & <span class="accent">polenta</span> lait de coco.</h1>
-    <div class="day-meta">
-      <span class="day-tag">6 portions</span>
-      <span class="badge badge-modere">🟡 Modérée</span>
-    </div>
-
-    <!-- ENTRÉE -->
-    <div class="section-label">Entrée</div>
-    <div class="dish-title">Minestrone de légumes</div>
-    <table class="ing-table">
-      <tr>
-        <td>Tomates pelées en boîte</td>
-        <td class="qty">2 boîtes · 800g</td>
-      </tr>
-      <tr>
-        <td>Courgettes</td>
-        <td class="qty">3 moyennes · 600g</td>
-      </tr>
-      <tr>
-        <td>Carottes</td>
-        <td class="qty">3 · 300g</td>
-      </tr>
-      <tr>
-        <td>Céleri branche</td>
-        <td class="qty">3 tiges</td>
-      </tr>
-      <tr>
-        <td>Oignons</td>
-        <td class="qty">2</td>
-      </tr>
-      <tr>
-        <td>Haricots blancs cuits</td>
-        <td class="qty">300g</td>
-      </tr>
-      <tr>
-        <td>Bouillon de légumes</td>
-        <td class="qty">1,5 L</td>
-      </tr>
-      <tr>
-        <td>Huile d'olive</td>
-        <td class="qty">2 c.s.</td>
-      </tr>
-      <tr>
-        <td>Herbes de Provence</td>
-        <td class="qty">1 c.c.</td>
-      </tr>
-    </table>
-    <div class="steps-title">Préparation</div>
-    <ul class="steps-list">
-      <li><span class="step-num">1</span><span>Éplucher et tailler les carottes en rondelles de 1 cm, les courgettes en
-          demi-lunes, le céleri en tronçons. Émincer les oignons.</span></li>
-      <li><span class="step-num">2</span><span>Dans une grande casserole, faire revenir les oignons dans l'huile d'olive
-          à feu moyen 3–4 min jusqu'à translucidité.</span></li>
-      <li><span class="step-num">3</span><span>Ajouter carottes et céleri, faire revenir 3 min supplémentaires.
-          Incorporer les tomates pelées écrasées à la main, les courgettes, les herbes de Provence.</span></li>
-      <li><span class="step-num">4</span><span>Verser le bouillon, porter à ébullition puis réduire à feu doux. Laisser
-          mijoter 20 min à couvert.</span></li>
-      <li><span class="step-num">5</span><span>Ajouter les haricots blancs, prolonger 5 min. Mixer brièvement 15–20 sec
-          avec un mixeur plongeant pour épaissir sans perdre la texture chunky. Rectifier l'assaisonnement.</span></li>
-    </ul>
-    <div class="tip-block">Texture chunky appréciée des enfants. Servir avec tranches de pain complet.</div>
-
-    <hr class="divider">
-
-    <!-- PLAT -->
-    <div class="section-label">Plat principal</div>
-    <div class="dish-title">Poulet rôti & polenta crémeuse lait de coco</div>
-    <div class="two-col">
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Poulet</p>
-        <table class="ing-table">
-          <tr>
-            <td>Cuisses de poulet désossées</td>
-            <td class="qty">6 × 150g · 900g</td>
-          </tr>
-          <tr>
-            <td>Ail</td>
-            <td class="qty">3 gousses</td>
-          </tr>
-          <tr>
-            <td>Thym</td>
-            <td class="qty">3 branches</td>
-          </tr>
-          <tr>
-            <td>Romarin</td>
-            <td class="qty">2 branches</td>
-          </tr>
-          <tr>
-            <td>Huile d'olive</td>
-            <td class="qty">3 c.s.</td>
-          </tr>
-          <tr>
-            <td>Haricots verts</td>
-            <td class="qty">600g</td>
-          </tr>
-        </table>
+    <!-- ═══════════════════════════════ MERCREDI ═══════════════════════════════ -->
+    <section class="day-section">
+      <div class="day-header">
+        <h2 class="day-name"><span class="day-dot" style="background:#3B82F6;width:10px;height:10px;"></span>Mercredi
+        </h2>
       </div>
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Polenta</p>
-        <table class="ing-table">
-          <tr>
-            <td>Polenta (vérifier sans traces PLV)</td>
-            <td class="qty">480g</td>
-          </tr>
-          <tr>
-            <td>Lait de coco</td>
-            <td class="qty">800ml</td>
-          </tr>
-          <tr>
-            <td>Eau</td>
-            <td class="qty">600ml</td>
-          </tr>
-          <tr>
-            <td>Sel, poivre</td>
-            <td class="qty">q.s.</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="macros-bar">
-      <div class="macro-chip">P <span>36g</span></div>
-      <div class="macro-chip">G <span>58g</span></div>
-      <div class="macro-chip">L <span>22g</span></div>
-      <div class="macro-chip">⚡ <span>~575 kcal</span>/portion adulte</div>
-    </div>
-    <div class="steps-title">Préparation</div>
-    <div class="steps-two-col">
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Poulet</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Préchauffer le four à 200°C. Écraser l'ail, effeuiller le thym et le
-              romarin.</span></li>
-          <li><span class="step-num">2</span><span>Enduire les cuisses d'huile d'olive, ail, thym, romarin, sel et
-              poivre. Laisser mariner 10 min à température ambiante.</span></li>
-          <li><span class="step-num">3</span><span>Enfourner 30–35 min sur grille jusqu'à peau dorée et jus clair à la
-              piqûre. Laisser reposer 5 min avant de servir.</span></li>
-          <li><span class="step-num">4</span><span>Cuire les haricots verts à l'eau bouillante salée 6 min, égoutter,
-              assaisonner d'un filet d'huile d'olive.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Polenta</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Verser le lait de coco et l'eau dans une grande casserole, saler
-              légèrement. Porter à ébullition douce.</span></li>
-          <li><span class="step-num">2</span><span>Verser la polenta en pluie fine en remuant constamment au fouet pour
-              éviter les grumeaux.</span></li>
-          <li><span class="step-num">3</span><span>Réduire à feu doux, remuer à la spatule 5–8 min jusqu'à ce que la
-              polenta se détache des parois. Rectifier sel et poivre. Servir immédiatement.</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="tip-block">Polenta au lait de coco = crémeux garanti sans PLV. Commencer le poulet d'abord (30 min),
-      lancer la polenta 10 min avant de servir.</div>
 
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>3<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 4 — MARDI + MERCREDI                                        -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Mardi · Journée intense</div>
-    <h1 class="page-title">Hachis parmentier dinde <span class="accent">& patate douce.</span></h1>
-    <div class="day-meta">
-      <span class="day-tag">6 portions</span>
-      <span class="badge badge-intense">🔴 Intense</span>
-    </div>
-
-    <div class="section-label">Entrée</div>
-    <div class="dish-title">Salade caesar légère (sans parmesan pour enfants PLV)</div>
-    <table class="ing-table">
-      <tr>
-        <td>Laitue romaine</td>
-        <td class="qty">2 têtes · 600g</td>
-      </tr>
-      <tr>
-        <td>Croûtons pain complet maison</td>
-        <td class="qty">150g</td>
-      </tr>
-      <tr>
-        <td>Parmesan râpé <em>(adultes uniquement)</em></td>
-        <td class="qty">60g</td>
-      </tr>
-      <tr>
-        <td>Yaourt grec (sauce) — <em>vérifier sans PLV pour enfants</em></td>
-        <td class="qty">200g adultes</td>
-      </tr>
-      <tr>
-        <td>Jus de citron</td>
-        <td class="qty">2 c.s.</td>
-      </tr>
-      <tr>
-        <td>Moutarde</td>
-        <td class="qty">1 c.c.</td>
-      </tr>
-      <tr>
-        <td>Ail</td>
-        <td class="qty">1 gousse</td>
-      </tr>
-    </table>
-    <div class="steps-title">Préparation</div>
-    <ul class="steps-list">
-      <li><span class="step-num">1</span><span>Couper le pain en cubes de 1,5 cm, faire dorer à sec ou avec un filet
-          d'huile d'olive dans une poêle à feu moyen 5 min en remuant. Réserver.</span></li>
-      <li><span class="step-num">2</span><span>Préparer la sauce : écraser l'ail en purée, mélanger avec le yaourt grec,
-          le jus de citron et la moutarde. Assaisonner. Réserver une version nature (sans ail) pour les enfants.</span>
-      </li>
-      <li><span class="step-num">3</span><span>Laver et essorer la romaine, déchirer les feuilles en morceaux. Dresser
-          dans un grand saladier ou directement dans les assiettes.</span></li>
-      <li><span class="step-num">4</span><span>Napper de sauce, ajouter croûtons et parmesan pour les adultes. Assiettes
-          enfants : romaine + croûtons + huile d'olive + jus de citron.</span></li>
-    </ul>
-    <div class="tip-block">Sauce enfants : huile d'olive + citron + sel uniquement. Parmesan servi séparément à table.
-    </div>
-
-    <hr class="divider">
-
-    <div class="section-label">Plat principal</div>
-    <div class="dish-title">Hachis parmentier dinde & patate douce</div>
-    <div class="two-col">
-      <div>
-        <table class="ing-table">
-          <tr>
-            <td>Viande hachée dinde 5% MG</td>
-            <td class="qty">700g</td>
-          </tr>
-          <tr>
-            <td>Patates douces</td>
-            <td class="qty">1,2 kg</td>
-          </tr>
-          <tr>
-            <td>Oignons</td>
-            <td class="qty">2</td>
-          </tr>
-          <tr>
-            <td>Ail</td>
-            <td class="qty">3 gousses</td>
-          </tr>
-        </table>
-      </div>
-      <div>
-        <table class="ing-table">
-          <tr>
-            <td>Tomates concassées</td>
-            <td class="qty">1 boîte · 400g</td>
-          </tr>
-          <tr>
-            <td>Lait de coco</td>
-            <td class="qty">200ml</td>
-          </tr>
-          <tr>
-            <td>Huile d'olive</td>
-            <td class="qty">3 c.s.</td>
-          </tr>
-          <tr>
-            <td>Muscade, persil</td>
-            <td class="qty">q.s.</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="macros-bar">
-      <div class="macro-chip">P <span>38g</span></div>
-      <div class="macro-chip">G <span>72g</span></div>
-      <div class="macro-chip">L <span>14g</span></div>
-      <div class="macro-chip">⚡ <span>~570 kcal</span>/portion adulte</div>
-    </div>
-    <div class="steps-title">Préparation</div>
-    <div class="steps-two-col">
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Farce dinde</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Émincer oignons et ail. Faire revenir dans l'huile d'olive 4 min à
-              feu moyen.</span></li>
-          <li><span class="step-num">2</span><span>Ajouter la dinde hachée, faire dorer en émiettant à la spatule
-              pendant 6–8 min.</span></li>
-          <li><span class="step-num">3</span><span>Incorporer tomates concassées, lentilles corail cuites, sel, poivre,
-              persil. Laisser mijoter 10 min à couvert jusqu'à absorption.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Purée patate douce</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Éplucher les patates douces, couper en morceaux. Cuire à l'eau
-              bouillante salée 18–20 min jusqu'à tendreté.</span></li>
-          <li><span class="step-num">2</span><span>Égoutter et écraser au presse-purée. Incorporer le lait de coco chaud
-              progressivement, muscade, sel et poivre. La purée doit être lisse et souple.</span></li>
-        </ul>
-      </div>
-    </div>
-    <ul class="steps-list" style="margin-top:8px;">
-      <li><span class="step-num">4</span><span>Préchauffer le four à 190°C. Dans un plat à gratin, étaler la farce dinde
-          en couche uniforme, recouvrir de la purée à la spatule.</span></li>
-      <li><span class="step-num">5</span><span>Enfourner 20–25 min jusqu'à légère coloration dorée en surface. Laisser
-          reposer 5 min avant de servir.</span></li>
-    </ul>
-    <div class="tip-block">Peut se préparer la veille et se réchauffer 20 min à 180°C. Les lentilles sont invisibles
-      dans la farce — zéro résistance des enfants.</div>
-
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>4<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 5 — MERCREDI                                                -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Mercredi · Journée légère</div>
-    <h1 class="page-title">Buddha bowl tofu rôti <span class="accent">& riz complet.</span></h1>
-    <div class="day-meta">
-      <span class="day-tag">6 portions</span>
-      <span class="badge badge-leger">🟢 Légère</span>
-    </div>
-
-    <div class="section-label">Entrée</div>
-    <div class="dish-title">Carpaccio de courgettes · citron · menthe · pignons</div>
-    <table class="ing-table">
-      <tr>
-        <td>Courgettes fermes (tranchées très fines)</td>
-        <td class="qty">4 · 800g</td>
-      </tr>
-      <tr>
-        <td>Citron (jus + zeste)</td>
-        <td class="qty">2</td>
-      </tr>
-      <tr>
-        <td>Huile d'olive extra vierge</td>
-        <td class="qty">4 c.s.</td>
-      </tr>
-      <tr>
-        <td>Menthe fraîche</td>
-        <td class="qty">1 bouquet</td>
-      </tr>
-      <tr>
-        <td>Pignons de pin (adultes)</td>
-        <td class="qty">40g</td>
-      </tr>
-      <tr>
-        <td>Fleur de sel, poivre</td>
-        <td class="qty">q.s.</td>
-      </tr>
-    </table>
-    <div class="steps-title">Préparation</div>
-    <ul class="steps-list">
-      <li><span class="step-num">1</span><span>Laver les courgettes, éliminer les extrémités. Trancher à la mandoline
-          réglée à 2 mm, ou utiliser un couteau économe en passant sur toute la longueur.</span></li>
-      <li><span class="step-num">2</span><span>Disposer les tranches en rosace légèrement superposées dans les assiettes
-          ou sur un plat de service.</span></li>
-      <li><span class="step-num">3</span><span>Mélanger jus de citron, huile d'olive et fleur de sel. Verser en filet
-          sur les courgettes. Laisser mariner 15 min à température ambiante.</span></li>
-      <li><span class="step-num">4</span><span>Au moment de servir : ajouter le zeste de citron, les feuilles de menthe
-          fraîche (adultes), et les pignons toastés 2 min à sec dans une poêle.</span></li>
-    </ul>
-    <div class="tip-block">Trancher à la mandoline (2mm) ou au couteau économe. Enfants : servir sans menthe, pignons à
-      part. Peut se préparer 1h à l'avance au frigo.</div>
-
-    <hr class="divider">
-
-    <div class="section-label">Plat principal</div>
-    <div class="dish-title">Buddha bowl tofu rôti & riz complet</div>
-    <div class="two-col">
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Tofu & riz</p>
-        <table class="ing-table">
-          <tr>
-            <td>Tofu ferme</td>
-            <td class="qty">600g</td>
-          </tr>
-          <tr>
-            <td>Riz complet cru</td>
-            <td class="qty">400g</td>
-          </tr>
-          <tr>
-            <td>Edamame (ou pois chiches)</td>
-            <td class="qty">400g</td>
-          </tr>
-          <tr>
-            <td>Avocats</td>
-            <td class="qty">2</td>
-          </tr>
-        </table>
-      </div>
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Marinade & garniture</p>
-        <table class="ing-table">
-          <tr>
-            <td>Sauce soja (vérifier PLV)</td>
-            <td class="qty">3 c.s.</td>
-          </tr>
-          <tr>
-            <td>Huile de sésame</td>
-            <td class="qty">2 c.s.</td>
-          </tr>
-          <tr>
-            <td>Miel</td>
-            <td class="qty">2 c.s.</td>
-          </tr>
-          <tr>
-            <td>Citron</td>
-            <td class="qty">2</td>
-          </tr>
-          <tr>
-            <td>Carottes râpées</td>
-            <td class="qty">3 · 300g</td>
-          </tr>
-          <tr>
-            <td>Graines de sésame</td>
-            <td class="qty">20g</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="macros-bar">
-      <div class="macro-chip">P <span>30g</span></div>
-      <div class="macro-chip">G <span>62g</span></div>
-      <div class="macro-chip">L <span>20g</span></div>
-      <div class="macro-chip">⚡ <span>~545 kcal</span>/portion adulte</div>
-    </div>
-    <div class="steps-title">Préparation</div>
-    <div class="steps-two-col">
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Tofu & riz</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Égoutter le tofu, l'emballer dans du papier absorbant et presser 10
-              min pour éliminer l'excès d'eau. Couper en cubes de 2 cm.</span></li>
-          <li><span class="step-num">2</span><span>Préparer la marinade : mélanger sauce soja, huile de sésame et miel.
-              Faire mariner les cubes de tofu 30 min minimum.</span></li>
-          <li><span class="step-num">3</span><span>Préchauffer le four à 200°C. Étaler le tofu sur plaque, enfourner 25
-              min en retournant à mi-cuisson jusqu'à coloration dorée et texture légèrement croustillante.</span></li>
-          <li><span class="step-num">4</span><span>Cuire le riz complet selon les instructions (environ 35–40 min).
-              Garder au chaud.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Garniture & dressage</p>
-        <ul class="steps-list">
-          <li><span class="step-num">5</span><span>Râper les carottes finement. Cuire les edamame 3 min à l'eau
-              bouillante salée, égoutter.</span></li>
-          <li><span class="step-num">6</span><span>Trancher les avocats en éventail. Préparer une sauce citron : jus de
-              citron restant + filet d'huile de sésame + sel.</span></li>
-          <li><span class="step-num">7</span><span>Dresser les bols : base de riz, puis disposer le tofu, les carottes
-              râpées, l'edamame et l'avocat en quartiers. Arroser de sauce, parsemer de graines de sésame.</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="tip-block">Enfants : servir les éléments séparément dans l'assiette, sauce à part. Graines de sésame en
-      option. Lancer le riz en premier (40 min), puis le tofu (marinade 30 min + cuisson 25 min) — tout arrive en même
-      temps.</div>
-
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>5<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 6 — JEUDI                                                   -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Jeudi · Journée modérée</div>
-    <h1 class="page-title">Cabillaud vapeur <span class="accent">& quinoa épinards.</span></h1>
-    <div class="day-meta">
-      <span class="day-tag">6 portions</span>
-      <span class="badge badge-modere">🟡 Modérée</span>
-    </div>
-
-    <div class="section-label">Entrée</div>
-    <div class="dish-title">Gaspacho (ou soupe tomate tiède pour les enfants)</div>
-    <table class="ing-table">
-      <tr>
-        <td>Tomates mûres</td>
-        <td class="qty">1,2 kg</td>
-      </tr>
-      <tr>
-        <td>Concombre</td>
-        <td class="qty">1 gros · 400g</td>
-      </tr>
-      <tr>
-        <td>Poivron rouge</td>
-        <td class="qty">1</td>
-      </tr>
-      <tr>
-        <td>Pain rassis (lié)</td>
-        <td class="qty">80g</td>
-      </tr>
-      <tr>
-        <td>Ail</td>
-        <td class="qty">1 gousse</td>
-      </tr>
-      <tr>
-        <td>Huile d'olive</td>
-        <td class="qty">3 c.s.</td>
-      </tr>
-      <tr>
-        <td>Vinaigre de vin</td>
-        <td class="qty">2 c.s.</td>
-      </tr>
-    </table>
-    <div class="steps-title">Préparation</div>
-    <ul class="steps-list">
-      <li><span class="step-num">1</span><span>Faire tremper le pain rassis 5 min dans un peu d'eau froide, puis
-          essorer.</span></li>
-      <li><span class="step-num">2</span><span>Couper les tomates en quartiers, épépiner le concombre et le poivron,
-          éplucher l'ail.</span></li>
-      <li><span class="step-num">3</span><span>Mixer l'ensemble avec le pain, l'huile d'olive et le vinaigre jusqu'à
-          obtenir une texture lisse. Passer au tamis si désiré pour plus de finesse.</span></li>
-      <li><span class="step-num">4</span><span>Assaisonner, réfrigérer minimum 2h (idéalement la veille). Pour les
-          enfants : prélever une portion, réchauffer avec 200ml de bouillon chaud et servir en soupe tiède.</span></li>
-    </ul>
-    <div class="tip-block">Préparer la veille pour que les saveurs se développent. Adultes : servi froid avec un filet
-      d'huile. Enfants : version tiède avec bouillon.</div>
-
-    <hr class="divider">
-
-    <div class="section-label">Plat principal</div>
-    <div class="dish-title">Cabillaud vapeur & quinoa aux épinards</div>
-    <div class="two-col">
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Poisson</p>
-        <table class="ing-table">
-          <tr>
-            <td>Filets de cabillaud</td>
-            <td class="qty">6 × 150g · 900g</td>
-          </tr>
-          <tr>
-            <td>Citron</td>
-            <td class="qty">2</td>
-          </tr>
-          <tr>
-            <td>Ail</td>
-            <td class="qty">2 gousses</td>
-          </tr>
-          <tr>
-            <td>Huile de colza</td>
-            <td class="qty">3 c.s.</td>
-          </tr>
-        </table>
-      </div>
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Quinoa</p>
-        <table class="ing-table">
-          <tr>
-            <td>Quinoa cru</td>
-            <td class="qty">480g</td>
-          </tr>
-          <tr>
-            <td>Bouillon (cuisson quinoa)</td>
-            <td class="qty">960ml</td>
-          </tr>
-          <tr>
-            <td>Épinards frais</td>
-            <td class="qty">400g</td>
-          </tr>
-          <tr>
-            <td>Pignons de pin <em>(adultes)</em></td>
-            <td class="qty">30g</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="macros-bar">
-      <div class="macro-chip">P <span>40g</span></div>
-      <div class="macro-chip">G <span>60g</span></div>
-      <div class="macro-chip">L <span>16g</span></div>
-      <div class="macro-chip">⚡ <span>~545 kcal</span>/portion adulte</div>
-    </div>
-    <div class="steps-title">Préparation</div>
-    <div class="steps-two-col">
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Quinoa épinards</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Rincer le quinoa à l'eau froide sous un tamis fin 30 sec pour
-              éliminer l'amertume.</span></li>
-          <li><span class="step-num">2</span><span>Dans une casserole, verser le bouillon, ajouter le quinoa. Porter à
-              ébullition, réduire à feu doux, couvrir et cuire 14–16 min jusqu'à absorption complète et apparition des
-              germes blancs.</span></li>
-          <li><span class="step-num">3</span><span>Hors du feu, incorporer les épinards frais, couvrir 2 min — ils
-              tombent à la chaleur résiduelle. Mélanger, assaisonner d'huile de colza et citron.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Cabillaud vapeur</p>
-        <ul class="steps-list">
-          <li><span class="step-num">4</span><span>Sécher les filets avec du papier absorbant. Déposer dans le panier
-              vapeur, assaisonner sel, poivre, tranches de citron et ail émincé par-dessus.</span></li>
-          <li><span class="step-num">5</span><span>Cuire à la vapeur 7–8 min selon l'épaisseur. Le cabillaud est cuit
-              quand la chair s'effiloche facilement à la fourchette et perd sa translucidité.</span></li>
-          <li><span class="step-num">6</span><span>Dresser : base de quinoa, poser le filet de cabillaud par-dessus,
-              filet d'huile de colza, pignons pour les adultes.</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="tip-block">Lancer le quinoa (16 min) puis le cabillaud (8 min) pour que tout soit prêt simultanément. Ne
-      jamais surcuire le cabillaud — chair sèche non récupérable.</div>
-
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>6<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 7 — VENDREDI                                                -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Vendredi · Journée intense</div>
-    <h1 class="page-title">Wok de bœuf <span class="accent">& nouilles soba.</span></h1>
-    <div class="day-meta">
-      <span class="day-tag">6 portions</span>
-      <span class="badge badge-intense">🔴 Intense</span>
-    </div>
-
-    <div class="section-label">Entrée</div>
-    <div class="dish-title">Salade betterave · noix · avocat</div>
-    <table class="ing-table">
-      <tr>
-        <td>Betterave cuite (sous vide)</td>
-        <td class="qty">600g</td>
-      </tr>
-      <tr>
-        <td>Mâche ou roquette</td>
-        <td class="qty">200g</td>
-      </tr>
-      <tr>
-        <td>Avocat <em>(remplace feta PLV)</em></td>
-        <td class="qty">2</td>
-      </tr>
-      <tr>
-        <td>Noix</td>
-        <td class="qty">60g</td>
-      </tr>
-      <tr>
-        <td>Pomme verte</td>
-        <td class="qty">2</td>
-      </tr>
-      <tr>
-        <td>Vinaigre balsamique</td>
-        <td class="qty">3 c.s.</td>
-      </tr>
-      <tr>
-        <td>Huile d'olive</td>
-        <td class="qty">2 c.s.</td>
-      </tr>
-    </table>
-    <div class="steps-title">Préparation</div>
-    <ul class="steps-list">
-      <li><span class="step-num">1</span><span>Couper la betterave en dés de 1,5 cm ou en lamelles fines selon
-          préférence. Trancher les pommes vertes en fines lamelles, arroser aussitôt d'un trait de jus de citron pour
-          éviter l'oxydation.</span></li>
-      <li><span class="step-num">2</span><span>Couper les avocats en deux, dénoyauter, trancher en éventail dans la peau
-          puis récupérer à la cuillère.</span></li>
-      <li><span class="step-num">3</span><span>Préparer la vinaigrette : mélanger vinaigre balsamique, huile d'olive,
-          sel et poivre.</span></li>
-      <li><span class="step-num">4</span><span>Dresser : lit de mâche, betterave, pomme, avocat et noix grossièrement
-          concassées. Arroser de vinaigrette au moment de servir. Assiettes enfants : sans mâche (ou roquette),
-          betterave + pomme + avocat.</span></li>
-    </ul>
-    <div class="tip-block">Assiettes enfants sans roquette (amer). 100% PLV-free. Préparer les éléments à l'avance, ne
-      dresser qu'au dernier moment.</div>
-
-    <hr class="divider">
-
-    <div class="section-label">Plat principal</div>
-    <div class="dish-title">Wok de bœuf & nouilles soba légumes</div>
-    <div class="two-col">
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Bœuf & pâtes</p>
-        <table class="ing-table">
-          <tr>
-            <td>Bœuf rumsteck ou bavette émincé</td>
-            <td class="qty">700g</td>
-          </tr>
-          <tr>
-            <td>Nouilles soba 100% sarrasin</td>
-            <td class="qty">400g</td>
-          </tr>
-          <tr>
-            <td>Ail</td>
-            <td class="qty">4 gousses</td>
-          </tr>
-          <tr>
-            <td>Gingembre frais</td>
-            <td class="qty">2 c.c. râpé</td>
-          </tr>
-        </table>
-      </div>
-      <div>
-        <p
-          style="font-size:8.5pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-          Légumes & sauce</p>
-        <table class="ing-table">
-          <tr>
-            <td>Courgettes</td>
-            <td class="qty">3 · 600g</td>
-          </tr>
-          <tr>
-            <td>Poivrons</td>
-            <td class="qty">2</td>
-          </tr>
-          <tr>
-            <td>Champignons</td>
-            <td class="qty">200g</td>
-          </tr>
-          <tr>
-            <td>Carottes</td>
-            <td class="qty">3 · 300g</td>
-          </tr>
-          <tr>
-            <td>Sauce soja (vérifier PLV)</td>
-            <td class="qty">60ml</td>
-          </tr>
-          <tr>
-            <td>Huile de sésame</td>
-            <td class="qty">2 c.s.</td>
-          </tr>
-          <tr>
-            <td>Huile neutre</td>
-            <td class="qty">2 c.s.</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="macros-bar">
-      <div class="macro-chip">P <span>42g</span></div>
-      <div class="macro-chip">G <span>68g</span></div>
-      <div class="macro-chip">L <span>16g</span></div>
-      <div class="macro-chip">⚡ <span>~590 kcal</span>/portion adulte</div>
-    </div>
-    <div class="steps-title">Préparation</div>
-    <div class="steps-two-col">
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Mise en place</p>
-        <ul class="steps-list">
-          <li><span class="step-num">1</span><span>Émincer le bœuf en fines lanières de 5 mm dans le sens contraire des
-              fibres. Tailler les légumes en julienne fine (carottes, courgettes, poivrons) et trancher les champignons.
-              Émincer ail et râper le gingembre.</span></li>
-          <li><span class="step-num">2</span><span>Mélanger sauce soja, huile de sésame et gingembre dans un bol. Faire
-              mariner le bœuf 10 min minimum.</span></li>
-          <li><span class="step-num">3</span><span>Cuire les nouilles soba selon le paquet (généralement 4–5 min),
-              rincer immédiatement à l'eau froide pour stopper la cuisson. Réserver.</span></li>
-        </ul>
-      </div>
-      <div>
-        <p
-          style="font-size:8pt;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">
-          Cuisson wok</p>
-        <ul class="steps-list">
-          <li><span class="step-num">4</span><span>Chauffer le wok ou une grande poêle à feu très vif avec l'huile
-              neutre jusqu'à légère fumée. C'est essentiel pour la saisie.</span></li>
-          <li><span class="step-num">5</span><span>Saisir le bœuf en une seule couche, 1–2 min sans toucher, puis remuer
-              30 sec. Retirer et réserver.</span></li>
-          <li><span class="step-num">6</span><span>Dans le même wok, faire sauter l'ail 30 sec, ajouter les légumes durs
-              (carottes, poivrons) 3 min, puis les courgettes et champignons 2 min supplémentaires.</span></li>
-          <li><span class="step-num">7</span><span>Remettre le bœuf, ajouter les nouilles soba et la sauce soja
-              restante. Mélanger 1 min à feu vif. Servir immédiatement.</span></li>
-        </ul>
-      </div>
-    </div>
-    <div class="tip-block">La clé du wok : feu maximal et cuisson rapide. Tout préparer (mise en place complète) avant
-      de lancer la cuisson — une fois le wok chaud, les étapes s'enchaînent en 8 min.</div>
-
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>7<span class="dot"></span>8</span>
-    </div>
-  </section>
-
-  <!-- ================================================================ -->
-  <!-- PAGE 8 — LISTE DE COURSES                                        -->
-  <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Liste de courses</div>
-    <h1 class="page-title">Ingrédients <span class="accent">de la semaine.</span></h1>
-    <p style="font-size:9pt;color:var(--ink-4);margin-bottom:16px;margin-top:-4px;">Pour 5 dîners · 6 portions ·
-      Quantités totales consolidées</p>
-
-    <div class="shop-grid">
-
-      <!-- COL 1 -->
-      <div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">🥩 Viandes & protéines animales</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Cuisses de poulet désossées</span><span
-              class="shop-qty">900g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Viande hachée dinde 5% MG</span><span
-              class="shop-qty">700g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Filets cabillaud</span><span
-              class="shop-qty">900g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bœuf rumsteck / bavette</span><span
-              class="shop-qty">700g</span></div>
+      <!-- Entrée -->
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type entree">Entrée</span>
+          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; Sans cuisson</span>
         </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🌱 Protéines végétales</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tofu ferme</span><span
-              class="shop-qty">600g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots blancs cuits</span><span
-              class="shop-qty">300g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Edamame (ou pois chiches)</span><span
-              class="shop-qty">400g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🌾 Féculents & céréales</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Polenta (vérifier sans PLV)</span><span
-              class="shop-qty">480g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Riz complet cru</span><span
-              class="shop-qty">400g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Quinoa cru</span><span
-              class="shop-qty">480g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Nouilles soba 100% sarrasin</span><span
-              class="shop-qty">400g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pain complet (croûtons caesar)</span><span
-              class="shop-qty">300g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pain rassis (gaspacho)</span><span
-              class="shop-qty">80g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🥫 Conserves & condiments</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates pelées boîte</span><span
-              class="shop-qty">2 boîtes · 800g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates concassées boîte</span><span
-              class="shop-qty">1 boîte · 400g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait de coco (polenta + hachis)</span><span
-              class="shop-qty">2 boîtes · 1L</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Sauce soja (vérifier PLV)</span><span
-              class="shop-qty">150ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon légumes</span><span
-              class="shop-qty">1,5 L</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon volaille (vérifier PLV)</span><span
-              class="shop-qty">960ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre balsamique</span><span
-              class="shop-qty">3 c.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre de vin</span><span class="shop-qty">2
-              c.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Moutarde</span><span class="shop-qty">1
-              c.c.</span></div>
-        </div>
-      </div>
-
-      <!-- COL 2 -->
-      <div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">🥦 Légumes (frais)</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Courgettes (wok + carpaccio)</span><span
-              class="shop-qty">13 · ~2,6 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Menthe fraîche (carpaccio)</span><span
-              class="shop-qty">1 bouquet</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Carottes</span><span class="shop-qty">12 ·
-              ~1,2 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Oignons</span><span class="shop-qty">8</span>
+        <h3 class="recipe-title">Assiette de crudités &amp; houmous maison</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Carottes</td>
+                <td>3 (300g)</td>
+              </tr>
+              <tr>
+                <td>Concombre</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Radis</td>
+                <td>1 botte</td>
+              </tr>
+              <tr>
+                <td>Tomates cerises</td>
+                <td>200g</td>
+              </tr>
+              <tr>
+                <td>Céleri branche</td>
+                <td>2 branches</td>
+              </tr>
+              <tr class="section-row">
+                <td colspan="2">Houmous maison</td>
+              </tr>
+              <tr>
+                <td>Pois chiches cuits (boîte)</td>
+                <td>400g</td>
+              </tr>
+              <tr>
+                <td>Tahini</td>
+                <td>40g</td>
+              </tr>
+              <tr>
+                <td>Citron</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>1 gousse</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Cumin, sel</td>
+                <td>—</td>
+              </tr>
+            </table>
           </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Ail</span><span class="shop-qty">2
-              têtes</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Poivrons rouges (gaspacho + wok)</span><span
-              class="shop-qty">3 · ~450g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Céleri branche</span><span class="shop-qty">3
-              tiges</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts</span><span
-              class="shop-qty">600g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Épinards frais</span><span
-              class="shop-qty">400g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Champignons</span><span
-              class="shop-qty">200g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Laitue romaine</span><span class="shop-qty">2
-              têtes · 600g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Mâche ou roquette</span><span
-              class="shop-qty">200g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Patates douces</span><span
-              class="shop-qty">1,2 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Concombre</span><span class="shop-qty">1 gros
-              · 400g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates mûres (gaspacho)</span><span
-              class="shop-qty">1,2 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Betterave cuite sous vide</span><span
-              class="shop-qty">600g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Avocats</span><span class="shop-qty">2</span>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li><strong>Houmous :</strong> égoutter et rincer les pois chiches. Mixer avec tahini, jus de citron, ail,
+                huile d'olive, cumin et sel. Ajouter 2–3 c.s. d'eau pour ajuster la texture. Goûter et rectifier.</li>
+              <li><strong>Crudités :</strong> éplucher et tailler les carottes en bâtonnets. Couper le concombre en
+                rondelles ou bâtonnets. Couper le céleri en tronçons. Laver radis et tomates cerises.</li>
+              <li>Dresser les crudités dans un grand plat autour du bol de houmous.</li>
+              <li>Arroser le houmous d'un filet d'huile d'olive + pincée de paprika.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">160</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">7g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">18g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">7g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Format idéal pour les petits — à picorer avec
+              les doigts, le houmous plaît beaucoup dès 2–3 ans.</div>
           </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes vertes</span><span
-              class="shop-qty">2</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Gingembre frais</span><span class="shop-qty">1
-              morceau</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🫒 Matières grasses & huiles</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile d'olive</span><span
-              class="shop-qty">200ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile de colza</span><span
-              class="shop-qty">50ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile de sésame</span><span
-              class="shop-qty">50ml</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile neutre (wok)</span><span
-              class="shop-qty">30ml</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🍋 Fruits & divers frais</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons</span><span class="shop-qty">6</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bananes</span><span class="shop-qty">—</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Fruits de saison</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs</span><span class="shop-qty">—</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Compote à boire</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Thym frais</span><span class="shop-qty">3
-              branches</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Romarin</span><span class="shop-qty">2
-              branches</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt grec (caesar adultes)</span><span
-              class="shop-qty">200g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🧂 Épices & aromates secs</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Herbes de Provence</span><span
-              class="shop-qty">1 c.c.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Cumin en poudre</span><span class="shop-qty">1
-              c.c.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Muscade</span><span
-              class="shop-qty">q.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Persil séché</span><span
-              class="shop-qty">q.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Sel, poivre</span><span
-              class="shop-qty">q.s.</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🍯 Sucrants, graines & snacks</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Miel</span><span class="shop-qty">60ml +
-              stock</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Beurre de cacahuète</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Véritable Petit Beurre LU</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Graines de sésame</span><span
-              class="shop-qty">20g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pignons de pin (adultes)</span><span
-              class="shop-qty">30g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Noix (salade vendredi)</span><span
-              class="shop-qty">60g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🧀 Adultes uniquement (contient PLV)</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Parmesan râpé (caesar mardi)</span><span
-              class="shop-qty">60g</span></div>
-        </div>
-
-        <div class="shop-cat">
-          <div class="shop-cat-title">🏠 Maison & divers</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Recharge plumeau Swiffer</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Couches</span><span class="shop-qty">—</span>
-          </div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Détartrant de sonnerie</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Ficelle jardin</span><span
-              class="shop-qty">—</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Guide Athènes</span><span
-              class="shop-qty">—</span></div>
         </div>
       </div>
 
-    </div>
+      <hr class="recipe-divider">
 
-    <div class="page-number">
-      <span>Menu Semaine Famille</span>
-      <span>8<span class="dot"></span>8</span>
-    </div>
-  </section>
+      <!-- Plat -->
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type plat">Plat</span>
+          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; Cuisson : 45 min</span>
+        </div>
+        <h3 class="recipe-title">Poulet rôti, pommes de terre &amp; carottes</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Hauts de cuisse de poulet (avec os)</td>
+                <td>1,5 kg</td>
+              </tr>
+              <tr>
+                <td>Pommes de terre Charlotte</td>
+                <td>1,2 kg</td>
+              </tr>
+              <tr>
+                <td>Carottes</td>
+                <td>3 (300g)</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>3 gousses</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>30ml</td>
+              </tr>
+              <tr>
+                <td>Citron</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Thym, romarin, sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Préchauffer le four à 200°C (chaleur tournante).</li>
+              <li>Couper les pommes de terre en deux, éplucher et tronçonner les carottes.</li>
+              <li>Disposer poulet + légumes dans un grand plat à rôtir.</li>
+              <li>Arroser d'huile d'olive et de jus de citron. Disperser l'ail écrasé, thym, romarin, sel, poivre.</li>
+              <li>Enfourner 45 min. Retourner le poulet à mi-cuisson.</li>
+              <li>Vérifier la cuisson : le jus doit être transparent.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">480</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">42g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">38g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">14g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="day-total">
+        <div class="day-total-label">Total dîner mercredi</div>
+        <div class="day-total-macros">
+          <div class="day-total-item">
+            <div class="day-total-val acc">640</div>
+            <div class="day-total-lbl">kcal</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">49g</div>
+            <div class="day-total-lbl">Protéines</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">56g</div>
+            <div class="day-total-lbl">Glucides</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">21g</div>
+            <div class="day-total-lbl">Lipides</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════ JEUDI ═══════════════════════════════ -->
+    <section class="day-section">
+      <div class="day-header">
+        <h2 class="day-name"><span class="day-dot" style="background:#22C55E;width:10px;height:10px;"></span>Jeudi</h2>
+      </div>
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type entree">Entrée</span>
+          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Cuisson : 20 min</span>
+        </div>
+        <h3 class="recipe-title">Salade de lentilles tièdes</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Lentilles vertes du Puy (sèches)</td>
+                <td>350g</td>
+              </tr>
+              <tr>
+                <td>Carotte (cuisson)</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Oignon (cuisson)</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Échalotes</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Persil frais</td>
+                <td>½ bouquet</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>30ml</td>
+              </tr>
+              <tr>
+                <td>Vinaigre balsamique</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Moutarde à l'ancienne</td>
+                <td>1 c.s.</td>
+              </tr>
+              <tr>
+                <td>Sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Rincer les lentilles. Cuire 20 min dans l'eau bouillante salée avec 1 carotte et 1 oignon entiers.
+                Égoutter, retirer carotte/oignon.</li>
+              <li>Émincer finement les échalotes et hacher le persil.</li>
+              <li>Préparer la vinaigrette : huile d'olive + vinaigre balsamique + moutarde, sel, poivre.</li>
+              <li>Mélanger les lentilles encore tièdes avec échalotes, persil et vinaigrette.</li>
+              <li>Servir tiède.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">220</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">13g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">32g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">5g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Servir avec un peu de crème fraîche pour adoucir
+              l'acidité.</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="recipe-divider">
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type plat">Plat</span>
+          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Cuisson : 20 min</span>
+        </div>
+        <h3 class="recipe-title">Saumon en papillote, riz basmati &amp; brocolis</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Pavés de saumon</td>
+                <td>6 × 180g (≈1,1 kg)</td>
+              </tr>
+              <tr>
+                <td>Riz basmati</td>
+                <td>420g</td>
+              </tr>
+              <tr>
+                <td>Brocolis</td>
+                <td>600g</td>
+              </tr>
+              <tr>
+                <td>Citrons</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>30ml</td>
+              </tr>
+              <tr>
+                <td>Aneth (frais ou séché)</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Préchauffer le four à 180°C.</li>
+              <li>Préparer 6 papillotes : 1 pavé par feuille sulfurisée, rondelles de citron, aneth, filet d'huile, sel,
+                poivre. Fermer hermétiquement.</li>
+              <li>Enfourner les papillotes 18–20 min.</li>
+              <li>Cuire le riz : rincer, ratio 1:1,5 eau froide, porter à ébullition, feu doux couvert 12 min. Repos 5
+                min.</li>
+              <li>Cuire les brocolis à la vapeur 8 min (al dente).</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">560</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">48g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">56g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">14g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-total">
+        <div class="day-total-label">Total dîner jeudi</div>
+        <div class="day-total-macros">
+          <div class="day-total-item">
+            <div class="day-total-val acc">780</div>
+            <div class="day-total-lbl">kcal</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">61g</div>
+            <div class="day-total-lbl">Protéines</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">88g</div>
+            <div class="day-total-lbl">Glucides</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">19g</div>
+            <div class="day-total-lbl">Lipides</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════ VENDREDI ═══════════════════════════════ -->
+    <section class="day-section">
+      <div class="day-header">
+        <h2 class="day-name"><span class="day-dot" style="background:#EF4444;width:10px;height:10px;"></span>Vendredi
+        </h2>
+      </div>
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type entree">Entrée</span>
+          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Cuisson : 20 min</span>
+        </div>
+        <h3 class="recipe-title">Velouté de courgettes</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Courgettes</td>
+                <td>1 kg (≈4)</td>
+              </tr>
+              <tr>
+                <td>Oignon</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>2 gousses</td>
+              </tr>
+              <tr>
+                <td>Bouillon de légumes</td>
+                <td>1L</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Crème légère (optionnel)</td>
+                <td>100ml</td>
+              </tr>
+              <tr>
+                <td>Basilic frais, sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Émincer oignon et ail, faire revenir 3 min dans l'huile à feu moyen.</li>
+              <li>Couper les courgettes en rondelles (ne pas peler), ajouter dans la casserole.</li>
+              <li>Verser le bouillon, cuire à frémissement 15 min.</li>
+              <li>Mixer finement. Ajouter la crème si souhaité. Rectifier l'assaisonnement.</li>
+              <li>Servir avec quelques feuilles de basilic.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">90</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">3g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">8g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">5g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Texture lisse très appréciée. Peut se servir
+              avec des croûtons.</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="recipe-divider">
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type plat">Plat</span>
+          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; Cuisson : 50 min</span>
+        </div>
+        <h3 class="recipe-title">Pâtes bolognaise maison</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Spaghetti (ou penne)</td>
+                <td>600g</td>
+              </tr>
+              <tr>
+                <td>Bœuf haché 5% MG</td>
+                <td>900g</td>
+              </tr>
+              <tr>
+                <td>Tomates concassées (boîte)</td>
+                <td>2 × 400g</td>
+              </tr>
+              <tr>
+                <td>Carottes</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Céleri branche</td>
+                <td>2 branches</td>
+              </tr>
+              <tr>
+                <td>Oignon</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>3 gousses</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>30ml</td>
+              </tr>
+              <tr>
+                <td>Concentré de tomates</td>
+                <td>1 c.s.</td>
+              </tr>
+              <tr>
+                <td>Parmesan râpé</td>
+                <td>40g</td>
+              </tr>
+              <tr>
+                <td>Laurier, origan, sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Hacher finement oignon, carottes et céleri (soffritto). Faire revenir 8 min dans l'huile à feu moyen.
+              </li>
+              <li>Ajouter l'ail haché, puis le bœuf haché. Faire dorer en cassant les grumeaux, 6–8 min.</li>
+              <li>Incorporer concentré de tomates, tomates concassées, laurier, origan, sel, poivre.</li>
+              <li>Laisser mijoter à feu doux <strong>35–40 min</strong> à découvert. La sauce doit bien réduire.</li>
+              <li>Cuire les pâtes al dente dans une grande quantité d'eau bouillante salée.</li>
+              <li>Servir avec sauce bolognaise + parmesan râpé.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">620</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">46g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">72g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">14g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-total">
+        <div class="day-total-label">Total dîner vendredi</div>
+        <div class="day-total-macros">
+          <div class="day-total-item">
+            <div class="day-total-val acc">710</div>
+            <div class="day-total-lbl">kcal</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">49g</div>
+            <div class="day-total-lbl">Protéines</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">80g</div>
+            <div class="day-total-lbl">Glucides</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">19g</div>
+            <div class="day-total-lbl">Lipides</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════ SAMEDI ═══════════════════════════════ -->
+    <section class="day-section">
+      <div class="day-header">
+        <h2 class="day-name"><span class="day-dot" style="background:#EAB308;width:10px;height:10px;"></span>Samedi</h2>
+      </div>
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type entree">Entrée</span>
+          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; + 1h réfrigération</span>
+        </div>
+        <h3 class="recipe-title">Taboulé maison</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Semoule fine</td>
+                <td>200g</td>
+              </tr>
+              <tr>
+                <td>Bouillon de légumes chaud</td>
+                <td>250ml</td>
+              </tr>
+              <tr>
+                <td>Tomates</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Concombre</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Oignon nouveau</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Persil frais</td>
+                <td>1 bouquet</td>
+              </tr>
+              <tr>
+                <td>Menthe fraîche</td>
+                <td>½ bouquet</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>30ml</td>
+              </tr>
+              <tr>
+                <td>Jus de citron</td>
+                <td>30ml (≈1 citron)</td>
+              </tr>
+              <tr>
+                <td>Sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Verser la semoule dans un saladier, couvrir de bouillon chaud, filmer. Gonfler 5 min. Égrainer à la
+                fourchette. Laisser refroidir.</li>
+              <li>Couper tomates et concombre en petits dés. Émincer l'oignon nouveau.</li>
+              <li>Hacher finement persil et menthe.</li>
+              <li>Mélanger semoule + légumes + herbes + huile + jus de citron, sel, poivre.</li>
+              <li>Réfrigérer au moins <strong>1h</strong> avant de servir.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">190</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">5g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">30g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">6g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="recipe-divider">
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type plat">Plat</span>
+          <span class="recipe-timing">Préparation : 20 min + 1h marinade &nbsp;·&nbsp; Cuisson : 25 min</span>
+        </div>
+        <h3 class="recipe-title">Poulet mariné grillé, pois chiches épicés &amp; légumes rôtis</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Filets de poulet</td>
+                <td>1,2 kg</td>
+              </tr>
+              <tr>
+                <td>Pois chiches cuits (boîte)</td>
+                <td>2 × 400g (800g)</td>
+              </tr>
+              <tr>
+                <td>Courgettes</td>
+                <td>2</td>
+              </tr>
+              <tr>
+                <td>Poivron rouge</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Poivron jaune</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Oignon rouge</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>40ml</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>2 gousses</td>
+              </tr>
+              <tr>
+                <td>Citron</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Paprika, cumin, curcuma</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Marinade : 20ml huile + jus de citron + ail haché + paprika + cumin + curcuma + sel. Badigeonner les
+                filets, filmer, mariner 1h minimum au frigo.</li>
+              <li>Couper courgettes, poivrons et oignon en gros morceaux. Arroser de 15ml d'huile, sel, poivre.
+                Enfourner à 200°C, 25 min, en remuant à mi-cuisson.</li>
+              <li>Égoutter et rincer les pois chiches. Enrober du reste d'huile + paprika + cumin + sel. Étaler sur une
+                plaque. Enfourner les 15 dernières minutes avec les légumes jusqu'à ce qu'ils soient légèrement
+                croustillants.</li>
+              <li>Cuire les filets marinés à la plancha ou poêle chaude : 6–7 min de chaque côté.</li>
+              <li>Trancher le poulet. Servir avec pois chiches + légumes rôtis. Quelques feuilles de coriandre si
+                disponible.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">490</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">59g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">44g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">10g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-total">
+        <div class="day-total-label">Total dîner samedi</div>
+        <div class="day-total-macros">
+          <div class="day-total-item">
+            <div class="day-total-val acc">680</div>
+            <div class="day-total-lbl">kcal</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">64g</div>
+            <div class="day-total-lbl">Protéines</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">74g</div>
+            <div class="day-total-lbl">Glucides</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">16g</div>
+            <div class="day-total-lbl">Lipides</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════ DIMANCHE ═══════════════════════════════ -->
+    <section class="day-section">
+      <div class="day-header">
+        <h2 class="day-name"><span class="day-dot" style="background:#A855F7;width:10px;height:10px;"></span>Dimanche
+        </h2>
+      </div>
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type entree">Entrée</span>
+          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; + 20 min réfrigération</span>
+        </div>
+        <h3 class="recipe-title">Salade de concombre, menthe &amp; yaourt grec</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Concombres</td>
+                <td>2 (600g)</td>
+              </tr>
+              <tr>
+                <td>Yaourt grec nature</td>
+                <td>300g</td>
+              </tr>
+              <tr>
+                <td>Menthe fraîche</td>
+                <td>½ bouquet</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>1 gousse</td>
+              </tr>
+              <tr>
+                <td>Citron</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>15ml</td>
+              </tr>
+              <tr>
+                <td>Sel, poivre</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li>Laver les concombres. Les couper en fines rondelles ou en demi-rondelles. Saler légèrement et laisser
+                dégorger 10 min dans une passoire, puis éponger.</li>
+              <li>Dans un saladier, mélanger le yaourt grec avec l'ail haché très fin, le jus de citron, l'huile
+                d'olive, sel et poivre.</li>
+              <li>Hacher finement la menthe. Incorporer au yaourt.</li>
+              <li>Ajouter les rondelles de concombre, mélanger délicatement.</li>
+              <li>Réfrigérer 20 min avant de servir. Décorer d'une feuille de menthe.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">80</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">5g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">5g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">4g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Texture fraîche et douce, très appréciée.
+              Réduire l'ail pour les plus petits.</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="recipe-divider">
+
+      <div class="recipe">
+        <div class="recipe-meta">
+          <span class="recipe-type plat">Plat</span>
+          <span class="recipe-timing">Préparation : 15 min + 1h marinade &nbsp;·&nbsp; Cuisson : 25 min</span>
+        </div>
+        <h3 class="recipe-title">Tofu mariné soja-sésame, patates douces &amp; haricots verts</h3>
+        <div class="recipe-grid">
+          <div class="ingredients-block">
+            <div class="block-title">Ingrédients — 6 portions</div>
+            <table class="ingredients-table">
+              <tr>
+                <td>Tofu ferme</td>
+                <td>900g (3 blocs)</td>
+              </tr>
+              <tr>
+                <td>Patates douces</td>
+                <td>1,2 kg</td>
+              </tr>
+              <tr>
+                <td>Haricots verts</td>
+                <td>600g</td>
+              </tr>
+              <tr class="section-row">
+                <td colspan="2">Marinade</td>
+              </tr>
+              <tr>
+                <td>Sauce soja / tamari</td>
+                <td>60ml</td>
+              </tr>
+              <tr>
+                <td>Huile de sésame</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Miel</td>
+                <td>20g</td>
+              </tr>
+              <tr>
+                <td>Ail</td>
+                <td>2 gousses</td>
+              </tr>
+              <tr>
+                <td>Gingembre frais râpé</td>
+                <td>10g</td>
+              </tr>
+              <tr>
+                <td>Vinaigre de riz</td>
+                <td>15ml</td>
+              </tr>
+              <tr>
+                <td>Graines de sésame</td>
+                <td>20g</td>
+              </tr>
+            </table>
+          </div>
+          <div class="steps-block">
+            <div class="block-title">Étapes</div>
+            <ol class="steps-list">
+              <li><strong>Presser le tofu :</strong> envelopper dans du papier absorbant, poser un poids 15 min. Couper
+                en cubes de 2–3cm.</li>
+              <li><strong>Marinade :</strong> mélanger sauce soja, huile de sésame, miel, ail haché, gingembre, vinaigre
+                de riz. Verser sur le tofu. Mariner <strong>1h minimum</strong> au frigo.</li>
+              <li>Préchauffer le four à 200°C. Peler les patates douces, couper en cubes. Enrober d'huile, sel, poivre.
+                Enfourner 25 min.</li>
+              <li>Égoutter le tofu (garder la marinade). Étaler sur plaque + papier sulfurisé. Enfourner les 15
+                dernières minutes. Les cubes doivent être bien dorés.</li>
+              <li>Cuire les haricots verts à la vapeur 8 min (al dente).</li>
+              <li>Faire réduire la marinade restante 2 min à la casserole.</li>
+              <li>Servir : patates douces + tofu + haricots verts. Napper de sauce, parsemer sésame et coriandre.</li>
+            </ol>
+            <div class="macros-row">
+              <div class="macro-item">
+                <div class="macro-val accent">410</div>
+                <div class="macro-lbl">kcal</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">22g</div>
+                <div class="macro-lbl">Protéines</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">44g</div>
+                <div class="macro-lbl">Glucides</div>
+              </div>
+              <div class="macro-item">
+                <div class="macro-val">14g</div>
+                <div class="macro-lbl">Lipides</div>
+              </div>
+            </div>
+            <div class="warn-tip"><span class="warn-tip-icon">⚠️</span> Le tofu apporte 22g de protéines vs 36g pour le
+              cabillaud. Journée intense → ajouter 1 œuf dur ou augmenter la portion à 200g/personne (+5g P).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-total">
+        <div class="day-total-label">Total dîner dimanche</div>
+        <div class="day-total-macros">
+          <div class="day-total-item">
+            <div class="day-total-val acc">490</div>
+            <div class="day-total-lbl">kcal</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">27g</div>
+            <div class="day-total-lbl">Protéines</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">49g</div>
+            <div class="day-total-lbl">Glucides</div>
+          </div>
+          <div class="day-total-item">
+            <div class="day-total-val">18g</div>
+            <div class="day-total-lbl">Lipides</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════ LISTE DE COURSES ═══════════════════════════════ -->
+    <section class="shopping-section">
+      <div class="shopping-header">
+        <h2 class="shopping-title">Liste de courses</h2>
+        <p class="shopping-subtitle">6 personnes · Organisée par rayon</p>
+      </div>
+
+      <div class="shop-grid">
+
+        <div class="shop-category">
+          <div class="shop-category-title">🥦 Fruits &amp; Légumes</div>
+          <table class="shop-table">
+            <tr>
+              <td>Carottes</td>
+              <td>1,2 kg</td>
+            </tr>
+            <tr>
+              <td>Courgettes</td>
+              <td>2,3 kg (~8)</td>
+            </tr>
+            <tr>
+              <td>Brocolis</td>
+              <td>600g</td>
+            </tr>
+            <tr>
+              <td>Pommes de terre Charlotte</td>
+              <td>1,2 kg</td>
+            </tr>
+            <tr>
+              <td>Patates douces</td>
+              <td>1,2 kg</td>
+            </tr>
+            <tr>
+              <td>Tomates cerises</td>
+              <td>200g</td>
+            </tr>
+            <tr>
+              <td>Tomates</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>Concombres</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Radis</td>
+              <td>1 botte</td>
+            </tr>
+            <tr>
+              <td>Oignons jaunes</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>Oignon rouge</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Oignon nouveau</td>
+              <td>1 botte</td>
+            </tr>
+            <tr>
+              <td>Poivron rouge</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Poivron jaune</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Haricots verts frais</td>
+              <td>600g</td>
+            </tr>
+            <tr>
+              <td>Céleri branche</td>
+              <td>1 pied (4 branches)</td>
+            </tr>
+            <tr>
+              <td>Échalotes</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>Ail</td>
+              <td>1 tête</td>
+            </tr>
+            <tr>
+              <td>Persil frais</td>
+              <td>2 bouquets</td>
+            </tr>
+            <tr>
+              <td>Menthe fraîche</td>
+              <td>2 bouquets</td>
+            </tr>
+            <tr>
+              <td>Coriandre fraîche</td>
+              <td>1 bouquet</td>
+            </tr>
+            <tr>
+              <td>Aneth</td>
+              <td>1 bouquet ou pot</td>
+            </tr>
+            <tr>
+              <td>Basilic frais</td>
+              <td>1 pot</td>
+            </tr>
+            <tr>
+              <td>Gingembre frais</td>
+              <td>20g</td>
+            </tr>
+            <tr>
+              <td>Citrons</td>
+              <td>6</td>
+            </tr>
+          </table>
+        </div>
+
+        <div>
+          <div class="shop-category" style="margin-bottom:32px">
+            <div class="shop-category-title">🥩 Viandes &amp; Poissons</div>
+            <table class="shop-table">
+              <tr>
+                <td>Hauts de cuisse de poulet (avec os)</td>
+                <td>1,5 kg</td>
+              </tr>
+              <tr>
+                <td>Filets de poulet</td>
+                <td>1,2 kg</td>
+              </tr>
+              <tr>
+                <td>Bœuf haché 5% MG</td>
+                <td>900g</td>
+              </tr>
+              <tr>
+                <td>Pavés de saumon (frais)</td>
+                <td>6 × 180g ≈ 1,1 kg</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="shop-category" style="margin-bottom:32px">
+            <div class="shop-category-title">🧈 Produits végétaux</div>
+            <table class="shop-table">
+              <tr>
+                <td>Tofu ferme</td>
+                <td>900g (3 blocs)</td>
+              </tr>
+              <tr>
+                <td>Tahini (purée de sésame)</td>
+                <td>40g</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="shop-category">
+            <div class="shop-category-title">🧀 Crèmerie</div>
+            <table class="shop-table">
+              <tr>
+                <td>Yaourt grec nature</td>
+                <td>300g</td>
+              </tr>
+              <tr>
+                <td>Crème légère</td>
+                <td>100ml</td>
+              </tr>
+              <tr>
+                <td>Parmesan râpé</td>
+                <td>40g</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="shop-category" style="grid-column: 1 / -1">
+          <div class="shop-category-title">🏪 Épicerie sèche</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+            <table class="shop-table">
+              <tr>
+                <td>Spaghetti ou penne</td>
+                <td>600g</td>
+              </tr>
+              <tr>
+                <td>Riz basmati</td>
+                <td>420g</td>
+              </tr>
+              <tr>
+                <td>Lentilles vertes du Puy</td>
+                <td>350g</td>
+              </tr>
+              <tr>
+                <td>Semoule fine</td>
+                <td>200g</td>
+              </tr>
+              <tr>
+                <td>Pois chiches cuits (boîte)</td>
+                <td>3 × 400g</td>
+              </tr>
+              <tr>
+                <td>Tomates concassées (boîte)</td>
+                <td>2 × 400g</td>
+              </tr>
+              <tr>
+                <td>Concentré de tomates</td>
+                <td>1 petit tube</td>
+              </tr>
+            </table>
+            <table class="shop-table">
+              <tr>
+                <td>Bouillon de légumes</td>
+                <td>≈1,5L équiv.</td>
+              </tr>
+              <tr>
+                <td>Huile d'olive</td>
+                <td>200ml</td>
+              </tr>
+              <tr>
+                <td>Huile de sésame</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Sauce soja / tamari</td>
+                <td>60ml</td>
+              </tr>
+              <tr>
+                <td>Vinaigre de riz</td>
+                <td>15ml</td>
+              </tr>
+              <tr>
+                <td>Vinaigre balsamique</td>
+                <td>20ml</td>
+              </tr>
+              <tr>
+                <td>Miel</td>
+                <td>20g</td>
+              </tr>
+              <tr>
+                <td>Graines de sésame</td>
+                <td>20g</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="shop-epices">
+          <div class="shop-category-title">🌿 Épices &amp; Condiments (si non disponibles)</div>
+          <p>Paprika &nbsp;·&nbsp; Cumin &nbsp;·&nbsp; Curcuma &nbsp;·&nbsp; Origan séché &nbsp;·&nbsp; Thym
+            &nbsp;·&nbsp; Laurier &nbsp;·&nbsp; Romarin &nbsp;·&nbsp; Aneth séché &nbsp;·&nbsp; Moutarde à l'ancienne
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="doc-footer">
+      <div class="footer-brand">Le Cadre — Plan Nutrition</div>
+      <div class="footer-date">Généré le 20 mai 2026</div>
+    </footer>
+
+  </div>
 </body>
 
 </html>
