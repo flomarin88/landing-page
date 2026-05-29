@@ -4,812 +4,1353 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu de la semaine — Famille · Florian Marin</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Florian Marin — Le Sprint RevOps 6 semaines pour scaleups B2B SaaS</title>
+  <meta name="description"
+    content="Je fais scaler ton CRM moderne à 50-300 personnes — Attio, Folk, Close — sans HubSpot, sans recruter, en 6 semaines. Sprint productisé, prix fixe, deux garanties nommées.">
+  <meta property="og:title" content="Florian Marin — Le Sprint RevOps 6 semaines">
+  <meta property="og:description"
+    content="Ton CRM est devenu un répertoire de contacts qui ne modélise plus ton chiffre d'affaires. Je reconnecte la stack et je ramène le forecast dans le CRM. 6 semaines, prix fixe.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://florianmarin.me">
+  <!--
+  ===========================================================
+  PLACEHOLDERS À REMPLIR AVANT MISE EN LIGNE :
+  - SUBSTACK_URL  : URL d'abonnement Substack (rebrandé, plus "Le Cadre Notes")
+  - CALCOM_URL    : lien Cal.com discovery call
+  - PHOTO         : remplacer le bloc .portrait par ta photo pro
+  - EMAIL_PRO     : email de contact presse
+  - FENETRE       : date de la prochaine fenêtre de Sprint (scarcité)
+  - WeeCars       : taille + date de livraison anonymisées
+  ===========================================================
+  OFFRE V2 — appliquée depuis le doc Offre & Positionnement (22/05/2026) :
+  - Foundation 25k · Scale 32k · Migration 40k+
+  - Module Forecast-in-CRM (add-on Scale/Migration)
+  - Adoption & Enablement inclus
+  - 2 garanties nommées : Go-Live + Stack Possédée
+  - Scarcité réelle : 1 Sprint actif à la fois
+  NON APPLIQUÉ (en attente de tranche §8 du doc) :
+  - Diagnostic d'entrée payant (~2k)
+  - RevOps Run mensuel récurrent productisé
+  ===========================================================
+-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
   <style>
     :root {
-      --bg: #FAF8F5;
-      --ink: #1A1A1A;
-      --accent: #C2410C;
-      --muted: #555;
-      --light: #888;
-      --border: #D4CFC8;
-      --card-bg: #F2EFE9;
-      --white: #FFFFFF;
+      --ink: #1C1C1C;
+      --ink-2: #262626;
+      --ink-3: #0F0F0F;
+      --paper: #FFFFFF;
+      --paper-2: #FAFAFA;
+      --muted-light: #B8B8B8;
+      --muted-dark: #6B6B6B;
+      --line: #EAEAEA;
+      --accent: #FF7A00;
+      --accent-hover: #E66E00;
+      --accent-2: #FFD84D;
+      --gradient: linear-gradient(90deg, #FF7A00 0%, #FFD84D 100%);
+      --maxw: 1120px;
+      --r: 12px;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
       color: var(--ink);
+      background: var(--paper);
       line-height: 1.6;
+      font-weight: 400;
       -webkit-font-smoothing: antialiased;
     }
 
-    .page { max-width: 900px; margin: 0 auto; padding: 64px 40px; }
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 32px
+    }
 
-    .site-header { border-bottom: 2px solid var(--ink); padding-bottom: 32px; margin-bottom: 56px; }
-    .brand-mark { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--light); margin-bottom: 24px; }
-    .doc-title { font-size: 52px; font-weight: 800; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 12px; }
-    .doc-subtitle { font-size: 16px; color: var(--muted); font-weight: 500; }
-    .doc-subtitle span { color: var(--accent); font-weight: 700; }
+    h1,
+    h2,
+    h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em
+    }
 
-    .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--light); margin-bottom: 20px; }
+    .gradient {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
 
-    .overview { width: 100%; border-collapse: collapse; margin-bottom: 64px; }
-    .overview thead th { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); padding: 0 0 12px 0; text-align: left; border-bottom: 1px solid var(--border); }
-    .overview tbody tr { border-bottom: 1px solid var(--border); }
-    .overview tbody tr:last-child { border-bottom: none; }
-    .overview tbody td { padding: 14px 0; font-size: 15px; vertical-align: top; }
-    .overview tbody td:first-child { font-weight: 700; width: 130px; color: var(--ink); }
-    .overview tbody td:nth-child(2) { color: var(--muted); padding-right: 24px; }
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .74rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-block;
+    }
 
-    .day-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; position: relative; top: -1px; }
+    a {
+      color: inherit
+    }
 
-    .day-section { margin-bottom: 72px; }
-    .day-header { display: flex; align-items: baseline; gap: 16px; border-top: 3px solid var(--ink); padding-top: 24px; margin-bottom: 40px; }
-    .day-name { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
-    .day-type { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .15s ease, background .15s ease;
+      white-space: nowrap;
+      letter-spacing: .01em;
+    }
 
-    .recipe { margin-bottom: 48px; }
-    .recipe-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .recipe-type { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 4px 10px; border-radius: 2px; }
-    .recipe-type.entree { background: var(--muted); }
-    .recipe-type.plat { background: var(--accent); }
-    .recipe-type.bbq { background: #B45309; }
-    .recipe-timing { font-size: 13px; color: var(--light); font-weight: 500; }
+    .btn:hover {
+      transform: translateY(-1px)
+    }
 
-    .recipe-title { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 24px; line-height: 1.2; }
+    .btn-accent {
+      background: var(--accent);
+      color: #fff
+    }
 
-    .recipe-grid { display: grid; grid-template-columns: 280px 1fr; gap: 32px; align-items: start; }
+    .btn-accent:hover {
+      background: var(--accent-hover)
+    }
 
-    .block-title { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); margin-bottom: 12px; }
+    .btn-light {
+      background: #fff;
+      color: var(--ink)
+    }
 
-    .ingredients-table { width: 100%; border-collapse: collapse; }
-    .ingredients-table tr { border-bottom: 1px solid var(--border); }
-    .ingredients-table tr:last-child { border-bottom: none; }
-    .ingredients-table td { padding: 7px 0; font-size: 14px; line-height: 1.4; }
-    .ingredients-table td:first-child { color: var(--ink); padding-right: 12px; }
-    .ingredients-table td:last-child { font-weight: 600; color: var(--accent); text-align: right; white-space: nowrap; }
-    .ingredients-table .section-row td { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); padding-top: 14px; border-bottom: none; }
+    .btn-dark {
+      background: var(--ink);
+      color: #fff
+    }
 
-    .steps-list { list-style: none; counter-reset: steps; }
-    .steps-list li { counter-increment: steps; display: flex; gap: 14px; margin-bottom: 14px; font-size: 14px; line-height: 1.55; color: var(--ink); }
-    .steps-list li::before { content: counter(steps); font-size: 13px; font-weight: 800; color: var(--accent); min-width: 20px; padding-top: 1px; }
-    .steps-list li strong { font-weight: 700; }
+    .btn-dark:hover {
+      background: #000
+    }
 
-    .macros-row { display: flex; gap: 0; margin-top: 20px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-    .macro-item { flex: 1; padding: 10px 14px; border-right: 1px solid var(--border); text-align: center; }
-    .macro-item:last-child { border-right: none; }
-    .macro-val { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
-    .macro-val.accent { color: var(--accent); }
-    .macro-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-top: 2px; }
+    .link-quiet {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .86rem;
+      letter-spacing: .02em;
+      color: var(--muted-dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color .15s ease, border-color .15s ease;
+    }
 
-    .kids-tip { display: flex; align-items: flex-start; gap: 10px; background: var(--card-bg); border-left: 3px solid var(--border); padding: 12px 16px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--muted); font-style: italic; margin-top: 16px; }
-    .kids-tip-icon { font-style: normal; flex-shrink: 0; }
+    .link-quiet:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
 
-    .warn-tip { display: flex; align-items: flex-start; gap: 10px; background: #FFF4EE; border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 4px 4px 0; font-size: 13px; color: var(--ink); margin-top: 16px; }
-    .warn-tip-icon { flex-shrink: 0; }
+    .hero .link-quiet,
+    footer .link-quiet,
+    .statement .link-quiet {
+      color: var(--muted-light);
+      border-bottom-color: rgba(255, 255, 255, .18)
+    }
 
-    .day-total { display: flex; align-items: center; justify-content: space-between; background: var(--ink); color: var(--bg); padding: 16px 24px; border-radius: 4px; margin-top: 8px; }
-    .day-total-label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; }
-    .day-total-macros { display: flex; gap: 24px; }
-    .day-total-item { text-align: center; }
-    .day-total-val { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--bg); }
-    .day-total-val.acc { color: #F97316; }
-    .day-total-lbl { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-top: 2px; }
+    .hero .link-quiet:hover,
+    footer .link-quiet:hover,
+    .statement .link-quiet:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
 
-    .recipe-divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+    /* ---------- NAV ---------- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(28, 28, 28, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, .06)
+    }
 
-    .shopping-section { margin-top: 80px; }
-    .shopping-header { border-top: 3px solid var(--ink); padding-top: 24px; margin-bottom: 40px; }
-    .shopping-title { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
-    .shopping-subtitle { font-size: 14px; color: var(--muted); }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px
+    }
 
-    .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-    .shop-category { break-inside: avoid; }
-    .shop-category-title { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-bottom: 16px; }
-    .shop-table { width: 100%; border-collapse: collapse; }
-    .shop-table tr { border-bottom: 1px solid var(--border); }
-    .shop-table tr:last-child { border-bottom: none; }
-    .shop-table td { padding: 8px 0; font-size: 14px; }
-    .shop-table td:last-child { font-weight: 600; text-align: right; color: var(--muted); padding-left: 16px; }
+    .brand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+      text-decoration: none;
+      letter-spacing: -0.01em
+    }
 
-    .shop-epices { grid-column: 1 / -1; background: var(--card-bg); padding: 16px 20px; border-radius: 4px; }
-    .shop-epices .shop-category-title { margin-bottom: 10px; }
-    .shop-epices p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    .brand span {
+      color: var(--accent)
+    }
 
-    .doc-footer { border-top: 1px solid var(--border); padding-top: 24px; margin-top: 64px; display: flex; justify-content: space-between; align-items: center; }
-    .footer-brand { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--light); }
-    .footer-date { font-size: 12px; color: var(--light); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center
+    }
 
-    @media print { body { background: white; } .page { padding: 32px; } .recipe-grid { grid-template-columns: 240px 1fr; } }
-    @media (max-width: 680px) {
-      .page { padding: 32px 20px; }
-      .doc-title { font-size: 32px; }
-      .recipe-grid { grid-template-columns: 1fr; }
-      .shop-grid { grid-template-columns: 1fr; }
-      .day-total-macros { gap: 12px; }
-      .day-total-val { font-size: 15px; }
+    .nav-links a {
+      color: #D9D9D9;
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 500;
+      transition: color .15s
+    }
+
+    .nav-links a:hover {
+      color: #fff
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 700
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-hover)
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      background: var(--ink);
+      color: #fff;
+      padding: 110px 0 100px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 460px at 82% 6%, rgba(255, 122, 0, .18), transparent 60%);
+      pointer-events: none
+    }
+
+    .hero .wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 56px;
+      align-items: center
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.4vw, 3.9rem);
+      font-weight: 700;
+      margin: 22px 0 26px
+    }
+
+    .hero p.sub {
+      font-size: 1.14rem;
+      color: var(--muted-light);
+      max-width: 38ch;
+      margin-bottom: 36px;
+      font-weight: 400
+    }
+
+    .capture {
+      background: var(--ink-2);
+      border: 1px solid #333;
+      border-radius: var(--r);
+      padding: 24px
+    }
+
+    .capture .label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.06rem;
+      margin-bottom: 14px;
+      color: #fff
+    }
+
+    .capture form {
+      display: flex;
+      gap: 10px
+    }
+
+    .capture input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: var(--ink);
+      color: #fff;
+      font-size: .95rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400
+    }
+
+    .capture input::placeholder {
+      color: #7a7a7a
+    }
+
+    .capture .micro {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: .78rem;
+      color: #9a9a9a;
+      margin-top: 14px
+    }
+
+    .hero .quiet-wrap {
+      margin-top: 28px
+    }
+
+    .portrait {
+      aspect-ratio: 4/5;
+      border-radius: var(--r);
+      background: linear-gradient(160deg, #262626, #1C1C1C);
+      border: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .82rem;
+      text-align: center;
+      padding: 20px
+    }
+
+    /* ---------- TRACK RECORD BAR ---------- */
+    .trackbar {
+      background: var(--ink-2);
+      color: var(--muted-light);
+      padding: 22px 0;
+      border-top: 1px solid rgba(255, 255, 255, .04)
+    }
+
+    .trackbar .wrap {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .84rem;
+      letter-spacing: .05em
+    }
+
+    .trackbar strong {
+      color: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .10em
+    }
+
+    .trackbar .dot {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    /* ---------- SECTIONS ---------- */
+    section.block {
+      padding: 110px 0
+    }
+
+    .block h2 {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin: 18px 0 0;
+      letter-spacing: -0.02em
+    }
+
+    .lead {
+      color: var(--muted-dark);
+      font-size: 1.08rem;
+      max-width: 64ch;
+      margin-top: 22px;
+      font-weight: 400
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 56px;
+      align-items: start;
+      margin-top: 14px
+    }
+
+    .prose p {
+      margin-bottom: 20px;
+      font-size: 1.06rem;
+      font-weight: 400
+    }
+
+    .prose p:last-child {
+      margin-bottom: 0
+    }
+
+    .prose p strong {
+      font-weight: 700
+    }
+
+    .note-inline {
+      font-size: .92rem;
+      color: var(--muted-dark);
+      border-left: 3px solid var(--accent);
+      padding: 10px 0 10px 16px;
+      margin-top: 8px;
+      font-style: italic
+    }
+
+    /* dark statement section */
+    .statement {
+      background: var(--ink);
+      color: #fff
+    }
+
+    .statement h2 {
+      color: #fff;
+      max-width: 24ch
+    }
+
+    .statement .prose p {
+      color: var(--muted-light)
+    }
+
+    .statement .prose p strong {
+      color: #fff
+    }
+
+    /* ---------- SPRINT TIERS ---------- */
+    .sprint-intro {
+      margin-top: 14px;
+      max-width: 62ch
+    }
+
+    .tier-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 44px
+    }
+
+    .tier {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative
+    }
+
+    .tier.featured {
+      border: 2px solid var(--accent);
+      background: #fff;
+      box-shadow: 0 12px 32px -16px rgba(255, 122, 0, .32)
+    }
+
+    .tier .badge {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 6px
+    }
+
+    .tier .tname {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.32rem;
+      letter-spacing: -0.01em
+    }
+
+    .tier .tname em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted-dark);
+      font-size: .95rem;
+      display: block;
+      margin-top: 2px;
+      letter-spacing: 0
+    }
+
+    .tier .meta {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .86rem;
+      color: var(--muted-dark);
+      letter-spacing: .04em
+    }
+
+    .tier .tprice {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em
+    }
+
+    .tier .tprice small {
+      font-weight: 500;
+      color: var(--muted-dark);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      display: block;
+      margin-bottom: 2px
+    }
+
+    .tier p {
+      color: var(--muted-dark);
+      font-size: .97rem
+    }
+
+    .included {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      margin-top: 30px
+    }
+
+    .included h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .16em;
+      color: var(--muted-dark)
+    }
+
+    .included .ul-check {
+      margin: 0
+    }
+
+    .module-callout {
+      background: var(--ink);
+      color: #fff;
+      border-radius: var(--r);
+      padding: 32px;
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: start
+    }
+
+    .module-callout .ktag {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 6px 11px;
+      border-radius: 6px;
+      align-self: start;
+      white-space: nowrap
+    }
+
+    .module-callout h3 {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px
+    }
+
+    .module-callout p {
+      color: var(--muted-light);
+      font-size: 1rem
+    }
+
+    .module-callout p strong {
+      color: #fff
+    }
+
+    .guarantees {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 50px
+    }
+
+    .guarantee {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-left: 4px solid var(--accent)
+    }
+
+    .guarantee .gtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem
+    }
+
+    .guarantee p {
+      color: var(--muted-dark);
+      font-size: .98rem
+    }
+
+    .guarantee p em {
+      font-style: italic;
+      color: var(--ink)
+    }
+
+    .scarcity {
+      margin-top: 38px;
+      padding: 22px 24px;
+      border: 1px dashed var(--accent);
+      border-radius: var(--r);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .96rem;
+      color: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      background: #fff
+    }
+
+    .scarcity strong {
+      font-weight: 700
+    }
+
+    .scarcity em {
+      font-style: italic;
+      color: var(--muted-dark)
+    }
+
+    .sprint-cta {
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap
+    }
+
+    /* sprint reused */
+    .ul-check {
+      list-style: none;
+      display: grid;
+      gap: 14px
+    }
+
+    .ul-check li {
+      padding-left: 32px;
+      position: relative;
+      font-size: 1.04rem
+    }
+
+    .ul-check li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    /* method / stack */
+    .stack-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 12px 0 36px
+    }
+
+    .tag {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .82rem;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 8px 13px;
+      letter-spacing: .02em
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 14px
+    }
+
+    .mcard {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 28px
+    }
+
+    .mcard h3 {
+      font-size: 1.14rem;
+      margin-bottom: 10px;
+      font-weight: 700
+    }
+
+    .mcard p {
+      color: var(--muted-dark);
+      font-size: .97rem;
+      font-weight: 400
+    }
+
+    /* FAQ */
+    .faq-list {
+      margin-top: 30px;
+      display: grid;
+      gap: 20px
+    }
+
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 30px
+    }
+
+    .faq-item h3 {
+      font-size: 1.14rem;
+      font-weight: 700;
+      margin-bottom: 12px
+    }
+
+    .faq-item h3 .qmark {
+      color: var(--accent);
+      font-weight: 700;
+      margin-right: 8px
+    }
+
+    .faq-item p {
+      color: var(--muted-dark);
+      font-size: 1rem
+    }
+
+    .faq-item p strong {
+      color: var(--ink);
+      font-weight: 700
+    }
+
+    /* receipts */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 38px
+    }
+
+    .rcard {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .rcard .k {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent)
+    }
+
+    .rcard h3 {
+      font-size: 1.14rem;
+      font-weight: 700
+    }
+
+    .rcard p {
+      color: var(--muted-dark);
+      font-size: .96rem;
+      font-weight: 400
+    }
+
+    /* presskit */
+    .presskit {
+      background: var(--paper-2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line)
+    }
+
+    /* newsletter dominant */
+    .news {
+      background: var(--ink);
+      color: #fff;
+      text-align: center
+    }
+
+    .news h2 {
+      color: #fff;
+      font-size: clamp(2rem, 4.4vw, 3rem);
+      max-width: 24ch;
+      margin: 0 auto;
+      font-weight: 700
+    }
+
+    .news p.lead {
+      color: var(--muted-light);
+      margin: 22px auto 34px;
+      text-align: center
+    }
+
+    .news form {
+      display: flex;
+      gap: 10px;
+      max-width: 500px;
+      margin: 0 auto
+    }
+
+    .news input {
+      flex: 1;
+      min-width: 0;
+      padding: 15px 16px;
+      border-radius: 9px;
+      border: 0;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400
+    }
+
+    .news .btn-accent {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .news .btn-accent:hover {
+      background: var(--accent-hover)
+    }
+
+    .news .micro {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: .8rem;
+      color: var(--muted-light);
+      margin-top: 16px
+    }
+
+    /* footer */
+    footer {
+      background: var(--ink-3);
+      color: var(--muted-light);
+      padding: 60px 0 44px
+    }
+
+    footer .wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    footer .fbrand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em
+    }
+
+    footer .signature {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted-light);
+      font-size: .95rem
+    }
+
+    footer .flinks {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: .94rem;
+      font-weight: 500
+    }
+
+    footer a {
+      color: #D9D9D9;
+      text-decoration: none
+    }
+
+    footer a:hover {
+      color: var(--accent)
+    }
+
+    footer .legal {
+      font-size: .8rem;
+      color: #7a7a7a;
+      margin-top: 10px;
+      font-style: italic
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width:980px) {
+      .tier-cards {
+        grid-template-columns: 1fr
+      }
+
+      .guarantees {
+        grid-template-columns: 1fr
+      }
+
+      .module-callout {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media (max-width:860px) {
+      .hero {
+        padding: 80px 0 70px
+      }
+
+      .hero .wrap {
+        grid-template-columns: 1fr;
+        gap: 36px
+      }
+
+      .portrait {
+        max-width: 280px;
+        order: -1
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 30px
+      }
+
+      .method-grid {
+        grid-template-columns: 1fr
+      }
+
+      .cards {
+        grid-template-columns: 1fr
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      .nav-links.open {
+        display: flex;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--ink);
+        flex-direction: column;
+        padding: 20px 32px;
+        gap: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, .06)
+      }
+
+      .nav-toggle {
+        display: block
+      }
+
+      section.block {
+        padding: 74px 0
+      }
+
+      .capture form,
+      .news form {
+        flex-direction: column
+      }
+
+      .btn {
+        width: 100%
+      }
+
+      .included,
+      .faq-item,
+      .tier,
+      .guarantee {
+        padding: 24px
+      }
+
+      .module-callout {
+        padding: 24px
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="page">
 
-    <!-- HEADER -->
-    <header class="site-header">
-      <div class="brand-mark">Le Cadre — Nutrition</div>
-      <h1 class="doc-title">Menu de la semaine<br>Famille</h1>
-      <p class="doc-subtitle">Vendredi → Mardi &nbsp;·&nbsp; <span>6 portions</span> par recette &nbsp;·&nbsp; Entrées froides &nbsp;·&nbsp; <span>1 poisson</span> &nbsp;·&nbsp; <span>2 BBQ</span></p>
-    </header>
-
-    <!-- VUE D'ENSEMBLE -->
-    <div class="section-label">Vue d'ensemble</div>
-    <table class="overview">
-      <thead>
-        <tr><th>Jour</th><th>Entrée (froide)</th><th>Plat</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="day-dot" style="background:#3B82F6"></span>Vendredi</td>
-          <td>Melon &amp; jambon cru</td>
-          <td>Pavés de saumon, riz basmati &amp; brocolis</td>
-        </tr>
-        <tr>
-          <td><span class="day-dot" style="background:#22C55E"></span>Samedi</td>
-          <td>Tomates-mozzarella au basilic</td>
-          <td>Poulet rôti, pommes grenaille &amp; haricots verts</td>
-        </tr>
-        <tr>
-          <td><span class="day-dot" style="background:#EF4444"></span>Dimanche</td>
-          <td>Houmous &amp; bâtonnets de crudités</td>
-          <td><strong>BBQ</strong> — Brochettes de bœuf, boulgour pilaf &amp; légumes grillés</td>
-        </tr>
-        <tr>
-          <td><span class="day-dot" style="background:#EAB308"></span>Lundi</td>
-          <td>Salade betteraves, chèvre frais &amp; noix</td>
-          <td><strong>BBQ</strong> — Côtes de porc, chipolatas, légumes grillés &amp; salade de pâtes</td>
-        </tr>
-        <tr>
-          <td><span class="day-dot" style="background:#A855F7"></span>Mardi</td>
-          <td>Concombre, feta &amp; menthe</td>
-          <td>Gratin de quinoa, courgettes &amp; poulet</td>
-        </tr>
-      </tbody>
-    </table>
-
-
-    <!-- ═══════════════════════════════ VENDREDI ═══════════════════════════════ -->
-    <section class="day-section">
-      <div class="day-header">
-        <h2 class="day-name"><span class="day-dot" style="background:#3B82F6;width:10px;height:10px;"></span>Vendredi</h2>
-        <span class="day-type">Saumon · seul poisson de la semaine</span>
+  <!-- NAV -->
+  <nav>
+    <div class="wrap">
+      <a href="#" class="brand">Florian Marin<span>.</span></a>
+      <button class="nav-toggle" aria-label="Menu"
+        onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+      <div class="nav-links" id="navlinks">
+        <a href="#parcours">Parcours</a>
+        <a href="#sprint">Le Sprint</a>
+        <a href="#faq">FAQ</a>
+        <a href="#newsletter" class="nav-cta">Newsletter</a>
       </div>
+    </div>
+  </nav>
 
-      <!-- Entrée -->
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type entree">Entrée</span>
-          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Sans cuisson</span>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">CRM RevOps · Scaleups B2B SaaS · 50–300</span>
+        <h1>Je fais scaler ton CRM <span class="gradient">moderne</span> à 50–300 personnes. Sans HubSpot. Sans
+          recruter. En 6 semaines.</h1>
+        <p class="sub">14 ans en software engineering — ex-CTO Tiime, ex-Engineering Manager Aircall (sales tech) et
+          Teads. Aujourd'hui solo, founder-led, sans équipe junior.</p>
+
+        <div class="capture">
+          <div class="label">Reçois une idée RevOps actionnable par semaine.</div>
+          <!-- Remplacer action= par SUBSTACK_URL -->
+          <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+            <input type="email" name="email" placeholder="ton@email.com" required>
+            <button class="btn btn-accent" type="submit">S'abonner</button>
+          </form>
+          <div class="micro">Le mardi. Du concret tiré de mes intégrations réelles. Désabonnement en 1 clic.</div>
         </div>
-        <h3 class="recipe-title">Melon &amp; jambon cru</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Melon Charentais bien mûr</td><td>1</td></tr>
-              <tr><td>Jambon cru (tranches fines)</td><td>12 (≈150g)</td></tr>
-              <tr><td>Poivre du moulin</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Couper le melon en quartiers, retirer les graines.</li>
-              <li>Déposer 2 tranches de jambon cru par assiette à côté du melon.</li>
-              <li>Donner un tour de moulin à poivre au moment de servir.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">150</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">10g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">18g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">4g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Remplacer le jambon cru par du jambon blanc pour les petits — moins salé.</div>
-          </div>
+
+        <div class="quiet-wrap">
+          <!-- Remplacer href par CALCOM_URL -->
+          <a class="link-quiet" href="https://cal.com/florianmarin" target="_blank" rel="noopener">Tu as un chantier CRM
+            précis ? → Travailler avec moi</a>
         </div>
       </div>
+    </div>
+  </header>
 
-      <hr class="recipe-divider">
-
-      <!-- Plat -->
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type plat">Plat</span>
-          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; Cuisson : 20 min</span>
-        </div>
-        <h3 class="recipe-title">Pavés de saumon au four, riz basmati &amp; brocolis vapeur</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Pavés de saumon</td><td>6 × 150g (≈900g)</td></tr>
-              <tr><td>Riz basmati</td><td>500g</td></tr>
-              <tr><td>Brocolis</td><td>2 (≈800g)</td></tr>
-              <tr><td>Citron</td><td>1</td></tr>
-              <tr><td>Ail</td><td>2 gousses</td></tr>
-              <tr><td>Huile d'olive</td><td>30 ml</td></tr>
-              <tr><td>Sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Préchauffer le four à <strong>200 °C</strong>.</li>
-              <li>Déposer les pavés sur une plaque, arroser d'huile, ajouter ail émincé, jus de citron, sel, poivre.</li>
-              <li>Enfourner <strong>12–15 min</strong> selon épaisseur.</li>
-              <li>Cuire le riz : ratio 1:1,5 eau froide, à couvert 12 min, repos 5 min.</li>
-              <li>Détailler les brocolis en fleurettes, cuire 8 min à la vapeur (al dente pour les adultes, plus tendres pour les enfants).</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">620</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">42g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">65g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">18g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-total">
-        <div class="day-total-label">Total dîner vendredi</div>
-        <div class="day-total-macros">
-          <div class="day-total-item"><div class="day-total-val acc">770</div><div class="day-total-lbl">kcal</div></div>
-          <div class="day-total-item"><div class="day-total-val">52g</div><div class="day-total-lbl">Protéines</div></div>
-          <div class="day-total-item"><div class="day-total-val">83g</div><div class="day-total-lbl">Glucides</div></div>
-          <div class="day-total-item"><div class="day-total-val">22g</div><div class="day-total-lbl">Lipides</div></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════ SAMEDI ═══════════════════════════════ -->
-    <section class="day-section">
-      <div class="day-header">
-        <h2 class="day-name"><span class="day-dot" style="background:#22C55E;width:10px;height:10px;"></span>Samedi</h2>
-        <span class="day-type">Poulet rôti familial</span>
-      </div>
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type entree">Entrée</span>
-          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Sans cuisson</span>
-        </div>
-        <h3 class="recipe-title">Tomates-mozzarella au basilic</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Tomates bien mûres</td><td>6</td></tr>
-              <tr><td>Mozzarella (boules)</td><td>2</td></tr>
-              <tr><td>Basilic frais</td><td>1 bouquet</td></tr>
-              <tr><td>Vinaigre balsamique</td><td>20 ml</td></tr>
-              <tr><td>Huile d'olive</td><td>30 ml</td></tr>
-              <tr><td>Fleur de sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Trancher tomates et mozzarella en rondelles régulières.</li>
-              <li>Alterner sur les assiettes, parsemer de basilic ciselé.</li>
-              <li>Arroser d'huile d'olive et de balsamique, fleur de sel au moment de servir.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">220</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">11g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">6g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">16g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Servir sans balsamique pour les petits. Couper les tomates en quartiers s'ils peinent avec les rondelles.</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="recipe-divider">
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type plat">Plat</span>
-          <span class="recipe-timing">Préparation : 15 min &nbsp;·&nbsp; Cuisson : 1 h</span>
-        </div>
-        <h3 class="recipe-title">Poulet rôti, pommes grenaille &amp; haricots verts</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Poulet entier</td><td>1 (≈1,8 kg)</td></tr>
-              <tr><td>Pommes de terre grenaille</td><td>1,2 kg</td></tr>
-              <tr><td>Haricots verts</td><td>800g</td></tr>
-              <tr><td>Ail</td><td>4 gousses</td></tr>
-              <tr><td>Beurre</td><td>30g</td></tr>
-              <tr><td>Huile d'olive</td><td>30 ml</td></tr>
-              <tr><td>Thym, sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Préchauffer le four à <strong>200 °C</strong>.</li>
-              <li>Badigeonner le poulet de beurre, sel, poivre, thym. Glisser 2 gousses d'ail dans la cavité.</li>
-              <li>Enfourner sur un plat <strong>1 h</strong> en arrosant toutes les 20 min.</li>
-              <li>À mi-cuisson, ajouter autour les pommes grenaille lavées (non épluchées), huile d'olive, ail écrasé, thym.</li>
-              <li>Cuire les haricots verts 8–10 min à l'eau bouillante salée, égoutter, ajouter une noix de beurre.</li>
-              <li>Repos du poulet 10 min sous papier alu avant découpe.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">580</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">48g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">42g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">22g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-total">
-        <div class="day-total-label">Total dîner samedi</div>
-        <div class="day-total-macros">
-          <div class="day-total-item"><div class="day-total-val acc">800</div><div class="day-total-lbl">kcal</div></div>
-          <div class="day-total-item"><div class="day-total-val">59g</div><div class="day-total-lbl">Protéines</div></div>
-          <div class="day-total-item"><div class="day-total-val">48g</div><div class="day-total-lbl">Glucides</div></div>
-          <div class="day-total-item"><div class="day-total-val">38g</div><div class="day-total-lbl">Lipides</div></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════ DIMANCHE ═══════════════════════════════ -->
-    <section class="day-section">
-      <div class="day-header">
-        <h2 class="day-name"><span class="day-dot" style="background:#EF4444;width:10px;height:10px;"></span>Dimanche</h2>
-        <span class="day-type">BBQ #1 · Brochettes de bœuf</span>
-      </div>
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type entree">Entrée</span>
-          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Sans cuisson</span>
-        </div>
-        <h3 class="recipe-title">Houmous &amp; bâtonnets de crudités</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Houmous (pot)</td><td>300g</td></tr>
-              <tr><td>Carottes</td><td>3</td></tr>
-              <tr><td>Concombre</td><td>1</td></tr>
-              <tr><td>Poivron rouge</td><td>1</td></tr>
-              <tr><td>Huile d'olive</td><td>15 ml</td></tr>
-              <tr><td>Paprika</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Verser le houmous dans un bol, lisser, arroser d'un filet d'huile d'olive, saupoudrer de paprika.</li>
-              <li>Tailler carottes, concombre et poivron en bâtonnets réguliers.</li>
-              <li>Disposer en plateau à partager.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">170</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">7g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">18g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">8g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Format finger-food parfait pour 3–5 ans. Le houmous fait souvent l'unanimité.</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="recipe-divider">
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type bbq">BBQ · Plat</span>
-          <span class="recipe-timing">Marinade : 1 h &nbsp;·&nbsp; Cuisson : 25 min</span>
-        </div>
-        <h3 class="recipe-title">Brochettes de bœuf marinées, boulgour pilaf &amp; légumes grillés</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Rumsteck ou aiguillette de bœuf</td><td>800g</td></tr>
-              <tr><td>Tomates cerises</td><td>250g</td></tr>
-              <tr><td>Oignon rouge</td><td>1</td></tr>
-              <tr><td>Poivron vert</td><td>1</td></tr>
-              <tr><td>Boulgour</td><td>400g</td></tr>
-              <tr><td>Oignon jaune</td><td>1</td></tr>
-              <tr><td>Bouillon de légumes</td><td>80 cl</td></tr>
-              <tr><td>Pics à brochettes (bois)</td><td>12</td></tr>
-              <tr class="section-row"><td colspan="2">Marinade</td></tr>
-              <tr><td>Huile d'olive</td><td>60 ml</td></tr>
-              <tr><td>Sauce soja</td><td>30 ml</td></tr>
-              <tr><td>Miel</td><td>15g</td></tr>
-              <tr><td>Ail</td><td>2 gousses</td></tr>
-              <tr><td>Paprika, romarin, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li><strong>Marinade (la veille idéalement) :</strong> couper le bœuf en cubes de 3 cm, mélanger avec huile, sauce soja, miel, ail écrasé, paprika, romarin, poivre. Réserver au frais <strong>1 h minimum</strong>.</li>
-              <li>Tremper les pics en bois dans l'eau 15 min (évite qu'ils brûlent).</li>
-              <li>Couper l'oignon rouge en quartiers, le poivron vert en gros morceaux.</li>
-              <li>Monter les brochettes en alternant bœuf, tomate cerise, oignon, poivron.</li>
-              <li><strong>Boulgour :</strong> faire suer l'oignon jaune émincé, ajouter le boulgour, mélanger, verser le bouillon. Couvrir, cuire 12 min à feu doux, repos 5 min.</li>
-              <li>Cuire les brochettes au BBQ <strong>8–10 min</strong> en les retournant régulièrement (saignant à rosé). Repos 3 min sous papier alu.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">560</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">45g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">55g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">18g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Mini-brochettes pour les petits : juste viande + tomate cerise désembrochée. Les légumes à part dans l'assiette.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-total">
-        <div class="day-total-label">Total dîner dimanche</div>
-        <div class="day-total-macros">
-          <div class="day-total-item"><div class="day-total-val acc">730</div><div class="day-total-lbl">kcal</div></div>
-          <div class="day-total-item"><div class="day-total-val">52g</div><div class="day-total-lbl">Protéines</div></div>
-          <div class="day-total-item"><div class="day-total-val">73g</div><div class="day-total-lbl">Glucides</div></div>
-          <div class="day-total-item"><div class="day-total-val">26g</div><div class="day-total-lbl">Lipides</div></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════ LUNDI ═══════════════════════════════ -->
-    <section class="day-section">
-      <div class="day-header">
-        <h2 class="day-name"><span class="day-dot" style="background:#EAB308;width:10px;height:10px;"></span>Lundi</h2>
-        <span class="day-type">BBQ #2 · Porc &amp; chipolatas</span>
-      </div>
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type entree">Entrée</span>
-          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Sans cuisson</span>
-        </div>
-        <h3 class="recipe-title">Salade de betteraves, chèvre frais &amp; noix</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Betteraves cuites sous vide</td><td>4</td></tr>
-              <tr><td>Chèvre frais (type Petit Billy)</td><td>150g</td></tr>
-              <tr><td>Cerneaux de noix</td><td>60g</td></tr>
-              <tr><td>Huile d'olive</td><td>30 ml</td></tr>
-              <tr><td>Vinaigre balsamique</td><td>15 ml</td></tr>
-              <tr><td>Ciboulette ou persil</td><td>—</td></tr>
-              <tr><td>Sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Couper les betteraves en dés, émietter le chèvre, concasser grossièrement les noix.</li>
-              <li>Préparer la vinaigrette : huile + vinaigre + sel + poivre.</li>
-              <li>Disposer betteraves + chèvre, parsemer de noix et d'herbes, arroser de vinaigrette.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">250</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">8g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">14g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">18g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Pour les petits : juste un peu de betterave + chèvre, sans balsamique. Les noix peuvent être servies à part.</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="recipe-divider">
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type bbq">BBQ · Plat</span>
-          <span class="recipe-timing">Marinade : 1 h &nbsp;·&nbsp; Cuisson : 25 min</span>
-        </div>
-        <h3 class="recipe-title">Côtes de porc, chipolatas, légumes grillés &amp; salade de pâtes</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Côtes de porc</td><td>6 (≈1,2 kg)</td></tr>
-              <tr><td>Chipolatas</td><td>12 (≈600g)</td></tr>
-              <tr><td>Courgettes</td><td>3</td></tr>
-              <tr><td>Poivron rouge</td><td>1</td></tr>
-              <tr><td>Poivron jaune</td><td>1</td></tr>
-              <tr><td>Salade de pâtes (traiteur)</td><td>1 grand bol</td></tr>
-              <tr><td>Huile d'olive</td><td>45 ml</td></tr>
-              <tr><td>Ail, paprika, herbes de Provence</td><td>—</td></tr>
-              <tr><td>Sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li><strong>Marinade côtes de porc (1 h, idéalement la veille) :</strong> huile + ail écrasé + herbes de Provence + paprika + poivre.</li>
-              <li>Tailler les courgettes en rondelles épaisses (1 cm), les poivrons en lanières. Huiler, saler, poivrer, parsemer d'herbes.</li>
-              <li>Cuire les légumes au BBQ <strong>8–10 min</strong> en les retournant. Réserver au chaud.</li>
-              <li>Cuire les chipolatas <strong>10–12 min</strong> en les retournant régulièrement.</li>
-              <li>Cuire les côtes de porc <strong>6–8 min de chaque côté</strong> selon épaisseur. Repos 5 min sous papier alu.</li>
-              <li>Sortir la salade de pâtes du frigo 10 min avant de servir.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">720</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">48g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">42g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">42g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="warn-tip"><span class="warn-tip-icon">⚠️</span> Repas riche (chipolatas + côtes + salade de pâtes mayo) — équilibrer avec une bonne portion de légumes grillés. Idéal après une grosse journée de sport.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-total">
-        <div class="day-total-label">Total dîner lundi</div>
-        <div class="day-total-macros">
-          <div class="day-total-item"><div class="day-total-val acc">970</div><div class="day-total-lbl">kcal</div></div>
-          <div class="day-total-item"><div class="day-total-val">56g</div><div class="day-total-lbl">Protéines</div></div>
-          <div class="day-total-item"><div class="day-total-val">56g</div><div class="day-total-lbl">Glucides</div></div>
-          <div class="day-total-item"><div class="day-total-val">60g</div><div class="day-total-lbl">Lipides</div></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════ MARDI ═══════════════════════════════ -->
-    <section class="day-section">
-      <div class="day-header">
-        <h2 class="day-name"><span class="day-dot" style="background:#A855F7;width:10px;height:10px;"></span>Mardi</h2>
-        <span class="day-type">Gratin réconfortant</span>
-      </div>
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type entree">Entrée</span>
-          <span class="recipe-timing">Préparation : 10 min &nbsp;·&nbsp; Sans cuisson</span>
-        </div>
-        <h3 class="recipe-title">Concombre, feta &amp; menthe</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Concombres</td><td>2</td></tr>
-              <tr><td>Feta</td><td>200g</td></tr>
-              <tr><td>Menthe fraîche</td><td>1 bouquet</td></tr>
-              <tr><td>Citron (jus)</td><td>½</td></tr>
-              <tr><td>Huile d'olive</td><td>45 ml</td></tr>
-              <tr><td>Sel, poivre</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Couper les concombres en dés, émietter la feta.</li>
-              <li>Mélanger avec la menthe ciselée, le jus de citron et l'huile d'olive.</li>
-              <li>Assaisonner et réserver au frais au moins 15 min avant de servir.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">180</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">8g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">5g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">14g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-            <div class="kids-tip"><span class="kids-tip-icon">👶</span> Frais et doux pour les petits — réduire la menthe et la feta dans leur portion.</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="recipe-divider">
-
-      <div class="recipe">
-        <div class="recipe-meta">
-          <span class="recipe-type plat">Plat</span>
-          <span class="recipe-timing">Préparation : 20 min &nbsp;·&nbsp; Cuisson : 25 min</span>
-        </div>
-        <h3 class="recipe-title">Gratin de quinoa, courgettes &amp; poulet + salade verte</h3>
-        <div class="recipe-grid">
-          <div class="ingredients-block">
-            <div class="block-title">Ingrédients — 6 portions</div>
-            <table class="ingredients-table">
-              <tr><td>Quinoa</td><td>300g</td></tr>
-              <tr><td>Courgettes</td><td>3</td></tr>
-              <tr><td>Blancs de poulet</td><td>600g</td></tr>
-              <tr><td>Oignon jaune</td><td>1</td></tr>
-              <tr><td>Crème liquide entière</td><td>20 cl</td></tr>
-              <tr><td>Gruyère râpé</td><td>150g</td></tr>
-              <tr><td>Huile d'olive</td><td>15 ml</td></tr>
-              <tr><td>Herbes de Provence, sel, poivre</td><td>—</td></tr>
-              <tr class="section-row"><td colspan="2">Salade</td></tr>
-              <tr><td>Salade verte</td><td>1</td></tr>
-              <tr><td>Vinaigrette</td><td>—</td></tr>
-            </table>
-          </div>
-          <div class="steps-block">
-            <div class="block-title">Étapes</div>
-            <ol class="steps-list">
-              <li>Cuire le quinoa selon paquet (≈15 min).</li>
-              <li>Couper le poulet en dés, les courgettes en rondelles, l'oignon émincé.</li>
-              <li>Faire revenir oignon + poulet 5 min, ajouter les courgettes, cuire 10 min.</li>
-              <li>Mélanger quinoa, poulet-courgettes, crème, sel, poivre, herbes.</li>
-              <li>Verser dans un plat à gratin, parsemer de gruyère. Four <strong>200 °C, 20 min</strong>.</li>
-              <li>Servir avec la salade verte assaisonnée.</li>
-            </ol>
-            <div class="macros-row">
-              <div class="macro-item"><div class="macro-val accent">520</div><div class="macro-lbl">kcal</div></div>
-              <div class="macro-item"><div class="macro-val">42g</div><div class="macro-lbl">Protéines</div></div>
-              <div class="macro-item"><div class="macro-val">38g</div><div class="macro-lbl">Glucides</div></div>
-              <div class="macro-item"><div class="macro-val">22g</div><div class="macro-lbl">Lipides</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day-total">
-        <div class="day-total-label">Total dîner mardi</div>
-        <div class="day-total-macros">
-          <div class="day-total-item"><div class="day-total-val acc">700</div><div class="day-total-lbl">kcal</div></div>
-          <div class="day-total-item"><div class="day-total-val">50g</div><div class="day-total-lbl">Protéines</div></div>
-          <div class="day-total-item"><div class="day-total-val">43g</div><div class="day-total-lbl">Glucides</div></div>
-          <div class="day-total-item"><div class="day-total-val">36g</div><div class="day-total-lbl">Lipides</div></div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ═══════════════════════════════ LISTE DE COURSES ═══════════════════════════════ -->
-    <section class="shopping-section">
-      <div class="shopping-header">
-        <h2 class="shopping-title">Liste de courses</h2>
-        <p class="shopping-subtitle">6 personnes · Organisée par rayon</p>
-      </div>
-
-      <div class="shop-grid">
-
-        <div class="shop-category">
-          <div class="shop-category-title">🥦 Fruits &amp; Légumes</div>
-          <table class="shop-table">
-            <tr><td>Melon Charentais</td><td>1</td></tr>
-            <tr><td>Carottes</td><td>3</td></tr>
-            <tr><td>Brocolis</td><td>2 (~800g)</td></tr>
-            <tr><td>Tomates bien mûres</td><td>6</td></tr>
-            <tr><td>Tomates cerises</td><td>250g</td></tr>
-            <tr><td>Pommes de terre grenaille</td><td>1,2 kg</td></tr>
-            <tr><td>Haricots verts</td><td>800g</td></tr>
-            <tr><td>Courgettes</td><td>6</td></tr>
-            <tr><td>Poivron rouge</td><td>2</td></tr>
-            <tr><td>Poivron jaune</td><td>1</td></tr>
-            <tr><td>Poivron vert</td><td>1</td></tr>
-            <tr><td>Concombres</td><td>3</td></tr>
-            <tr><td>Salade verte</td><td>1</td></tr>
-            <tr><td>Oignons jaunes</td><td>2</td></tr>
-            <tr><td>Oignon rouge</td><td>1</td></tr>
-            <tr><td>Ail</td><td>1 tête</td></tr>
-            <tr><td>Citron jaune</td><td>1</td></tr>
-            <tr><td>Basilic frais</td><td>1 bouquet</td></tr>
-            <tr><td>Menthe fraîche</td><td>1 bouquet</td></tr>
-            <tr><td>Ciboulette ou persil</td><td>1 bouquet</td></tr>
-            <tr><td>Thym</td><td>1 bouquet</td></tr>
-            <tr><td>Romarin frais (option)</td><td>1 branche</td></tr>
-          </table>
-        </div>
-
-        <div>
-          <div class="shop-category" style="margin-bottom:32px">
-            <div class="shop-category-title">🥩 Boucherie &amp; Charcuterie</div>
-            <table class="shop-table">
-              <tr><td>Poulet entier</td><td>1 (≈1,8 kg)</td></tr>
-              <tr><td>Blancs de poulet</td><td>600g</td></tr>
-              <tr><td>Rumsteck ou aiguillette de bœuf</td><td>800g</td></tr>
-              <tr><td>Côtes de porc</td><td>6 (≈1,2 kg)</td></tr>
-              <tr><td>Chipolatas</td><td>12 (≈600g)</td></tr>
-              <tr><td>Jambon cru (tranches fines)</td><td>12 (≈150g)</td></tr>
-              <tr><td><strong>Jambon blanc</strong> (croque-monsieur)</td><td>8 tranches</td></tr>
-            </table>
-          </div>
-
-          <div class="shop-category" style="margin-bottom:32px">
-            <div class="shop-category-title">🐟 Poissonnerie</div>
-            <table class="shop-table">
-              <tr><td>Pavés de saumon (frais)</td><td>6 × 150g ≈ 900g</td></tr>
-            </table>
-          </div>
-
-          <div class="shop-category" style="margin-bottom:32px">
-            <div class="shop-category-title">🧀 Crèmerie</div>
-            <table class="shop-table">
-              <tr><td>Mozzarella (boules)</td><td>2</td></tr>
-              <tr><td>Feta</td><td>200g</td></tr>
-              <tr><td>Chèvre frais (Petit Billy)</td><td>150g</td></tr>
-              <tr><td>Crème liquide entière</td><td>20 cl</td></tr>
-              <tr><td>Gruyère râpé</td><td>150g</td></tr>
-              <tr><td>Beurre</td><td>1 plaquette</td></tr>
-              <tr><td><strong>Fromage en tranches</strong> (croque-monsieur)</td><td>~8 tranches</td></tr>
-            </table>
-          </div>
-
-          <div class="shop-category" style="margin-bottom:32px">
-            <div class="shop-category-title">🥖 Boulangerie</div>
-            <table class="shop-table">
-              <tr><td><strong>Pain de mie</strong> (croque-monsieur)</td><td>1 paquet</td></tr>
-            </table>
-          </div>
-
-          <div class="shop-category">
-            <div class="shop-category-title">🥗 Traiteur</div>
-            <table class="shop-table">
-              <tr><td>Houmous (pot)</td><td>300g</td></tr>
-              <tr><td>Betteraves cuites sous vide</td><td>4</td></tr>
-              <tr><td><strong>Salade de pâtes</strong></td><td>1 grand bol</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="shop-category" style="grid-column: 1 / -1">
-          <div class="shop-category-title">🏪 Épicerie sèche</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 32px">
-            <table class="shop-table">
-              <tr><td>Riz basmati</td><td>500g</td></tr>
-              <tr><td>Boulgour</td><td>400g</td></tr>
-              <tr><td>Quinoa</td><td>300g</td></tr>
-              <tr><td>Cerneaux de noix</td><td>60g</td></tr>
-              <tr><td>Sauce soja</td><td>30 ml</td></tr>
-              <tr><td>Miel</td><td>20g</td></tr>
-            </table>
-            <table class="shop-table">
-              <tr><td>Cubes de bouillon de légumes</td><td>1 boîte</td></tr>
-              <tr><td>Huile d'olive</td><td>~200 ml</td></tr>
-              <tr><td>Vinaigre balsamique</td><td>~40 ml</td></tr>
-              <tr><td>Vinaigrette / vinaigre</td><td>—</td></tr>
-              <tr><td>Pics à brochettes (bois)</td><td>12</td></tr>
-              <tr><td>Fleur de sel</td><td>1 pot</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="shop-category" style="grid-column: 1 / -1">
-          <div class="shop-category-title">🍺 Boissons</div>
-          <table class="shop-table">
-            <tr><td><strong>Bières avec alcool</strong></td><td>1 pack</td></tr>
-            <tr><td><strong>Bières sans alcool</strong></td><td>1 pack</td></tr>
-          </table>
-        </div>
-
-        <div class="shop-epices">
-          <div class="shop-category-title">🌿 Épices &amp; Condiments (si non disponibles)</div>
-          <p>Paprika &nbsp;·&nbsp; Herbes de Provence &nbsp;·&nbsp; Thym &nbsp;·&nbsp; Romarin &nbsp;·&nbsp; Poivre du moulin &nbsp;·&nbsp; Moutarde</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="doc-footer">
-      <div class="footer-brand">Le Cadre — Plan Nutrition</div>
-      <div class="footer-date">Généré le 29 mai 2026</div>
-    </footer>
-
+  <!-- TRACK RECORD BAR -->
+  <div class="trackbar">
+    <div class="wrap">
+      <strong>OCTO</strong><span class="dot">·</span>
+      <strong>Tiime</strong><span class="dot">·</span>
+      <strong>Aircall</strong><span class="dot">·</span>
+      <strong>Teads</strong><span class="dot">·</span>
+      <span>15 ans en software engineering, dont la sales tech chez Aircall</span>
+    </div>
   </div>
+
+  <!-- PARCOURS -->
+  <section class="block" id="parcours">
+    <div class="wrap">
+      <span class="eyebrow">Pourquoi moi</span>
+      <h2>Je n'ai pas lu un livre sur le RevOps. J'ai codé les systèmes.</h2>
+      <div class="two-col">
+        <div></div>
+        <div class="prose">
+          <p>J'ai passé 14 ans à construire des outils que des équipes utilisent tous les jours. CTO chez Tiime,
+            Engineering Manager chez Aircall — où j'ai vu de l'intérieur comment se construit la sales tech — puis chez
+            Teads.</p>
+          <p>Depuis octobre 2025, je travaille en solo. Un seul chantier à la fois, du début à la fin, mains dans le
+            code. Pas d'équipe junior à qui je sous-traite ton intégration, pas de TJM qui me paie à traîner. Tu as un
+            senior qui livre, ou rien.</p>
+          <p>Mon terrain : les scaleups B2B SaaS de 50 à 300 personnes. Assez grandes pour que le CRM soit un enjeu de
+            revenus, assez agiles pour ne pas avoir besoin d'une cathédrale Salesforce.</p>
+          <p class="note-inline">Ligne 2019 optionnelle (à valider) : « J'ai arrêté de manager des équipes en 2019.
+            Depuis, je construis — pas je supervise. »</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEDGE / VÉRITÉ CONTRARIENNE -->
+  <section class="block statement">
+    <div class="wrap">
+      <span class="eyebrow">La vérité contrarienne</span>
+      <h2>Ton CRM est devenu un répertoire de contacts qui ne <span class="gradient">modélise plus</span> ton chiffre
+        d'affaires.</h2>
+      <div class="two-col">
+        <div></div>
+        <div class="prose">
+          <p>Passé 50 personnes, on te dit qu'il faut « un vrai CRM ». Traduction : Salesforce ou HubSpot, six mois
+            d'intégration, un admin à plein temps, et une stack que plus personne ne comprend. Ce n'est pas une
+            décision, c'est un réflexe — et il vient souvent de gens dont le métier est de vendre ces licences.</p>
+          <p>Pendant ce temps, plus de la moitié des B2B SaaS sont passés à des modèles <strong>usage-based</strong> ou
+            <strong>rev-share</strong> que ni HubSpot ni Salesforce ne savent vraiment modéliser. Le revenu se calcule
+            dans Athena, ressort dans Sheets, et n'atterrit jamais dans le CRM. Tes commerciaux pilotent à l'aveugle.
+          </p>
+          <p>Un CRM moderne — <strong>Attio, Folk, Close</strong> — scale jusqu'à 300 personnes si l'intégration est
+            faite par quelqu'un qui sait coder. Je reconnecte la stack et je ramène le forecast là où tes commerciaux
+            vendent : dans le CRM.</p>
+          <p><strong>Je suis indépendant. Je ne touche aucune commission éditeur.</strong> Je recommande l'outil qui
+            sert ton revenu, pas le mien.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPRINT — sales section refonte -->
+  <section class="block" id="sprint">
+    <div class="wrap">
+      <span class="eyebrow">L'offre</span>
+      <h2>Le Sprint RevOps 6 semaines</h2>
+      <p class="lead sprint-intro">Une intégration <strong>productisée</strong> de ta stack commerciale autour d'un CRM
+        moderne. Scope, prix et délai <strong>fixes</strong>. Founder-led : c'est moi qui code, c'est moi qui livre.
+        Aucune équipe junior intermédiaire.</p>
+
+      <div class="tier-cards">
+        <article class="tier">
+          <div class="tname"><em>Sprint</em>Foundation</div>
+          <div class="meta">6 semaines · 8 à 10 intégrations</div>
+          <div class="tprice"><small>À partir de</small>25 000 € HT</div>
+          <p>Reconnecter ta stack commerciale autour d'un CRM moderne. Pour scaleups B2B SaaS de 50 à 150 personnes.</p>
+        </article>
+
+        <article class="tier featured">
+          <div class="badge">Le plus pris</div>
+          <div class="tname"><em>Sprint</em>Scale</div>
+          <div class="meta">6 semaines · 10 à 15 intégrations</div>
+          <div class="tprice"><small>À partir de</small>32 000 € HT</div>
+          <p>Stack plus large, workflows revenue complets, multi-pays. Pour scaleups 150 à 300 ou opérations complexes.
+          </p>
+        </article>
+
+        <article class="tier">
+          <div class="tname"><em>Sprint</em>Migration</div>
+          <div class="meta">6 à 8 semaines</div>
+          <div class="tprice"><small>À partir de</small>40 000 € HT</div>
+          <p>Sortir de HubSpot ou Salesforce sans casser la machine commerciale. Bascule vers Attio, Folk ou Close,
+            données et workflows préservés.</p>
+        </article>
+      </div>
+
+      <div class="included">
+        <h3>Inclus dans chaque Sprint</h3>
+        <ul class="ul-check">
+          <li><strong>Intégrations</strong> CRM ↔ outils revenue : Outreach, Modjo, Aircall, Stripe, Slack, Linear (au
+            choix selon ta stack).</li>
+          <li><strong>Automatisations</strong> sur <strong>n8n self-hosted</strong> — tu possèdes l'infra, pas de boîte
+            noire, pas d'abonnement éditeur.</li>
+          <li><strong>Documentation technique</strong> complète : le mode d'emploi de ton propre système, pour qu'un dev
+            interne ou un autre intégrateur reprenne sans friction.</li>
+          <li><strong>Adoption &amp; Enablement</strong> : la dernière semaine du Sprint est dédiée à l'équipe qui va
+            l'utiliser et le maintenir. Un système livré qui n'est pas adopté ne sert à rien.</li>
+        </ul>
+      </div>
+
+      <div class="module-callout">
+        <span class="ktag">Module add-on</span>
+        <div>
+          <h3>Forecast-in-CRM</h3>
+          <p>Pour les modèles <strong>usage-based</strong> ou <strong>rev-share</strong> que HubSpot/Salesforce ne
+            savent pas modéliser. Je ramène le revenu calculé hors CRM (Athena, Sheets, datawarehouse) dans le workflow
+            de tes commerciaux. <em>Disponible sur Scale et Migration. Scope chiffré au cas par cas.</em></p>
+        </div>
+      </div>
+
+      <div class="guarantees">
+        <div class="guarantee">
+          <div class="gtitle">La Garantie Go-Live</div>
+          <p><em>« Ta stack est en production à la fin des 6 semaines, ou je continue sans facturer jusqu'au go-live.
+              »</em></p>
+        </div>
+        <div class="guarantee">
+          <div class="gtitle">La Garantie Stack Possédée</div>
+          <p><em>« Tout est self-hosted, documenté et à toi. Zéro lock-in : si on arrête, tu gardes tout — et ça tourne
+              sans moi. »</em></p>
+        </div>
+      </div>
+
+      <div class="scarcity">
+        <div><strong>1 Sprint actif à la fois.</strong> 6 à 8 sprints par an.</div>
+        <div><em>Prochaine fenêtre : [À CONFIRMER]</em></div>
+      </div>
+
+      <div class="sprint-cta">
+        <a class="btn btn-dark" href="https://cal.com/florianmarin" target="_blank" rel="noopener">Voir si ton cas colle
+          → Réserver un échange</a>
+        <a class="link-quiet" href="#newsletter">Pas prêt ? Reçois la newsletter d'abord</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTHODE / STACK -->
+  <section class="block" id="methode">
+    <div class="wrap">
+      <span class="eyebrow">Comment je travaille</span>
+      <h2>Hands-on, pas slideware.</h2>
+      <div class="stack-tags" style="margin-top:24px">
+        <span class="tag">Attio</span><span class="tag">Folk</span><span class="tag">Pipedrive</span><span
+          class="tag">Close</span>
+        <span class="tag">Outreach</span><span class="tag">Modjo</span><span class="tag">Aircall</span><span
+          class="tag">Stripe</span>
+        <span class="tag">Slack</span><span class="tag">Linear</span><span class="tag">n8n self-hosted</span>
+      </div>
+      <div class="method-grid">
+        <div class="mcard">
+          <h3>Je code.</h3>
+          <p>Tu n'auras pas de « recommandations » en PDF. Tu auras un système livré et testé.</p>
+        </div>
+        <div class="mcard">
+          <h3>6 semaines, pas 90 jours.</h3>
+          <p>Un sprint cadré, des livrables hebdo, une fin nette. Pas de retainer qui dérive.</p>
+        </div>
+        <div class="mcard">
+          <h3>Build en public.</h3>
+          <p>Je documente mes patterns d'intégration au fil de l'eau — tu vois comment je pense avant même de me parler.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ / OBJECTIONS -->
+  <section class="block presskit" id="faq">
+    <div class="wrap">
+      <span class="eyebrow">Objections honnêtes</span>
+      <h2>Pourquoi moi plutôt que… ?</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas une agence RevOps (Ceres, Ocobo, Markentive) ?</h3>
+          <p>Parce qu'une agence HubSpot/Salesforce te vendra du HubSpot/Salesforce — son revenu vient du partenariat
+            éditeur. Moi je pars de ton besoin, pas de mon partenariat. Et tu n'auras pas une équipe junior sur la
+            delivery : c'est un ex-CTO qui code du début à la fin, pas un Account Manager qui supervise un dev de 2 ans
+            d'XP.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas un freelance Malt en TJM ?</h3>
+          <p>Un TJM, c'est un scope qui dérive et un budget qu'on découvre à la fin. Un Sprint, c'est un résultat à
+            <strong>date fixe</strong>, un <strong>prix fixe</strong>, et une <strong>Garantie Go-Live</strong>. Tu sais
+            ce que tu payes, tu sais quand c'est livré, et le scope ne bouge pas. Pas de TJM ici — par construction.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas recruter un RevOps en interne ?</h3>
+          <p>Recruter ton RevOps, c'est 3 à 6 mois de process + onboarding avant la première intégration livrée. Mon
+            Sprint est en prod au bout de 6 semaines. Mieux : la documentation que je laisse <strong>forme la personne
+              que tu vas finir par recruter</strong>. On n'est pas en compétition — je pose la fondation, ton futur
+            RevOps la fait vivre.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Et si tu disparais après le go-live ?</h3>
+          <p>C'est l'objection numéro 1 face à un solo, et elle est légitime. Réponse en deux temps. <strong>Un
+              :</strong> la Garantie Stack Possédée est concrète — tout est self-hosted chez toi, documenté ligne à
+            ligne, et tourne sans moi. Si je disparais, ta stack tourne. <strong>Deux :</strong> la doc est conçue pour
+            qu'un dev interne ou un autre intégrateur reprenne sans friction. Tu n'achètes pas une dépendance à moi — tu
+            achètes un système qui t'appartient.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECEIPTS -->
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Receipts</span>
+      <h2>Ce que je construis en ce moment</h2>
+      <div class="cards">
+        <div class="rcard">
+          <span class="k">Chantier en cours</span>
+          <h3>Franchiseur automobile — CRM custom SAV</h3>
+          <p>CRM sur mesure pour leur service après-vente : saisie des contrats de garantie, structuration de la donnée,
+            automatisations. Sprint en cours. <em>[Taille + date livraison à confirmer]</em></p>
+        </div>
+        <div class="rcard">
+          <span class="k">Build journal</span>
+          <h3>Un pattern publié par jour</h3>
+          <p>J'extrais un pattern RevOps publiable de chaque journée de chantier. À suivre sur LinkedIn et dans la
+            newsletter.</p>
+        </div>
+        <div class="rcard">
+          <span class="k">Écosystème</span>
+          <h3>Communauté Attio</h3>
+          <p>Membre de la communauté Attio, en route vers le statut de partner officiel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER (CTA DOMINANT) -->
+  <section class="block news" id="newsletter">
+    <div class="wrap">
+      <h2>Une idée RevOps par semaine. Tirée du <span class="gradient">terrain</span>, pas de Twitter.</h2>
+      <p class="lead">Chaque mardi, un pattern concret : une intégration, un piège évité, une décision d'archi
+        commerciale. Lisible en 3 minutes. Issu de chantiers réels, pas de threads recyclés.</p>
+      <!-- Remplacer action= par SUBSTACK_URL -->
+      <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+        <input type="email" name="email" placeholder="ton@email.com" required>
+        <button class="btn btn-accent" type="submit">Je m'abonne</button>
+      </form>
+      <div class="micro">Gratuit · Le mardi · Désabonnement en 1 clic</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="fbrand">Florian Marin</div>
+      <div class="signature">Intégrateur CRM RevOps · Montpellier</div>
+      <div class="flinks">
+        <a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://YOURSUBSTACK.substack.com" target="_blank" rel="noopener">Substack</a>
+        <a href="https://cal.com/florianmarin" target="_blank" rel="noopener">Travailler avec moi</a>
+      </div>
+      <div class="legal">© 2026 Florian Marin · Mentions légales</div>
+    </div>
+  </footer>
+
 </body>
 
 </html>
