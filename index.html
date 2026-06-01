@@ -1,790 +1,1356 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Le Cadre Endurance — Reprends le contrôle de ta semaine en 12 semaines</title>
-<meta name="description" content="12 semaines pour installer un système qui protège ton sport, ton sommeil et ta présence en famille. Ingénierie de vie, pas du coaching.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #111111;
-    --bg-card: #1a1a1a;
-    --bg-alt: #222222;
-    --text: #f0f0f0;
-    --text-body: #cccccc;
-    --text-dim: #888888;
-    --accent: #FF7A00;
-    --accent-light: #ff9a40;
-    --accent-glow: rgba(255, 122, 0, 0.06);
-    --green: #4ade80;
-    --red: #f87171;
-    --border: #2a2a2a;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Florian Marin — Le Sprint RevOps 6 semaines pour scaleups B2B SaaS</title>
+  <meta name="description"
+    content="Je fais scaler ton CRM moderne à 50-300 personnes — Attio, Folk, Close — sans HubSpot, sans recruter, en 6 semaines. Sprint productisé, prix fixe, deux garanties nommées.">
+  <meta property="og:title" content="Florian Marin — Le Sprint RevOps 6 semaines">
+  <meta property="og:description"
+    content="Ton CRM est devenu un répertoire de contacts qui ne modélise plus ton chiffre d'affaires. Je reconnecte la stack et je ramène le forecast dans le CRM. 6 semaines, prix fixe.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://florianmarin.me">
+  <!--
+  ===========================================================
+  PLACEHOLDERS À REMPLIR AVANT MISE EN LIGNE :
+  - SUBSTACK_URL  : URL d'abonnement Substack (rebrandé, plus "Le Cadre Notes")
+  - CALCOM_URL    : lien Cal.com discovery call
+  - PHOTO         : remplacer le bloc .portrait par ta photo pro
+  - EMAIL_PRO     : email de contact presse
+  - FENETRE       : date de la prochaine fenêtre de Sprint (scarcité)
+  - WeeCars       : taille + date de livraison anonymisées
+  ===========================================================
+  OFFRE V2 — appliquée depuis le doc Offre & Positionnement (22/05/2026) :
+  - Foundation 25k · Scale 32k · Migration 40k+
+  - Module Forecast-in-CRM (add-on Scale/Migration)
+  - Adoption & Enablement inclus
+  - 2 garanties nommées : Go-Live + Stack Possédée
+  - Scarcité réelle : 1 Sprint actif à la fois
+  NON APPLIQUÉ (en attente de tranche §8 du doc) :
+  - Diagnostic d'entrée payant (~2k)
+  - RevOps Run mensuel récurrent productisé
+  ===========================================================
+-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1C1C1C;
+      --ink-2: #262626;
+      --ink-3: #0F0F0F;
+      --paper: #FFFFFF;
+      --paper-2: #FAFAFA;
+      --muted-light: #B8B8B8;
+      --muted-dark: #6B6B6B;
+      --line: #EAEAEA;
+      --accent: #FF7A00;
+      --accent-hover: #E66E00;
+      --accent-2: #FFD84D;
+      --gradient: linear-gradient(90deg, #FF7A00 0%, #FFD84D 100%);
+      --maxw: 1120px;
+      --r: 12px;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--bg);
-    color: var(--text-body);
-    line-height: 1.7;
-    font-size: 0.95rem;
-    -webkit-font-smoothing: antialiased;
-  }
+    html {
+      scroll-behavior: smooth
+    }
 
-  a { color: var(--accent); text-decoration: none; }
+    body {
+      font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .section {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 32px
+    }
 
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 20px;
-    line-height: 1.2;
-    letter-spacing: -0.5px;
-  }
+    h1,
+    h2,
+    h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em
+    }
 
-  .accent { color: var(--accent); }
+    .gradient {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
 
-  .spacer { height: 64px; }
-  .spacer-sm { height: 40px; }
+    .eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .74rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: inline-block;
+    }
 
-  .separator {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .separator-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-  }
+    a {
+      color: inherit
+    }
 
-  /* ============ NAV ============ */
-  .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(17,17,17,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-inner {
-    max-width: 900px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 24px;
-  }
-  .nav-name {
-    font-weight: 800; font-size: 0.9rem; color: var(--text);
-    text-decoration: none; display: flex; align-items: center; gap: 8px;
-  }
-  .nav-links { display: flex; align-items: center; gap: 20px; }
-  .nav-link {
-    font-size: 0.78rem; color: var(--text-dim); text-decoration: none;
-    font-weight: 600; letter-spacing: 0.02em;
-  }
-  .nav-link:hover { color: var(--text); }
-  .nav-cta {
-    font-size: 0.78rem; font-weight: 700;
-    background: var(--accent); color: var(--bg) !important;
-    padding: 8px 16px; border-radius: 6px; text-decoration: none;
-  }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .15s ease, background .15s ease;
+      white-space: nowrap;
+      letter-spacing: .01em;
+    }
 
-  /* ============ HERO ============ */
-  .hero {
-    text-align: center;
-    padding: 120px 24px 60px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  .hero-category {
-    font-size: 0.72rem; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 16px;
-  }
-  .hero-headline {
-    font-size: 2.4rem; font-weight: 900;
-    color: var(--text); line-height: 1.15;
-    letter-spacing: -1px; margin-bottom: 18px;
-  }
-  .hero-sub {
-    font-size: 1.05rem; color: var(--text-body);
-    max-width: 560px; margin: 0 auto 24px;
-    line-height: 1.6;
-  }
-  .hero-empathy {
-    font-size: 0.92rem; font-style: italic;
-    color: var(--text-dim); margin-bottom: 20px;
-  }
-  .hero-proof {
-    font-size: 0.9rem; color: var(--text-body);
-    margin-bottom: 28px; line-height: 1.6;
-  }
-  .hero-proof em { color: var(--text); }
-  .hero-proof strong { color: var(--text-dim); font-weight: 600; }
+    .btn:hover {
+      transform: translateY(-1px)
+    }
 
-  .hero-stats {
-    display: flex; gap: 24px; justify-content: center;
-    flex-wrap: wrap; margin-bottom: 32px;
-    font-size: 0.82rem; color: var(--text-dim);
-  }
-  .hero-stat-num {
-    color: var(--accent); font-weight: 800; font-size: 1.1rem;
-    display: block;
-  }
+    .btn-accent {
+      background: var(--accent);
+      color: #fff
+    }
 
-  /* ============ CTA ============ */
-  .cta-group { text-align: center; margin: 28px 0; }
-  .cta-primary {
-    display: inline-block;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: var(--bg) !important;
-    padding: 14px 36px; border-radius: 8px;
-    font-weight: 800; font-size: 0.95rem;
-    text-decoration: none; letter-spacing: 0.02em;
-    transition: transform 0.15s;
-  }
-  .cta-primary:hover { transform: translateY(-1px); }
-  .cta-note {
-    display: block; font-size: 0.78rem;
-    color: var(--text-dim); margin-top: 10px;
-  }
-  .escape-hatch {
-    display: block; font-size: 0.82rem;
-    color: var(--text-dim); margin-top: 10px;
-    text-decoration: underline;
-  }
+    .btn-accent:hover {
+      background: var(--accent-hover)
+    }
 
-  /* ============ CARDS ============ */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-    margin-bottom: 16px;
-  }
+    .btn-light {
+      background: #fff;
+      color: var(--ink)
+    }
 
-  /* ============ QUOTE ============ */
-  .quote {
-    border-left: 3px solid var(--accent);
-    padding: 14px 20px;
-    margin: 20px 0;
-    font-style: italic;
-    color: var(--text);
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-  .quote .attr {
-    display: block; font-style: normal;
-    font-size: 0.78rem; color: var(--text-dim);
-    margin-top: 8px;
-  }
+    .btn-dark {
+      background: var(--ink);
+      color: #fff
+    }
 
-  /* ============ PILLARS ============ */
-  .pillar {
-    display: flex; gap: 16px;
-    margin-bottom: 16px;
-  }
-  .pillar-bar {
-    width: 3px; flex-shrink: 0;
-    background: var(--accent); border-radius: 2px;
-  }
-  .pillar-content { flex: 1; }
-  .pillar-content p { margin: 0; }
+    .btn-dark:hover {
+      background: #000
+    }
 
-  /* ============ CHECK LIST ============ */
-  .check-list {
-    list-style: none; padding: 0; margin: 0;
-  }
-  .check-list li {
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-    font-size: 0.92rem; color: var(--text-body);
-    display: flex; align-items: flex-start; gap: 10px;
-  }
-  .check-list li:last-child { border-bottom: none; }
-  .check { color: var(--accent); font-weight: 700; flex-shrink: 0; }
+    .link-quiet {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .86rem;
+      letter-spacing: .02em;
+      color: var(--muted-dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1px;
+      transition: color .15s ease, border-color .15s ease;
+    }
 
-  /* ============ GUARANTEE ============ */
-  .guarantee {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 28px;
-  }
-  .guarantee-name {
-    font-weight: 800; font-size: 1.1rem;
-    color: var(--text); margin-bottom: 14px;
-  }
-  .guarantee p {
-    font-size: 0.9rem; color: var(--text-body);
-    margin-bottom: 10px; line-height: 1.6;
-  }
+    .link-quiet:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
 
-  /* ============ FAQ ============ */
-  .faq-item {
-    border-bottom: 1px solid var(--border);
-    padding: 16px 0;
-  }
-  .faq-q {
-    font-weight: 700; font-size: 0.92rem;
-    color: var(--text); cursor: pointer;
-    display: flex; justify-content: space-between;
-    align-items: center;
-  }
-  .faq-q::after {
-    content: '+'; font-size: 1.2rem;
-    color: var(--accent); font-weight: 300;
-    transition: transform 0.2s;
-  }
-  .faq-item.open .faq-q::after {
-    content: '−';
-  }
-  .faq-a {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  .faq-item.open .faq-a {
-    max-height: 400px;
-  }
-  .faq-a p {
-    padding-top: 12px; font-size: 0.88rem;
-    color: var(--text-body); line-height: 1.6;
-    margin: 0;
-  }
+    .hero .link-quiet,
+    footer .link-quiet,
+    .statement .link-quiet {
+      color: var(--muted-light);
+      border-bottom-color: rgba(255, 255, 255, .18)
+    }
 
-  /* ============ MATHIEU ============ */
-  .mathieu-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px; padding: 32px;
-  }
-  .mathieu-identity {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 24px; padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .mathieu-avatar {
-    width: 52px; height: 52px; border-radius: 50%;
-    background: var(--bg-alt);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 1.2rem; color: var(--accent);
-    flex-shrink: 0;
-  }
-  .mathieu-name { font-size: 1.05rem; font-weight: 700; color: var(--text); }
-  .mathieu-role { color: var(--text-dim); font-size: 0.8rem; margin-top: 2px; }
+    .hero .link-quiet:hover,
+    footer .link-quiet:hover,
+    .statement .link-quiet:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
 
-  .metrics-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 12px; margin-bottom: 24px;
-  }
-  .metric-box {
-    background: var(--bg-alt);
-    border-radius: 8px; padding: 16px;
-    text-align: center;
-  }
-  .metric-box .label {
-    font-size: 0.68rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--text-dim); margin-bottom: 6px;
-  }
-  .metric-box .shift {
-    font-size: 0.92rem; color: var(--text);
-  }
-  .metric-box .shift s { color: var(--text-dim); }
-  .metric-box .shift b { color: var(--green); font-weight: 700; }
+    /* ---------- NAV ---------- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(28, 28, 28, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, .06)
+    }
 
-  .mathieu-verbatim {
-    font-size: 1.05rem; font-style: italic;
-    line-height: 1.6; border-left: 3px solid var(--accent);
-    color: var(--text); padding: 6px 0 6px 20px;
-  }
-  .mathieu-source {
-    color: var(--text-dim); font-size: 0.75rem;
-    font-style: normal; margin-top: 8px;
-  }
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px
+    }
 
-  /* ============ WHO BLOCKS ============ */
-  .who-block, .not-block {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 12px;
-    font-size: 0.9rem;
-  }
-  .who-block { border-left: 3px solid var(--accent); }
-  .not-block { border-left: 3px solid var(--text-dim); }
+    .brand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.05rem;
+      text-decoration: none;
+      letter-spacing: -0.01em
+    }
 
-  /* ============ FOOTER ============ */
-  .footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.78rem;
-    padding: 48px 24px 32px;
-  }
-  .footer a { color: var(--text-dim); text-decoration: underline; }
+    .brand span {
+      color: var(--accent)
+    }
 
-  /* ============ STICKY MOBILE CTA ============ */
-  .sticky-cta {
-    display: none; position: fixed;
-    bottom: 0; left: 0; right: 0; z-index: 99;
-    background: rgba(17,17,17,0.96);
-    backdrop-filter: blur(10px);
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-    text-align: center;
-  }
-  .sticky-cta a {
-    display: block;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: var(--bg) !important;
-    padding: 12px 24px; border-radius: 8px;
-    font-weight: 800; font-size: 0.9rem;
-    text-decoration: none;
-  }
-  @media (max-width: 640px) {
-    .sticky-cta { display: block; }
-    body { padding-bottom: 70px; }
-    .hero-headline { font-size: 1.7rem; }
-    .metrics-grid { grid-template-columns: 1fr; }
-    .nav-link { display: none; }
-  }
-</style>
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center
+    }
+
+    .nav-links a {
+      color: #D9D9D9;
+      text-decoration: none;
+      font-size: .92rem;
+      font-weight: 500;
+      transition: color .15s
+    }
+
+    .nav-links a:hover {
+      color: #fff
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 700
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-hover)
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      background: var(--ink);
+      color: #fff;
+      padding: 110px 0 100px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 460px at 82% 6%, rgba(255, 122, 0, .18), transparent 60%);
+      pointer-events: none
+    }
+
+    .hero .wrap {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 56px;
+      align-items: center
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 5.4vw, 3.9rem);
+      font-weight: 700;
+      margin: 22px 0 26px
+    }
+
+    .hero p.sub {
+      font-size: 1.14rem;
+      color: var(--muted-light);
+      max-width: 38ch;
+      margin-bottom: 36px;
+      font-weight: 400
+    }
+
+    .capture {
+      background: var(--ink-2);
+      border: 1px solid #333;
+      border-radius: var(--r);
+      padding: 24px
+    }
+
+    .capture .label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.06rem;
+      margin-bottom: 14px;
+      color: #fff
+    }
+
+    .capture form {
+      display: flex;
+      gap: 10px
+    }
+
+    .capture input {
+      flex: 1;
+      min-width: 0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: var(--ink);
+      color: #fff;
+      font-size: .95rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400
+    }
+
+    .capture input::placeholder {
+      color: #7a7a7a
+    }
+
+    .capture .micro {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: .78rem;
+      color: #9a9a9a;
+      margin-top: 14px
+    }
+
+    .hero .quiet-wrap {
+      margin-top: 28px
+    }
+
+    .portrait {
+      aspect-ratio: 4/5;
+      border-radius: var(--r);
+      background: linear-gradient(160deg, #262626, #1C1C1C);
+      border: 1px solid #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .82rem;
+      text-align: center;
+      padding: 20px
+    }
+
+    /* ---------- TRACK RECORD BAR ---------- */
+    .trackbar {
+      background: var(--ink-2);
+      color: var(--muted-light);
+      padding: 22px 0;
+      border-top: 1px solid rgba(255, 255, 255, .04)
+    }
+
+    .trackbar .wrap {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .84rem;
+      letter-spacing: .05em
+    }
+
+    .trackbar strong {
+      color: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .10em
+    }
+
+    .trackbar .dot {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    /* ---------- SECTIONS ---------- */
+    section.block {
+      padding: 110px 0
+    }
+
+    .block h2 {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 700;
+      margin: 18px 0 0;
+      letter-spacing: -0.02em
+    }
+
+    .lead {
+      color: var(--muted-dark);
+      font-size: 1.08rem;
+      max-width: 64ch;
+      margin-top: 22px;
+      font-weight: 400
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 56px;
+      align-items: start;
+      margin-top: 14px
+    }
+
+    .prose p {
+      margin-bottom: 20px;
+      font-size: 1.06rem;
+      font-weight: 400
+    }
+
+    .prose p:last-child {
+      margin-bottom: 0
+    }
+
+    .prose p strong {
+      font-weight: 700
+    }
+
+    .note-inline {
+      font-size: .92rem;
+      color: var(--muted-dark);
+      border-left: 3px solid var(--accent);
+      padding: 10px 0 10px 16px;
+      margin-top: 8px;
+      font-style: italic
+    }
+
+    /* dark statement section */
+    .statement {
+      background: var(--ink);
+      color: #fff
+    }
+
+    .statement h2 {
+      color: #fff;
+      max-width: 24ch
+    }
+
+    .statement .prose p {
+      color: var(--muted-light)
+    }
+
+    .statement .prose p strong {
+      color: #fff
+    }
+
+    /* ---------- SPRINT TIERS ---------- */
+    .sprint-intro {
+      margin-top: 14px;
+      max-width: 62ch
+    }
+
+    .tier-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 44px
+    }
+
+    .tier {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative
+    }
+
+    .tier.featured {
+      border: 2px solid var(--accent);
+      background: #fff;
+      box-shadow: 0 12px 32px -16px rgba(255, 122, 0, .32)
+    }
+
+    .tier .badge {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 6px
+    }
+
+    .tier .tname {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.32rem;
+      letter-spacing: -0.01em
+    }
+
+    .tier .tname em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted-dark);
+      font-size: .95rem;
+      display: block;
+      margin-top: 2px;
+      letter-spacing: 0
+    }
+
+    .tier .meta {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .86rem;
+      color: var(--muted-dark);
+      letter-spacing: .04em
+    }
+
+    .tier .tprice {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em
+    }
+
+    .tier .tprice small {
+      font-weight: 500;
+      color: var(--muted-dark);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      display: block;
+      margin-bottom: 2px
+    }
+
+    .tier p {
+      color: var(--muted-dark);
+      font-size: .97rem
+    }
+
+    .included {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      margin-top: 30px
+    }
+
+    .included h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 18px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .16em;
+      color: var(--muted-dark)
+    }
+
+    .included .ul-check {
+      margin: 0
+    }
+
+    .module-callout {
+      background: var(--ink);
+      color: #fff;
+      border-radius: var(--r);
+      padding: 32px;
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 22px;
+      align-items: start
+    }
+
+    .module-callout .ktag {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 6px 11px;
+      border-radius: 6px;
+      align-self: start;
+      white-space: nowrap
+    }
+
+    .module-callout h3 {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px
+    }
+
+    .module-callout p {
+      color: var(--muted-light);
+      font-size: 1rem
+    }
+
+    .module-callout p strong {
+      color: #fff
+    }
+
+    .guarantees {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 50px
+    }
+
+    .guarantee {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-left: 4px solid var(--accent)
+    }
+
+    .guarantee .gtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem
+    }
+
+    .guarantee p {
+      color: var(--muted-dark);
+      font-size: .98rem
+    }
+
+    .guarantee p em {
+      font-style: italic;
+      color: var(--ink)
+    }
+
+    .scarcity {
+      margin-top: 38px;
+      padding: 22px 24px;
+      border: 1px dashed var(--accent);
+      border-radius: var(--r);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .96rem;
+      color: var(--ink);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      background: #fff
+    }
+
+    .scarcity strong {
+      font-weight: 700
+    }
+
+    .scarcity em {
+      font-style: italic;
+      color: var(--muted-dark)
+    }
+
+    .sprint-cta {
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap
+    }
+
+    /* sprint reused */
+    .ul-check {
+      list-style: none;
+      display: grid;
+      gap: 14px
+    }
+
+    .ul-check li {
+      padding-left: 32px;
+      position: relative;
+      font-size: 1.04rem
+    }
+
+    .ul-check li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    /* method / stack */
+    .stack-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 12px 0 36px
+    }
+
+    .tag {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: .82rem;
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 8px 13px;
+      letter-spacing: .02em
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 14px
+    }
+
+    .mcard {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 28px
+    }
+
+    .mcard h3 {
+      font-size: 1.14rem;
+      margin-bottom: 10px;
+      font-weight: 700
+    }
+
+    .mcard p {
+      color: var(--muted-dark);
+      font-size: .97rem;
+      font-weight: 400
+    }
+
+    /* FAQ */
+    .faq-list {
+      margin-top: 30px;
+      display: grid;
+      gap: 20px
+    }
+
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 30px
+    }
+
+    .faq-item h3 {
+      font-size: 1.14rem;
+      font-weight: 700;
+      margin-bottom: 12px
+    }
+
+    .faq-item h3 .qmark {
+      color: var(--accent);
+      font-weight: 700;
+      margin-right: 8px
+    }
+
+    .faq-item p {
+      color: var(--muted-dark);
+      font-size: 1rem
+    }
+
+    .faq-item p strong {
+      color: var(--ink);
+      font-weight: 700
+    }
+
+    /* receipts */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 38px
+    }
+
+    .rcard {
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .rcard .k {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: .72rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent)
+    }
+
+    .rcard h3 {
+      font-size: 1.14rem;
+      font-weight: 700
+    }
+
+    .rcard p {
+      color: var(--muted-dark);
+      font-size: .96rem;
+      font-weight: 400
+    }
+
+    /* presskit */
+    .presskit {
+      background: var(--paper-2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line)
+    }
+
+    /* newsletter dominant */
+    .news {
+      background: var(--ink);
+      color: #fff;
+      text-align: center
+    }
+
+    .news h2 {
+      color: #fff;
+      font-size: clamp(2rem, 4.4vw, 3rem);
+      max-width: 24ch;
+      margin: 0 auto;
+      font-weight: 700
+    }
+
+    .news p.lead {
+      color: var(--muted-light);
+      margin: 22px auto 34px;
+      text-align: center
+    }
+
+    .news form {
+      display: flex;
+      gap: 10px;
+      max-width: 500px;
+      margin: 0 auto
+    }
+
+    .news input {
+      flex: 1;
+      min-width: 0;
+      padding: 15px 16px;
+      border-radius: 9px;
+      border: 0;
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400
+    }
+
+    .news .btn-accent {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .news .btn-accent:hover {
+      background: var(--accent-hover)
+    }
+
+    .news .micro {
+      font-family: 'Montserrat', sans-serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: .8rem;
+      color: var(--muted-light);
+      margin-top: 16px
+    }
+
+    /* footer */
+    footer {
+      background: var(--ink-3);
+      color: var(--muted-light);
+      padding: 60px 0 44px
+    }
+
+    footer .wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    footer .fbrand {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em
+    }
+
+    footer .signature {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--muted-light);
+      font-size: .95rem
+    }
+
+    footer .flinks {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: .94rem;
+      font-weight: 500
+    }
+
+    footer a {
+      color: #D9D9D9;
+      text-decoration: none
+    }
+
+    footer a:hover {
+      color: var(--accent)
+    }
+
+    footer .legal {
+      font-size: .8rem;
+      color: #7a7a7a;
+      margin-top: 10px;
+      font-style: italic
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width:980px) {
+      .tier-cards {
+        grid-template-columns: 1fr
+      }
+
+      .guarantees {
+        grid-template-columns: 1fr
+      }
+
+      .module-callout {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media (max-width:860px) {
+      .hero {
+        padding: 80px 0 70px
+      }
+
+      .hero .wrap {
+        grid-template-columns: 1fr;
+        gap: 36px
+      }
+
+      .portrait {
+        max-width: 280px;
+        order: -1
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 30px
+      }
+
+      .method-grid {
+        grid-template-columns: 1fr
+      }
+
+      .cards {
+        grid-template-columns: 1fr
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      .nav-links.open {
+        display: flex;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--ink);
+        flex-direction: column;
+        padding: 20px 32px;
+        gap: 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, .06)
+      }
+
+      .nav-toggle {
+        display: block
+      }
+
+      section.block {
+        padding: 74px 0
+      }
+
+      .capture form,
+      .news form {
+        flex-direction: column
+      }
+
+      .btn {
+        width: 100%
+      }
+
+      .included,
+      .faq-item,
+      .tier,
+      .guarantee {
+        padding: 24px
+      }
+
+      .module-callout {
+        padding: 24px
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="#" class="nav-name">Florian Marin</a>
-      <div class="nav-links">
-        <a href="#probleme" class="nav-link">Problème</a>
-        <a href="#resultats" class="nav-link">Résultats</a>
-        <a href="#systeme" class="nav-link">Système</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-        <a href="https://tally.so/r/68OLD5" class="nav-cta" data-umami-event="nav-cta-click">Vérifier mon éligibilité</a>
+  <!-- NAV -->
+  <nav>
+    <div class="wrap">
+      <a href="#" class="brand">Florian Marin<span>.</span></a>
+      <button class="nav-toggle" aria-label="Menu"
+        onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
+      <div class="nav-links" id="navlinks">
+        <a href="#parcours">Parcours</a>
+        <a href="#sprint">Le Sprint</a>
+        <a href="#faq">FAQ</a>
+        <a href="#newsletter" class="nav-cta">Newsletter</a>
       </div>
     </div>
   </nav>
 
-  <!-- ================================================
-     HERO
-     ================================================ -->
-  <div class="hero" id="hero">
-    <div class="hero-empathy">« Je sais ce que c'est d'ouvrir Slack à 23h pour faire ton vrai boulot. J'ai arrêté en 2019. »</div>
-    <div class="hero-category">Le Cadre · Endurance · 12 semaines</div>
-    <div class="hero-headline">
-      Reprends le <span class="accent">contrôle</span> de ta semaine<br>et ta présence en famille.
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">CRM RevOps · Scaleups B2B SaaS · 50–300</span>
+        <h1>Je fais scaler ton CRM <span class="gradient">moderne</span> à 50–300 personnes. Sans HubSpot. Sans
+          recruter. En 6 semaines.</h1>
+        <p class="sub">14 ans en software engineering — ex-CTO Tiime, ex-Engineering Manager Aircall (sales tech) et
+          Teads. Aujourd'hui solo, founder-led, sans équipe junior.</p>
+
+        <div class="capture">
+          <div class="label">Reçois une idée RevOps actionnable par semaine.</div>
+          <!-- Remplacer action= par SUBSTACK_URL -->
+          <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+            <input type="email" name="email" placeholder="ton@email.com" required>
+            <button class="btn btn-accent" type="submit">S'abonner</button>
+          </form>
+          <div class="micro">Le mardi. Du concret tiré de mes intégrations réelles. Désabonnement en 1 clic.</div>
+        </div>
+
+        <div class="quiet-wrap">
+          <!-- Remplacer href par CALCOM_URL -->
+          <a class="link-quiet" href="https://cal.com/florianmarin" target="_blank" rel="noopener">Tu as un chantier CRM
+            précis ? → Travailler avec moi</a>
+        </div>
+      </div>
     </div>
-    <div class="hero-sub">
-      J'installe un système personnalisé qui protège ton sport, ton sommeil et ta vie de famille — avec du software que je développe moi-même. En 12 semaines, c'est construit. Après, ça tourne sans moi.
-    </div>
+  </header>
 
-    <div class="hero-proof">
-      <em>« Je pensais que j'en étais incapable. Aujourd'hui j'ai plus envie de revenir en arrière. »</em><br>
-      <strong>— Mathieu D., dev freelance, 3 mois après</strong>
-    </div>
-
-    <div class="hero-stats">
-      <div><span class="hero-stat-num">0 → 5h</span> de sport/sem en 14 jours</div>
-      <div><span class="hero-stat-num">36</span> pères interviewés, même pattern</div>
-      <div><span class="hero-stat-num">5 ans</span> à construire ce système</div>
-    </div>
-
-    <div class="cta-group">
-      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="hero-cta">Vérifier mon éligibilité</a>
-      <span class="cta-note">5 questions · 1 minute · Je te réponds personnellement.</span>
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="escape-hatch" data-umami-event="hero-cta-diagnostic">Tu préfères en discuter ? Diagnostic gratuit (30 min) →</a>
-    </div>
-  </div>
-
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     PROBLÈME
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="probleme">
-    <h2>Tu te reconnais ?</h2>
-
-    <p>Mardi, 6h45. L'alarme sonne. Tu l'éteins. Le petit s'est réveillé deux fois. Tu te dis « demain ».</p>
-
-    <p>Ça fait 14 mois que tu te dis demain.</p>
-
-    <p>Tu faisais 6 à 8h de sport par semaine. Aujourd'hui tu en fais 1h30 — quand tout va bien. Le week-end, si tu veux une sortie longue, ça se négocie. Et la négociation te fatigue plus que l'entraînement.</p>
-
-    <div class="quote">
-      <p>« C'est un cercle vicieux de merde, un peu toxique, qui n'a pas de raison d'être. »</p>
-      <span class="attr">— Mathieu D., dev freelance, 1 enfant</span>
-    </div>
-
-    <div style="background: var(--bg-card); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;">
-      <p style="margin: 0; font-size: 0.95rem; color: var(--text);">Sur <strong>33 pères</strong> interviewés, <strong>33</strong> avaient essayé de s'organiser seuls. <strong>33</strong> ont échoué en moins de 3 semaines.</p>
-      <p style="margin: 6px 0 0; font-size: 0.88rem; color: var(--text-dim);">Le problème n'est jamais la volonté — toujours le cadre.</p>
-    </div>
-
-    <p>Tu as déjà essayé. Freeletics. Un coach perso. Un planning Notion couleur pastel. Ça a tenu 3 semaines — puis une gastro du petit, un sprint au boulot, et c'est fini.</p>
-
-    <p>Ce n'est pas ta discipline qui a lâché. C'est que personne ne t'a jamais aidé à résoudre le vrai problème : <strong style="color:var(--accent);">négocier un créneau protégé et construire un système qui tient quand tout part en vrille.</strong></p>
-
-    <div style="background: linear-gradient(135deg, rgba(255,122,0,0.06), rgba(74,222,128,0.05)); border: 1px solid rgba(255,122,0,0.2); border-radius: 12px; padding: 20px 22px; margin: 24px 0 0;">
-      <p style="margin: 0 0 8px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 700;">Et de l'autre côté</p>
-      <p style="margin: 0; color: var(--text); font-size: 0.95rem;">Te lever le lundi en sachant que ta semaine tient. Arriver au travail avec de l'énergie au lieu d'en chercher. Dormir le dimanche soir sans culpabilité ni liste mentale. <strong>Être le père et l'homme que tu veux être — sans choisir.</strong></p>
+  <!-- TRACK RECORD BAR -->
+  <div class="trackbar">
+    <div class="wrap">
+      <strong>OCTO</strong><span class="dot">·</span>
+      <strong>Tiime</strong><span class="dot">·</span>
+      <strong>Aircall</strong><span class="dot">·</span>
+      <strong>Teads</strong><span class="dot">·</span>
+      <span>15 ans en software engineering, dont la sales tech chez Aircall</span>
     </div>
   </div>
 
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     POUR QUI
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="pour-qui">
-    <div class="who-block">
-      <p><strong style="color: var(--accent);">✓ Le Cadre est fait pour toi si :</strong></p>
-      <p style="margin: 0;">Tu es père, tu as au moins un enfant en bas âge. Tu faisais 4 à 6h de sport par semaine avant. Tu es maintenant à 0-2h, ou tu as complètement arrêté sans vraiment l'avoir décidé. Tu ne cherches pas des conseils — tu cherches un système.</p>
+  <!-- PARCOURS -->
+  <section class="block" id="parcours">
+    <div class="wrap">
+      <span class="eyebrow">Pourquoi moi</span>
+      <h2>Je n'ai pas lu un livre sur le RevOps. J'ai codé les systèmes.</h2>
+      <div class="two-col">
+        <div></div>
+        <div class="prose">
+          <p>J'ai passé 14 ans à construire des outils que des équipes utilisent tous les jours. CTO chez Tiime,
+            Engineering Manager chez Aircall — où j'ai vu de l'intérieur comment se construit la sales tech — puis chez
+            Teads.</p>
+          <p>Depuis octobre 2025, je travaille en solo. Un seul chantier à la fois, du début à la fin, mains dans le
+            code. Pas d'équipe junior à qui je sous-traite ton intégration, pas de TJM qui me paie à traîner. Tu as un
+            senior qui livre, ou rien.</p>
+          <p>Mon terrain : les scaleups B2B SaaS de 50 à 300 personnes. Assez grandes pour que le CRM soit un enjeu de
+            revenus, assez agiles pour ne pas avoir besoin d'une cathédrale Salesforce.</p>
+          <p class="note-inline">Ligne 2019 optionnelle (à valider) : « J'ai arrêté de manager des équipes en 2019.
+            Depuis, je construis — pas je supervise. »</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="not-block">
-      <p><strong>✗ Le Cadre n'est PAS fait pour toi si :</strong></p>
-      <p style="margin: 0;">Tu cherches un plan d'entraînement ou un coach sportif. Tu fais déjà plus de 5h de sport par semaine. Tu veux du « mindset » et de la motivation. <strong>Ici, c'est du système.</strong></p>
+  <!-- WEDGE / VÉRITÉ CONTRARIENNE -->
+  <section class="block statement">
+    <div class="wrap">
+      <span class="eyebrow">La vérité contrarienne</span>
+      <h2>Ton CRM est devenu un répertoire de contacts qui ne <span class="gradient">modélise plus</span> ton chiffre
+        d'affaires.</h2>
+      <div class="two-col">
+        <div></div>
+        <div class="prose">
+          <p>Passé 50 personnes, on te dit qu'il faut « un vrai CRM ». Traduction : Salesforce ou HubSpot, six mois
+            d'intégration, un admin à plein temps, et une stack que plus personne ne comprend. Ce n'est pas une
+            décision, c'est un réflexe — et il vient souvent de gens dont le métier est de vendre ces licences.</p>
+          <p>Pendant ce temps, plus de la moitié des B2B SaaS sont passés à des modèles <strong>usage-based</strong> ou
+            <strong>rev-share</strong> que ni HubSpot ni Salesforce ne savent vraiment modéliser. Le revenu se calcule
+            dans Athena, ressort dans Sheets, et n'atterrit jamais dans le CRM. Tes commerciaux pilotent à l'aveugle.
+          </p>
+          <p>Un CRM moderne — <strong>Attio, Folk, Close</strong> — scale jusqu'à 300 personnes si l'intégration est
+            faite par quelqu'un qui sait coder. Je reconnecte la stack et je ramène le forecast là où tes commerciaux
+            vendent : dans le CRM.</p>
+          <p><strong>Je suis indépendant. Je ne touche aucune commission éditeur.</strong> Je recommande l'outil qui
+            sert ton revenu, pas le mien.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
+  <!-- SPRINT — sales section refonte -->
+  <section class="block" id="sprint">
+    <div class="wrap">
+      <span class="eyebrow">L'offre</span>
+      <h2>Le Sprint RevOps 6 semaines</h2>
+      <p class="lead sprint-intro">Une intégration <strong>productisée</strong> de ta stack commerciale autour d'un CRM
+        moderne. Scope, prix et délai <strong>fixes</strong>. Founder-led : c'est moi qui code, c'est moi qui livre.
+        Aucune équipe junior intermédiaire.</p>
 
-  <!-- ================================================
-     RÉSULTATS — Mathieu (Sinatra Test)
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="resultats">
-    <h2>« Je pensais que j'en étais <span class="accent">incapable</span>. »</h2>
-    <p style="margin-bottom: 24px;">Voilà ce que Mathieu a installé — et ce qui tient 3 mois après.</p>
+      <div class="tier-cards">
+        <article class="tier">
+          <div class="tname"><em>Sprint</em>Foundation</div>
+          <div class="meta">6 semaines · 8 à 10 intégrations</div>
+          <div class="tprice"><small>À partir de</small>25 000 € HT</div>
+          <p>Reconnecter ta stack commerciale autour d'un CRM moderne. Pour scaleups B2B SaaS de 50 à 150 personnes.</p>
+        </article>
 
-    <div class="mathieu-card">
-      <div class="mathieu-identity">
-        <div class="mathieu-avatar">M</div>
+        <article class="tier featured">
+          <div class="badge">Le plus pris</div>
+          <div class="tname"><em>Sprint</em>Scale</div>
+          <div class="meta">6 semaines · 10 à 15 intégrations</div>
+          <div class="tprice"><small>À partir de</small>32 000 € HT</div>
+          <p>Stack plus large, workflows revenue complets, multi-pays. Pour scaleups 150 à 300 ou opérations complexes.
+          </p>
+        </article>
+
+        <article class="tier">
+          <div class="tname"><em>Sprint</em>Migration</div>
+          <div class="meta">6 à 8 semaines</div>
+          <div class="tprice"><small>À partir de</small>40 000 € HT</div>
+          <p>Sortir de HubSpot ou Salesforce sans casser la machine commerciale. Bascule vers Attio, Folk ou Close,
+            données et workflows préservés.</p>
+        </article>
+      </div>
+
+      <div class="included">
+        <h3>Inclus dans chaque Sprint</h3>
+        <ul class="ul-check">
+          <li><strong>Intégrations</strong> CRM ↔ outils revenue : Outreach, Modjo, Aircall, Stripe, Slack, Linear (au
+            choix selon ta stack).</li>
+          <li><strong>Automatisations</strong> sur <strong>n8n self-hosted</strong> — tu possèdes l'infra, pas de boîte
+            noire, pas d'abonnement éditeur.</li>
+          <li><strong>Documentation technique</strong> complète : le mode d'emploi de ton propre système, pour qu'un dev
+            interne ou un autre intégrateur reprenne sans friction.</li>
+          <li><strong>Adoption &amp; Enablement</strong> : la dernière semaine du Sprint est dédiée à l'équipe qui va
+            l'utiliser et le maintenir. Un système livré qui n'est pas adopté ne sert à rien.</li>
+        </ul>
+      </div>
+
+      <div class="module-callout">
+        <span class="ktag">Module add-on</span>
         <div>
-          <div class="mathieu-name">Mathieu D.</div>
-          <div class="mathieu-role">Dev freelance · 40 ans · 1 enfant · Télétravail</div>
+          <h3>Forecast-in-CRM</h3>
+          <p>Pour les modèles <strong>usage-based</strong> ou <strong>rev-share</strong> que HubSpot/Salesforce ne
+            savent pas modéliser. Je ramène le revenu calculé hors CRM (Athena, Sheets, datawarehouse) dans le workflow
+            de tes commerciaux. <em>Disponible sur Scale et Migration. Scope chiffré au cas par cas.</em></p>
         </div>
       </div>
 
-      <div class="metrics-grid">
-        <div class="metric-box">
-          <div class="label">Sport / semaine</div>
-          <div class="shift"><s>0</s> → <b>5h</b></div>
+      <div class="guarantees">
+        <div class="guarantee">
+          <div class="gtitle">La Garantie Go-Live</div>
+          <p><em>« Ta stack est en production à la fin des 6 semaines, ou je continue sans facturer jusqu'au go-live.
+              »</em></p>
         </div>
-        <div class="metric-box">
-          <div class="label">Heure de coucher</div>
-          <div class="shift"><s>2h00</s> → <b>23h30</b></div>
-        </div>
-        <div class="metric-box">
-          <div class="label">Créneaux protégés</div>
-          <div class="shift"><s>0</s> → <b>6 / semaine</b></div>
-        </div>
-        <div class="metric-box">
-          <div class="label">Système stable</div>
-          <div class="shift"><b>3 mois+</b></div>
+        <div class="guarantee">
+          <div class="gtitle">La Garantie Stack Possédée</div>
+          <p><em>« Tout est self-hosted, documenté et à toi. Zéro lock-in : si on arrête, tu gardes tout — et ça tourne
+              sans moi. »</em></p>
         </div>
       </div>
 
-      <div class="mathieu-verbatim">
-        « Je pensais que je n'y arriverais pas, ça me paraissait impossible. Aujourd'hui ça me paraît à la fois possible et tellement bénéfique que j'ai plus envie de revenir en arrière. »
-        <div class="mathieu-source">— Mathieu, 3 mois de pratique · avril 2026</div>
+      <div class="scarcity">
+        <div><strong>1 Sprint actif à la fois.</strong> 6 à 8 sprints par an.</div>
+        <div><em>Prochaine fenêtre : [À CONFIRMER]</em></div>
+      </div>
+
+      <div class="sprint-cta">
+        <a class="btn btn-dark" href="https://cal.com/florianmarin" target="_blank" rel="noopener">Voir si ton cas colle
+          → Réserver un échange</a>
+        <a class="link-quiet" href="#newsletter">Pas prêt ? Reçois la newsletter d'abord</a>
       </div>
     </div>
+  </section>
 
-    <div class="card" style="margin-top: 16px;">
-      <div style="color: var(--text-dim); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">Ce qu'il m'écrit en vrai</div>
-      <p style="font-style: italic; font-size: 0.88rem; color: var(--text-body); margin: 0;">« Semaine un peu pourrie côté sport : j'ai été malade toute la semaine. Mais j'ai quand même gardé les kinés, le squash, et les balades du chien. Pâques + imprévus + fatigue, et le cadre tient. C'est ça qui me rassure le plus. »</p>
-      <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 10px;">— Mathieu, WhatsApp · 11 avril 2026</p>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-
-  <!-- CTA intermédiaire -->
-  <div class="section">
-    <div class="cta-group">
-      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="mid-cta">Vérifier mon éligibilité</a>
-      <span class="cta-note">5 questions · 1 minute · 4 places fondateur.</span>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     LE SYSTÈME — 5 piliers
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="systeme">
-    <h2>Un système en <span class="accent">5 piliers</span>, installé en 12 semaines</h2>
-
-    <p style="margin-bottom: 24px;">Pas du coaching sportif. Pas du coaching de vie. De l'ingénierie appliquée à ta vie perso.</p>
-
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong style="color: var(--text);">Vision & Objectifs.</strong> J'audite ta vie comme j'auditais un système en production : inputs, outputs, bottlenecks, single points of failure. Tu repars avec ton architecture cible.</p>
+  <!-- MÉTHODE / STACK -->
+  <section class="block" id="methode">
+    <div class="wrap">
+      <span class="eyebrow">Comment je travaille</span>
+      <h2>Hands-on, pas slideware.</h2>
+      <div class="stack-tags" style="margin-top:24px">
+        <span class="tag">Attio</span><span class="tag">Folk</span><span class="tag">Pipedrive</span><span
+          class="tag">Close</span>
+        <span class="tag">Outreach</span><span class="tag">Modjo</span><span class="tag">Aircall</span><span
+          class="tag">Stripe</span>
+        <span class="tag">Slack</span><span class="tag">Linear</span><span class="tag">n8n self-hosted</span>
+      </div>
+      <div class="method-grid">
+        <div class="mcard">
+          <h3>Je code.</h3>
+          <p>Tu n'auras pas de « recommandations » en PDF. Tu auras un système livré et testé.</p>
+        </div>
+        <div class="mcard">
+          <h3>6 semaines, pas 90 jours.</h3>
+          <p>Un sprint cadré, des livrables hebdo, une fin nette. Pas de retainer qui dérive.</p>
+        </div>
+        <div class="mcard">
+          <h3>Build en public.</h3>
+          <p>Je documente mes patterns d'intégration au fil de l'eau — tu vois comment je pense avant même de me parler.
+          </p>
+        </div>
       </div>
     </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong style="color: var(--text);">Agenda & Blocs protégés.</strong> Créneaux aussi non-négociables qu'un 1:1 avec ton N+1. Chaque bloc a un plan B intégré. Chez Mathieu : 3 sport + 2 kinés + 1 musique, partagés avec sa femme.</p>
+  </section>
+
+  <!-- FAQ / OBJECTIONS -->
+  <section class="block presskit" id="faq">
+    <div class="wrap">
+      <span class="eyebrow">Objections honnêtes</span>
+      <h2>Pourquoi moi plutôt que… ?</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas une agence RevOps (Ceres, Ocobo, Markentive) ?</h3>
+          <p>Parce qu'une agence HubSpot/Salesforce te vendra du HubSpot/Salesforce — son revenu vient du partenariat
+            éditeur. Moi je pars de ton besoin, pas de mon partenariat. Et tu n'auras pas une équipe junior sur la
+            delivery : c'est un ex-CTO qui code du début à la fin, pas un Account Manager qui supervise un dev de 2 ans
+            d'XP.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas un freelance Malt en TJM ?</h3>
+          <p>Un TJM, c'est un scope qui dérive et un budget qu'on découvre à la fin. Un Sprint, c'est un résultat à
+            <strong>date fixe</strong>, un <strong>prix fixe</strong>, et une <strong>Garantie Go-Live</strong>. Tu sais
+            ce que tu payes, tu sais quand c'est livré, et le scope ne bouge pas. Pas de TJM ici — par construction.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Pourquoi pas recruter un RevOps en interne ?</h3>
+          <p>Recruter ton RevOps, c'est 3 à 6 mois de process + onboarding avant la première intégration livrée. Mon
+            Sprint est en prod au bout de 6 semaines. Mieux : la documentation que je laisse <strong>forme la personne
+              que tu vas finir par recruter</strong>. On n'est pas en compétition — je pose la fondation, ton futur
+            RevOps la fait vivre.</p>
+        </div>
+        <div class="faq-item">
+          <h3><span class="qmark">→</span>Et si tu disparais après le go-live ?</h3>
+          <p>C'est l'objection numéro 1 face à un solo, et elle est légitime. Réponse en deux temps. <strong>Un
+              :</strong> la Garantie Stack Possédée est concrète — tout est self-hosted chez toi, documenté ligne à
+            ligne, et tourne sans moi. Si je disparais, ta stack tourne. <strong>Deux :</strong> la doc est conçue pour
+            qu'un dev interne ou un autre intégrateur reprenne sans friction. Tu n'achètes pas une dépendance à moi — tu
+            achètes un système qui t'appartient.</p>
+        </div>
       </div>
     </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong style="color: var(--text);">Sommeil.</strong> L'extinction des feux. Sans ce pilier, tout le reste se casse en 72h. Protocole basé sur données réelles (Garmin, Withings, Apple Watch), monitoring automatisé.</p>
+  </section>
+
+  <!-- RECEIPTS -->
+  <section class="block">
+    <div class="wrap">
+      <span class="eyebrow">Receipts</span>
+      <h2>Ce que je construis en ce moment</h2>
+      <div class="cards">
+        <div class="rcard">
+          <span class="k">Chantier en cours</span>
+          <h3>Franchiseur automobile — CRM custom SAV</h3>
+          <p>CRM sur mesure pour leur service après-vente : saisie des contrats de garantie, structuration de la donnée,
+            automatisations. Sprint en cours. <em>[Taille + date livraison à confirmer]</em></p>
+        </div>
+        <div class="rcard">
+          <span class="k">Build journal</span>
+          <h3>Un pattern publié par jour</h3>
+          <p>J'extrais un pattern RevOps publiable de chaque journée de chantier. À suivre sur LinkedIn et dans la
+            newsletter.</p>
+        </div>
+        <div class="rcard">
+          <span class="k">Écosystème</span>
+          <h3>Communauté Attio</h3>
+          <p>Membre de la communauté Attio, en route vers le statut de partner officiel.</p>
+        </div>
       </div>
     </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong style="color: var(--text);">Nutrition.</strong> Meal Planner IA configuré + liste de courses familiale partagée qui s'alimente automatiquement. Plus de charge mentale « qu'est-ce qu'on mange ».</p>
+  </section>
+
+  <!-- NEWSLETTER (CTA DOMINANT) -->
+  <section class="block news" id="newsletter">
+    <div class="wrap">
+      <h2>Une idée RevOps par semaine. Tirée du <span class="gradient">terrain</span>, pas de Twitter.</h2>
+      <p class="lead">Chaque mardi, un pattern concret : une intégration, un piège évité, une décision d'archi
+        commerciale. Lisible en 3 minutes. Issu de chantiers réels, pas de threads recyclés.</p>
+      <!-- Remplacer action= par SUBSTACK_URL -->
+      <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+        <input type="email" name="email" placeholder="ton@email.com" required>
+        <button class="btn btn-accent" type="submit">Je m'abonne</button>
+      </form>
+      <div class="micro">Gratuit · Le mardi · Désabonnement en 1 clic</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="fbrand">Florian Marin</div>
+      <div class="signature">Intégrateur CRM RevOps · Montpellier</div>
+      <div class="flinks">
+        <a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://YOURSUBSTACK.substack.com" target="_blank" rel="noopener">Substack</a>
+        <a href="https://cal.com/florianmarin" target="_blank" rel="noopener">Travailler avec moi</a>
       </div>
+      <div class="legal">© 2026 Florian Marin · Mentions légales</div>
     </div>
-    <div class="pillar">
-      <div class="pillar-bar"></div>
-      <div class="pillar-content">
-        <p><strong style="color: var(--text);">Accord couple.</strong> Le cadre que tu poses tout seul ne tient jamais une semaine. Celui qu'elle a validé, oui. Session conjointe + scripts structurés + système de sync familial.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     CE QUE TU REÇOIS
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="offre">
-    <h2>Ce que je construis et j'installe chez toi</h2>
-
-    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px;">Le Système</p>
-
-    <ul class="check-list">
-      <li><span class="check">✓</span> <strong>Diagnostic Cadre 360°</strong> — audit complet de ton système actuel</li>
-      <li><span class="check">✓</span> <strong>6 sessions de construction</strong> (S1, S2, S4, S6, S8, S12) — on build, chaque session a un livrable</li>
-      <li><span class="check">✓</span> <strong>Restructuration Agenda</strong> — blocs protégés avec plans B intégrés</li>
-      <li><span class="check">✓</span> <strong>Protocole Sommeil</strong> — basé sur tes données réelles, monitoring automatisé</li>
-      <li><span class="check">✓</span> <strong>Pacte Couple</strong> — session conjointe + scripts + sync familial</li>
-      <li><span class="check">✓</span> <strong>Support WhatsApp 12 semaines</strong> — tu me signales un bug, je te donne le fix sous 24h</li>
-    </ul>
-
-    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 28px 0 16px;">Le Software (ce que je code pour toi)</p>
-
-    <ul class="check-list">
-      <li><span class="check">✓</span> <strong>Cadre Tracker</strong> — agrège agenda, sport, sommeil, humeur. Se remplit à 80% auto. Bilan hebdo généré.</li>
-      <li><span class="check">✓</span> <strong>Cadre Shield</strong> — détecte les conflits avec tes créneaux protégés et alerte avant qu'un meeting les écrase</li>
-      <li><span class="check">✓</span> <strong>Cadre Review</strong> — analyse tes données chaque dimanche, détecte les patterns de décrochage</li>
-      <li><span class="check">✓</span> <strong>Cadre Planner</strong> — génère les repas de la semaine + pousse la liste de courses automatiquement</li>
-    </ul>
-
-    <p style="font-weight: 700; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; margin: 28px 0 16px;">L'Écosystème (ce qui dure après)</p>
-
-    <ul class="check-list">
-      <li><span class="check">✓</span> <strong>Mises à jour à vie</strong> — chaque amélioration du software déployée automatiquement</li>
-      <li><span class="check">✓</span> <strong>Le Cercle Cadre</strong> — groupe privé WhatsApp, uniquement les pères avec le système installé</li>
-      <li><span class="check">✓</span> <strong>Protocole Anti-Chaos</strong> — déménagement, nouveau job, naissance : ton disaster recovery plan</li>
-      <li><span class="check">✓</span> <strong>Session M4</strong> — audit 1 mois après la fin, reconfiguration de ce qui a drifté</li>
-      <li><span class="check">✓</span> <strong>Cadre OS</strong> — la documentation technique complète de TON système. Le README de ta vie.</li>
-    </ul>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     GARANTIES
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="garantie">
-    <div class="guarantee">
-      <div class="guarantee-name">🛡️ Tu ne peux pas perdre.</div>
-
-      <p><strong style="color: var(--accent);">Session 1 sans engagement.</strong> Je construis ton architecture personnalisée. Si à la fin tu ne vois pas comment le système va marcher chez toi, on s'arrête — tu ne paies rien.</p>
-
-      <p><strong style="color: var(--accent);">Quick Win J7.</strong> 3 créneaux protégés bloqués et tenus en 7 jours.</p>
-
-      <p><strong style="color: var(--accent);">Cadre Ancré S4.</strong> Si à la semaine 4 le cadre n'est pas installé et fonctionnel, remboursement intégral.</p>
-
-      <p><strong style="color: var(--accent);">Tenue M4.</strong> 1 mois après la fin, si le système a sauté, je reviens le réinstaller — comme un SAV.</p>
-
-      <p><strong style="color: var(--accent);">Software à vie.</strong> Tu gardes tout le software que j'ai développé pour toi — dans tous les cas, même en cas de remboursement.</p>
-
-      <p style="margin: 0; font-size: 0.88rem; color: var(--text-dim);">Je vis ce système depuis 5 ans. Avec 2 naissances, 2 déménagements et un changement de carrière. Je prends 100% du risque.</p>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-
-  <!-- CTA après garantie -->
-  <div class="section">
-    <div class="cta-group">
-      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="post-guarantee-cta">Vérifier mon éligibilité</a>
-      <span class="cta-note">4 places fondateur · Je te réponds personnellement sous 24h.</span>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     FAQ
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="faq">
-    <h2>Questions fréquentes</h2>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est quoi exactement Le Cadre Endurance ?</div>
-      <div class="faq-a">
-        <p>12 semaines. 6 sessions de construction. Du software développé sur mesure. À S12, tu as un système complet — agenda, sommeil, nutrition, sport, accord couple — qui tourne sans moi. Pas un plan d'entraînement : un cadre d'ingénierie de vie.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Et si mon planning saute dès la semaine 1 ?</div>
-      <div class="faq-a">
-        <p>C'est le scénario normal. Mathieu, semaine 4 : malade, Pâques, imprévus en cascade. Il a gardé kiné + squash + balades, et décalé sa course du matin vers midi. Un cadre qui tient, c'est un cadre qui absorbe la perturbation sans s'effondrer. C'est ce qu'on installe.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas du coaching de vie ?</div>
-      <div class="faq-a">
-        <p>Non. Je suis ingénieur. Zéro méditation, zéro journaling. De l'ingénierie appliquée à ta vie perso. Les livrables : du software configuré, un agenda restructuré, des protocoles installés — pas un PDF de développement personnel.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je peux m'organiser seul, non ?</div>
-      <div class="faq-a">
-        <p>Depuis combien de temps tu essaies ? Sur les 36 pères interviewés, 36 avaient tenté de s'organiser seuls. 35 ont échoué en moins de 3 semaines. Un système solo n'intègre ni les plans B, ni la dimension couple, ni le software qui automatise le suivi.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Je fais du foot / de la muscu / du vélo, pas du triathlon</div>
-      <div class="faq-a">
-        <p>Le sport est le révélateur, pas le sujet. Le commun entre tous les profils : l'écart entre avant les enfants et maintenant. Pas la discipline.</p>
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">C'est pas le bon moment</div>
-      <div class="faq-a">
-        <p>C'est exactement ce que les 36 pères interviewés m'ont dit. En moyenne depuis 18 mois. Le bon moment n'existe pas — il y a toujours un projet, une deadline, un enfant malade. Le système est conçu pour démarrer dans le chaos, pas après.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     QUI SUIS-JE
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="qui">
-    <h2>Qui suis-je</h2>
-
-    <p><strong><a href="https://www.linkedin.com/in/florian-marin/">Florian Marin</a>.</strong> 37 ans. Père de 2 garçons (5 et 3 ans). 15 ans dans la tech. Ancien manager, développeur, mentor de 50+ personnes.</p>
-
-    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 16px 0; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">OCTO Technology</span>
-      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Tiime</span>
-      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Aircall</span>
-      <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); border-radius: 6px;">Teads</span>
-    </div>
-
-    <p>Burn-out en 2019. Le sport a été le premier à sauter. J'ai fait ce que n'importe quel ingénieur ferait quand un système plante : j'ai tout redesigné. Pas du développement personnel — de l'ingénierie de vie. 5 piliers. Du software que je développe moi-même. De l'IA qui automatise le suivi.</p>
-
-    <p>Ça m'a pris 5 ans.</p>
-
-    <p>Aujourd'hui : <strong style="color: var(--accent);">9h de triathlon par semaine. 40min11s au 10km.</strong> Je cuisine tous les soirs avec mes 2 garçons. <strong>Je construis des systèmes qui tiennent.</strong></p>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     CTA FINAL
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="cta-final">
-    <h2>Prochaine étape</h2>
-
-    <p style="margin-bottom: 20px;">Je cherche <strong style="color: var(--accent);">4 pères</strong> pour la promotion fondateur. En échange du tarif fondateur, je te demande un retour honnête et un témoignage à la fin.</p>
-
-    <div class="cta-group">
-      <a href="https://tally.so/r/68OLD5" class="cta-primary" data-umami-event="final-cta">Vérifier mon éligibilité</a>
-      <span class="cta-note">5 questions · 1 minute · Je te réponds personnellement sous 24h.</span>
-      <a href="https://calendly.com/florian-marin/audit-triangle" class="escape-hatch" data-umami-event="final-cta-diagnostic">Des questions ? Diagnostic gratuit (30 min)</a>
-    </div>
-
-    <p style="text-align: center; margin-top: 16px; font-size: 0.85rem; color: var(--text-dim);">
-      Une question ? <a href="https://bit.ly/4dwpmlD" style="color: var(--accent); text-decoration: underline;" data-umami-event="whatsapp-click">Écris-moi sur WhatsApp</a>
-    </p>
-  </div>
-
-  <div class="spacer-sm"></div>
-  <div class="separator"><div class="separator-line"></div></div>
-
-  <!-- ================================================
-     LEAD MAGNET
-     ================================================ -->
-  <div class="spacer-sm"></div>
-  <div class="section" id="lead-magnet">
-    <div class="card" style="text-align: center; border: 1px solid var(--border);">
-      <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); font-weight: 700; margin-bottom: 12px;">Pas prêt pour un appel ?</p>
-      <h3 style="margin-bottom: 8px; color: var(--text);">Passe le Diagnostic Semaine.</h3>
-      <p style="font-size: 0.88rem; max-width: 480px; margin: 0 auto 16px;">20 questions. Tu reçois ton score + Le Pacte Famille-Sport (PDF 24 pages) pour commencer à poser ton cadre.</p>
-      <a href="https://tally.so/r/68OLD5" style="display: inline-block; background: var(--bg-alt); border: 1px solid var(--accent); color: var(--accent); padding: 10px 28px; border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-decoration: none;" data-umami-event="lead-magnet-cta">Passe le test</a>
-      <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; margin-bottom: 0;">Gratuit. Pas de spam. Un email avec ton résultat.</p>
-    </div>
-  </div>
-
-  <div class="spacer"></div>
-
-  <!-- ================================================
-     CLOSING LINE
-     ================================================ -->
-  <div class="section" style="text-align: center;">
-    <p style="color: var(--text-dim); font-style: italic; margin: 0;">Le sport ne disparaît pas par manque de motivation. Il disparaît faute de cadre.</p>
-  </div>
-
-  <!-- ================================================
-     FOOTER
-     ================================================ -->
-  <div class="footer">
-    <p><a href="https://www.linkedin.com/in/florian-marin/" style="text-decoration: none;">Florian Marin</a> · Montpellier · <a href="https://florianmarin.me">florianmarin.me</a></p>
-    <p style="margin-top: 8px;">Le Cadre Endurance · 12 semaines · Ingénierie de vie</p>
-    <p style="margin-top: 12px;"><a href="https://substack.com/@lecadrenotes" style="color: var(--accent); text-decoration: none; font-weight: 600;">Le Cadre Notes</a> — je partage mes apprentissages chaque semaine sur Substack</p>
-  </div>
-
-  <!-- ================================================
-     STICKY MOBILE CTA
-     ================================================ -->
-  <div class="sticky-cta">
-    <a href="https://tally.so/r/68OLD5" data-umami-event="sticky-cta">Vérifier mon éligibilité · 4 places</a>
-  </div>
-
-  <!-- ================================================
-     UMAMI ANALYTICS (self-hosted)
-     ================================================ -->
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR_WEBSITE_ID"></script>
+  </footer>
 
 </body>
+
 </html>
