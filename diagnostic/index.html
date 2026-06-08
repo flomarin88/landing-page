@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ton CRM tient-il à 300 ? Le diagnostic CRM RevOps Sprint · Florian Marin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1C1C1C;
+      --panel: #252525;
+      --panel-2: #2E2E2E;
+      --line: #3A3A3A;
+      --text: #FFFFFF;
+      --muted: #B8B8B8;
+      --accent: #FF7A00;
+      --accent-2: #FFD84D;
+      --green: #3CC79A;
+      --amber: #F1B24A;
+      --red: #EF5D6F;
+      --radius: 14px;
+      --maxw: 760px;
+      font-synthesis: none;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      font-weight: 400
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 48px 28px 96px
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600
+    }
+
+    h1 {
+      font-size: 30px;
+      line-height: 1.15;
+      margin: 18px 0 10px;
+      font-weight: 800;
+      letter-spacing: -.02em
+    }
+
+    h1 .grad {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent
+    }
+
+    .lede {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 60ch;
+      font-weight: 500
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 14px
+    }
+
+    .meta b {
+      color: var(--text)
+    }
+
+    .section-title {
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 40px 0 14px;
+      font-weight: 700
+    }
+
+    .q {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 8px;
+      margin-bottom: 14px
+    }
+
+    .q .qhead {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px
+    }
+
+    .q .num {
+      flex: 0 0 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--panel-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent)
+    }
+
+    .q .qtxt {
+      font-weight: 600;
+      font-size: 15.5px
+    }
+
+    .opts {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px
+    }
+
+    .opt {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      transition: .12s;
+      background: var(--panel-2)
+    }
+
+    .opt:hover {
+      border-color: #5A5A5A
+    }
+
+    .opt input {
+      accent-color: var(--accent);
+      margin-top: 2px;
+      flex: 0 0 auto
+    }
+
+    .opt span {
+      font-size: 14px;
+      color: var(--text)
+    }
+
+    .opt.sel {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent) inset
+    }
+
+    .ctx {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px
+    }
+
+    .ctx label {
+      display: block;
+      font-weight: 600;
+      font-size: 14.5px;
+      margin: 0 0 6px
+    }
+
+    .ctx .hint {
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-bottom: 14px
+    }
+
+    .field {
+      margin-bottom: 22px
+    }
+
+    input[type=number] {
+      width: 120px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 16px
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--accent)
+    }
+
+    .rangeval {
+      font-weight: 700;
+      color: var(--accent)
+    }
+
+    .cta-btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #1C1C1C;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 8px;
+      transition: .15s
+    }
+
+    .cta-btn:hover {
+      filter: brightness(1.08)
+    }
+
+    .cta-btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+      filter: none
+    }
+
+    .warn {
+      color: var(--amber);
+      font-size: 13px;
+      margin-top: 10px;
+      display: none
+    }
+
+    /* results */
+    #results {
+      display: none;
+      margin-top: 8px
+    }
+
+    .res-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 26px;
+      margin-bottom: 16px
+    }
+
+    .scorerow {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap
+    }
+
+    .dial {
+      position: relative;
+      width: 132px;
+      height: 132px;
+      flex: 0 0 auto
+    }
+
+    .dial svg {
+      transform: rotate(-90deg)
+    }
+
+    .dial .pct {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center
+    }
+
+    .dial .pct b {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1
+    }
+
+    .dial .pct small {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px
+    }
+
+    .tier {
+      flex: 1;
+      min-width: 220px
+    }
+
+    .tier .t-name {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 4px
+    }
+
+    .tier .t-desc {
+      color: var(--muted);
+      font-size: 14.5px
+    }
+
+    .leak {
+      background: linear-gradient(135deg, #2A1A0F, #3A1F12);
+      border: 1px solid #5A2F0A
+    }
+
+    .leak .big {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 6px 0 2px
+    }
+
+    .leak .sub {
+      color: var(--muted);
+      font-size: 13.5px
+    }
+
+    .gap {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-top: 1px solid var(--line)
+    }
+
+    .gap:first-of-type {
+      border-top: none
+    }
+
+    .gap .dot {
+      flex: 0 0 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 6px;
+      background: var(--red)
+    }
+
+    .gap .g-t {
+      font-weight: 700;
+      font-size: 15px
+    }
+
+    .gap .g-d {
+      color: var(--muted);
+      font-size: 13.5px;
+      margin-top: 2px
+    }
+
+    .final {
+      background: linear-gradient(135deg, #1F1F1F, #262626);
+      border: 1px solid var(--line);
+      text-align: center
+    }
+
+    .final h2 {
+      font-size: 22px;
+      margin: 0 0 8px;
+      font-weight: 800
+    }
+
+    .final p {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin: 0 auto 18px;
+      max-width: 48ch;
+      font-weight: 500
+    }
+
+    .reasons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px
+    }
+
+    .reason {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--text);
+      max-width: 230px;
+      font-weight: 500
+    }
+
+    .reason b {
+      color: var(--accent)
+    }
+
+    .restart {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 6px
+    }
+
+    .foot {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      margin-top: 28px;
+      line-height: 1.6;
+      font-style: italic;
+      font-weight: 400
+    }
+
+    .foot a {
+      color: var(--accent);
+      text-decoration: none;
+      font-style: italic
+    }
+
+    @media(max-width:520px) {
+      h1 {
+        font-size: 25px
+      }
+
+      .wrap {
+        padding: 32px 20px 72px
+      }
+
+      .dial {
+        width: 112px;
+        height: 112px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <span class="badge">Diagnostic · 5 min · gratuit</span>
+    <h1>Ton CRM tient à 50. <span class="grad">Tient-il à 300 ?</span></h1>
+    <p class="lede">10 questions. Un score sur 100. Le palier où ton CRM va casser. Et combien ça te coûte déjà
+      aujourd'hui.</p>
+    <p class="lede" style="margin-top:8px">Pour les RevOps Leads et VP Sales en scaleup B2B SaaS qui passent (ou vont
+      passer) les 150, 200, 300 personnes.</p>
+    <p class="meta">Deux chiffres à garder en tête avant de répondre :<br>
+      <b>28%</b> du temps d'un commercial part en vente réelle. Plus tu ajoutes de monde, plus ce ratio chute.<br>
+      <b>79%</b> des données d'opportunité n'entrent jamais dans le CRM. À 50 reps c'est gérable. À 300 c'est
+      l'effondrement du forecast. <span style="opacity:.7">(Salesforce State of Sales, r/revops)</span>
+    </p>
+
+    <div class="section-title">Partie 1 : les 10 points qui cassent à 300</div>
+    <div id="questions"></div>
+
+    <div class="section-title">Partie 2 : le chiffrage de la dérive</div>
+    <div class="ctx">
+      <div class="field">
+        <label for="reps">Combien de commerciaux dans ton équipe&nbsp;? (SDR + AE)</label>
+        <div class="hint">On compte tous ceux qui touchent le CRM au quotidien.</div>
+        <input type="number" id="reps" min="1" max="500" value="8">
+      </div>
+      <div class="field">
+        <label for="hours">Heures/semaine perdues par commercial en tâches manuelles évitables</label>
+        <div class="hint">Saisie CRM, exports, copier-coller entre outils, double-saisie. Estimation pré-remplie selon
+          ton score. Ajuste si tu sais.</div>
+        <input type="range" id="hours" min="1" max="20" value="8" step="1">
+        <div style="margin-top:6px"><span class="rangeval" id="hoursval">8</span> h / semaine / personne</div>
+      </div>
+      <button class="cta-btn" id="go">Recevoir mon diagnostic par email →</button>
+      <div class="warn" id="warn">Réponds aux 10 questions pour obtenir ton score.</div>
+    </div>
+
+    <div id="gate" class="ctx" style="display:none;margin-top:16px">
+      <div style="font-weight:800;font-size:18px;margin-bottom:6px">Ton diagnostic est prêt.</div>
+      <div class="hint" style="margin-bottom:18px">Score, tier, coût annuel et 3 chantiers prioritaires. Reçois-les par
+        email.</div>
+      <div class="field">
+        <label for="email">Email pro <span style="color:var(--accent)">*</span></label>
+        <input type="email" id="email" required autocomplete="email" inputmode="email"
+          placeholder="prenom@entreprise.com"
+          style="width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit">
+      </div>
+      <div class="field">
+        <label for="phone">Téléphone <span style="color:var(--muted);font-weight:400">(optionnel, si tu veux qu'on en
+            parle de vive voix)</span></label>
+        <input type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="06 ..."
+          style="width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit">
+      </div>
+      <label class="opt" style="background:transparent;cursor:pointer;align-items:flex-start">
+        <input type="checkbox" id="consent" required style="margin-top:4px;accent-color:var(--accent)">
+        <span style="font-size:13.5px;color:var(--muted);line-height:1.5">J'accepte de recevoir mon diagnostic et la
+          newsletter <i>Tactique RevOps</i> (1 email/semaine, désinscription en 1 clic). Mes données ne sont jamais
+          revendues. Voir <a href="#" style="color:var(--accent)">mentions légales</a>.</span>
+      </label>
+      <button class="cta-btn" id="gateSubmit" style="margin-top:16px">Recevoir mon diagnostic →</button>
+      <div class="warn" id="gateWarn">Email valide + consentement requis.</div>
+      <div id="gateLoading" style="display:none;text-align:center;color:var(--muted);font-size:13px;margin-top:10px">
+        Envoi en cours…</div>
+    </div>
+
+    <div id="results">
+      <div class="section-title">Ton diagnostic</div>
+
+      <div class="res-card">
+        <div class="scorerow">
+          <div class="dial">
+            <svg width="132" height="132" viewBox="0 0 132 132">
+              <circle cx="66" cy="66" r="58" fill="none" stroke="#3A3A3A" stroke-width="12" />
+              <circle id="arc" cx="66" cy="66" r="58" fill="none" stroke="#FF7A00" stroke-width="12"
+                stroke-linecap="round" stroke-dasharray="364" stroke-dashoffset="364" />
+            </svg>
+            <div class="pct"><b id="scoreNum">0</b><small>/ 100</small></div>
+          </div>
+          <div class="tier">
+            <div class="t-name" id="tierName">…</div>
+            <div class="t-desc" id="tierDesc">…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="res-card leak">
+        <div class="sub">Coût annuel estimé de ton CRM qui ne suit plus</div>
+        <div class="big" id="leakNum">…</div>
+        <div class="sub" id="leakDetail">…</div>
+      </div>
+
+      <div class="res-card">
+        <div style="font-weight:800;font-size:16px;margin-bottom:8px">Tes 3 trous prioritaires</div>
+        <div id="gaps"></div>
+      </div>
+
+      <div class="res-card final">
+        <h2>Faire tenir ton CRM à 300 : c'est exactement le job d'un Sprint.</h2>
+        <p>Un Sprint intègre ta stack commerciale autour d'un CRM qui scale, en 6 semaines. Pas de TJM, pas de retainer
+          imposé. Une seule mission active à la fois.</p>
+        <div class="reasons">
+          <div class="reason"><b>Capacité limitée :</b> 1 seul Sprint actif, 6 à 8 créneaux par an.</div>
+          <div class="reason"><b>Chaque semaine compte :</b> <span id="weeklyLeak">…</span> qui fuient pendant que rien
+            ne bouge.</div>
+        </div>
+        <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank"
+          rel="noopener" style="text-decoration:none">Réserver mon Discovery Call →</a>
+        <button class="restart" id="restart">Refaire le diagnostic</button>
+      </div>
+    </div>
+
+    <p class="foot">
+      Ton CRM tient-il à 300 ?, un outil de Florian Marin. 14 ans en Sales Tech (ex-Aircall, ex-Teads, ex-CTO
+      Tiime).<br>
+      Le score et le chiffrage sont indicatifs et basés sur tes réponses.
+      <span id="footlink"></span>
+    </p>
+
+  </div>
+
+  <script>
+    (function () {
+      // --- Données : 10 dimensions ---
+      var DIMS = [
+        {
+          key: "truth", q: "Le CRM est-il LA source de vérité unique pour tes données commerciales ?",
+          gap: "Source de vérité unique",
+          fix: "Le CRM devient la référence : fini les Sheets parallèles et les versions qui divergent.",
+          opts: ["Non : les vraies données vivent dans des Sheets / outils annexes", "En partie : le CRM existe mais on recoupe ailleurs", "Oui : tout converge dans le CRM, c'est la référence"]
+        },
+        {
+          key: "capture", q: "Les leads (inbound + outbound) sont-ils auto-créés et routés dans le CRM ?",
+          gap: "Capture & routing des leads",
+          fix: "Auto-création + assignation des leads : zéro lead qui tombe entre deux chaises.",
+          opts: ["Non : création manuelle, des leads se perdent", "En partie : l'inbound oui, le reste à la main", "Oui : création et routing automatiques"]
+        },
+        {
+          key: "convo", q: "Les appels (Aircall / Modjo) se loggent-ils automatiquement sur la bonne fiche ?",
+          gap: "Conversation intelligence",
+          fix: "Logging auto des appels et résumés sur la bonne fiche, sans ressaisie.",
+          opts: ["Non : rien ne remonte automatiquement", "En partie : l'appel remonte mais pas le contenu", "Oui : appel + résumé attachés à la fiche"]
+        },
+        {
+          key: "engage", q: "Tes séquences d'outreach sont-elles synchronisées dans les deux sens avec le CRM ?",
+          gap: "Sales engagement synchronisé",
+          fix: "Synchro bidirectionnelle outreach ↔ CRM : aucune double-saisie, statut toujours juste.",
+          opts: ["Non : l'outreach vit dans son coin", "En partie : synchro à sens unique / partielle", "Oui : synchro bidirectionnelle complète"]
+        },
+        {
+          key: "revenue", q: "Les données de facturation (Stripe : MRR, paiements, churn) sont-elles visibles dans le CRM ?",
+          gap: "Revenue & billing dans le CRM",
+          fix: "Stripe dans le CRM : MRR, paiements et signaux de churn visibles côté commercial.",
+          opts: ["Non : la facturation est invisible côté sales", "En partie : quelques infos remontées à la main", "Oui : données revenue synchronisées en continu"]
+        },
+        {
+          key: "alert", q: "Slack est-il câblé sur tes events clés (changement de stage, risque de churn, signature) ?",
+          gap: "Alerting & handoffs",
+          fix: "Alertes Slack sur les events qui comptent : l'équipe réagit en minutes, pas en jours.",
+          opts: ["Non : on découvre les choses trop tard", "En partie : quelques notifs manuelles", "Oui : alertes automatiques sur les events clés"]
+        },
+        {
+          key: "report", q: "Pouvez-vous sortir pipeline & forecast sans aucun export manuel ?",
+          gap: "Reporting RevOps en live",
+          fix: "Pipeline & forecast en temps réel, sans un seul export ni retraitement Excel.",
+          opts: ["Non : c'est Excel et de l'huile de coude", "En partie : semi-auto mais on retouche", "Oui : dashboards live, zéro export"]
+        },
+        {
+          key: "quality", q: "La qualité des données est-elle tenue automatiquement (dédup, enrichissement, validation) ?",
+          gap: "Qualité de données",
+          fix: "Dédup + enrichissement + validation automatisés : on arrête de décider sur des données pourries.",
+          opts: ["Non : doublons et champs vides partout", "En partie : nettoyage ponctuel manuel", "Oui : hygiène de données automatisée"]
+        },
+        {
+          key: "automation", q: "Avez-vous une couche d'automatisation/orchestration, ou tout passe par des ops manuelles ?",
+          gap: "Couche d'automatisation",
+          fix: "Une couche d'orchestration (type n8n) remplace les tâches répétitives par des workflows.",
+          opts: ["Non : tout est fait à la main", "En partie : quelques Zaps/scripts épars", "Oui : orchestration structurée et maintenue"]
+        },
+        {
+          key: "ramp", q: "Un nouveau commercial devient-il productif vite grâce à un tooling intégré ?",
+          gap: "Ramp des nouveaux reps",
+          fix: "Tooling intégré = nouveaux reps opérationnels en jours, pas en semaines.",
+          opts: ["Non : la montée en compétence est longue et pénible", "En partie :ça dépend de qui forme", "Oui : onboarding fluide grâce aux outils en place"]
+        }
+      ];
+
+      var answers = {}; // key -> 0|1|2
+      var qWrap = document.getElementById('questions');
+
+      DIMS.forEach(function (d, i) {
+        var card = document.createElement('div');
+        card.className = 'q';
+        var opts = d.opts.map(function (o, idx) {
+          return '<label class="opt" data-key="' + d.key + '" data-val="' + idx + '">' +
+            '<input type="radio" name="' + d.key + '" value="' + idx + '">' +
+            '<span>' + o + '</span></label>';
+        }).join('');
+        card.innerHTML =
+          '<div class="qhead"><div class="num">' + (i + 1) + '</div><div class="qtxt">' + d.q + '</div></div>' +
+          '<div class="opts">' + opts + '</div>';
+        qWrap.appendChild(card);
+      });
+
+      qWrap.addEventListener('change', function (e) {
+        if (e.target && e.target.type === 'radio') {
+          var key = e.target.name;
+          answers[key] = parseInt(e.target.value, 10);
+          // visual selection
+          var labels = qWrap.querySelectorAll('.opt[data-key="' + key + '"]');
+          labels.forEach(function (l) { l.classList.remove('sel'); });
+          e.target.closest('.opt').classList.add('sel');
+          autoHours();
+        }
+      });
+
+      var hours = document.getElementById('hours');
+      var hoursval = document.getElementById('hoursval');
+      var hoursTouched = false;
+      hours.addEventListener('input', function () { hoursval.textContent = hours.value; hoursTouched = true; });
+
+      function currentScorePct() {
+        var keys = Object.keys(answers);
+        if (keys.length === 0) return null;
+        var sum = 0;
+        DIMS.forEach(function (d) { sum += (answers[d.key] || 0); });
+        return Math.round((sum / (DIMS.length * 2)) * 100);
+      }
+
+      // Pré-remplit les heures perdues selon le score (plus c'est éclaté, plus on perd)
+      function autoHours() {
+        if (hoursTouched) return;
+        if (Object.keys(answers).length < DIMS.length) return;
+        var pct = currentScorePct();
+        var h = pct <= 35 ? 12 : pct <= 65 ? 8 : pct <= 85 ? 4 : 2;
+        hours.value = h; hoursval.textContent = h;
+      }
+
+      function tierFor(pct) {
+        if (pct <= 35) return { name: "Cassera avant 150", desc: "Ton CRM ne tient déjà plus. Tes équipes compensent à la main, tes données ne sont pas fiables, ton forecast est faux. Plus tu ajoutes de monde, pire ça devient. Tu vas droit dans le mur avant 150 personnes.", color: "#EF5D6F" };
+        if (pct <= 65) return { name: "Va fissurer entre 150 et 250", desc: "Ça tient encore. Mais les premières fissures sont là : Zaps fragiles, exports manuels, source de vérité dispersée. Tu vas le sentir entre 150 et 250 personnes. Ton forecast va commencer à mentir.", color: "#F1B24A" };
+        if (pct <= 85) return { name: "Tient pour l'instant", desc: "Bonne base. Tu peux pousser jusqu'à 250 sans douleur majeure. Au-delà, il te reste des angles morts qui vont coûter cher : qualité de données, automatisation, ramp des nouveaux reps. Optimisable vite.", color: "#FF7A00" };
+        return { name: "Tient à 300 et au-delà", desc: "Solide. Ton CRM est un actif qui scale, pas un boulet qui freine. On parle d'optimisation fine, pas de chantier. Tu peux pousser sans le remplacer.", color: "#3CC79A" };
+      }
+
+      function euro(n) {
+        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+      }
+
+      var WEEKS = 47;            // semaines travaillées / an
+      var LOADED = 45;           // coût chargé €/h (hypothèse prudente)
+
+      // --- Config (à câbler sur ton n8n self-hosted ou autre webhook)
+      // Laisse vide pour un fallback console.log local pendant les tests.
+      var ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/scan-stack-commerciale"
+
+      function computePayload() {
+        var pct = currentScorePct();
+        var t = tierFor(pct);
+        var reps = Math.max(1, parseInt(document.getElementById('reps').value, 10) || 1);
+        var h = parseInt(hours.value, 10) || 0;
+        var annual = reps * h * WEEKS * LOADED;
+        var weekly = reps * h * LOADED;
+        var ranked = DIMS.slice().sort(function (a, b) { return (answers[a.key]) - (answers[b.key]); });
+        var top = ranked.filter(function (d) { return answers[d.key] < 2; }).slice(0, 3);
+        if (top.length === 0) top = ranked.slice(0, 3);
+        return { pct: pct, tier: t, reps: reps, h: h, annual: annual, weekly: weekly, top: top };
+      }
+
+      function renderResults(p) {
+        var circ = 364;
+        var arc = document.getElementById('arc');
+        arc.setAttribute('stroke', p.tier.color);
+        arc.style.strokeDashoffset = circ - (circ * p.pct / 100);
+        document.getElementById('scoreNum').textContent = p.pct;
+        document.getElementById('tierName').textContent = p.tier.name;
+        document.getElementById('tierName').style.color = p.tier.color;
+        document.getElementById('tierDesc').textContent = p.tier.desc;
+        document.getElementById('leakNum').textContent = euro(p.annual);
+        document.getElementById('leakDetail').textContent =
+          p.reps + " commerciaux × " + p.h + " h/sem × " + WEEKS + " sem × " + LOADED + " €/h chargé. Hors deals perdus pour cause de données sales ou de relances trop lentes.";
+        document.getElementById('weeklyLeak').textContent = euro(p.weekly) + " / semaine";
+        document.getElementById('gaps').innerHTML = p.top.map(function (d) {
+          var col = answers[d.key] === 0 ? '#ef5d6f' : '#f1b24a';
+          return '<div class="gap"><div class="dot" style="background:' + col + '"></div>' +
+            '<div><div class="g-t">' + d.gap + '</div><div class="g-d">' + d.fix + '</div></div></div>';
+        }).join('');
+        document.getElementById('results').style.display = 'block';
+        document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Étape 1 : clic sur "Recevoir mon diagnostic" → on valide les 10 questions, puis on ouvre le gate
+      document.getElementById('go').addEventListener('click', function () {
+        if (Object.keys(answers).length < DIMS.length) {
+          document.getElementById('warn').style.display = 'block';
+          window.scrollTo({ top: document.querySelector('.section-title').offsetTop, behavior: 'smooth' });
+          return;
+        }
+        document.getElementById('warn').style.display = 'none';
+        var gate = document.getElementById('gate');
+        gate.style.display = 'block';
+        gate.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function () { document.getElementById('email').focus(); }, 300);
+      });
+
+      function validEmail(e) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+      }
+
+      // Étape 2 : clic sur "Recevoir mon diagnostic" (form) → POST + rendu des résultats
+      document.getElementById('gateSubmit').addEventListener('click', function () {
+        var email = (document.getElementById('email').value || '').trim();
+        var phone = (document.getElementById('phone').value || '').trim();
+        var consent = document.getElementById('consent').checked;
+        var warn = document.getElementById('gateWarn');
+        if (!validEmail(email) || !consent) {
+          warn.style.display = 'block';
+          return;
+        }
+        warn.style.display = 'none';
+        var loading = document.getElementById('gateLoading');
+        loading.style.display = 'block';
+
+        var payload = computePayload();
+        var body = {
+          source: 'ton-crm-tient-a-300',
+          ts: new Date().toISOString(),
+          lead: { email: email, phone: phone, consent: true },
+          answers: answers,
+          score: payload.pct,
+          tier: payload.tier.name,
+          reps: payload.reps,
+          hours_lost_per_week: payload.h,
+          annual_leak_eur: payload.annual,
+          weekly_leak_eur: payload.weekly,
+          top_gaps: payload.top.map(function (d) { return d.key; })
+        };
+
+        function reveal() {
+          loading.style.display = 'none';
+          document.getElementById('gate').style.display = 'none';
+          renderResults(payload);
+        }
+
+        if (!ENDPOINT) {
+          // Pas d'endpoint configuré → log local et on révèle quand même
+          console.log('[scan-stack] payload', body);
+          setTimeout(reveal, 400);
+          return;
+        }
+
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        }).catch(function (err) { console.warn('[scan-stack] POST failed', err); })
+          .finally(reveal);
+      });
+
+      document.getElementById('restart').addEventListener('click', function () {
+        answers = {}; hoursTouched = false;
+        qWrap.querySelectorAll('input[type=radio]').forEach(function (r) { r.checked = false; });
+        qWrap.querySelectorAll('.opt').forEach(function (l) { l.classList.remove('sel'); });
+        hours.value = 8; hoursval.textContent = '8';
+        document.getElementById('email').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('consent').checked = false;
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('gateWarn').style.display = 'none';
+        document.getElementById('results').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+
+</html>
