@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu de la semaine — du mercredi au dimanche</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --accent: #FF7A00;
+      --accent-light: #FFD84D;
+      --accent-soft: #FFF3E6;
+      --ink: #1C1C1C;
+      --ink-2: #2B2B2B;
+      --ink-3: #555555;
+      --ink-4: #888888;
+      --line: #EAEAEA;
+      --line-2: #DDDDDD;
+      --card: #F7F7F7;
+      --card-2: #FAFAFA;
+      --page: #FFFFFF;
+      --bg: #ECECEC;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Montserrat", Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      color: var(--ink-2);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 22mm 22mm 22mm 22mm;
+      margin: 14mm auto;
+      background: var(--page);
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08), 0 10px 40px rgba(0, 0, 0, 0.05);
+      position: relative;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+    @media print {
+      body { background: none; }
+      .page { margin: 0; box-shadow: none; }
+    }
+    /* ── PAGE NUMBER ── */
+    .page-number {
+      position: absolute;
+      bottom: 12mm;
+      left: 22mm;
+      right: 22mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+    }
+    .page-number .dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 8px 2px 8px;
+    }
+    /* ── EYEBROW ── */
+    .eyebrow {
+      display: inline-block;
+      font-size: 9.5pt;
+      font-weight: 700;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 22px; height: 2px;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 3px;
+    }
+    /* ── COVER ── */
+    .cover {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 297mm;
+      overflow: hidden;
+    }
+    .cover-top { padding: 28mm 22mm 0 22mm; }
+    .cover-brand {
+      font-size: 11.5pt;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: var(--ink);
+    }
+    .cover-brand .accent { color: var(--accent); }
+    .cover-middle {
+      padding: 0 22mm;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cover-label {
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .cover-title {
+      font-weight: 800;
+      font-size: 46pt;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      color: var(--ink);
+      margin: 0 0 28px 0;
+      text-transform: uppercase;
+    }
+    .cover-title .accent { color: var(--accent); }
+    .cover-title .br { display: block; }
+    .cover-subtitle {
+      font-size: 14pt;
+      line-height: 1.4;
+      font-weight: 500;
+      color: var(--ink-3);
+      max-width: 140mm;
+    }
+    .cover-rule {
+      width: 60mm; height: 3px;
+      background: var(--accent);
+      margin: 32px 0 0 0;
+    }
+    .cover-bottom {
+      padding: 0 22mm 28mm 22mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .cover-meta { display: flex; gap: 32px; align-items: flex-end; }
+    .cover-meta-item {
+      font-size: 9pt;
+      color: var(--ink-4);
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+    .cover-meta-item strong {
+      display: block;
+      font-size: 20pt;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    .cover-meta-item strong .accent { color: var(--accent); }
+    .cover-author {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--ink);
+      text-align: right;
+    }
+    .cover-author .role {
+      display: block;
+      font-weight: 500;
+      color: var(--ink-4);
+      font-size: 9.5pt;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    /* ── OVERVIEW TABLE ── */
+    .overview-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .overview-table thead tr { background: var(--ink); }
+    .overview-table thead th {
+      color: #fff;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    .overview-table tbody tr { border-bottom: 1px solid var(--line); }
+    .overview-table tbody tr:nth-child(even) { background: var(--card); }
+    .overview-table tbody td {
+      padding: 11px 14px;
+      font-size: 9.5pt;
+      color: var(--ink-2);
+      vertical-align: top;
+    }
+    .overview-table tbody td strong { color: var(--ink); font-weight: 700; }
+    .badge {
+      display: inline-block;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: #B07800;
+      white-space: nowrap;
+    }
+    /* ── NOTE BLOCK ── */
+    .info-note {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 12px 18px;
+      border-radius: 2px 6px 6px 2px;
+      font-size: 9.5pt;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.5;
+      margin: 20px 0;
+    }
+    .info-note .label {
+      display: block;
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    /* ── RECIPE PAGE ── */
+    h1.page-title {
+      font-weight: 800;
+      font-size: 26pt;
+      line-height: 1.08;
+      letter-spacing: -0.8px;
+      color: var(--ink);
+      margin: 0 0 4px 0;
+    }
+    h1.page-title .accent { color: var(--accent); }
+    .day-meta { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+    .day-tag {
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-4);
+    }
+    .section-label {
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .dish-title {
+      font-weight: 700;
+      font-size: 14pt;
+      color: var(--ink);
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+    }
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 22px;
+      margin-bottom: 8px;
+      align-items: start;
+    }
+    .col-label {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: var(--ink-4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .ing-table { width: 100%; border-collapse: collapse; }
+    .ing-table tr { border-bottom: 1px solid var(--line); }
+    .ing-table tr:last-child { border-bottom: none; }
+    .ing-table td { padding: 5px 0; font-size: 9.5pt; color: var(--ink-2); }
+    .ing-table td.qty {
+      text-align: right;
+      font-weight: 700;
+      color: var(--accent);
+      white-space: nowrap;
+      padding-left: 10px;
+    }
+    .prep-time {
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--ink-4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 4px 0;
+    }
+    .prep-list { margin: 0; padding-left: 16px; }
+    .prep-list li {
+      font-size: 9.5pt;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+      line-height: 1.45;
+    }
+    .prep-list li::marker { color: var(--accent); font-weight: 700; }
+    .tip-block {
+      background: var(--card);
+      border-left: 3px solid var(--accent);
+      padding: 9px 14px;
+      font-size: 9pt;
+      color: var(--ink-3);
+      border-radius: 2px 6px 6px 2px;
+      margin-top: 12px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .tip-block strong { font-style: normal; color: var(--ink-2); }
+    .divider { border: none; border-top: 2px solid var(--line); margin: 18px 0; }
+    /* ── SHOPPING LIST ── */
+    h2.section-head {
+      font-weight: 800;
+      font-size: 13pt;
+      color: var(--ink);
+      margin: 18px 0 10px 0;
+      letter-spacing: -0.3px;
+    }
+    h2.section-head .accent { color: var(--accent); }
+    .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+    .shop-cat { margin-bottom: 14px; break-inside: avoid; }
+    .shop-cat-title {
+      font-size: 8.5pt;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+    .shop-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      font-size: 9.5pt;
+      color: var(--ink-2);
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--line-2);
+    }
+    .shop-item:last-child { border-bottom: none; }
+    .shop-item .shop-qty {
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+      margin-left: 10px;
+    }
+    .shop-checkbox {
+      display: inline-block;
+      width: 11px; height: 11px;
+      border: 1.5px solid var(--line-2);
+      border-radius: 2px;
+      margin-right: 7px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <!-- ================================================================ -->
+  <!-- PAGE 1 — COUVERTURE                                              -->
+  <!-- ================================================================ -->
+  <section class="page cover">
+    <div class="cover-top">
+      <div class="cover-brand">Le <span class="accent">Cadre</span> · Florian Marin</div>
+    </div>
+    <div class="cover-middle">
+      <div class="cover-label">Plan nutrition famille</div>
+      <h1 class="cover-title">
+        <span class="br">Menu</span>
+        <span class="br">de la <span class="accent">semaine</span></span>
+        <span class="br">famille</span>
+      </h1>
+      <p class="cover-subtitle">Du mercredi au dimanche · 5 dîners · Entrée + Plat<br>8 portions par recette · menu équilibré (glucides, protéines, légumes)</p>
+      <div class="cover-rule"></div>
+    </div>
+    <div class="cover-bottom">
+      <div class="cover-meta">
+        <div class="cover-meta-item"><strong>5</strong>Dîners</div>
+        <div class="cover-meta-item"><strong>8</strong>Portions</div>
+        <div class="cover-meta-item"><strong><span class="accent">2+2</span></strong>Adultes · enfants</div>
+      </div>
+      <div class="cover-author">
+        17 – 21 juin 2026
+        <span class="role">2 adultes + 2 enfants (3 &amp; 5 ans)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 2 — VUE D'ENSEMBLE                                          -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Vue d'ensemble</div>
+    <h1 class="page-title">Les <span class="accent">5 dîners</span> de la semaine.</h1>
+    <div class="info-note">
+      <span class="label">Pour qui ?</span>
+      8 portions par recette pour 2 adultes + 2 enfants (3 et 5 ans). Les portions enfants seront naturellement plus petites — il reste donc de quoi composer des restes ou les déjeuners du lendemain.
+    </div>
+    <table class="overview-table">
+      <thead>
+        <tr>
+          <th>Jour</th>
+          <th>Entrée</th>
+          <th>Plat</th>
+          <th>Atout</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mercredi 17</strong></td>
+          <td>Velouté de courgettes</td>
+          <td>Poulet rôti aux herbes, riz pilaf, haricots verts</td>
+          <td><span class="badge">Classique familial</span></td>
+        </tr>
+        <tr>
+          <td><strong>Jeudi 18</strong></td>
+          <td>Concombre à la crème et menthe</td>
+          <td>Saumon au four, grenailles, brocolis</td>
+          <td><span class="badge">Récup · oméga-3</span></td>
+        </tr>
+        <tr>
+          <td><strong>Vendredi 19</strong></td>
+          <td>Velouté froid de petits pois à la menthe</td>
+          <td>Salade niçoise (servie froide)</td>
+          <td><span class="badge">Repas froid complet</span></td>
+        </tr>
+        <tr>
+          <td><strong>Samedi 20</strong></td>
+          <td>Carottes râpées au maïs</td>
+          <td>Dahl de lentilles corail au lait de coco, riz basmati</td>
+          <td><span class="badge">Végétal · fer</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dimanche 21</strong></td>
+          <td>Melon-jambon</td>
+          <td>Rôti de porc, purée maison, carottes glacées</td>
+          <td><span class="badge">Plat du dimanche</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:9pt; color:var(--ink-4); margin-top:12px; line-height:1.5;">
+      <strong style="color:var(--ink-3);">Note quantités :</strong> tout est calculé pour
+      <strong>8 portions par recette</strong>. À ajuster selon l'appétit. La liste de courses
+      consolidée, organisée par rayon, se trouve en dernière page.
+    </p>
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>2<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 3 — MERCREDI                                                -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Mercredi 17 juin</div>
+    <h1 class="page-title">Poulet rôti aux herbes, <span class="accent">riz pilaf</span> &amp; haricots verts.</h1>
+    <div class="day-meta">
+      <span class="day-tag">8 portions</span>
+      <span class="badge">Classique familial</span>
+    </div>
+
+    <!-- ENTRÉE -->
+    <div class="section-label">Entrée · Velouté de courgettes</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Courgettes</td><td class="qty">6 · ~1,2 kg</td></tr>
+          <tr><td>Oignon</td><td class="qty">1</td></tr>
+          <tr><td>Fromage frais ail &amp; fines herbes (type Boursin)</td><td class="qty">100 g</td></tr>
+          <tr><td>Cube de bouillon de volaille</td><td class="qty">1</td></tr>
+          <tr><td>Huile d'olive · sel · poivre</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 25 min</p>
+        <ol class="prep-list">
+          <li>Émincez l'oignon. Faites-le revenir dans l'huile d'olive 3-4 min sans coloration.</li>
+          <li>Ajoutez les courgettes en rondelles (gardez la peau pour la couleur et les fibres). Faites suer 5 min.</li>
+          <li>Couvrez d'eau à hauteur (~1 L), ajoutez le cube de bouillon. Cuisez 20 min à feu moyen.</li>
+          <li>Mixez finement avec le fromage frais. Rectifiez sel/poivre. Servez chaud.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip-block"><strong>Astuce enfants :</strong> un velouté bien lisse et le fromage frais qui adoucit passent très bien.</div>
+
+    <hr class="divider">
+
+    <!-- PLAT -->
+    <div class="section-label">Plat · Poulet rôti, riz pilaf, haricots verts</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Cuisses de poulet (hauts de cuisse)</td><td class="qty">8</td></tr>
+          <tr><td>Riz long ou basmati</td><td class="qty">500 g</td></tr>
+          <tr><td>Haricots verts (frais ou surgelés)</td><td class="qty">1 kg</td></tr>
+          <tr><td>Oignon</td><td class="qty">1</td></tr>
+          <tr><td>Ail</td><td class="qty">4 gousses</td></tr>
+          <tr><td>Beurre</td><td class="qty">30 g</td></tr>
+          <tr><td>Herbes de Provence · thym · huile d'olive</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 1 h (dont 45 min au four)</p>
+        <ol class="prep-list">
+          <li>Four à 200 °C. Déposez les cuisses dans un grand plat, arrosez d'huile, saupoudrez d'herbes de Provence, thym, sel, poivre. Ajoutez l'ail en chemise.</li>
+          <li>Enfournez 45 min en arrosant à mi-cuisson avec le jus.</li>
+          <li>Riz pilaf : faites suer l'oignon émincé dans le beurre, ajoutez le riz, remuez 1 min, versez 1,5× son volume d'eau bouillante salée. Couvrez et cuisez 12-15 min à feu doux jusqu'à absorption.</li>
+          <li>Haricots verts : 8-10 min à l'eau bouillante salée (ou vapeur), puis poêlés 2 min avec un peu de beurre et d'ail.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>3<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 4 — JEUDI                                                   -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Jeudi 18 juin</div>
+    <h1 class="page-title">Saumon au four, <span class="accent">grenailles</span> &amp; brocolis.</h1>
+    <div class="day-meta">
+      <span class="day-tag">8 portions</span>
+      <span class="badge">Récup · oméga-3</span>
+    </div>
+
+    <!-- ENTRÉE -->
+    <div class="section-label">Entrée · Concombre à la crème et menthe</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Concombres</td><td class="qty">2</td></tr>
+          <tr><td>Crème fraîche épaisse</td><td class="qty">20 cl</td></tr>
+          <tr><td>Yaourt nature</td><td class="qty">1</td></tr>
+          <tr><td>Menthe fraîche</td><td class="qty">qq feuilles</td></tr>
+          <tr><td>Vinaigre · sel · poivre</td><td class="qty">1 c. à café</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 10 min</p>
+        <ol class="prep-list">
+          <li>Épluchez et coupez les concombres en fines rondelles. Salez et laissez dégorger 10 min, puis essorez.</li>
+          <li>Mélangez crème, yaourt, vinaigre, menthe ciselée, sel et poivre.</li>
+          <li>Mélangez avec les concombres. Servez frais.</li>
+        </ol>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PLAT -->
+    <div class="section-label">Plat · Saumon au four, pommes de terre grenaille, brocolis</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Pavés de saumon (~150 g)</td><td class="qty">8 · ~1,2 kg</td></tr>
+          <tr><td>Pommes de terre grenaille</td><td class="qty">1,2 kg</td></tr>
+          <tr><td>Brocolis</td><td class="qty">2 · ~900 g</td></tr>
+          <tr><td>Citron</td><td class="qty">1</td></tr>
+          <tr><td>Ail</td><td class="qty">2 gousses</td></tr>
+          <tr><td>Aneth · huile d'olive · sel · poivre</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 40 min</p>
+        <ol class="prep-list">
+          <li>Four à 200 °C. Coupez les grenailles en deux, mélangez avec huile, ail, sel. Enfournez 25 min.</li>
+          <li>Posez les pavés sur les pommes de terre (ou dans un 2ᵉ plat), arrosez d'huile, jus de citron, aneth, sel, poivre. Enfournez 12-15 min.</li>
+          <li>Brocolis : en bouquets, 6-8 min vapeur ou eau (al dente, vert vif). Filet d'huile d'olive au service.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip-block"><strong>Astuce sportive :</strong> saumon (oméga-3) + pommes de terre (glucides lents) = excellent repas de récupération.</div>
+
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>4<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 5 — VENDREDI                                                -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Vendredi 19 juin</div>
+    <h1 class="page-title">Salade <span class="accent">niçoise</span> (servie froide).</h1>
+    <div class="day-meta">
+      <span class="day-tag">8 portions</span>
+      <span class="badge">Repas froid complet</span>
+    </div>
+
+    <!-- ENTRÉE -->
+    <div class="section-label">Entrée · Velouté froid de petits pois à la menthe</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Petits pois (frais écossés ou surgelés)</td><td class="qty">1 kg</td></tr>
+          <tr><td>Oignon</td><td class="qty">1</td></tr>
+          <tr><td>Crème fraîche</td><td class="qty">10 cl</td></tr>
+          <tr><td>Menthe fraîche</td><td class="qty">qq feuilles</td></tr>
+          <tr><td>Cube de bouillon de volaille · sel · poivre</td><td class="qty">1</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 20 min + réfrigération</p>
+        <ol class="prep-list">
+          <li>Faites suer l'oignon émincé. Ajoutez les petits pois, couvrez d'eau (~80 cl) avec le bouillon. Cuisez 10 min.</li>
+          <li>Mixez finement avec la menthe et la crème. Rectifiez sel/poivre.</li>
+          <li>Laissez refroidir et servez bien frais.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip-block">Entrée légère et fraîche qui n'entre pas en doublon avec la salade de pâtes du plat.</div>
+
+    <hr class="divider">
+
+    <!-- PLAT -->
+    <div class="section-label">Plat · Salade niçoise</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Thon au naturel (~140 g)</td><td class="qty">4 boîtes</td></tr>
+          <tr><td>Œufs</td><td class="qty">8</td></tr>
+          <tr><td>Pommes de terre</td><td class="qty">800 g</td></tr>
+          <tr><td>Haricots verts</td><td class="qty">500 g</td></tr>
+          <tr><td>Tomates</td><td class="qty">6</td></tr>
+          <tr><td>Poivrons (1 rouge, 1 jaune)</td><td class="qty">2</td></tr>
+          <tr><td>Olives noires</td><td class="qty">100 g</td></tr>
+          <tr><td>Anchois · oignon rouge (optionnel)</td><td class="qty">1 + 1</td></tr>
+          <tr><td>Basilic · huile d'olive · vinaigre</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 35 min + refroidissement</p>
+        <ol class="prep-list">
+          <li>Cuisez les pommes de terre en robe ~20 min, refroidissez, coupez en rondelles.</li>
+          <li>Œufs durs 10 min, rafraîchissez, écalez, quartiers.</li>
+          <li>Haricots verts 8 min (al dente, vert vif), rafraîchis à l'eau froide.</li>
+          <li>Tomates en quartiers, poivrons en lanières, oignon rouge émincé. Égouttez thon et olives.</li>
+          <li>Disposez le tout dans un grand plat. Vinaigrette huile + vinaigre, anchois et basilic. Servez frais.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip-block"><strong>Astuce enfants :</strong> présentez les éléments un peu séparés (thon, œuf, pommes de terre) — souvent mieux accepté que mélangé. <strong>Astuce sportive :</strong> protéines (thon + œufs), glucides lents et bons lipides — excellent repas de récupération.</div>
+
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>5<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 6 — SAMEDI                                                  -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Samedi 20 juin</div>
+    <h1 class="page-title">Dahl de <span class="accent">lentilles corail</span> au lait de coco.</h1>
+    <div class="day-meta">
+      <span class="day-tag">8 portions</span>
+      <span class="badge">Végétal · fer</span>
+    </div>
+
+    <!-- ENTRÉE -->
+    <div class="section-label">Entrée · Carottes râpées au maïs</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Carottes</td><td class="qty">6</td></tr>
+          <tr><td>Maïs (égoutté)</td><td class="qty">1 boîte · ~300 g</td></tr>
+          <tr><td>Citron (ou jus d'orange)</td><td class="qty">1</td></tr>
+          <tr><td>Huile</td><td class="qty">3 c. à soupe</td></tr>
+          <tr><td>Persil · sel</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 10 min</p>
+        <ol class="prep-list">
+          <li>Râpez les carottes, ajoutez le maïs égoutté.</li>
+          <li>Assaisonnez avec jus de citron, huile, persil ciselé et sel. Mélangez.</li>
+        </ol>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PLAT -->
+    <div class="section-label">Plat · Dahl de lentilles corail, riz basmati</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Lentilles corail</td><td class="qty">500 g</td></tr>
+          <tr><td>Lait de coco (~80 cl)</td><td class="qty">2 boîtes</td></tr>
+          <tr><td>Tomates concassées</td><td class="qty">1 boîte · ~400 g</td></tr>
+          <tr><td>Riz basmati</td><td class="qty">500 g</td></tr>
+          <tr><td>Oignons · ail</td><td class="qty">2 · 3 gousses</td></tr>
+          <tr><td>Gingembre frais</td><td class="qty">1 morceau</td></tr>
+          <tr><td>Curry · curcuma · cumin</td><td class="qty">1 cs · 1 cc · 1 cc</td></tr>
+          <tr><td>Huile · sel · coriandre fraîche</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 35 min</p>
+        <ol class="prep-list">
+          <li>Faites revenir oignons, ail et gingembre hachés dans l'huile. Ajoutez les épices, remuez 1 min.</li>
+          <li>Ajoutez les lentilles rincées, les tomates, le lait de coco et 30 cl d'eau. Salez.</li>
+          <li>Mijotez 20-25 min à feu doux, en remuant, jusqu'à texture crémeuse.</li>
+          <li>Cuisez le riz basmati en parallèle. Servez le dahl sur le riz, parsemé de coriandre.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="tip-block"><strong>Astuce enfants :</strong> restez sur un curry doux. Plat 100 % végétal, riche en protéines et en fer — parfait pour la sportive.</div>
+
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>6<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 7 — DIMANCHE                                                -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Dimanche 21 juin</div>
+    <h1 class="page-title">Rôti de porc, <span class="accent">purée maison</span> &amp; carottes glacées.</h1>
+    <div class="day-meta">
+      <span class="day-tag">8 portions</span>
+      <span class="badge">Plat du dimanche</span>
+    </div>
+
+    <!-- ENTRÉE -->
+    <div class="section-label">Entrée · Melon-jambon</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Melons</td><td class="qty">2</td></tr>
+          <tr><td>Jambon cru (Bayonne ou similaire)</td><td class="qty">8 tranches</td></tr>
+          <tr><td>Poivre du moulin</td><td class="qty">q.s.</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 10 min</p>
+        <ol class="prep-list">
+          <li>Coupez les melons en quartiers, retirez les graines et la peau.</li>
+          <li>Disposez avec le jambon, un tour de moulin à poivre.</li>
+        </ol>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PLAT -->
+    <div class="section-label">Plat · Rôti de porc, purée, carottes glacées</div>
+    <div class="recipe-grid">
+      <div>
+        <div class="col-label">Ingrédients (8 portions)</div>
+        <table class="ing-table">
+          <tr><td>Rôti de porc</td><td class="qty">~1,5 kg</td></tr>
+          <tr><td>Pommes de terre (purée)</td><td class="qty">1,5 kg</td></tr>
+          <tr><td>Lait</td><td class="qty">30 cl</td></tr>
+          <tr><td>Beurre</td><td class="qty">50 g</td></tr>
+          <tr><td>Carottes</td><td class="qty">1 kg</td></tr>
+          <tr><td>Oignon · ail · thym</td><td class="qty">1 · 2 gousses</td></tr>
+          <tr><td>Sucre · huile · sel · poivre</td><td class="qty">1 c. à soupe</td></tr>
+        </table>
+      </div>
+      <div>
+        <p class="prep-time">Préparation · 1 h 15</p>
+        <ol class="prep-list">
+          <li>Four à 200 °C. Saisissez le rôti sur toutes les faces en cocotte avec un peu d'huile, salez, poivrez, ajoutez ail et thym. Enfournez 1 h en arrosant (~30-35 min/kg).</li>
+          <li>Purée : épluchez et coupez les pommes de terre, cuisez 20 min à l'eau salée. Écrasez avec le lait chaud et le beurre. Salez, poivrez.</li>
+          <li>Carottes glacées : en rondelles, dans une casserole avec un peu d'eau, le beurre et le sucre. À couvert 15 min, puis à découvert pour évaporer et caraméliser légèrement.</li>
+          <li>Laissez reposer le rôti 5 min avant de trancher. Servez avec le jus.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>7<span class="dot"></span>8</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- PAGE 8 — LISTE DE COURSES                                        -->
+  <!-- ================================================================ -->
+  <section class="page">
+    <div class="eyebrow">Liste de courses</div>
+    <h1 class="page-title">Courses <span class="accent">par rayon.</span></h1>
+    <p style="font-size:9pt;color:var(--ink-4);margin-bottom:16px;margin-top:-4px;">5 dîners · 8 portions par recette · quantités consolidées</p>
+    <div class="shop-grid">
+      <!-- COL 1 -->
+      <div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🥬 Fruits &amp; légumes</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Courgettes</span><span class="shop-qty">6</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Oignons (+1 rouge opt.)</span><span class="shop-qty">7</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Ail</span><span class="shop-qty">2 têtes</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Gingembre frais</span><span class="shop-qty">1 morceau</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Concombres</span><span class="shop-qty">2</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Petits pois</span><span class="shop-qty">1 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre grenaille</span><span class="shop-qty">1,2 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre (niçoise)</span><span class="shop-qty">800 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre (purée)</span><span class="shop-qty">1,5 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Brocolis</span><span class="shop-qty">2 · ~900 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts</span><span class="shop-qty">1,5 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates</span><span class="shop-qty">6</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Poivrons (1 rouge, 1 jaune)</span><span class="shop-qty">2</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Carottes</span><span class="shop-qty">~2,3 kg · 16</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons</span><span class="shop-qty">3</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Melons</span><span class="shop-qty">2</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Menthe fraîche</span><span class="shop-qty">1 botte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Basilic frais</span><span class="shop-qty">1 botte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Coriandre fraîche</span><span class="shop-qty">1 botte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Persil</span><span class="shop-qty">1 botte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Aneth</span><span class="shop-qty">1 petite botte</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🍗 Boucherie / Volaille</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Cuisses de poulet (hauts de cuisse)</span><span class="shop-qty">8</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Rôti de porc</span><span class="shop-qty">~1,5 kg</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🐟 Poissonnerie</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pavés de saumon</span><span class="shop-qty">8 · ~1,2 kg</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🥓 Charcuterie</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Jambon cru (Bayonne ou sim.)</span><span class="shop-qty">8 tranches</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">❄️ Surgelés (option)</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts surgelés</span><span class="shop-qty">1 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Petits pois surgelés</span><span class="shop-qty">1 kg</span></div>
+        </div>
+      </div>
+      <!-- COL 2 -->
+      <div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🧀 Crémerie / Frais</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Fromage frais ail &amp; fines herbes</span><span class="shop-qty">100 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Crème fraîche (20 cl + 10 cl)</span><span class="shop-qty">30 cl</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt nature</span><span class="shop-qty">1</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs (niçoise)</span><span class="shop-qty">8</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Beurre</span><span class="shop-qty">1 plaquette · 250 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait</span><span class="shop-qty">1 brique (≥30 cl)</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🛒 Épicerie salée</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Riz long ou basmati (500 g + 500 g)</span><span class="shop-qty">1 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Thon au naturel (~140 g)</span><span class="shop-qty">4 boîtes</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Olives noires</span><span class="shop-qty">100 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Anchois (optionnel)</span><span class="shop-qty">1 petite boîte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Lentilles corail</span><span class="shop-qty">500 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait de coco (~80 cl)</span><span class="shop-qty">2 boîtes</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates concassées (dahl)</span><span class="shop-qty">1 boîte · ~400 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Maïs</span><span class="shop-qty">1 boîte · ~300 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon de volaille</span><span class="shop-qty">cubes</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile d'olive</span><span class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre (vinaigrette)</span><span class="shop-qty">q.s.</span></div>
+        </div>
+        <div class="shop-cat">
+          <div class="shop-cat-title">🌶️ Épices &amp; condiments (à vérifier)</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Herbes de Provence · thym</span><span class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Curry · curcuma · cumin</span><span class="shop-qty">q.s.</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Sucre · sel · poivre</span><span class="shop-qty">q.s.</span></div>
+        </div>
+        <div class="info-note" style="margin-top:18px;">
+          <span class="label">Bon à savoir</span>
+          Quantités calculées pour 8 portions par recette — idéal pour des restes ou les déjeuners du lendemain. À ajuster selon l'appétit (les enfants mangeront des parts plus petites).
+        </div>
+      </div>
+    </div>
+    <div class="page-number">
+      <span>Menu de la semaine · Famille</span>
+      <span>8<span class="dot"></span>8</span>
+    </div>
+  </section>
+</body>
+</html>
