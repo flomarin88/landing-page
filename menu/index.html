@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu de la semaine — du mercredi au dimanche</title>
+  <title>Menu de la semaine — Été · Spécial canicule · 6 portions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -26,6 +26,7 @@
       --bg: #ECECEC;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     html, body {
       margin: 0;
       padding: 0;
@@ -190,6 +191,18 @@
       text-transform: uppercase;
       margin-top: 4px;
     }
+    .cover-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .cover-tag {
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1.5px solid var(--line-2);
+      border-radius: 20px;
+      color: var(--ink-3);
+    }
+    .cover-tag.hot { border-color: var(--accent); color: var(--accent); }
     /* ── OVERVIEW TABLE ── */
     .overview-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
     .overview-table thead tr { background: var(--ink); }
@@ -211,6 +224,30 @@
       vertical-align: top;
     }
     .overview-table tbody td strong { color: var(--ink); font-weight: 700; }
+    .overview-table a.dish-link {
+      color: var(--ink-2);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .overview-table a.dish-link::after {
+      content: " ›";
+      color: var(--accent);
+      font-weight: 800;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    .overview-table a.dish-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .overview-table a.dish-link:hover::after { opacity: 1; }
+    /* Scroll doux : la cible s'aligne en haut de l'écran */
+    .page[id] { scroll-margin-top: 0; }
+    @media (max-width: 480px) {
+      .overview-table a.dish-link::after { opacity: 1; }
+    }
     .badge {
       display: inline-block;
       font-size: 8pt;
@@ -244,6 +281,8 @@
       color: var(--accent);
       margin-bottom: 5px;
     }
+    .info-note p { margin: 0 0 6px 0; }
+    .info-note p:last-child { margin-bottom: 0; }
     /* ── RECIPE PAGE ── */
     h1.page-title {
       font-weight: 800;
@@ -254,7 +293,7 @@
       margin: 0 0 4px 0;
     }
     h1.page-title .accent { color: var(--accent); }
-    .day-meta { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+    .day-meta { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
     .day-tag {
       font-size: 9pt;
       font-weight: 700;
@@ -274,13 +313,6 @@
       gap: 8px;
     }
     .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-    .dish-title {
-      font-weight: 700;
-      font-size: 14pt;
-      color: var(--ink);
-      margin: 0 0 12px 0;
-      line-height: 1.2;
-    }
     .recipe-grid {
       display: grid;
       grid-template-columns: 1fr 1.15fr;
@@ -336,6 +368,47 @@
     }
     .tip-block strong { font-style: normal; color: var(--ink-2); }
     .divider { border: none; border-top: 2px solid var(--line); margin: 18px 0; }
+    /* ── MACRO STRIP ── */
+    .macro-strip {
+      display: flex;
+      align-items: center;
+      background: var(--ink);
+      border-radius: 6px;
+      padding: 10px 18px;
+      margin-top: 16px;
+    }
+    .macro-strip .macro-lbl {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.65;
+      margin-right: auto;
+      max-width: 130px;
+      line-height: 1.35;
+    }
+    .macro-item {
+      text-align: center;
+      padding: 0 16px;
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .macro-item .v {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .macro-item .v.kcal { color: var(--accent-light); }
+    .macro-item .u {
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
     /* ── SHOPPING LIST ── */
     h2.section-head {
       font-weight: 800;
@@ -383,6 +456,159 @@
       flex-shrink: 0;
       vertical-align: middle;
     }
+
+    /* ── « RECETTE RÉALISÉE » (suivi localStorage, écran uniquement) ── */
+    .done-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      background: var(--page);
+      border: 1.5px solid var(--line-2);
+      border-radius: 20px;
+      padding: 6px 13px;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .done-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .done-toggle-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px; height: 14px;
+      border: 1.5px solid var(--line-2);
+      border-radius: 3px;
+      font-size: 10px;
+      line-height: 1;
+      color: transparent;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    .done-toggle-box::after { content: "\2713"; }
+    .page[data-done="true"] .done-toggle {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .page[data-done="true"] .done-toggle-box {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    /* Vue d'ensemble : recette réalisée = ligne barrée + estompée (état posé en JS) */
+    .overview-table tbody tr[data-done="true"] { opacity: 0.55; }
+    .overview-table tbody tr[data-done="true"] td:not(:last-child) {
+      text-decoration: line-through;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1.5px;
+    }
+    @media print { .done-toggle { display: none; } }
+
+    /* ── MOBILE · iPhone 15 Pro (~393 px) & autres smartphones ── */
+    @media (max-width: 480px) {
+      html, body { background: var(--page); font-size: 15px; }
+
+      .page {
+        width: 100%;
+        min-height: auto;
+        padding: 30px 20px 60px;
+        margin: 0;
+        box-shadow: none;
+        page-break-after: auto;
+        break-after: auto;
+      }
+      .page + .page { border-top: 8px solid var(--bg); }
+
+      /* ── COUVERTURE ── */
+      .cover { height: auto; min-height: auto; }
+      .cover-top { padding: 34px 20px 0; }
+      .cover-middle { padding: 44px 20px; }
+      .cover-label { font-size: 9pt; letter-spacing: 2px; }
+      .cover-title { font-size: 32pt; letter-spacing: -1.2px; margin-bottom: 22px; }
+      .cover-subtitle { font-size: 12pt; max-width: none; }
+      .cover-rule { width: 46mm; }
+      .cover-tags { gap: 7px; margin-top: 22px; }
+      .cover-tag { font-size: 8pt; padding: 5px 10px; }
+      .cover-bottom {
+        padding: 0 20px 34px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+      }
+      .cover-meta { gap: 26px; }
+      .cover-author { text-align: left; }
+
+      /* ── TITRES ── */
+      h1.page-title { font-size: 21pt; line-height: 1.12; }
+      .eyebrow { margin-bottom: 14px; }
+
+      /* ── VUE D'ENSEMBLE : cartes empilées au lieu du tableau ── */
+      .overview-table, .overview-table thead, .overview-table tbody,
+      .overview-table tr, .overview-table td { display: block; width: 100%; }
+      .overview-table thead { display: none; }
+      .overview-table tbody tr {
+        background: var(--card) !important;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+      }
+      .overview-table tbody td { padding: 3px 0; font-size: 10pt; border: none; }
+      .overview-table tbody td:first-child {
+        font-size: 11pt;
+        margin-bottom: 4px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--line);
+      }
+      .overview-table tbody td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 7.5pt;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--ink-4);
+        margin-bottom: 1px;
+      }
+      .overview-table tbody td:first-child::before { content: none; }
+
+      /* ── RECETTES : une seule colonne ── */
+      .recipe-grid { grid-template-columns: 1fr; gap: 14px; }
+      .day-meta { gap: 10px; }
+
+      /* ── MACROS : bandeau qui passe à la ligne ── */
+      .macro-strip { flex-wrap: wrap; padding: 12px 14px; }
+      .macro-strip .macro-lbl {
+        flex: 1 0 100%;
+        max-width: none;
+        margin: 0 0 10px 0;
+        opacity: 0.7;
+      }
+      .macro-item {
+        flex: 1;
+        padding: 0;
+        border-left: none;
+        border-right: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .macro-item:last-child { border-right: none; }
+      .macro-item .v { font-size: 16pt; }
+
+      /* ── LISTE DE COURSES : une seule colonne ── */
+      .shop-grid { grid-template-columns: 1fr; }
+
+      /* ── PAGINATION EN BAS : dans le flux ── */
+      .page-number {
+        position: static;
+        margin-top: 30px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        left: auto; right: auto; bottom: auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -394,24 +620,31 @@
       <div class="cover-brand">Le <span class="accent">Cadre</span> · Florian Marin</div>
     </div>
     <div class="cover-middle">
-      <div class="cover-label">Plan nutrition famille</div>
+      <div class="cover-label">Plan nutrition famille · Été</div>
       <h1 class="cover-title">
-        <span class="br">Menu</span>
-        <span class="br">de la <span class="accent">semaine</span></span>
-        <span class="br">famille</span>
+        <span class="br">Cinq</span>
+        <span class="br"><span class="accent">dîners</span></span>
+        <span class="br">de canicule</span>
       </h1>
-      <p class="cover-subtitle">Du mercredi au dimanche · 5 dîners · Entrée + Plat<br>8 portions par recette · menu équilibré (glucides, protéines, légumes)</p>
+      <p class="cover-subtitle">Repas du soir calibrés pour 6 portions — la tablée (2 adultes + 2 enfants) plus 2 parts de rab pour les déjeuners du lendemain. Entrée + plat, féculents maintenus, produits de pleine saison quand il fait trop chaud pour cuisiner.</p>
       <div class="cover-rule"></div>
+      <div class="cover-tags">
+        <span class="cover-tag">6 portions · batch + restes</span>
+        <span class="cover-tag">Sans PLV</span>
+        <span class="cover-tag">Produits de saison · juin–juillet</span>
+        <span class="cover-tag hot">Spécial forte chaleur</span>
+        <span class="cover-tag">Mesures au poids (g / ml)</span>
+      </div>
     </div>
     <div class="cover-bottom">
       <div class="cover-meta">
         <div class="cover-meta-item"><strong>5</strong>Dîners</div>
-        <div class="cover-meta-item"><strong>8</strong>Portions</div>
+        <div class="cover-meta-item"><strong>6</strong>Portions</div>
         <div class="cover-meta-item"><strong><span class="accent">2+2</span></strong>Adultes · enfants</div>
       </div>
       <div class="cover-author">
-        17 – 21 juin 2026
-        <span class="role">2 adultes + 2 enfants (3 &amp; 5 ans)</span>
+        Semaine d'été 2026
+        <span class="role">2 adultes + 2 enfants · +2 parts déjeuners</span>
       </div>
     </div>
   </section>
@@ -423,13 +656,14 @@
     <div class="eyebrow">Vue d'ensemble</div>
     <h1 class="page-title">Les <span class="accent">5 dîners</span> de la semaine.</h1>
     <div class="info-note">
-      <span class="label">Pour qui ?</span>
-      8 portions par recette pour 2 adultes + 2 enfants (3 et 5 ans). Les portions enfants seront naturellement plus petites — il reste donc de quoi composer des restes ou les déjeuners du lendemain.
+      <span class="label">Lecture de la semaine</span>
+      <p>Quatre dîners sur cinq se mangent froids ou tièdes et demandent un seul feu, voire aucun : on évite de chauffer la cuisine aux heures les plus dures. Les cuissons rapides (plancha, poêle, vapeur) se font en fin de journée, ou le matin pour ce qui se mange froid.</p>
+      <p>Les féculents restent à 180–200 g cuits par portion adulte malgré la chaleur : c'est le levier contre les réveils nocturnes, pas un poste à raboter. Les 2 portions en plus se rangent en boîte pour le déjeuner du lendemain.</p>
     </div>
     <table class="overview-table">
       <thead>
         <tr>
-          <th>Jour</th>
+          <th>Dîner</th>
           <th>Entrée</th>
           <th>Plat</th>
           <th>Atout</th>
@@ -437,148 +671,167 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Mercredi 17</strong></td>
-          <td>Velouté de courgettes</td>
-          <td>Poulet rôti aux herbes, riz pilaf, haricots verts</td>
-          <td><span class="badge">Classique familial</span></td>
+          <td><strong>01 · Riviera</strong></td>
+          <td data-label="Entrée">Gaspacho tomate-concombre</td>
+          <td data-label="Plat"><a class="dish-link" href="#diner-01">Riz, poulet citron-thym, courgettes &amp; poivrons</a></td>
+          <td data-label="Atout"><span class="badge">Poulet · un feu</span></td>
         </tr>
         <tr>
-          <td><strong>Jeudi 18</strong></td>
-          <td>Concombre à la crème et menthe</td>
-          <td>Saumon au four, grenailles, brocolis</td>
-          <td><span class="badge">Récup · oméga-3</span></td>
+          <td><strong>02 · Marin</strong></td>
+          <td data-label="Entrée">Velouté froid courgette-menthe</td>
+          <td data-label="Plat"><a class="dish-link" href="#diner-02">Saumon, semoule aux herbes, tomates &amp; haricots</a></td>
+          <td data-label="Atout"><span class="badge">Oméga-3</span></td>
         </tr>
         <tr>
-          <td><strong>Vendredi 19</strong></td>
-          <td>Velouté froid de petits pois à la menthe</td>
-          <td>Salade niçoise (servie froide)</td>
-          <td><span class="badge">Repas froid complet</span></td>
+          <td><strong>03 · Jardin</strong></td>
+          <td data-label="Entrée">Pastèque, concombre &amp; menthe</td>
+          <td data-label="Plat"><a class="dish-link" href="#diner-03">Taboulé de quinoa, pois chiches &amp; œuf mollet</a></td>
+          <td data-label="Atout"><span class="badge">Végétal · sans feu</span></td>
         </tr>
         <tr>
-          <td><strong>Samedi 20</strong></td>
-          <td>Carottes râpées au maïs</td>
-          <td>Dahl de lentilles corail au lait de coco, riz basmati</td>
-          <td><span class="badge">Végétal · fer</span></td>
+          <td><strong>04 · Méridional</strong></td>
+          <td data-label="Entrée">Tomates anciennes au basilic</td>
+          <td data-label="Plat"><a class="dish-link" href="#diner-04">Cabillaud plancha, pommes de terre &amp; fenouil, sauce vierge</a></td>
+          <td data-label="Atout"><span class="badge">Léger · zéro four</span></td>
         </tr>
         <tr>
-          <td><strong>Dimanche 21</strong></td>
-          <td>Melon-jambon</td>
-          <td>Rôti de porc, purée maison, carottes glacées</td>
-          <td><span class="badge">Plat du dimanche</span></td>
+          <td><strong>05 · Pâtes froides</strong></td>
+          <td data-label="Entrée">Carpaccio de courgettes citron-pignons</td>
+          <td data-label="Plat"><a class="dish-link" href="#diner-05">Salade de pâtes complètes, dinde grillée &amp; légumes d'été</a></td>
+          <td data-label="Atout"><span class="badge">Froid · protéiné</span></td>
         </tr>
       </tbody>
     </table>
     <p style="font-size:9pt; color:var(--ink-4); margin-top:12px; line-height:1.5;">
       <strong style="color:var(--ink-3);">Note quantités :</strong> tout est calculé pour
-      <strong>8 portions par recette</strong>. À ajuster selon l'appétit. La liste de courses
-      consolidée, organisée par rayon, se trouve en dernière page.
+      <strong>6 portions par recette</strong> (mesures au poids). Les macros indiquées sont
+      <strong>par portion adulte, entrée + plat</strong>. La liste de courses consolidée, par rayon,
+      se trouve en dernière page.
     </p>
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>2<span class="dot"></span>8</span>
     </div>
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAGE 3 — MERCREDI                                                -->
+  <!-- PAGE 3 — DÎNER 01                                                -->
   <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Mercredi 17 juin</div>
-    <h1 class="page-title">Poulet rôti aux herbes, <span class="accent">riz pilaf</span> &amp; haricots verts.</h1>
+  <section class="page" id="diner-01">
+    <div class="eyebrow">Dîner 01 · Riviera</div>
+    <h1 class="page-title">Riz, poulet <span class="accent">citron-thym</span>, courgettes &amp; poivrons.</h1>
     <div class="day-meta">
-      <span class="day-tag">8 portions</span>
-      <span class="badge">Classique familial</span>
+      <span class="day-tag">6 portions</span>
+      <span class="badge">Poulet · un feu</span>
+      <button type="button" class="done-toggle" aria-pressed="false">
+        <span class="done-toggle-box" aria-hidden="true"></span>
+        <span class="done-toggle-label">Marquer r&eacute;alis&eacute;</span>
+      </button>
     </div>
 
     <!-- ENTRÉE -->
-    <div class="section-label">Entrée · Velouté de courgettes</div>
+    <div class="section-label">Entrée · Gaspacho tomate-concombre</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Courgettes</td><td class="qty">6 · ~1,2 kg</td></tr>
-          <tr><td>Oignon</td><td class="qty">1</td></tr>
-          <tr><td>Fromage frais ail &amp; fines herbes (type Boursin)</td><td class="qty">100 g</td></tr>
-          <tr><td>Cube de bouillon de volaille</td><td class="qty">1</td></tr>
-          <tr><td>Huile d'olive · sel · poivre</td><td class="qty">q.s.</td></tr>
+          <tr><td>Tomates bien mûres</td><td class="qty">1,05 kg</td></tr>
+          <tr><td>Concombre</td><td class="qty">300 g</td></tr>
+          <tr><td>Poivron rouge</td><td class="qty">180 g</td></tr>
+          <tr><td>Gousses d'ail</td><td class="qty">2 petites</td></tr>
+          <tr><td>Pain rassis (sans lait)</td><td class="qty">60 g</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">30 ml</td></tr>
+          <tr><td>Vinaigre de Xérès</td><td class="qty">22 ml</td></tr>
+          <tr><td>Eau froide · sel</td><td class="qty">150 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 25 min</p>
+        <p class="prep-time">Préparation · 15 min + 2 h au frais</p>
         <ol class="prep-list">
-          <li>Émincez l'oignon. Faites-le revenir dans l'huile d'olive 3-4 min sans coloration.</li>
-          <li>Ajoutez les courgettes en rondelles (gardez la peau pour la couleur et les fibres). Faites suer 5 min.</li>
-          <li>Couvrez d'eau à hauteur (~1 L), ajoutez le cube de bouillon. Cuisez 20 min à feu moyen.</li>
-          <li>Mixez finement avec le fromage frais. Rectifiez sel/poivre. Servez chaud.</li>
+          <li>Trempez le pain dans l'eau 5 min. Coupez grossièrement tous les légumes.</li>
+          <li>Mixez le tout très finement avec huile, vinaigre, ail et sel.</li>
+          <li>Réservez au frais 2 h minimum. Servez bien glacé.</li>
         </ol>
       </div>
     </div>
-    <div class="tip-block"><strong>Astuce enfants :</strong> un velouté bien lisse et le fromage frais qui adoucit passent très bien.</div>
 
     <hr class="divider">
 
     <!-- PLAT -->
-    <div class="section-label">Plat · Poulet rôti, riz pilaf, haricots verts</div>
+    <div class="section-label">Plat · Riz, poulet citron-thym, courgettes &amp; poivrons</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Cuisses de poulet (hauts de cuisse)</td><td class="qty">8</td></tr>
-          <tr><td>Riz long ou basmati</td><td class="qty">500 g</td></tr>
-          <tr><td>Haricots verts (frais ou surgelés)</td><td class="qty">1 kg</td></tr>
-          <tr><td>Oignon</td><td class="qty">1</td></tr>
-          <tr><td>Ail</td><td class="qty">4 gousses</td></tr>
-          <tr><td>Beurre</td><td class="qty">30 g</td></tr>
-          <tr><td>Herbes de Provence · thym · huile d'olive</td><td class="qty">q.s.</td></tr>
+          <tr><td>Riz semi-complet (cru)</td><td class="qty">420 g</td></tr>
+          <tr><td>Filets de poulet</td><td class="qty">750 g</td></tr>
+          <tr><td>Courgettes</td><td class="qty">450 g</td></tr>
+          <tr><td>Poivrons</td><td class="qty">300 g</td></tr>
+          <tr><td>Citron (jus + zeste)</td><td class="qty">2</td></tr>
+          <tr><td>Thym frais · ail</td><td class="qty">au goût</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">38 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 1 h (dont 45 min au four)</p>
+        <p class="prep-time">Préparation · 40 min (dont 20 min de marinade)</p>
         <ol class="prep-list">
-          <li>Four à 200 °C. Déposez les cuisses dans un grand plat, arrosez d'huile, saupoudrez d'herbes de Provence, thym, sel, poivre. Ajoutez l'ail en chemise.</li>
-          <li>Enfournez 45 min en arrosant à mi-cuisson avec le jus.</li>
-          <li>Riz pilaf : faites suer l'oignon émincé dans le beurre, ajoutez le riz, remuez 1 min, versez 1,5× son volume d'eau bouillante salée. Couvrez et cuisez 12-15 min à feu doux jusqu'à absorption.</li>
-          <li>Haricots verts : 8-10 min à l'eau bouillante salée (ou vapeur), puis poêlés 2 min avec un peu de beurre et d'ail.</li>
+          <li>Marinez le poulet 20 min : jus de citron, zeste, thym, ail, 15 ml d'huile.</li>
+          <li>Cuisez le riz à l'eau salée, égouttez, réservez tiède.</li>
+          <li>Poêlez courgettes et poivrons en dés (15 ml d'huile), vif et croquant.</li>
+          <li>Saisissez le poulet à la poêle/plancha 4–5 min par face. Servez sur le riz, légumes à côté.</li>
         </ol>
       </div>
     </div>
+    <div class="macro-strip">
+      <span class="macro-lbl">Par portion adulte · entrée + plat</span>
+      <div class="macro-item"><div class="v kcal">650</div><div class="u">kcal</div></div>
+      <div class="macro-item"><div class="v">41</div><div class="u">Prot. g</div></div>
+      <div class="macro-item"><div class="v">78</div><div class="u">Gluc. g</div></div>
+      <div class="macro-item"><div class="v">19</div><div class="u">Lip. g</div></div>
+    </div>
+    <div class="tip-block"><strong>Conseil &amp; conservation :</strong> gaspacho jusqu'à 3 j au frais. Le riz + poulet en rab tiennent 2 j et font une excellente base de déjeuner. Pour les enfants : poulet nature, légumes séparés.</div>
 
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>3<span class="dot"></span>8</span>
     </div>
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAGE 4 — JEUDI                                                   -->
+  <!-- PAGE 4 — DÎNER 02                                                -->
   <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Jeudi 18 juin</div>
-    <h1 class="page-title">Saumon au four, <span class="accent">grenailles</span> &amp; brocolis.</h1>
+  <section class="page" id="diner-02">
+    <div class="eyebrow">Dîner 02 · Marin</div>
+    <h1 class="page-title">Saumon, semoule aux herbes, <span class="accent">tomates rôties</span> &amp; haricots.</h1>
     <div class="day-meta">
-      <span class="day-tag">8 portions</span>
-      <span class="badge">Récup · oméga-3</span>
+      <span class="day-tag">6 portions</span>
+      <span class="badge">Oméga-3</span>
+      <button type="button" class="done-toggle" aria-pressed="false">
+        <span class="done-toggle-box" aria-hidden="true"></span>
+        <span class="done-toggle-label">Marquer r&eacute;alis&eacute;</span>
+      </button>
     </div>
 
     <!-- ENTRÉE -->
-    <div class="section-label">Entrée · Concombre à la crème et menthe</div>
+    <div class="section-label">Entrée · Velouté froid courgette-menthe</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Concombres</td><td class="qty">2</td></tr>
-          <tr><td>Crème fraîche épaisse</td><td class="qty">20 cl</td></tr>
-          <tr><td>Yaourt nature</td><td class="qty">1</td></tr>
-          <tr><td>Menthe fraîche</td><td class="qty">qq feuilles</td></tr>
-          <tr><td>Vinaigre · sel · poivre</td><td class="qty">1 c. à café</td></tr>
+          <tr><td>Courgettes</td><td class="qty">900 g</td></tr>
+          <tr><td>Pomme de terre</td><td class="qty">180 g</td></tr>
+          <tr><td>Oignon</td><td class="qty">1 moyen</td></tr>
+          <tr><td>Bouillon de légumes</td><td class="qty">900 ml</td></tr>
+          <tr><td>Menthe fraîche</td><td class="qty">15 g</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">22 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 10 min</p>
+        <p class="prep-time">Préparation · 25 min + réfrigération</p>
         <ol class="prep-list">
-          <li>Épluchez et coupez les concombres en fines rondelles. Salez et laissez dégorger 10 min, puis essorez.</li>
-          <li>Mélangez crème, yaourt, vinaigre, menthe ciselée, sel et poivre.</li>
-          <li>Mélangez avec les concombres. Servez frais.</li>
+          <li>Suez l'oignon, ajoutez courgettes et pomme de terre en morceaux.</li>
+          <li>Couvrez de bouillon, cuisez 18 min, mixez avec la menthe et l'huile.</li>
+          <li>Refroidissez complètement. Servez froid, filet d'huile sur le dessus.</li>
         </ol>
       </div>
     </div>
@@ -586,138 +839,158 @@
     <hr class="divider">
 
     <!-- PLAT -->
-    <div class="section-label">Plat · Saumon au four, pommes de terre grenaille, brocolis</div>
+    <div class="section-label">Plat · Saumon, semoule aux herbes, tomates &amp; haricots</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Pavés de saumon (~150 g)</td><td class="qty">8 · ~1,2 kg</td></tr>
-          <tr><td>Pommes de terre grenaille</td><td class="qty">1,2 kg</td></tr>
-          <tr><td>Brocolis</td><td class="qty">2 · ~900 g</td></tr>
-          <tr><td>Citron</td><td class="qty">1</td></tr>
-          <tr><td>Ail</td><td class="qty">2 gousses</td></tr>
-          <tr><td>Aneth · huile d'olive · sel · poivre</td><td class="qty">q.s.</td></tr>
+          <tr><td>Pavés de saumon</td><td class="qty">780 g</td></tr>
+          <tr><td>Semoule complète (crue)</td><td class="qty">360 g</td></tr>
+          <tr><td>Tomates cerises</td><td class="qty">450 g</td></tr>
+          <tr><td>Haricots verts</td><td class="qty">450 g</td></tr>
+          <tr><td>Herbes (persil, ciboulette)</td><td class="qty">30 g</td></tr>
+          <tr><td>Citron · huile d'olive</td><td class="qty">22 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 40 min</p>
+        <p class="prep-time">Préparation · 30 min</p>
         <ol class="prep-list">
-          <li>Four à 200 °C. Coupez les grenailles en deux, mélangez avec huile, ail, sel. Enfournez 25 min.</li>
-          <li>Posez les pavés sur les pommes de terre (ou dans un 2ᵉ plat), arrosez d'huile, jus de citron, aneth, sel, poivre. Enfournez 12-15 min.</li>
-          <li>Brocolis : en bouquets, 6-8 min vapeur ou eau (al dente, vert vif). Filet d'huile d'olive au service.</li>
+          <li>Versez un volume égal d'eau bouillante salée sur la semoule, couvrez 5 min, égrainez, ajoutez herbes + huile.</li>
+          <li>Saumon en papillote (four 200 °C, 12 min) ou à la poêle 4 min par face.</li>
+          <li>Cuisez les haricots vapeur 8 min ; faites éclater les tomates cerises 3 min à la poêle.</li>
+          <li>Dressez semoule, saumon, légumes, trait de citron.</li>
         </ol>
       </div>
     </div>
-    <div class="tip-block"><strong>Astuce sportive :</strong> saumon (oméga-3) + pommes de terre (glucides lents) = excellent repas de récupération.</div>
+    <div class="macro-strip">
+      <span class="macro-lbl">Par portion adulte · entrée + plat</span>
+      <div class="macro-item"><div class="v kcal">760</div><div class="u">kcal</div></div>
+      <div class="macro-item"><div class="v">41</div><div class="u">Prot. g</div></div>
+      <div class="macro-item"><div class="v">70</div><div class="u">Gluc. g</div></div>
+      <div class="macro-item"><div class="v">32</div><div class="u">Lip. g</div></div>
+    </div>
+    <div class="tip-block"><strong>Conseil &amp; conservation :</strong> repas le plus lipidique de la semaine (oméga-3 du saumon) — idéal le soir d'une grosse séance. Si la cuisson au four chauffe trop : poêle à couvercle, feu doux. Velouté 3 j au frais.</div>
 
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>4<span class="dot"></span>8</span>
     </div>
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAGE 5 — VENDREDI                                                -->
+  <!-- PAGE 5 — DÎNER 03                                                -->
   <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Vendredi 19 juin</div>
-    <h1 class="page-title">Salade <span class="accent">niçoise</span> (servie froide).</h1>
+  <section class="page" id="diner-03">
+    <div class="eyebrow">Dîner 03 · Jardin</div>
+    <h1 class="page-title">Taboulé de <span class="accent">quinoa</span>, pois chiches &amp; œuf mollet.</h1>
     <div class="day-meta">
-      <span class="day-tag">8 portions</span>
-      <span class="badge">Repas froid complet</span>
+      <span class="day-tag">6 portions</span>
+      <span class="badge">Végétal · sans feu</span>
+      <button type="button" class="done-toggle" aria-pressed="false">
+        <span class="done-toggle-box" aria-hidden="true"></span>
+        <span class="done-toggle-label">Marquer r&eacute;alis&eacute;</span>
+      </button>
     </div>
 
     <!-- ENTRÉE -->
-    <div class="section-label">Entrée · Velouté froid de petits pois à la menthe</div>
+    <div class="section-label">Entrée · Pastèque, concombre &amp; menthe</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Petits pois (frais écossés ou surgelés)</td><td class="qty">1 kg</td></tr>
-          <tr><td>Oignon</td><td class="qty">1</td></tr>
-          <tr><td>Crème fraîche</td><td class="qty">10 cl</td></tr>
-          <tr><td>Menthe fraîche</td><td class="qty">qq feuilles</td></tr>
-          <tr><td>Cube de bouillon de volaille · sel · poivre</td><td class="qty">1</td></tr>
+          <tr><td>Pastèque (chair)</td><td class="qty">750 g</td></tr>
+          <tr><td>Concombre</td><td class="qty">375 g</td></tr>
+          <tr><td>Menthe fraîche</td><td class="qty">12 g</td></tr>
+          <tr><td>Citron vert (jus)</td><td class="qty">2</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">15 ml</td></tr>
+          <tr><td>Graines de courge torréfiées</td><td class="qty">30 g</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 20 min + réfrigération</p>
+        <p class="prep-time">Préparation · 10 min</p>
         <ol class="prep-list">
-          <li>Faites suer l'oignon émincé. Ajoutez les petits pois, couvrez d'eau (~80 cl) avec le bouillon. Cuisez 10 min.</li>
-          <li>Mixez finement avec la menthe et la crème. Rectifiez sel/poivre.</li>
-          <li>Laissez refroidir et servez bien frais.</li>
+          <li>Détaillez pastèque et concombre en cubes.</li>
+          <li>Assaisonnez citron vert, huile, menthe ciselée.</li>
+          <li>Parsemez de graines au dernier moment. Servez très frais.</li>
         </ol>
       </div>
     </div>
-    <div class="tip-block">Entrée légère et fraîche qui n'entre pas en doublon avec la salade de pâtes du plat.</div>
 
     <hr class="divider">
 
     <!-- PLAT -->
-    <div class="section-label">Plat · Salade niçoise</div>
+    <div class="section-label">Plat · Taboulé de quinoa, pois chiches, œuf mollet</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Thon au naturel (~140 g)</td><td class="qty">4 boîtes</td></tr>
-          <tr><td>Œufs</td><td class="qty">8</td></tr>
-          <tr><td>Pommes de terre</td><td class="qty">800 g</td></tr>
-          <tr><td>Haricots verts</td><td class="qty">500 g</td></tr>
-          <tr><td>Tomates</td><td class="qty">6</td></tr>
-          <tr><td>Poivrons (1 rouge, 1 jaune)</td><td class="qty">2</td></tr>
-          <tr><td>Olives noires</td><td class="qty">100 g</td></tr>
-          <tr><td>Anchois · oignon rouge (optionnel)</td><td class="qty">1 + 1</td></tr>
-          <tr><td>Basilic · huile d'olive · vinaigre</td><td class="qty">q.s.</td></tr>
+          <tr><td>Quinoa (cru)</td><td class="qty">330 g</td></tr>
+          <tr><td>Pois chiches cuits</td><td class="qty">600 g</td></tr>
+          <tr><td>Œufs</td><td class="qty">9</td></tr>
+          <tr><td>Tomates · concombre</td><td class="qty">450 g</td></tr>
+          <tr><td>Persil, ciboulette</td><td class="qty">38 g</td></tr>
+          <tr><td>Citron · huile d'olive</td><td class="qty">38 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 35 min + refroidissement</p>
+        <p class="prep-time">Préparation · 25 min</p>
         <ol class="prep-list">
-          <li>Cuisez les pommes de terre en robe ~20 min, refroidissez, coupez en rondelles.</li>
-          <li>Œufs durs 10 min, rafraîchissez, écalez, quartiers.</li>
-          <li>Haricots verts 8 min (al dente, vert vif), rafraîchis à l'eau froide.</li>
-          <li>Tomates en quartiers, poivrons en lanières, oignon rouge émincé. Égouttez thon et olives.</li>
-          <li>Disposez le tout dans un grand plat. Vinaigrette huile + vinaigre, anchois et basilic. Servez frais.</li>
+          <li>Cuisez le quinoa 12 min, refroidissez.</li>
+          <li>Œufs mollets : 6 min dans l'eau bouillante, refroidissez, écalez.</li>
+          <li>Mélangez quinoa, pois chiches, légumes en dés, herbes, jus de citron + huile.</li>
+          <li>Dressez avec l'œuf coupé en deux dessus (2 œufs / adulte, 1 / enfant).</li>
         </ol>
       </div>
     </div>
-    <div class="tip-block"><strong>Astuce enfants :</strong> présentez les éléments un peu séparés (thon, œuf, pommes de terre) — souvent mieux accepté que mélangé. <strong>Astuce sportive :</strong> protéines (thon + œufs), glucides lents et bons lipides — excellent repas de récupération.</div>
+    <div class="macro-strip">
+      <span class="macro-lbl">Par portion adulte · entrée + plat</span>
+      <div class="macro-item"><div class="v kcal">680</div><div class="u">kcal</div></div>
+      <div class="macro-item"><div class="v">31</div><div class="u">Prot. g</div></div>
+      <div class="macro-item"><div class="v">76</div><div class="u">Gluc. g</div></div>
+      <div class="macro-item"><div class="v">28</div><div class="u">Lip. g</div></div>
+    </div>
+    <div class="tip-block"><strong>Conseil &amp; conservation :</strong> soir végétarien — les 2 œufs + pois chiches montent la protéine à un niveau correct. Taboulé encore meilleur le lendemain midi (2 j au frais). 100 % sans cuisson chaude une fois quinoa et œufs faits.</div>
 
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>5<span class="dot"></span>8</span>
     </div>
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAGE 6 — SAMEDI                                                  -->
+  <!-- PAGE 6 — DÎNER 04                                                -->
   <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Samedi 20 juin</div>
-    <h1 class="page-title">Dahl de <span class="accent">lentilles corail</span> au lait de coco.</h1>
+  <section class="page" id="diner-04">
+    <div class="eyebrow">Dîner 04 · Méridional</div>
+    <h1 class="page-title">Cabillaud plancha, pommes de terre &amp; fenouil, <span class="accent">sauce vierge</span>.</h1>
     <div class="day-meta">
-      <span class="day-tag">8 portions</span>
-      <span class="badge">Végétal · fer</span>
+      <span class="day-tag">6 portions</span>
+      <span class="badge">Léger · zéro four</span>
+      <button type="button" class="done-toggle" aria-pressed="false">
+        <span class="done-toggle-box" aria-hidden="true"></span>
+        <span class="done-toggle-label">Marquer r&eacute;alis&eacute;</span>
+      </button>
     </div>
 
     <!-- ENTRÉE -->
-    <div class="section-label">Entrée · Carottes râpées au maïs</div>
+    <div class="section-label">Entrée · Tomates anciennes au basilic</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Carottes</td><td class="qty">6</td></tr>
-          <tr><td>Maïs (égoutté)</td><td class="qty">1 boîte · ~300 g</td></tr>
-          <tr><td>Citron (ou jus d'orange)</td><td class="qty">1</td></tr>
-          <tr><td>Huile</td><td class="qty">3 c. à soupe</td></tr>
-          <tr><td>Persil · sel</td><td class="qty">q.s.</td></tr>
+          <tr><td>Tomates anciennes</td><td class="qty">750 g</td></tr>
+          <tr><td>Oignon rouge</td><td class="qty">60 g</td></tr>
+          <tr><td>Basilic frais</td><td class="qty">15 g</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">22 ml</td></tr>
+          <tr><td>Fleur de sel · vinaigre</td><td class="qty">au goût</td></tr>
         </table>
       </div>
       <div>
         <p class="prep-time">Préparation · 10 min</p>
         <ol class="prep-list">
-          <li>Râpez les carottes, ajoutez le maïs égoutté.</li>
-          <li>Assaisonnez avec jus de citron, huile, persil ciselé et sel. Mélangez.</li>
+          <li>Tranchez les tomates, disposez en rosace.</li>
+          <li>Oignon rouge émincé fin, basilic, fleur de sel.</li>
+          <li>Filet d'huile et de vinaigre juste avant de servir.</li>
         </ol>
       </div>
     </div>
@@ -725,66 +998,78 @@
     <hr class="divider">
 
     <!-- PLAT -->
-    <div class="section-label">Plat · Dahl de lentilles corail, riz basmati</div>
+    <div class="section-label">Plat · Cabillaud, pommes de terre &amp; fenouil, sauce vierge</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Lentilles corail</td><td class="qty">500 g</td></tr>
-          <tr><td>Lait de coco (~80 cl)</td><td class="qty">2 boîtes</td></tr>
-          <tr><td>Tomates concassées</td><td class="qty">1 boîte · ~400 g</td></tr>
-          <tr><td>Riz basmati</td><td class="qty">500 g</td></tr>
-          <tr><td>Oignons · ail</td><td class="qty">2 · 3 gousses</td></tr>
-          <tr><td>Gingembre frais</td><td class="qty">1 morceau</td></tr>
-          <tr><td>Curry · curcuma · cumin</td><td class="qty">1 cs · 1 cc · 1 cc</td></tr>
-          <tr><td>Huile · sel · coriandre fraîche</td><td class="qty">q.s.</td></tr>
+          <tr><td>Dos de cabillaud</td><td class="qty">840 g</td></tr>
+          <tr><td>Pommes de terre nouvelles</td><td class="qty">1,05 kg</td></tr>
+          <tr><td>Fenouil</td><td class="qty">450 g</td></tr>
+          <tr><td>Tomate (sauce vierge)</td><td class="qty">225 g</td></tr>
+          <tr><td>Olives, basilic, citron</td><td class="qty">au goût</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">38 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 35 min</p>
+        <p class="prep-time">Préparation · 30 min</p>
         <ol class="prep-list">
-          <li>Faites revenir oignons, ail et gingembre hachés dans l'huile. Ajoutez les épices, remuez 1 min.</li>
-          <li>Ajoutez les lentilles rincées, les tomates, le lait de coco et 30 cl d'eau. Salez.</li>
-          <li>Mijotez 20-25 min à feu doux, en remuant, jusqu'à texture crémeuse.</li>
-          <li>Cuisez le riz basmati en parallèle. Servez le dahl sur le riz, parsemé de coriandre.</li>
+          <li>Cuisez pommes de terre et fenouil émincé à la vapeur 18 min.</li>
+          <li>Sauce vierge : tomate en petits dés, olives, basilic, citron, 22 ml d'huile, à température.</li>
+          <li>Saisissez le cabillaud à la plancha/poêle 3 min par face.</li>
+          <li>Dressez le poisson sur les légumes, nappez de sauce vierge.</li>
         </ol>
       </div>
     </div>
-    <div class="tip-block"><strong>Astuce enfants :</strong> restez sur un curry doux. Plat 100 % végétal, riche en protéines et en fer — parfait pour la sportive.</div>
+    <div class="macro-strip">
+      <span class="macro-lbl">Par portion adulte · entrée + plat</span>
+      <div class="macro-item"><div class="v kcal">560</div><div class="u">kcal</div></div>
+      <div class="macro-item"><div class="v">36</div><div class="u">Prot. g</div></div>
+      <div class="macro-item"><div class="v">58</div><div class="u">Gluc. g</div></div>
+      <div class="macro-item"><div class="v">19</div><div class="u">Lip. g</div></div>
+    </div>
+    <div class="tip-block"><strong>Conseil &amp; conservation :</strong> le plus léger de la semaine, parfait sur un jour de repos. Cuisson 100 % vapeur + plancha : zéro four. Les enfants apprécient souvent le poisson blanc nature avec les pommes de terre, sauce vierge à part.</div>
 
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>6<span class="dot"></span>8</span>
     </div>
   </section>
 
   <!-- ================================================================ -->
-  <!-- PAGE 7 — DIMANCHE                                                -->
+  <!-- PAGE 7 — DÎNER 05                                                -->
   <!-- ================================================================ -->
-  <section class="page">
-    <div class="eyebrow">Dimanche 21 juin</div>
-    <h1 class="page-title">Rôti de porc, <span class="accent">purée maison</span> &amp; carottes glacées.</h1>
+  <section class="page" id="diner-05">
+    <div class="eyebrow">Dîner 05 · Pâtes froides</div>
+    <h1 class="page-title">Salade de pâtes complètes, <span class="accent">dinde grillée</span> &amp; légumes d'été.</h1>
     <div class="day-meta">
-      <span class="day-tag">8 portions</span>
-      <span class="badge">Plat du dimanche</span>
+      <span class="day-tag">6 portions</span>
+      <span class="badge">Froid · protéiné</span>
+      <button type="button" class="done-toggle" aria-pressed="false">
+        <span class="done-toggle-box" aria-hidden="true"></span>
+        <span class="done-toggle-label">Marquer r&eacute;alis&eacute;</span>
+      </button>
     </div>
 
     <!-- ENTRÉE -->
-    <div class="section-label">Entrée · Melon-jambon</div>
+    <div class="section-label">Entrée · Carpaccio de courgettes citron-pignons</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Melons</td><td class="qty">2</td></tr>
-          <tr><td>Jambon cru (Bayonne ou similaire)</td><td class="qty">8 tranches</td></tr>
-          <tr><td>Poivre du moulin</td><td class="qty">q.s.</td></tr>
+          <tr><td>Courgettes fermes</td><td class="qty">525 g</td></tr>
+          <tr><td>Pignons de pin torréfiés</td><td class="qty">45 g</td></tr>
+          <tr><td>Citron (jus + zeste)</td><td class="qty">2</td></tr>
+          <tr><td>Basilic frais</td><td class="qty">12 g</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">22 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 10 min</p>
+        <p class="prep-time">Préparation · 15 min</p>
         <ol class="prep-list">
-          <li>Coupez les melons en quartiers, retirez les graines et la peau.</li>
-          <li>Disposez avec le jambon, un tour de moulin à poivre.</li>
+          <li>Taillez les courgettes en fins rubans (économe).</li>
+          <li>Assaisonnez citron + zeste, huile, sel ; laissez 10 min.</li>
+          <li>Parsemez pignons et basilic au moment de servir.</li>
         </ol>
       </div>
     </div>
@@ -792,33 +1077,40 @@
     <hr class="divider">
 
     <!-- PLAT -->
-    <div class="section-label">Plat · Rôti de porc, purée, carottes glacées</div>
+    <div class="section-label">Plat · Salade de pâtes complètes, dinde grillée</div>
     <div class="recipe-grid">
       <div>
-        <div class="col-label">Ingrédients (8 portions)</div>
+        <div class="col-label">Ingrédients (6 portions)</div>
         <table class="ing-table">
-          <tr><td>Rôti de porc</td><td class="qty">~1,5 kg</td></tr>
-          <tr><td>Pommes de terre (purée)</td><td class="qty">1,5 kg</td></tr>
-          <tr><td>Lait</td><td class="qty">30 cl</td></tr>
-          <tr><td>Beurre</td><td class="qty">50 g</td></tr>
-          <tr><td>Carottes</td><td class="qty">1 kg</td></tr>
-          <tr><td>Oignon · ail · thym</td><td class="qty">1 · 2 gousses</td></tr>
-          <tr><td>Sucre · huile · sel · poivre</td><td class="qty">1 c. à soupe</td></tr>
+          <tr><td>Pâtes complètes (crues)</td><td class="qty">420 g</td></tr>
+          <tr><td>Escalopes de dinde</td><td class="qty">750 g</td></tr>
+          <tr><td>Tomates cerises</td><td class="qty">375 g</td></tr>
+          <tr><td>Courgette · poivron</td><td class="qty">375 g</td></tr>
+          <tr><td>Citron · moutarde · herbes</td><td class="qty">au goût</td></tr>
+          <tr><td>Huile d'olive</td><td class="qty">38 ml</td></tr>
         </table>
       </div>
       <div>
-        <p class="prep-time">Préparation · 1 h 15</p>
+        <p class="prep-time">Préparation · 30 min</p>
         <ol class="prep-list">
-          <li>Four à 200 °C. Saisissez le rôti sur toutes les faces en cocotte avec un peu d'huile, salez, poivrez, ajoutez ail et thym. Enfournez 1 h en arrosant (~30-35 min/kg).</li>
-          <li>Purée : épluchez et coupez les pommes de terre, cuisez 20 min à l'eau salée. Écrasez avec le lait chaud et le beurre. Salez, poivrez.</li>
-          <li>Carottes glacées : en rondelles, dans une casserole avec un peu d'eau, le beurre et le sucre. À couvert 15 min, puis à découvert pour évaporer et caraméliser légèrement.</li>
-          <li>Laissez reposer le rôti 5 min avant de trancher. Servez avec le jus.</li>
+          <li>Cuisez les pâtes al dente, rincez à l'eau froide, égouttez.</li>
+          <li>Grillez la dinde à la plancha/poêle, tranchez une fois tiède.</li>
+          <li>Poêlez vif courgette et poivron en dés (ou crus en petits cubes).</li>
+          <li>Mélangez pâtes, légumes, tomates ; vinaigrette citron-moutarde-huile ; dinde dessus.</li>
         </ol>
       </div>
     </div>
+    <div class="macro-strip">
+      <span class="macro-lbl">Par portion adulte · entrée + plat</span>
+      <div class="macro-item"><div class="v kcal">700</div><div class="u">kcal</div></div>
+      <div class="macro-item"><div class="v">47</div><div class="u">Prot. g</div></div>
+      <div class="macro-item"><div class="v">68</div><div class="u">Gluc. g</div></div>
+      <div class="macro-item"><div class="v">25</div><div class="u">Lip. g</div></div>
+    </div>
+    <div class="tip-block"><strong>Conseil &amp; conservation :</strong> le repas froid par excellence — se prépare le matin et attend au frais. Repas le plus protéiné de la semaine. Se transporte parfaitement en boîte pour le déjeuner du lendemain (2 j).</div>
 
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>7<span class="dot"></span>8</span>
     </div>
   </section>
@@ -829,94 +1121,127 @@
   <section class="page">
     <div class="eyebrow">Liste de courses</div>
     <h1 class="page-title">Courses <span class="accent">par rayon.</span></h1>
-    <p style="font-size:9pt;color:var(--ink-4);margin-bottom:16px;margin-top:-4px;">5 dîners · 8 portions par recette · quantités consolidées</p>
+    <p style="font-size:9pt;color:var(--ink-4);margin-bottom:16px;margin-top:-4px;">5 dîners · 6 portions par recette · quantités consolidées. Hors épicerie de base déjà en stock (huile d'olive, vinaigres, sel, ail, oignons, citrons, herbes, semoule, riz, quinoa, pâtes).</p>
     <div class="shop-grid">
       <!-- COL 1 -->
       <div>
         <div class="shop-cat">
           <div class="shop-cat-title">🥬 Fruits &amp; légumes</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Courgettes</span><span class="shop-qty">6</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Oignons (+1 rouge opt.)</span><span class="shop-qty">7</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Ail</span><span class="shop-qty">2 têtes</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Gingembre frais</span><span class="shop-qty">1 morceau</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Concombres</span><span class="shop-qty">2</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Petits pois</span><span class="shop-qty">1 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre grenaille</span><span class="shop-qty">1,2 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre (niçoise)</span><span class="shop-qty">800 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre (purée)</span><span class="shop-qty">1,5 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Brocolis</span><span class="shop-qty">2 · ~900 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts</span><span class="shop-qty">1,5 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates</span><span class="shop-qty">6</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Poivrons (1 rouge, 1 jaune)</span><span class="shop-qty">2</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Carottes</span><span class="shop-qty">~2,3 kg · 16</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons</span><span class="shop-qty">3</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Melons</span><span class="shop-qty">2</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Menthe fraîche</span><span class="shop-qty">1 botte</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Basilic frais</span><span class="shop-qty">1 botte</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Coriandre fraîche</span><span class="shop-qty">1 botte</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Persil</span><span class="shop-qty">1 botte</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Aneth</span><span class="shop-qty">1 petite botte</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates mûres</span><span class="shop-qty">1,8 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates anciennes</span><span class="shop-qty">750 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates cerises</span><span class="shop-qty">825 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Courgettes</span><span class="shop-qty">2,4 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Concombre</span><span class="shop-qty">1,05 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Poivrons</span><span class="shop-qty">780 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts</span><span class="shop-qty">450 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Fenouil</span><span class="shop-qty">450 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pommes de terre nouvelles</span><span class="shop-qty">1,05 kg</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pomme de terre</span><span class="shop-qty">180 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pastèque</span><span class="shop-qty">1 moyenne</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Oignon rouge</span><span class="shop-qty">2</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Menthe · basilic · persil · ciboulette</span><span class="shop-qty">frais</span></div>
         </div>
         <div class="shop-cat">
-          <div class="shop-cat-title">🍗 Boucherie / Volaille</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Cuisses de poulet (hauts de cuisse)</span><span class="shop-qty">8</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Rôti de porc</span><span class="shop-qty">~1,5 kg</span></div>
+          <div class="shop-cat-title">🐟 Poissonnerie &amp; boucherie</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Filets de poulet</span><span class="shop-qty">750 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Escalopes de dinde</span><span class="shop-qty">750 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pavés de saumon</span><span class="shop-qty">780 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Dos de cabillaud</span><span class="shop-qty">840 g</span></div>
         </div>
         <div class="shop-cat">
-          <div class="shop-cat-title">🐟 Poissonnerie</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Pavés de saumon</span><span class="shop-qty">8 · ~1,2 kg</span></div>
-        </div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">🥓 Charcuterie</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Jambon cru (Bayonne ou sim.)</span><span class="shop-qty">8 tranches</span></div>
-        </div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">❄️ Surgelés (option)</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Haricots verts surgelés</span><span class="shop-qty">1 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Petits pois surgelés</span><span class="shop-qty">1 kg</span></div>
+          <div class="shop-cat-title">🥚 Œufs &amp; légumineuses</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs</span><span class="shop-qty">×9</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pois chiches cuits</span><span class="shop-qty">600 g</span></div>
         </div>
       </div>
       <!-- COL 2 -->
       <div>
         <div class="shop-cat">
-          <div class="shop-cat-title">🧀 Crémerie / Frais</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Fromage frais ail &amp; fines herbes</span><span class="shop-qty">100 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Crème fraîche (20 cl + 10 cl)</span><span class="shop-qty">30 cl</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Yaourt nature</span><span class="shop-qty">1</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Œufs (niçoise)</span><span class="shop-qty">8</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Beurre</span><span class="shop-qty">1 plaquette · 250 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait</span><span class="shop-qty">1 brique (≥30 cl)</span></div>
+          <div class="shop-cat-title">🌾 Féculents (à compléter)</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Riz semi-complet</span><span class="shop-qty">420 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Semoule complète</span><span class="shop-qty">360 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Quinoa</span><span class="shop-qty">330 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pâtes complètes</span><span class="shop-qty">420 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pain rassis (sans lait)</span><span class="shop-qty">60 g</span></div>
         </div>
         <div class="shop-cat">
-          <div class="shop-cat-title">🛒 Épicerie salée</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Riz long ou basmati (500 g + 500 g)</span><span class="shop-qty">1 kg</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Thon au naturel (~140 g)</span><span class="shop-qty">4 boîtes</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Olives noires</span><span class="shop-qty">100 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Anchois (optionnel)</span><span class="shop-qty">1 petite boîte</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Lentilles corail</span><span class="shop-qty">500 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Lait de coco (~80 cl)</span><span class="shop-qty">2 boîtes</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Tomates concassées (dahl)</span><span class="shop-qty">1 boîte · ~400 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Maïs</span><span class="shop-qty">1 boîte · ~300 g</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon de volaille</span><span class="shop-qty">cubes</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Huile d'olive</span><span class="shop-qty">q.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre (vinaigrette)</span><span class="shop-qty">q.s.</span></div>
-        </div>
-        <div class="shop-cat">
-          <div class="shop-cat-title">🌶️ Épices &amp; condiments (à vérifier)</div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Herbes de Provence · thym</span><span class="shop-qty">q.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Curry · curcuma · cumin</span><span class="shop-qty">q.s.</span></div>
-          <div class="shop-item"><span><span class="shop-checkbox"></span>Sucre · sel · poivre</span><span class="shop-qty">q.s.</span></div>
+          <div class="shop-cat-title">🛒 Épicerie</div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Pignons de pin</span><span class="shop-qty">45 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Graines de courge</span><span class="shop-qty">30 g</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Olives</span><span class="shop-qty">1 bol</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Bouillon de légumes</span><span class="shop-qty">900 ml</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Vinaigre de Xérès</span><span class="shop-qty">—</span></div>
+          <div class="shop-item"><span><span class="shop-checkbox"></span>Citrons verts</span><span class="shop-qty">×3</span></div>
         </div>
         <div class="info-note" style="margin-top:18px;">
           <span class="label">Bon à savoir</span>
-          Quantités calculées pour 8 portions par recette — idéal pour des restes ou les déjeuners du lendemain. À ajuster selon l'appétit (les enfants mangeront des parts plus petites).
+          Quantités calculées pour 6 portions par recette (mesures au poids) — la tablée + 2 parts de rab pour les déjeuners du lendemain. 4 dîners sur 5 se mangent froids ou tièdes : un seul feu, voire aucun.
         </div>
       </div>
     </div>
     <div class="page-number">
-      <span>Menu de la semaine · Famille</span>
+      <span>Menu d'été · Canicule</span>
       <span>8<span class="dot"></span>8</span>
     </div>
   </section>
+
+  <!-- ================================================================ -->
+  <!-- SUIVI « RECETTE RÉALISÉE » — persistance localStorage            -->
+  <!-- ================================================================ -->
+  <script>
+    (function () {
+      // Clé versionnée par menu : un nouveau menu repart d'un état vierge.
+      var STORAGE_KEY = 'lce_menu_done_ete2026';
+      var RECIPES = ['diner-01', 'diner-02', 'diner-03', 'diner-04', 'diner-05'];
+
+      function load() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+        catch (e) { return {}; }
+      }
+      function save() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+        catch (e) { /* mode privé / quota : on ignore, l'état reste en mémoire */ }
+      }
+
+      var state = load();
+
+      // Retrouve la ligne de la vue d'ensemble correspondant à une recette.
+      function rowFor(id) {
+        var link = document.querySelector('a.dish-link[href="#' + id + '"]');
+        return link ? link.closest('tr') : null;
+      }
+
+      function apply(id) {
+        var done = !!state[id];
+        var flag = done ? 'true' : 'false';
+        var section = document.getElementById(id);
+        if (section) {
+          section.setAttribute('data-done', flag);
+          var btn = section.querySelector('.done-toggle');
+          if (btn) {
+            btn.setAttribute('aria-pressed', flag);
+            var label = btn.querySelector('.done-toggle-label');
+            if (label) label.textContent = done ? 'Réalisé' : 'Marquer réalisé';
+          }
+        }
+        var row = rowFor(id);
+        if (row) row.setAttribute('data-done', flag);
+      }
+
+      RECIPES.forEach(function (id) {
+        var section = document.getElementById(id);
+        if (!section) return;
+        var btn = section.querySelector('.done-toggle');
+        if (btn) {
+          btn.addEventListener('click', function () {
+            state[id] = !state[id];
+            save();
+            apply(id);
+          });
+        }
+        apply(id);
+      });
+    })();
+  </script>
 </body>
 </html>
