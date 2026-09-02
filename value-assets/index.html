@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Méthode Stack Possédée — Board</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --dot:#d7dbe0; --ink:#1f2733; --sub:#5b6472;
+    --box:#ffffff; --line:#9aa4b2;
+    --blue:#2f6fed; --blueSoft:#eaf1ff;
+    --amber:#b9770a; --amberSoft:#fff5e2;
+    --red:#c23b3b; --redSoft:#fdecec;
+    --heart:#0f9d8f; --heartSoft:#e5f7f4;
+    --green:#1f9254; --greenSoft:#e7f6ee;
+    --gray:#586170; --graySoft:#eef0f3;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);}
+  #viewport{
+    position:fixed;inset:0;background:var(--bg);
+    background-image:radial-gradient(var(--dot) 1.4px, transparent 1.4px);
+    background-size:26px 26px;overflow:hidden;cursor:grab;
+  }
+  #world{position:absolute;top:0;left:0;transform-origin:0 0;transition:transform .95s cubic-bezier(.55,.06,.2,1);}
+  svg.wires{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;}
+
+  .frame{position:absolute;border:2px dashed #c3cbd6;border-radius:20px;background:rgba(255,255,255,.35);}
+  .frame .tag{position:absolute;top:-14px;left:22px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--sub);}
+
+  .node{position:absolute;background:var(--box);border:1px solid #e2e6ec;border-left:6px solid var(--blue);
+    border-radius:14px;padding:14px 16px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;
+    transition:box-shadow .2s, transform .2s;}
+  .node:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .node.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+  .node .n{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--sub);text-transform:uppercase;}
+  .node .t{font-size:19px;font-weight:800;line-height:1.15;margin-top:4px;}
+  .node .s{font-size:14px;color:var(--sub);line-height:1.3;margin-top:7px;}
+  .badge{position:absolute;top:-12px;right:-10px;background:var(--heart);color:#fff;font-size:12px;font-weight:800;
+    padding:4px 10px;border-radius:999px;box-shadow:0 4px 10px rgba(15,157,143,.4);}
+
+  .node.problem{border-left-color:var(--amber);background:var(--amberSoft);}
+  .node.bad{border-left-color:var(--red);background:var(--redSoft);}
+  .node.heart{border-left-color:var(--heart);background:var(--heartSoft);border-width:1px;}
+  .node.cta{border-left-color:var(--green);background:var(--greenSoft);}
+  .node.start{border-left-color:var(--gray);background:var(--graySoft);}
+  .node.how{border-left-color:#0f9d8f;}
+  .pcard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-top:5px solid #2f6fed;border-radius:14px;
+    padding:12px 15px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;transition:box-shadow .2s;}
+  .pcard:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .pcard.p2{border-top-color:#2f6fed;}
+  .pcard.p3{border-top-color:#2f6fed;}
+  .pcard.why{background:#eef0f3;border-top-color:#586170;}
+  .pcard .h{font-size:16px;font-weight:800;line-height:1.15;}
+  .pcard .w{display:inline-block;margin-top:5px;font-size:11.5px;font-weight:800;color:#5b6472;background:#eef0f3;border-radius:999px;padding:2px 9px;}
+  .pcard ul{margin:9px 0 0;padding-left:15px;}
+  .pcard li{font-size:12.5px;color:#3a4351;line-height:1.5;}
+  .pcard.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+  .rchip{position:absolute;background:#fff;border:1px solid #e2e6ec;border-left:5px solid #2f6fed;border-radius:12px;
+    padding:10px 12px;box-shadow:0 5px 14px rgba(31,39,51,.08);}
+  .rchip .rt{font-size:13.5px;font-weight:800;line-height:1.15;}
+  .rchip .rs{font-size:11.5px;color:#5b6472;margin-top:3px;line-height:1.2;}
+
+  /* cylinder */
+  .db{position:absolute;}
+  .db .cyl{width:118px;height:150px;position:relative;margin:0 auto;}
+  .db .cyl:before{content:"";position:absolute;inset:0;border:2px solid var(--gray);border-radius:0 0 60px 60px/0 0 22px 22px;background:var(--graySoft);}
+  .db .cyl:after{content:"";position:absolute;top:0;left:0;right:0;height:34px;border:2px solid var(--gray);border-radius:50%;background:#fff;}
+  .db .lbl{text-align:center;margin-top:10px;font-weight:800;font-size:15px;}
+  .db .sub{text-align:center;font-size:12.5px;color:var(--sub);margin-top:2px;max-width:170px;}
+  /* stack éclatée : CRM au centre, outils non connectés */
+  .stackzone{position:absolute;border:2px dashed #c3cbd6;border-radius:18px;background:rgba(255,255,255,.35);cursor:pointer;}
+  .stackzone .zt{position:absolute;top:-14px;left:18px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:12.5px;font-weight:800;color:#5b6472;white-space:nowrap;}
+  .crmcore{position:absolute;background:#eaf1ff;border:2px solid #2f6fed;border-radius:14px;
+    box-shadow:0 8px 20px rgba(47,111,237,.20);text-align:center;padding:12px 10px;}
+  .crmcore .ct{font-size:18px;font-weight:800;color:#1f2733;}
+  .crmcore .cs{font-size:11.5px;color:#5b6472;margin-top:2px;}
+  .toolchip{position:absolute;background:#f4f5f7;border:1.5px dashed #b0b8c4;border-radius:10px;color:#7a8494;
+    text-align:center;padding:8px 6px;font-size:12.5px;font-weight:700;}
+  .catchip{position:absolute;background:#f4f5f7;border:1.5px dashed #b0b8c4;border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 3px;}
+  .catchip .ic{font-size:17px;line-height:1;}
+  .catchip .lb{font-size:10.5px;font-weight:700;color:#6b7480;margin-top:3px;line-height:1.12;}
+  /* humanisation : cadres screenshots + carte cas client */
+  .shot{position:absolute;border:2px dashed #b7c0cc;border-radius:12px;background:#fbfcfd;overflow:hidden;box-shadow:0 4px 12px rgba(31,39,51,.06);}
+  .shot .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#8a94a2;padding:8px;}
+  .shot .ph .cam{font-size:22px;}
+  .shot .ph .t{font-size:12.5px;font-weight:700;margin-top:6px;color:#5b6472;line-height:1.2;}
+  .shot .ph .f{font-size:10.5px;margin-top:4px;color:#9aa4b2;font-family:monospace;}
+  .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .casecard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-left:6px solid #1f9254;border-radius:14px;
+    padding:14px 16px;box-shadow:0 8px 22px rgba(31,39,51,.10);cursor:pointer;}
+  .casecard .ch{display:flex;align-items:center;gap:10px;}
+  .casecard .av{width:40px;height:40px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .casecard .ct{font-size:15px;font-weight:800;line-height:1.15;}
+  .casecard .cs{font-size:11.5px;color:#5b6472;margin-top:1px;}
+  .casecard .metrics{margin-top:10px;display:flex;flex-direction:column;gap:7px;}
+  .casecard .m{display:flex;align-items:baseline;gap:8px;}
+  .casecard .m b{font-size:14px;color:#1f9254;min-width:92px;}
+  .casecard .m span{font-size:12px;color:#3a4351;}
+
+  /* UI */
+  #bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.96);border:1px solid #dfe3ea;border-radius:999px;padding:8px 10px;
+    box-shadow:0 10px 30px rgba(31,39,51,.16);z-index:50;font-size:14px;}
+  #bar button{border:none;background:#f0f2f5;border-radius:999px;padding:9px 14px;font-weight:700;cursor:pointer;color:var(--ink);font-size:14px;}
+  #bar button:hover{background:#e3e7ee;}
+  #bar .prim{background:var(--blue);color:#fff;}
+  #bar .prim:hover{background:#2560d8;}
+  #counter{min-width:52px;text-align:center;font-variant-numeric:tabular-nums;color:var(--sub);font-weight:700;}
+  #titlechip{position:fixed;left:22px;top:20px;background:rgba(255,255,255,.96);border:1px solid #dfe3ea;
+    border-radius:12px;padding:10px 16px;box-shadow:0 8px 22px rgba(31,39,51,.12);z-index:50;max-width:60vw;}
+  #titlechip .k{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  #titlechip .v{font-size:18px;font-weight:800;margin-top:2px;}
+  .hint{position:fixed;right:22px;top:20px;background:rgba(255,255,255,.9);border:1px solid #e2e6ec;border-radius:10px;
+    padding:8px 12px;font-size:12.5px;color:var(--sub);z-index:50;}
+  .hidden{opacity:0!important;pointer-events:none!important;}
+  .shot{cursor:zoom-in;}
+  #lightbox{position:fixed;inset:0;background:rgba(15,19,26,.9);align-items:center;justify-content:center;z-index:100;cursor:zoom-out;padding:32px;display:none;}
+  #lightbox.show{display:flex;}
+  #lightbox img{max-width:95vw;max-height:92vh;border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.55);}
+  #lightbox .esc{position:fixed;top:20px;right:24px;color:#cfd6e0;font-size:13px;font-weight:700;}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="world">
+    <svg class="wires" id="wires"></svg>
+
+    <!-- Frames (principes) -->
+    <div class="frame" style="left:665px;top:398px;width:320px;height:200px;"><span class="tag">Avant tout</span></div>
+    <div class="frame" style="left:1030px;top:388px;width:1020px;height:250px;"><span class="tag">PRINCIPE 1 · Ne migre pas, intègre</span></div>
+    <div class="frame" style="left:2105px;top:388px;width:665px;height:250px;"><span class="tag">PRINCIPE 2 · Ramène le revenue</span></div>
+    <div class="frame" style="left:2825px;top:398px;width:315px;height:230px;"><span class="tag">PRINCIPE 3 · Possède ta stack</span></div>
+
+    <!-- Start : stack éclatée, CRM au centre, 13 catégories NON connectées -->
+    <div class="stackzone" id="n-start" style="left:2px;top:195px;width:350px;height:495px;">
+      <span class="zt">Ta stack aujourd'hui — non connectée</span>
+    </div>
+    <div class="crmcore" style="left:108px;top:408px;width:124px;">
+      <div class="ct">CRM</div><div class="cs">au centre</div>
+    </div>
+    <div class="catchip" style="left:6px;top:230px;width:100px;height:48px;"><div class="ic">💳</div><div class="lb">Paiement</div></div>
+    <div class="catchip" style="left:115px;top:230px;width:100px;height:48px;"><div class="ic">🎙️</div><div class="lb">Conversation</div></div>
+    <div class="catchip" style="left:234px;top:230px;width:100px;height:48px;"><div class="ic">📤</div><div class="lb">Outbound</div></div>
+    <div class="catchip" style="left:6px;top:320px;width:100px;height:48px;"><div class="ic">🔍</div><div class="lb">Enrichment</div></div>
+    <div class="catchip" style="left:115px;top:320px;width:100px;height:48px;"><div class="ic">📡</div><div class="lb">Signals</div></div>
+    <div class="catchip" style="left:234px;top:320px;width:100px;height:48px;"><div class="ic">📧</div><div class="lb">Cold email</div></div>
+    <div class="catchip" style="left:6px;top:430px;width:100px;height:48px;"><div class="ic">📝</div><div class="lb">Forms</div></div>
+    <div class="catchip" style="left:234px;top:430px;width:100px;height:48px;"><div class="ic">📅</div><div class="lb">Scheduling</div></div>
+    <div class="catchip" style="left:6px;top:540px;width:100px;height:48px;"><div class="ic">🧾</div><div class="lb">CPQ / Devis</div></div>
+    <div class="catchip" style="left:115px;top:540px;width:100px;height:48px;"><div class="ic">🔗</div><div class="lb">Orchestration</div></div>
+    <div class="catchip" style="left:234px;top:540px;width:100px;height:48px;"><div class="ic">📊</div><div class="lb">Dashboarding</div></div>
+    <div class="catchip" style="left:6px;top:630px;width:100px;height:48px;"><div class="ic">🗄️</div><div class="lb">Data Warehouse</div></div>
+    <div class="catchip" style="left:234px;top:630px;width:100px;height:48px;"><div class="ic">🛒</div><div class="lb">Martech B2C</div></div>
+
+    <!-- Problème -->
+    <div class="node problem" id="n-prob" style="left:380px;top:450px;width:250px;">
+      <div class="n">Le constat</div>
+      <div class="t">Le CRM craque à 50+</div>
+      <div class="s">saisie manuelle · forecast dans un Sheet · finance vs sales</div>
+    </div>
+
+    <!-- Fausse route (branche verticale) -->
+    <div class="node bad" id="n-b1" style="left:380px;top:635px;width:250px;">
+      <div class="n">La fausse route</div>
+      <div class="t" style="font-size:17px;">« Il nous faut HubSpot »</div>
+    </div>
+    <div class="node bad" id="n-b2" style="left:380px;top:760px;width:250px;">
+      <div class="t" style="font-size:17px;">Migration 6 mois</div>
+    </div>
+    <div class="node bad" id="n-b3" style="left:380px;top:885px;width:250px;">
+      <div class="t" style="font-size:17px;">Licence ×2 + recruter un RevOps</div>
+    </div>
+    <div class="node bad" id="n-b4" style="left:380px;top:1010px;width:250px;">
+      <div class="t" style="font-size:17px;">Lock-in.</div>
+      <div class="s">Même problème, en plus lourd.</div>
+    </div>
+
+    <!-- Étapes -->
+    <div class="node" id="n-e0" style="left:700px;top:450px;width:250px;">
+      <div class="n">Étape 0</div><div class="t">Cartographier & mesurer la baseline</div>
+      <div class="s">cartographie stack · champs remplis · heures de saisie · fraîcheur pipe</div>
+    </div>
+    <div class="node" id="n-e1" style="left:1060px;top:450px;width:250px;">
+      <div class="n">Étape 1</div><div class="t">Poser la couche</div>
+      <div class="s">n8n self-hosted (Hetzner)</div>
+    </div>
+    <div class="node" id="n-e2" style="left:1420px;top:450px;width:250px;">
+      <div class="n">Étape 2</div><div class="t">Tuer la double-saisie #1</div>
+      <div class="s">Aircall / Modjo → champs auto</div>
+    </div>
+    <div class="node" id="n-e3" style="left:1780px;top:450px;width:250px;">
+      <div class="n">Étape 3</div><div class="t">Normaliser & dédupliquer</div>
+      <div class="s">1 société = 1 compte</div>
+    </div>
+    <div class="node heart" id="n-e4" style="left:2140px;top:445px;width:260px;">
+      <span class="badge">le cœur</span>
+      <div class="n">Étape 4</div><div class="t">Revenue Capture</div>
+      <div class="s">Stripe → CRM · réconciliation deal ↔ cash</div>
+    </div>
+    <div class="node" id="n-e5" style="left:2500px;top:450px;width:250px;">
+      <div class="n">Étape 5</div><div class="t">Forecast dans le CRM</div>
+      <div class="s">fraîcheur · variance vs réalisé · lisible finance</div>
+    </div>
+    <div class="node" id="n-e6" style="left:2860px;top:450px;width:250px;">
+      <div class="n">Étape 6</div><div class="t">Ancrer l'adoption</div>
+      <div class="s">documenter · former · communiquer · mesurer</div>
+    </div>
+
+    <!-- ÉTAPE 0 — Le Diagnostic RevOps : cases détail empilées sous la case mère -->
+    <div class="pcard" id="pc1" style="left:700px;top:600px;width:250px;">
+      <div class="h">P1 · Santé de la stack</div>
+      <ul>
+        <li>1.1 Ownership & accès data</li>
+        <li>1.2 Cartographie & intégrations</li>
+        <li>1.3 Archi CRM & modèle data</li>
+        <li>1.4 Dette tech & workflows</li>
+        <li>1.5 Gouvernance & doc</li>
+      </ul>
+    </div>
+    <div class="pcard p2" id="pc2" style="left:700px;top:795px;width:250px;">
+      <div class="h">P2 · Saisie & réconciliation</div>
+      <ul>
+        <li>2.1 Saisie manuelle</li>
+        <li>2.2 Double-saisie inter-outils</li>
+        <li>2.3 Réconc. Stripe ↔ CRM (V1)</li>
+        <li>2.4 Tâches & relances auto</li>
+        <li>2.5 Qualité data source</li>
+      </ul>
+    </div>
+    <div class="pcard p3" id="pc3" style="left:700px;top:990px;width:250px;">
+      <div class="h">P3 · Forecast dans le CRM</div>
+      <ul>
+        <li>3.1 Fraîcheur du pipeline</li>
+        <li>3.2 Fiabilité du forecast</li>
+        <li>3.3 Remontée revenue réel</li>
+        <li>3.4 Lisibilité finance</li>
+        <li>3.5 Adoption commerciale</li>
+      </ul>
+    </div>
+
+    <div class="node cta" id="n-e0-dod" style="left:700px;top:1190px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Baseline partagée</div>
+      <div class="s">cartographie interne (langage commun) · 3 KPIs + process de mesure établi</div>
+    </div>
+
+    <!-- ÉTAPE 1 — Pourquoi (regroupé) + Comment (mise en place) empilés sous la case mère -->
+    <div class="pcard why" id="n-e1-why" style="left:1060px;top:600px;width:250px;">
+      <div class="h">Pourquoi self-hosted</div>
+      <ul>
+        <li>Propriété — à toi</li>
+        <li>Coût fixe, pas à l'usage</li>
+        <li>Zéro lock-in outil</li>
+        <li>Versioning (git)</li>
+        <li>Auditabilité des exécutions</li>
+        <li>Communauté n8n (templates)</li>
+        <li>Génération assistée par IA</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-h1" style="left:1060px;top:815px;width:250px;">
+      <div class="n">Comment · 1</div><div class="t">Serveur dédié</div>
+      <div class="s">VPS Hetzner · Docker + compose</div>
+    </div>
+    <div class="node" id="n-h2" style="left:1060px;top:915px;width:250px;">
+      <div class="n">Comment · 2</div><div class="t">Nom de domaine</div>
+      <div class="s">DNS → serveur · HTTPS (reverse proxy)</div>
+    </div>
+    <div class="node" id="n-h3" style="left:1060px;top:1015px;width:250px;">
+      <div class="n">Comment · 3</div><div class="t">Base de données</div>
+      <div class="s">Postgres (jamais SQLite en prod)</div>
+    </div>
+    <div class="node" id="n-h4" style="left:1060px;top:1115px;width:250px;">
+      <div class="n">Comment · 4</div><div class="t">Mise en place n8n</div>
+      <div class="s">image officielle · secrets en env · backups</div>
+    </div>
+    <div class="node" id="n-h5" style="left:1060px;top:1215px;width:250px;">
+      <div class="n">Comment · 5</div><div class="t">Utilisateurs & rôles</div>
+      <div class="s">auth forte · RBAC · moindre privilège</div>
+    </div>
+
+    <div class="node" id="n-couche" style="left:1060px;top:1325px;width:250px;">
+      <div class="n">Le résultat</div><div class="t">Couche possédée</div>
+      <div class="s">n8n self-hosted · Postgres · HTTPS · secrets en env</div>
+    </div>
+    <div class="node cta" id="n-dod" style="left:1060px;top:1470px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Couche solide d'abord</div>
+      <div class="s">prod + backups testés + git + staging + workflow traceur</div>
+    </div>
+
+    <!-- ÉTAPE 2 — Tuer la double-saisie : Pourquoi + 4 connecteurs empilés sous la case mère -->
+    <div class="pcard why" id="n-e2-why" style="left:1420px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Première victoire visible</li>
+        <li>Embarque l'équipe (adoption)</li>
+        <li>= ta brique IP V2</li>
+        <li>Souveraineté = argument</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-c1" style="left:1420px;top:760px;width:250px;">
+      <div class="n">Connecter · 1</div><div class="t">Calls</div>
+      <div class="s">Modjo · Ringover 🇫🇷 · Aircall 🇺🇸</div>
+    </div>
+    <div class="node" id="n-c2" style="left:1420px;top:860px;width:250px;">
+      <div class="n">Connecter · 2</div><div class="t">Visio</div>
+      <div class="s">Noota 🇫🇷 RGPD · Fathom/Fireflies 🇺🇸</div>
+    </div>
+    <div class="node" id="n-c3" style="left:1420px;top:960px;width:250px;">
+      <div class="n">Connecter · 3</div><div class="t">Emails</div>
+      <div class="s">Gmail/Outlook · sync natif + n8n parsing</div>
+    </div>
+    <div class="node" id="n-c4" style="left:1420px;top:1060px;width:250px;">
+      <div class="n">Connecter · 4 · adjacent</div><div class="t">Support client / Ticketing</div>
+      <div class="s">Zammad (self-host) 🇩🇪 · Crisp 🇫🇷 · Intercom · Zendesk 🇺🇸</div>
+    </div>
+
+    <div class="node" id="n-e2-res" style="left:1420px;top:1170px;width:250px;">
+      <div class="n">Le résultat</div><div class="t">Double-saisie #1 tuée</div>
+      <div class="s">activité loguée auto · zéro recopiage</div>
+    </div>
+    <div class="node cta" id="n-e2-dod" style="left:1420px;top:1310px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Victoire mesurable d'abord</div>
+      <div class="s">dédup · webhooks renew · heures re-mesurées vs baseline</div>
+    </div>
+
+    <!-- ÉTAPE 3 — Normaliser & dédupliquer : Pourquoi + 3 conseils + DoD -->
+    <div class="pcard why" id="n-e3-why" style="left:1780px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Automatiser sur data sale = chaos</li>
+        <li>L'étape que tout le monde saute</li>
+        <li>Doublons = forecast faux</li>
+        <li>Prérequis de tout le reste</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-e3-c1" style="left:1780px;top:760px;width:250px;">
+      <div class="n">Conseil 1</div><div class="t">Dédupliquer sur clé stable</div>
+      <div class="s">domaine / SIREN, pas le nom · fusionner</div>
+    </div>
+    <div class="node" id="n-e3-c2" style="left:1780px;top:875px;width:250px;">
+      <div class="n">Conseil 2</div><div class="t">Normaliser le référentiel</div>
+      <div class="s">statuts unifiés · formats · lisible en <5s</div>
+    </div>
+    <div class="node" id="n-e3-c3" style="left:1780px;top:990px;width:250px;">
+      <div class="n">Conseil 3</div><div class="t">Garde-fous à la source</div>
+      <div class="s">validation saisie + contrôle qualité rejoué</div>
+    </div>
+
+    <div class="node cta" id="n-e3-dod" style="left:1780px;top:1110px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Data propre validée</div>
+      <div class="s">doublons fusionnés · référentiel normalisé · QA automatisé</div>
+    </div>
+
+    <!-- ÉTAPE 4 — Revenue Capture : Pourquoi (gris) + 5 étapes (bordure bleue) + DoD (vert) -->
+    <div class="pcard" id="n-e4-why" style="left:2140px;top:600px;width:260px;background:#eef0f3;border-top-color:#586170;">
+      <div class="h">Pourquoi d'abord — le cœur</div>
+      <ul>
+        <li>Donnée jamais vue (froide dans Stripe)</li>
+        <li>Réconcilie deal ↔ cash réel</li>
+        <li>Backbone du forecast (V1)</li>
+        <li>Fin des trous vus 3 mois trop tard</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-e4-s1" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 1</div><div class="t">Connecter Stripe → n8n</div>
+      <div class="s">webhooks : invoices · payments · subscriptions</div>
+    </div>
+    <div class="node" id="n-e4-s2" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 2</div><div class="t">Matcher au compte / deal</div>
+      <div class="s">customer id · email · domaine</div>
+    </div>
+    <div class="node" id="n-e4-s3" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 3</div><div class="t">Remonter dans le CRM</div>
+      <div class="s">MRR/ARR · statut abo · dernier paiement</div>
+    </div>
+    <div class="node" id="n-e4-s4" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 4</div><div class="t">Réconcilier deal ↔ cash</div>
+      <div class="s">closed-won vs paiements réels</div>
+    </div>
+    <div class="node" id="n-e4-s5" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 5</div><div class="t">Alertes</div>
+      <div class="s">deal won sans paiement à J+30 → Slack/CRM</div>
+    </div>
+
+    <div class="node cta" id="n-e4-dod" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Definition of Done</div><div class="t">Cash réel dans le CRM</div>
+      <div class="s">facturation remontée · réconciliation auto · ~0 % won sans cash</div>
+    </div>
+
+    <!-- ÉTAPE 5 — Forecast dans le CRM : Pourquoi (gris) + 5 étapes (bordure bleue) + DoD (vert) -->
+    <div class="pcard" id="n-e5-why" style="left:2500px;top:600px;width:250px;background:#eef0f3;border-top-color:#586170;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Fin de la guerre des chiffres</li>
+        <li>Une seule source de vérité</li>
+        <li>Lisible sans export</li>
+        <li>⚠ pas de FP&amp;A pure (scope)</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-e5-s1" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 1</div><div class="t">Calculer le forecast</div>
+      <div class="s">pondération par stage</div>
+    </div>
+    <div class="node" id="n-e5-s2" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 2</div><div class="t">Ramener le calcul dans le CRM</div>
+      <div class="s">vues & champs natifs, pas un Sheet à part</div>
+    </div>
+    <div class="node" id="n-e5-s3" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 3</div><div class="t">Fraîcheur du pipe</div>
+      <div class="s">deals à jour · close dates propres</div>
+    </div>
+    <div class="node" id="n-e5-s4" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 4</div><div class="t">Variance prévu ↔ réalisé</div>
+      <div class="s">vs le cash remonté (étape 4)</div>
+    </div>
+    <div class="node" id="n-e5-s5" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 5</div><div class="t">Lisible par la finance</div>
+      <div class="s">sans export ni retraitement</div>
+    </div>
+
+    <div class="node cta" id="n-e5-dod" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Forecast à jour dans le CRM</div>
+      <div class="s">variance lisible sous 2 min · finance ne recalcule plus</div>
+    </div>
+
+    <!-- ÉTAPE 6 — Posséder & mesurer : Pourquoi (gris) + 5 étapes (bordure bleue) + DoD (vert) -->
+    <div class="pcard" id="n-e6-why" style="left:2860px;top:600px;width:250px;background:#eef0f3;border-top-color:#586170;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Une stack non adoptée = zéro valeur</li>
+        <li>L'adoption ne se décrète pas</li>
+        <li>Ancrer le changement dans les équipes</li>
+        <li>Clôt la Garantie Adoption</li>
+      </ul>
+    </div>
+
+    <div class="node" id="n-e6-s1" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 1</div><div class="t">Tout documenter</div>
+      <div class="s">pourquoi · process · KPIs · outils (runbook)</div>
+    </div>
+    <div class="node" id="n-e6-s2" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 2</div><div class="t">Mesurer l'adoption & les gains</div>
+      <div class="s">usage réel + améliorations vs baseline (étape 0)</div>
+    </div>
+    <div class="node" id="n-e6-s3" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 3</div><div class="t">Vidéos explicatives courtes</div>
+      <div class="s">users finaux (finance/sales/CSM) + mainteneurs (RevOps/Sales Ops)</div>
+    </div>
+    <div class="node" id="n-e6-s4" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 4</div><div class="t">Communiquer l'avant / après</div>
+      <div class="s">mail · Slack · 1-1 — ce que gagnent les users & l'entreprise</div>
+    </div>
+    <div class="node" id="n-e6-s5" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 5</div><div class="t">Récolter les feedbacks (J+30)</div>
+      <div class="s">groupe Slack · sondage (quanti) · interviews (quali)</div>
+    </div>
+
+    <div class="node cta" id="n-e6-dod" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Adoption ancrée & mesurée</div>
+      <div class="s">équipe formée · comm faite · feedbacks J+30 traités · tourne sans toi</div>
+    </div>
+
+    <!-- Cadres screenshots (à remplir : dépose tes PNG dans un dossier screens/ à côté du HTML) -->
+    <div class="shot" id="shot-e0" style="left:700px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : qualité / remplissage data</div><div class="f">screens/etape0-data.png</div></div><img src="screens/etape0-data.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e1" style="left:1060px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : un workflow n8n</div><div class="f">screens/etape1-n8n.png</div></div><img src="screens/etape1-n8n.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e2" style="left:1420px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : appel → activité auto CRM</div><div class="f">screens/etape2-call.png</div></div><img src="screens/etape2-call.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e3" style="left:1780px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : dédup / scoring Attio</div><div class="f">screens/etape3-attio.png</div></div><img src="screens/etape3-attio.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e4" style="left:2140px;top:900px;width:260px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : réconciliation Stripe + alerte Slack</div><div class="f">screens/etape4-stripe.png</div></div><img src="screens/etape4-stripe.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e5" style="left:2500px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : dashboard forecast</div><div class="f">screens/etape5-forecast.png</div></div><img src="screens/etape5-forecast.png" alt="" onerror="this.remove()"></div>
+    <div class="shot" id="shot-e6" style="left:2860px;top:900px;width:250px;height:160px;"><div class="ph"><div class="cam">📷</div><div class="t">Ta capture : vidéo courte / doc d'adoption</div><div class="f">screens/etape6-adoption.png</div></div><img src="screens/etape6-adoption.png" alt="" onerror="this.remove()"></div>
+
+    <!-- Carte cas client (humanisation) -->
+    <div class="casecard" id="n-case" style="left:2px;top:715px;width:350px;">
+      <div class="ch"><div class="av"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#0a1a40" stroke="#e02b28" stroke-width="5"/><text x="49" y="65" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="46"><tspan fill="#e02b28">W</tspan><tspan fill="#ffffff" font-style="italic" dx="-4">e</tspan></text></svg></div><div><div class="ct">Cas réel — WeeCars</div><div class="cs">réseau ~80 pers. · mesuré vs baseline</div></div></div>
+      <div class="metrics">
+        <div class="m"><b>35 % → 85 %</b><span>qualité / remplissage data</span></div>
+        <div class="m"><b>4h → &lt;1h</b><span>saisie / sem / commercial</span></div>
+        <div class="m"><b>✓ Go-Live</b><span>CRM en prod, documenté &amp; possédé</span></div>
+      </div>
+    </div>
+
+
+    <!-- CTA / boucle continue -->
+    <div class="node cta" id="n-cta" style="left:3220px;top:445px;width:260px;">
+      <div class="n">Boucle continue ↺</div><div class="t">Prochaine amélioration</div>
+      <div class="s">on re-mesure vs baseline → retour à l'étape 0</div>
+    </div>
+  </div>
+</div>
+
+<div id="titlechip"><div class="k">Vue</div><div class="v">Vue d'ensemble</div></div>
+<div class="hint">← → naviguer · <b>O</b> vue d'ensemble · <b>H</b> masquer l'UI</div>
+
+<div id="lightbox"><span class="esc">ESC pour fermer</span><img id="lightbox-img" alt=""></div>
+
+<div id="bar">
+  <button id="prev">◀</button>
+  <span id="counter">1 / 13</span>
+  <button id="next" class="prim">Suivant ▶</button>
+  <button id="over">Vue d'ensemble</button>
+</div>
+
+<script>
+const W = () => window.innerWidth, H = () => window.innerHeight;
+const world = document.getElementById('world');
+const worldW = 3560, worldH = 2200;
+
+// chaînes verticales (mère + cases enfilées dessous)
+const chains = [
+  ['n-prob','n-b1','n-b2','n-b3','n-b4'],
+  ['n-e0','pc1','pc2','pc3','n-e0-dod'],
+  ['n-e1','n-e1-why','n-h1','n-h2','n-h3','n-h4','n-h5','n-couche','n-dod'],
+  ['n-e2','n-e2-why','n-c1','n-c2','n-c3','n-c4','n-e2-res','n-e2-dod'],
+  ['n-e3','n-e3-why','n-e3-c1','n-e3-c2','n-e3-c3','n-e3-dod'],
+  ['n-e4','n-e4-why','n-e4-s1','n-e4-s2','n-e4-s3','n-e4-s4','n-e4-s5','n-e4-dod'],
+  ['n-e5','n-e5-why','n-e5-s1','n-e5-s2','n-e5-s3','n-e5-s4','n-e5-s5','n-e5-dod'],
+  ['n-e6','n-e6-why','n-e6-s1','n-e6-s2','n-e6-s3','n-e6-s4','n-e6-s5','n-e6-dod'],
+];
+// place chaque case sous la précédente d'après sa hauteur réelle (anti-chevauchement)
+function layoutChains(){
+  const GAP = 30;
+  chains.forEach(ch=>{
+    for(let k=1;k<ch.length;k++){
+      const prev=document.getElementById(ch[k-1]), cur=document.getElementById(ch[k]);
+      cur.style.top = (parseFloat(prev.style.top)+prev.offsetHeight+GAP)+'px';
+    }
+  });
+}
+// cadres screenshots ancrés sous la DoD de chaque colonne
+const shots = [['shot-e0','n-e0-dod'],['shot-e1','n-dod'],['shot-e2','n-e2-dod'],['shot-e3','n-e3-dod'],['shot-e4','n-e4-dod'],['shot-e5','n-e5-dod'],['shot-e6','n-e6-dod']];
+function layoutShots(){
+  const GAP = 30;
+  shots.forEach(([sid,aid])=>{
+    const a=document.getElementById(aid), s=document.getElementById(sid);
+    s.style.top = (parseFloat(a.style.top)+a.offsetHeight+GAP)+'px';
+  });
+}
+
+// centre d'un élément dans le monde
+function c(id){const e=document.getElementById(id);const x=parseFloat(e.style.left)+e.offsetWidth/2;const y=parseFloat(e.style.top)+e.offsetHeight/2;return {x,y};}
+
+// séquence de "slides"
+const steps = [
+  {k:'Intro', label:"Vue d'ensemble", over:true},
+  {k:'Départ', label:"Ta stack aujourd'hui — éclatée", id:'n-start', s:1.0},
+  {k:'Le constat', label:"Le CRM craque à 50+", id:'n-prob', s:1.3},
+  {k:'La fausse route', label:"HubSpot : le piège", fit:['n-b1','n-b4']},
+  {k:'Cas réel', label:"Cas réel — WeeCars (~80 pers.)", id:'n-case', s:1.15},
+  {k:'Étape 0', label:"Cartographier & mesurer la baseline", id:'n-e0', s:1.3},
+  {k:'Étape 0 · détail', label:"Le Diagnostic RevOps — 3 piliers", fit:['pc1','shot-e0']},
+  {k:'0 · P1', label:"Santé de la stack", id:'pc1', s:1.15},
+  {k:'0 · P2', label:"Saisie & réconciliation", id:'pc2', s:1.15},
+  {k:'0 · P3', label:"Forecast dans le CRM", id:'pc3', s:1.15},
+  {k:'0 · DoD', label:"Definition of Done", id:'n-e0-dod', s:1.28},
+  {k:'Étape 1', label:"Poser la couche n8n", id:'n-e1', s:1.3},
+  {k:'Étape 1 · détail', label:"Pourquoi + comment", fit:['n-e1-why','shot-e1']},
+  {k:'1 · Pourquoi', label:"Avantages regroupés", id:'n-e1-why', s:1.2},
+  {k:'1 · Comment', label:"Mise en place (serveur → rôles)", fit:['n-h1','n-h5']},
+  {k:'1 · Couche', label:"Couche possédée (n8n)", id:'n-couche', s:1.3},
+  {k:'1 · DoD', label:"Definition of Done", id:'n-dod', s:1.28},
+  {k:'Étape 2', label:"Tuer la double-saisie", id:'n-e2', s:1.3},
+  {k:'Étape 2 · détail', label:"Pourquoi + connecter les canaux", fit:['n-e2-why','shot-e2']},
+  {k:'2 · Pourquoi', label:"Première victoire visible", id:'n-e2-why', s:1.2},
+  {k:'2 · Canaux', label:"Les 4 connecteurs (RGPD/UE)", fit:['n-c1','n-c4']},
+  {k:'2 · Résultat', label:"Double-saisie #1 tuée", id:'n-e2-res', s:1.3},
+  {k:'2 · DoD', label:"Definition of Done", id:'n-e2-dod', s:1.28},
+  {k:'Étape 3', label:"Normaliser & dédupliquer", id:'n-e3', s:1.3},
+  {k:'Étape 3 · détail', label:"Pourquoi + 3 conseils", fit:['n-e3-why','shot-e3']},
+  {k:'3 · Pourquoi', label:"Pourquoi d'abord", id:'n-e3-why', s:1.2},
+  {k:'3 · Conseils', label:"Les 3 grands conseils", fit:['n-e3-c1','n-e3-c3']},
+  {k:'3 · DoD', label:"Definition of Done", id:'n-e3-dod', s:1.28},
+  {k:'Étape 4', label:"Revenue Capture — le cœur", id:'n-e4', s:1.28},
+  {k:'Étape 4 · détail', label:"Stripe → CRM (le cœur)", fit:['n-e4-why','shot-e4']},
+  {k:'4 · Pourquoi', label:"Pourquoi d'abord", id:'n-e4-why', s:1.2},
+  {k:'4 · Étapes', label:"Les 5 étapes Stripe → CRM", fit:['n-e4-s1','n-e4-s5']},
+  {k:'4 · DoD', label:"Definition of Done", id:'n-e4-dod', s:1.28},
+  {k:'Étape 5', label:"Forecast dans le CRM", id:'n-e5', s:1.3},
+  {k:'Étape 5 · détail', label:"Forecast dans le CRM", fit:['n-e5-why','shot-e5']},
+  {k:'5 · Pourquoi', label:"Pourquoi d'abord", id:'n-e5-why', s:1.2},
+  {k:'5 · Étapes', label:"Les 5 étapes du forecast", fit:['n-e5-s1','n-e5-s5']},
+  {k:'5 · DoD', label:"Definition of Done", id:'n-e5-dod', s:1.28},
+  {k:'Étape 6', label:"Ancrer l'adoption", id:'n-e6', s:1.3},
+  {k:'Étape 6 · détail', label:"Ancrer l'adoption de la nouvelle stack", fit:['n-e6-why','shot-e6']},
+  {k:'6 · Pourquoi', label:"Pourquoi d'abord", id:'n-e6-why', s:1.2},
+  {k:'6 · Leviers', label:"Les 5 leviers d'adoption", fit:['n-e6-s1','n-e6-s5']},
+  {k:'6 · DoD', label:"Definition of Done", id:'n-e6-dod', s:1.28},
+  {k:'Boucle', label:"Prochaine amélioration ↺", id:'n-cta', s:1.28},
+  {k:'Récap', label:"La méthode complète", over:true},
+];
+
+let i = 0;
+function rectOf(id){const e=document.getElementById(id);return {l:parseFloat(e.style.left),t:parseFloat(e.style.top),w:e.offsetWidth,h:e.offsetHeight};}
+function target(step){
+  if(step.over){
+    const s = Math.min(W()/worldW, H()/worldH) * 0.9;
+    return {x: worldW/2, y: worldH/2, s};
+  }
+  if(step.fit){
+    const rs=step.fit.map(rectOf);
+    const minL=Math.min(...rs.map(r=>r.l)), maxR=Math.max(...rs.map(r=>r.l+r.w));
+    const minT=Math.min(...rs.map(r=>r.t)), maxB=Math.max(...rs.map(r=>r.t+r.h));
+    const s=Math.min(W()/((maxR-minL)+160), H()/((maxB-minT)+160), 1.1);
+    return {x:(minL+maxR)/2, y:(minT+maxB)/2, s};
+  }
+  const p = step.id ? c(step.id) : step.focus;
+  return {x:p.x, y:p.y, s:step.s||1.3};
+}
+function apply(){
+  const st = steps[i];
+  const t = target(st);
+  const tx = W()/2 - t.x*t.s;
+  const ty = H()/2 - t.y*t.s;
+  world.style.transform = `translate(${tx}px,${ty}px) scale(${t.s})`;
+  document.getElementById('counter').textContent = (i+1)+' / '+steps.length;
+  document.querySelector('#titlechip .k').textContent = st.k;
+  document.querySelector('#titlechip .v').textContent = st.label;
+  document.querySelectorAll('.node, .pcard').forEach(n=>n.classList.remove('active'));
+  if(st.id){const el=document.getElementById(st.id); if(el&&(el.classList.contains('node')||el.classList.contains('pcard'))) el.classList.add('active');}
+}
+function go(n){ i = Math.max(0, Math.min(steps.length-1, n)); apply(); }
+
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.getElementById('over').onclick=()=>{const idx=steps.findIndex(s=>s.over&&s.k==='Intro');go(idx);};
+
+// clic sur un nœud → focus
+document.querySelectorAll('.node, .db, .pcard, .stackzone, .casecard').forEach(el=>{
+  el.addEventListener('click',()=>{const idx=steps.findIndex(s=>s.id===el.id); if(idx>=0) go(idx);});
+});
+
+// lightbox : clic sur un screenshot → agrandissement en modale
+const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lightbox-img');
+function openLb(src){lbImg.src=src;lb.classList.add('show');}
+function closeLb(){lb.classList.remove('show');lbImg.removeAttribute('src');}
+document.querySelectorAll('.shot').forEach(s=>{
+  s.addEventListener('click',()=>{const img=s.querySelector('img');if(img&&img.getAttribute('src'))openLb(img.src);});
+});
+lb.addEventListener('click',closeLb);
+
+// clavier
+window.addEventListener('keydown',e=>{
+  if(lb.classList.contains('show')){ if(e.key==='Escape'){closeLb();} return; }
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}
+  else if(e.key.toLowerCase()==='o'){go(0);}
+  else if(e.key.toLowerCase()==='h'){document.querySelectorAll('#bar,#titlechip,.hint').forEach(x=>x.classList.toggle('hidden'));}
+});
+// molette = avancer/reculer
+let wheelLock=false;
+document.getElementById('viewport').addEventListener('wheel',e=>{
+  if(wheelLock)return; wheelLock=true; setTimeout(()=>wheelLock=false,650);
+  if(e.deltaY>0||e.deltaX>0)go(i+1); else go(i-1);
+},{passive:true});
+
+// tracés (SVG)
+function drawWires(){
+  const svg=document.getElementById('wires');
+  svg.setAttribute('width',worldW);svg.setAttribute('height',worldH);
+  const arrow=`<defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#9aa4b2"/></marker>
+    <marker id="ahr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#c23b3b"/></marker>
+    <marker id="ahg" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#1f9254"/></marker>
+  </defs>`;
+  const main=['n-start','n-prob','n-e0','n-e1','n-e2','n-e3','n-e4','n-e5','n-e6','n-cta'];
+  let paths='';
+  for(let k=0;k<main.length-1;k++){
+    const a=document.getElementById(main[k]),b=document.getElementById(main[k+1]);
+    const ax=parseFloat(a.style.left)+a.offsetWidth, ay=507;
+    const bx=parseFloat(b.style.left), by=507;
+    paths+=`<path d="M${ax},${ay} L${bx-9},${by}" stroke="#9aa4b2" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // branche verticale rouge (fausse route)
+  const bad=['n-prob','n-b1','n-b2','n-b3','n-b4'];
+  for(let k=0;k<bad.length-1;k++){
+    const a=document.getElementById(bad[k]),b=document.getElementById(bad[k+1]);
+    const ax=505, ay=parseFloat(a.style.top)+a.offsetHeight;
+    const bx=505, by=parseFloat(b.style.top);
+    paths+=`<path d="M${ax},${ay} L${bx},${by-9}" stroke="#c23b3b" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ahr)"/>`;
+  }
+  // étape 0 : chaîne verticale alignée sous la case mère
+  const e0chain=['n-e0','pc1','pc2','pc3','n-e0-dod'];
+  for(let k=0;k<e0chain.length-1;k++){
+    const a=document.getElementById(e0chain[k]),b=document.getElementById(e0chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 1 : chaîne verticale alignée sous la case mère
+  const e1chain=['n-e1','n-e1-why','n-h1','n-h2','n-h3','n-h4','n-h5','n-couche','n-dod'];
+  for(let k=0;k<e1chain.length-1;k++){
+    const a=document.getElementById(e1chain[k]),b=document.getElementById(e1chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 2 : chaîne verticale alignée sous la case mère
+  const e2chain=['n-e2','n-e2-why','n-c1','n-c2','n-c3','n-c4','n-e2-res','n-e2-dod'];
+  for(let k=0;k<e2chain.length-1;k++){
+    const a=document.getElementById(e2chain[k]),b=document.getElementById(e2chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 3 : chaîne verticale alignée sous la case mère
+  const e3chain=['n-e3','n-e3-why','n-e3-c1','n-e3-c2','n-e3-c3','n-e3-dod'];
+  for(let k=0;k<e3chain.length-1;k++){
+    const a=document.getElementById(e3chain[k]),b=document.getElementById(e3chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 4 : chaîne verticale alignée sous la case mère
+  const e4chain=['n-e4','n-e4-why','n-e4-s1','n-e4-s2','n-e4-s3','n-e4-s4','n-e4-s5','n-e4-dod'];
+  for(let k=0;k<e4chain.length-1;k++){
+    const a=document.getElementById(e4chain[k]),b=document.getElementById(e4chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 5 : chaîne verticale alignée sous la case mère
+  const e5chain=['n-e5','n-e5-why','n-e5-s1','n-e5-s2','n-e5-s3','n-e5-s4','n-e5-s5','n-e5-dod'];
+  for(let k=0;k<e5chain.length-1;k++){
+    const a=document.getElementById(e5chain[k]),b=document.getElementById(e5chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // étape 6 : chaîne verticale alignée sous la case mère
+  const e6chain=['n-e6','n-e6-why','n-e6-s1','n-e6-s2','n-e6-s3','n-e6-s4','n-e6-s5','n-e6-dod'];
+  for(let k=0;k<e6chain.length-1;k++){
+    const a=document.getElementById(e6chain[k]),b=document.getElementById(e6chain[k+1]);
+    const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // boucle continue : Prochaine amélioration → retour à l'étape 0 (arc par le haut)
+  const cta=document.getElementById('n-cta'), e0=document.getElementById('n-e0');
+  const ctax=parseFloat(cta.style.left)+cta.offsetWidth/2, ctay=parseFloat(cta.style.top);
+  const e0x=parseFloat(e0.style.left)+e0.offsetWidth/2, e0y=parseFloat(e0.style.top);
+  paths+=`<path d="M${ctax},${ctay} L${ctax},355 L${e0x},355 L${e0x},${e0y-9}" stroke="#1f9254" stroke-width="2.5" stroke-dasharray="8 6" fill="none" marker-end="url(#ahg)"/>`;
+  paths+=`<text x="${(ctax+e0x)/2}" y="347" text-anchor="middle" font-size="15" font-weight="700" fill="#1f9254" font-family="sans-serif">↺ amélioration continue</text>`;
+  // liens discrets DoD → cadre screenshot
+  shots.forEach(([sid,aid])=>{
+    const a=document.getElementById(aid), s=document.getElementById(sid);
+    const cx=parseFloat(s.style.left)+s.offsetWidth/2;
+    const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(s.style.top);
+    paths+=`<path d="M${cx},${ay} L${cx},${by}" stroke="#c3cbd6" stroke-width="1.5" stroke-dasharray="3 5" fill="none"/>`;
+  });
+  svg.innerHTML=arrow+paths;
+}
+
+window.addEventListener('resize',apply);
+layoutChains();
+layoutShots();
+drawWires();
+apply();
+</script>
+</body>
+</html>
