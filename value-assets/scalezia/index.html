@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Scalezia · GTM Engineer · Méthode</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --dot:#d7dbe0; --ink:#1f2733; --sub:#5b6472;
+    --box:#ffffff; --line:#9aa4b2;
+    --blue:#2f6fed; --blueSoft:#eaf1ff;
+    --amber:#b9770a; --amberSoft:#fff5e2;
+    --red:#c23b3b; --redSoft:#fdecec;
+    --heart:#0f9d8f; --heartSoft:#e5f7f4;
+    --green:#1f9254; --greenSoft:#e7f6ee;
+    --gray:#586170; --graySoft:#eef0f3;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);}
+  #viewport{
+    position:fixed;inset:0;background:var(--bg);
+    background-image:radial-gradient(var(--dot) 1.4px, transparent 1.4px);
+    background-size:26px 26px;overflow:hidden;cursor:grab;
+  }
+  #world{position:absolute;top:0;left:0;transform-origin:0 0;transition:transform .95s cubic-bezier(.55,.06,.2,1);}
+  svg.wires{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;}
+
+  .frame{position:absolute;border:2px dashed #c3cbd6;border-radius:20px;background:rgba(255,255,255,.35);}
+  .frame .tag{position:absolute;top:-14px;left:22px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--sub);}
+
+  .node{position:absolute;background:var(--box);border:1px solid #e2e6ec;border-left:6px solid var(--blue);
+    border-radius:14px;padding:14px 16px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;
+    transition:box-shadow .2s, transform .2s;}
+  .node:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .node.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+  .node .n{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--sub);text-transform:uppercase;}
+  .node .t{font-size:19px;font-weight:800;line-height:1.15;margin-top:4px;}
+  .node .s{font-size:14px;color:var(--sub);line-height:1.3;margin-top:7px;}
+  .badge{position:absolute;top:-12px;right:-10px;background:var(--heart);color:#fff;font-size:12px;font-weight:800;
+    padding:4px 10px;border-radius:999px;box-shadow:0 4px 10px rgba(15,157,143,.4);}
+
+  .node.problem{border-left-color:var(--amber);background:var(--amberSoft);}
+  .node.bad{border-left-color:var(--red);background:var(--redSoft);}
+  .node.heart{border-left-color:var(--heart);background:var(--heartSoft);border-width:1px;}
+  .node.cta{border-left-color:var(--green);background:var(--greenSoft);}
+  .node.start{border-left-color:var(--gray);background:var(--graySoft);}
+  .node.how{border-left-color:#0f9d8f;}
+  .pcard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-top:5px solid #2f6fed;border-radius:14px;
+    padding:12px 15px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;transition:box-shadow .2s;}
+  .pcard:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .pcard.p2{border-top-color:#2f6fed;}
+  .pcard.p3{border-top-color:#2f6fed;}
+  .pcard.why{background:#eef0f3;border-top-color:#586170;}
+  .pcard .h{font-size:16px;font-weight:800;line-height:1.15;}
+  .pcard .w{display:inline-block;margin-top:5px;font-size:11.5px;font-weight:800;color:#5b6472;background:#eef0f3;border-radius:999px;padding:2px 9px;}
+  .pcard ul{margin:9px 0 0;padding-left:15px;}
+  .pcard li{font-size:12.5px;color:#3a4351;line-height:1.5;}
+  .pcard.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+  .rchip{position:absolute;background:#fff;border:1px solid #e2e6ec;border-left:5px solid #2f6fed;border-radius:12px;
+    padding:10px 12px;box-shadow:0 5px 14px rgba(31,39,51,.08);}
+  .rchip .rt{font-size:13.5px;font-weight:800;line-height:1.15;}
+  .rchip .rs{font-size:11.5px;color:#5b6472;margin-top:3px;line-height:1.2;}
+
+  /* cylinder */
+  .db{position:absolute;}
+  .db .cyl{width:118px;height:150px;position:relative;margin:0 auto;}
+  .db .cyl:before{content:"";position:absolute;inset:0;border:2px solid var(--gray);border-radius:0 0 60px 60px/0 0 22px 22px;background:var(--graySoft);}
+  .db .cyl:after{content:"";position:absolute;top:0;left:0;right:0;height:34px;border:2px solid var(--gray);border-radius:50%;background:#fff;}
+  .db .lbl{text-align:center;margin-top:10px;font-weight:800;font-size:15px;}
+  .db .sub{text-align:center;font-size:12.5px;color:var(--sub);margin-top:2px;max-width:170px;}
+  /* stack éclatée : CRM au centre, outils non connectés */
+  .stackzone{position:absolute;border:2px dashed #c3cbd6;border-radius:18px;background:rgba(255,255,255,.35);cursor:pointer;}
+  .stackzone .zt{position:absolute;top:-14px;left:18px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:12.5px;font-weight:800;color:#5b6472;white-space:nowrap;}
+  .crmcore{position:absolute;background:#eaf1ff;border:2px solid #2f6fed;border-radius:14px;
+    box-shadow:0 8px 20px rgba(47,111,237,.20);text-align:center;padding:12px 10px;}
+  .crmcore .ct{font-size:18px;font-weight:800;color:#1f2733;}
+  .crmcore .cs{font-size:11.5px;color:#5b6472;margin-top:2px;}
+  .toolchip{position:absolute;background:#f4f5f7;border:1.5px dashed #b0b8c4;border-radius:10px;color:#7a8494;
+    text-align:center;padding:8px 6px;font-size:12.5px;font-weight:700;}
+  .catchip{position:absolute;background:#f4f5f7;border:1.5px dashed #b0b8c4;border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 3px;}
+  .catchip .ic{font-size:17px;line-height:1;}
+  .catchip .lb{font-size:10.5px;font-weight:700;color:#6b7480;margin-top:3px;line-height:1.12;}
+  /* carte cas client */
+  .casecard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-left:6px solid #1f9254;border-radius:14px;
+    padding:14px 16px;box-shadow:0 8px 22px rgba(31,39,51,.10);cursor:pointer;}
+  .casecard .ch{display:flex;align-items:center;gap:10px;}
+  .casecard .av{width:40px;height:40px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .casecard .ct{font-size:15px;font-weight:800;line-height:1.15;}
+  .casecard .cs{font-size:11.5px;color:#5b6472;margin-top:1px;}
+  .casecard .metrics{margin-top:10px;display:flex;flex-direction:column;gap:7px;}
+  .casecard .m{display:flex;align-items:baseline;gap:8px;}
+  .casecard .m b{font-size:14px;color:#1f9254;min-width:92px;}
+  .casecard .m span{font-size:12px;color:#3a4351;}
+
+  /* UI */
+  #bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.96);border:1px solid #dfe3ea;border-radius:999px;padding:8px 10px;
+    box-shadow:0 10px 30px rgba(31,39,51,.16);z-index:50;font-size:14px;}
+  #bar button{border:none;background:#f0f2f5;border-radius:999px;padding:9px 14px;font-weight:700;cursor:pointer;color:var(--ink);font-size:14px;}
+  #bar button:hover{background:#e3e7ee;}
+  #bar .prim{background:var(--blue);color:#fff;}
+  #bar .prim:hover{background:#2560d8;}
+  #counter{min-width:52px;text-align:center;font-variant-numeric:tabular-nums;color:var(--sub);font-weight:700;}
+  #titlechip{position:fixed;left:22px;top:20px;background:rgba(255,255,255,.96);border:1px solid #dfe3ea;
+    border-radius:12px;padding:10px 16px;box-shadow:0 8px 22px rgba(31,39,51,.12);z-index:50;max-width:60vw;}
+  #titlechip .k{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  #titlechip .v{font-size:18px;font-weight:800;margin-top:2px;}
+  .hint{position:fixed;right:22px;top:20px;background:rgba(255,255,255,.9);border:1px solid #e2e6ec;border-radius:10px;
+    padding:8px 12px;font-size:12.5px;color:var(--sub);z-index:50;}
+  .hidden{opacity:0!important;pointer-events:none!important;}
+</style>
+<body>
+<div id="viewport">
+  <div id="world">
+    <svg class="wires" id="wires"></svg>
+
+    <!-- Frames (principes) -->
+    <div class="frame" style="left:665px;top:398px;width:320px;height:200px;"><span class="tag">Avant tout · Auditer</span></div>
+    <div class="frame" style="left:1030px;top:388px;width:1020px;height:250px;"><span class="tag">PRINCIPE 1 · Fiabiliser les tuyaux</span></div>
+    <div class="frame" style="left:2105px;top:388px;width:665px;height:250px;"><span class="tag">PRINCIPE 2 · Le lead arrive au bon Sales</span></div>
+    <div class="frame" style="left:2825px;top:398px;width:315px;height:230px;"><span class="tag">PRINCIPE 3 · Ça tourne sans moi</span></div>
+
+    <!-- Start : la stack Scalezia, HubSpot au centre, outils non reliés -->
+    <div class="stackzone" id="n-start" style="left:2px;top:195px;width:350px;height:495px;">
+      <span class="zt">La stack Scalezia : 14 outils, 1 CRM</span>
+    </div>
+    <div class="crmcore" style="left:108px;top:408px;width:124px;">
+      <div class="ct">HubSpot</div><div class="cs">source de vérité</div>
+    </div>
+    <div class="toolchip" style="left:6px;top:230px;width:100px;">Webflow</div>
+    <div class="toolchip" style="left:115px;top:230px;width:100px;">Typeform</div>
+    <div class="toolchip" style="left:234px;top:230px;width:100px;">Lovable</div>
+    <div class="toolchip" style="left:6px;top:320px;width:100px;">Cargo</div>
+    <div class="toolchip" style="left:115px;top:320px;width:100px;">Clay</div>
+    <div class="toolchip" style="left:234px;top:320px;width:100px;">Lemlist</div>
+    <div class="toolchip" style="left:6px;top:430px;width:100px;">iClosed</div>
+    <div class="toolchip" style="left:234px;top:430px;width:100px;">Smartfunnel</div>
+    <div class="toolchip" style="left:6px;top:540px;width:100px;">Brevo</div>
+    <div class="toolchip" style="left:115px;top:540px;width:100px;">Make / n8n</div>
+    <div class="toolchip" style="left:234px;top:540px;width:100px;">Modjo</div>
+    <div class="toolchip" style="left:6px;top:630px;width:100px;">Slack</div>
+    <div class="toolchip" style="left:115px;top:630px;width:100px;">Sales Nav</div>
+    <div class="toolchip" style="left:234px;top:630px;width:100px;">Tool de setting</div>
+
+    <!-- Problème -->
+    <div class="node problem" id="n-prob" style="left:380px;top:450px;width:250px;">
+      <div class="n">Le constat</div>
+      <div class="t">Les leads se perdent entre les outils</div>
+      <div class="s">MQL qui ne remontent pas · source perdue · propriétés en double · chiffres qui divergent</div>
+    </div>
+
+    <!-- Fausse route (branche verticale) -->
+    <div class="node bad" id="n-b1" style="left:380px;top:680px;width:250px;">
+      <div class="n">La fausse route</div>
+      <div class="t" style="font-size:17px;">« On ajoute un outil »</div>
+    </div>
+    <div class="node bad" id="n-b2" style="left:380px;top:805px;width:250px;">
+      <div class="t" style="font-size:17px;">Des patchs flux par flux, sans carte</div>
+    </div>
+    <div class="node bad" id="n-b3" style="left:380px;top:930px;width:250px;">
+      <div class="t" style="font-size:17px;">Erreurs vues des semaines plus tard</div>
+    </div>
+    <div class="node bad" id="n-b4" style="left:380px;top:1055px;width:250px;">
+      <div class="t" style="font-size:17px;">Dashboard ignoré.</div>
+      <div class="s">Plus d'outils, moins de confiance dans les chiffres.</div>
+    </div>
+
+    <!-- Étapes -->
+    <div class="node" id="n-e0" style="left:700px;top:450px;width:250px;">
+      <div class="n">Étape 0</div><div class="t">Auditer & mesurer la baseline</div>
+      <div class="s">HubSpot · flux · attribution · 3 KPIs de départ</div>
+    </div>
+    <div class="node" id="n-e1" style="left:1060px;top:450px;width:250px;">
+      <div class="n">Étape 1</div><div class="t">Fiabiliser l'orchestration</div>
+      <div class="s">Make / n8n : logs, reprise, alertes</div>
+    </div>
+    <div class="node" id="n-e2" style="left:1420px;top:450px;width:250px;">
+      <div class="n">Étape 2</div><div class="t">Rationaliser HubSpot</div>
+      <div class="s">1 concept = 1 propriété</div>
+    </div>
+    <div class="node" id="n-e3" style="left:1780px;top:450px;width:250px;">
+      <div class="n">Étape 3</div><div class="t">Tracer la source</div>
+      <div class="s">formulaires · UTM · ads → closing</div>
+    </div>
+    <div class="node heart" id="n-e4" style="left:2140px;top:445px;width:260px;">
+      <span class="badge">le cœur</span>
+      <div class="n">Étape 4</div><div class="t">Le bon lead au bon Sales</div>
+      <div class="s">qualification · routage · contexte en temps réel</div>
+    </div>
+    <div class="node" id="n-e5" style="left:2500px;top:450px;width:250px;">
+      <div class="n">Étape 5</div><div class="t">Dashboards full funnel</div>
+      <div class="s">source → MQL → RDV → closing</div>
+    </div>
+    <div class="node" id="n-e6" style="left:2860px;top:450px;width:250px;">
+      <div class="n">Étape 6</div><div class="t">Industrialiser avec l'IA</div>
+      <div class="s">lead magnets · newsletters · outils internes</div>
+    </div>
+
+    <!-- ÉTAPE 0 : audit en 3 piliers -->
+    <div class="pcard" id="pc1" style="left:700px;top:600px;width:250px;">
+      <div class="h">P1 · Santé HubSpot</div>
+      <ul>
+        <li>Propriétés redondantes</li>
+        <li>Doublons contacts & sociétés</li>
+        <li>Lifecycle & pipelines</li>
+        <li>Conventions de nommage</li>
+      </ul>
+    </div>
+    <div class="pcard p2" id="pc2" style="left:700px;top:600px;width:250px;">
+      <div class="h">P2 · Flux & intégrations</div>
+      <ul>
+        <li>Carte : qui écrit quoi, où</li>
+        <li>Remontée MQL → Smartfunnel</li>
+        <li>Scénarios Make / n8n</li>
+        <li>Erreurs silencieuses</li>
+      </ul>
+    </div>
+    <div class="pcard p3" id="pc3" style="left:700px;top:600px;width:250px;">
+      <div class="h">P3 · Attribution & reporting</div>
+      <ul>
+        <li>Source · campagne · pub</li>
+        <li>Formulaires multi-étapes</li>
+        <li>Délai de traitement des leads</li>
+        <li>Écarts de chiffres entre outils</li>
+      </ul>
+    </div>
+    <div class="node cta" id="n-e0-dod" style="left:700px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Baseline partagée avec le CMO</div>
+      <div class="s">carte des flux · fuites priorisées · 3 KPIs mesurés</div>
+    </div>
+
+    <!-- ÉTAPE 1 : orchestration -->
+    <div class="pcard why" id="n-e1-why" style="left:1060px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Un flux qui casse sans bruit = un lead perdu</li>
+        <li>La base de tout le reste</li>
+        <li>Objectif : erreur corrigée en 72h max</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e1-s1" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Comment · 1</div><div class="t">Inventaire des scénarios</div>
+      <div class="s">source · cible · owner · fréquence</div>
+    </div>
+    <div class="node" id="n-e1-s2" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Comment · 2</div><div class="t">Gestion d'erreurs</div>
+      <div class="s">retry · file de reprise · zéro perte</div>
+    </div>
+    <div class="node" id="n-e1-s3" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Comment · 3</div><div class="t">Alertes Slack</div>
+      <div class="s">échec · volume anormal · flux muet</div>
+    </div>
+    <div class="node" id="n-e1-s4" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Comment · 4</div><div class="t">Workflow traceur</div>
+      <div class="s">un lead test traverse le funnel chaque jour</div>
+    </div>
+    <div class="node cta" id="n-e1-dod" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Erreur détectée en &lt;1h</div>
+      <div class="s">corrigée en 72h max · runbook de reprise</div>
+    </div>
+
+    <!-- ÉTAPE 2 : HubSpot -->
+    <div class="pcard why" id="n-e2-why" style="left:1420px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Automatiser sur data sale = chaos</li>
+        <li>Doublons = attribution fausse</li>
+        <li>Prérequis du routage</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e2-c1" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Conseil 1</div><div class="t">Dédupliquer sur clé stable</div>
+      <div class="s">email · domaine · téléphone normalisé</div>
+    </div>
+    <div class="node" id="n-e2-c2" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Conseil 2</div><div class="t">Dictionnaire de propriétés</div>
+      <div class="s">fusionner les redondantes · archiver le reste</div>
+    </div>
+    <div class="node" id="n-e2-c3" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Conseil 3</div><div class="t">Règles MQL / SQL écrites</div>
+      <div class="s">définies avec le CMO et les Sales</div>
+    </div>
+    <div class="node" id="n-e2-c4" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Conseil 4</div><div class="t">Garde-fous à la source</div>
+      <div class="s">mapping formulaires validé · QA rejoué</div>
+    </div>
+    <div class="node cta" id="n-e2-dod" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Archi CRM claire</div>
+      <div class="s">zéro propriété orpheline · doc à jour · QA automatisé</div>
+    </div>
+
+    <!-- ÉTAPE 3 : tracking & attribution -->
+    <div class="pcard why" id="n-e3-why" style="left:1780px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Sans source fiable, pas d'arbitrage média</li>
+        <li>Granularité campagne et pub</li>
+        <li>Pont avec l'agence média</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e3-s1" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 1</div><div class="t">Plan de tracking</div>
+      <div class="s">événements définis avec le CMO</div>
+    </div>
+    <div class="node" id="n-e3-s2" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 2</div><div class="t">UTM + click IDs</div>
+      <div class="s">champs cachés · gclid / fbclid · first & last touch</div>
+    </div>
+    <div class="node" id="n-e3-s3" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 3</div><div class="t">Formulaires multi-étapes</div>
+      <div class="s">Typeform · Webflow · Lovable, mapping testé</div>
+    </div>
+    <div class="node" id="n-e3-s4" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 4</div><div class="t">Enrichir & vérifier</div>
+      <div class="s">emails perso · numéros vérifiés (Cargo, Clay)</div>
+    </div>
+    <div class="node" id="n-e3-s5" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 5</div><div class="t">Boucle agence média</div>
+      <div class="s">qualité du lead par campagne, pas juste le CPL</div>
+    </div>
+    <div class="node cta" id="n-e3-dod" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Chaque lead a sa source</div>
+      <div class="s">source · campagne · pub visibles dans HubSpot</div>
+    </div>
+
+    <!-- ÉTAPE 4 : le cœur, routage temps réel -->
+    <div class="pcard why" id="n-e4-why" style="left:2140px;top:600px;width:260px;">
+      <div class="h">Pourquoi d'abord : le cœur</div>
+      <ul>
+        <li>Un lead chaud refroidit en minutes</li>
+        <li>Le Sales reçoit tout le contexte</li>
+        <li>Mesurable : délai de traitement</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e4-s1" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 1</div><div class="t">Qualifier</div>
+      <div class="s">règles MQL · offre · équipe</div>
+    </div>
+    <div class="node" id="n-e4-s2" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 2</div><div class="t">Router</div>
+      <div class="s">bonne offre · bonne équipe · bonne personne</div>
+    </div>
+    <div class="node" id="n-e4-s3" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 3</div><div class="t">Pousser vers les Sales</div>
+      <div class="s">MQL → Smartfunnel · tâche + contexte Slack</div>
+    </div>
+    <div class="node" id="n-e4-s4" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 4</div><div class="t">Hors horaires</div>
+      <div class="s">rappel ou RDV assisté par IA (iClosed)</div>
+    </div>
+    <div class="node" id="n-e4-s5" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Étape · 5</div><div class="t">Tool de setting</div>
+      <div class="s">reprendre · corriger · brancher aux agendas</div>
+    </div>
+    <div class="node cta" id="n-e4-dod" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Definition of Done</div><div class="t">Lead traité en temps réel</div>
+      <div class="s">Sales notifié avec contexte · appels, RDV, rappels mesurés</div>
+    </div>
+
+    <!-- ÉTAPE 5 : dashboards -->
+    <div class="pcard why" id="n-e5-why" style="left:2500px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Une seule définition par KPI</li>
+        <li>Fin de la guerre des chiffres</li>
+        <li>Le CMO pilote, je fournis une donnée fiable</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e5-s1" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 1</div><div class="t">KPIs définis avec le CMO</div>
+      <div class="s">une définition, un calcul</div>
+    </div>
+    <div class="node" id="n-e5-s2" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 2</div><div class="t">Funnel par source & campagne</div>
+      <div class="s">jusqu'au closing</div>
+    </div>
+    <div class="node" id="n-e5-s3" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 3</div><div class="t">Délai & qualité de traitement</div>
+      <div class="s">où les leads se dégradent</div>
+    </div>
+    <div class="node" id="n-e5-s4" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Étape · 4</div><div class="t">Newsletters Brevo</div>
+      <div class="s">délivrabilité · clics · conversions attribuées</div>
+    </div>
+    <div class="node cta" id="n-e5-dod" style="left:2500px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Mêmes chiffres partout</div>
+      <div class="s">cohérents entre outils · lisibles sans export</div>
+    </div>
+
+    <!-- ÉTAPE 6 : industrialiser avec l'IA -->
+    <div class="pcard why" id="n-e6-why" style="left:2860px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Un système non utilisé = zéro valeur</li>
+        <li>Claude Code au quotidien</li>
+        <li>Livrer vite, sans dette</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e6-s1" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 1</div><div class="t">Lead magnets assistés par IA</div>
+      <div class="s">brief CMO → prototype → landing → form → CRM</div>
+    </div>
+    <div class="node" id="n-e6-s2" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 2</div><div class="t">2 newsletters / semaine</div>
+      <div class="s">listes · segments · templates · sync CRM</div>
+    </div>
+    <div class="node" id="n-e6-s3" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 3</div><div class="t">Outils vibe codés maintenables</div>
+      <div class="s">repo git · tests · doc</div>
+    </div>
+    <div class="node" id="n-e6-s4" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Levier · 4</div><div class="t">Documenter chaque flux</div>
+      <div class="s">runbook Notion · qui fait quoi si ça casse</div>
+    </div>
+    <div class="node cta" id="n-e6-dod" style="left:2860px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Ça tourne sans moi</div>
+      <div class="s">systèmes utilisés · pas de surveillance permanente</div>
+    </div>
+
+    <!-- Carte cas client (preuve) -->
+    <div class="casecard" id="n-case" style="left:2px;top:715px;width:350px;">
+      <div class="ch"><div class="av"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#0a1a40" stroke="#e02b28" stroke-width="5"/><text x="49" y="65" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="46"><tspan fill="#e02b28">W</tspan><tspan fill="#ffffff" font-style="italic" dx="-4">e</tspan></text></svg></div><div><div class="ct">Cas réel : WeeCars</div><div class="cs">réseau ~80 pers. · mesuré vs baseline</div></div></div>
+      <div class="metrics">
+        <div class="m"><b>35 % → 85 %</b><span>qualité / remplissage data</span></div>
+        <div class="m"><b>4h → &lt;1h</b><span>saisie / sem / commercial</span></div>
+        <div class="m"><b>✓ Go-Live</b><span>CRM en prod, documenté &amp; possédé</span></div>
+      </div>
+    </div>
+
+    <!-- Pourquoi moi -->
+    <div class="casecard" id="n-me" style="left:2px;top:960px;width:350px;">
+      <div class="ct">Pourquoi moi</div>
+      <div class="metrics">
+        <div class="m"><b>15 ans tech</b><span>ex-Senior Engineering Manager</span></div>
+        <div class="m"><b>n8n en prod</b><span>self-hosted, intégrations CRM de bout en bout</span></div>
+        <div class="m"><b>AI native</b><span>Claude Code + CLI au quotidien (ce board en sort)</span></div>
+      </div>
+    </div>
+
+    <!-- CTA : 30 premiers jours + boucle -->
+    <div class="node cta" id="n-cta" style="left:3220px;top:445px;width:260px;">
+      <div class="n">Mes 30 premiers jours</div><div class="t">Les chantiers prioritaires</div>
+      <div class="s">audit HubSpot & flux · fix MQL → Smartfunnel · tracking formulaires · 1er dashboard</div>
+    </div>
+  </div>
+</div>
+
+<div id="titlechip"><div class="k">Vue</div><div class="v">Vue d'ensemble</div></div>
+<div class="hint">← → naviguer · <b>O</b> vue d'ensemble · <b>H</b> masquer l'UI</div>
+
+<div id="bar">
+  <button id="prev">◀</button>
+  <span id="counter">1 / 21</span>
+  <button id="next" class="prim">Suivant ▶</button>
+  <button id="over">Vue d'ensemble</button>
+</div>
+
+<script>
+const W = () => window.innerWidth, H = () => window.innerHeight;
+const world = document.getElementById('world');
+const worldW = 3560, worldH = 2000;
+
+// chaînes verticales (mère + cases enfilées dessous)
+const chains = [
+  ['n-prob','n-b1','n-b2','n-b3','n-b4'],
+  ['n-e0','pc1','pc2','pc3','n-e0-dod'],
+  ['n-e1','n-e1-why','n-e1-s1','n-e1-s2','n-e1-s3','n-e1-s4','n-e1-dod'],
+  ['n-e2','n-e2-why','n-e2-c1','n-e2-c2','n-e2-c3','n-e2-c4','n-e2-dod'],
+  ['n-e3','n-e3-why','n-e3-s1','n-e3-s2','n-e3-s3','n-e3-s4','n-e3-s5','n-e3-dod'],
+  ['n-e4','n-e4-why','n-e4-s1','n-e4-s2','n-e4-s3','n-e4-s4','n-e4-s5','n-e4-dod'],
+  ['n-e5','n-e5-why','n-e5-s1','n-e5-s2','n-e5-s3','n-e5-s4','n-e5-dod'],
+  ['n-e6','n-e6-why','n-e6-s1','n-e6-s2','n-e6-s3','n-e6-s4','n-e6-dod'],
+  ['n-case','n-me'],
+];
+// place chaque case sous la précédente d'après sa hauteur réelle (anti-chevauchement)
+function layoutChains(){
+  const GAP = 30;
+  chains.forEach(ch=>{
+    for(let k=1;k<ch.length;k++){
+      const prev=document.getElementById(ch[k-1]), cur=document.getElementById(ch[k]);
+      cur.style.top = (parseFloat(prev.style.top)+prev.offsetHeight+GAP)+'px';
+    }
+  });
+}
+
+// centre d'un élément dans le monde
+function c(id){const e=document.getElementById(id);const x=parseFloat(e.style.left)+e.offsetWidth/2;const y=parseFloat(e.style.top)+e.offsetHeight/2;return {x,y};}
+
+// séquence de "slides" (~21 arrêts pour une vidéo de 5 min)
+const steps = [
+  {k:'Intro', label:"Scalezia · GTM Engineer : ma méthode", over:true},
+  {k:'Départ', label:"La stack Scalezia aujourd'hui", id:'n-start', s:1.0},
+  {k:'Le constat', label:"Les leads se perdent entre les outils", id:'n-prob', s:1.3},
+  {k:'La fausse route', label:"Ajouter un outil de plus", fit:['n-b1','n-b4']},
+  {k:'Qui je suis', label:"Cas réel WeeCars + pourquoi moi", fit:['n-case','n-me']},
+  {k:'Étape 0', label:"Auditer & mesurer la baseline", fit:['n-e0','pc3']},
+  {k:'0 · DoD', label:"Definition of Done", id:'n-e0-dod', s:1.28},
+  {k:'Étape 1', label:"Fiabiliser l'orchestration", fit:['n-e1','n-e1-s4']},
+  {k:'1 · DoD', label:"Definition of Done", id:'n-e1-dod', s:1.28},
+  {k:'Étape 2', label:"Rationaliser HubSpot", fit:['n-e2','n-e2-c4']},
+  {k:'2 · DoD', label:"Definition of Done", id:'n-e2-dod', s:1.28},
+  {k:'Étape 3', label:"Tracer la source jusqu'au closing", fit:['n-e3','n-e3-s5']},
+  {k:'3 · DoD', label:"Definition of Done", id:'n-e3-dod', s:1.28},
+  {k:'Étape 4', label:"Le bon lead au bon Sales (le cœur)", fit:['n-e4','n-e4-s5']},
+  {k:'4 · DoD', label:"Definition of Done", id:'n-e4-dod', s:1.28},
+  {k:'Étape 5', label:"Dashboards full funnel", fit:['n-e5','n-e5-s4']},
+  {k:'5 · DoD', label:"Definition of Done", id:'n-e5-dod', s:1.28},
+  {k:'Étape 6', label:"Industrialiser avec l'IA", fit:['n-e6','n-e6-s4']},
+  {k:'6 · DoD', label:"Definition of Done", id:'n-e6-dod', s:1.28},
+  {k:'30 jours', label:"Mes 30 premiers jours", id:'n-cta', s:1.28},
+  {k:'Récap', label:"La méthode complète", over:true},
+];
+
+let i = 0;
+function rectOf(id){const e=document.getElementById(id);return {l:parseFloat(e.style.left),t:parseFloat(e.style.top),w:e.offsetWidth,h:e.offsetHeight};}
+function target(step){
+  if(step.over){
+    const s = Math.min(W()/worldW, H()/worldH) * 0.9;
+    return {x: worldW/2, y: worldH/2, s};
+  }
+  if(step.fit){
+    const rs=step.fit.map(rectOf);
+    const minL=Math.min(...rs.map(r=>r.l)), maxR=Math.max(...rs.map(r=>r.l+r.w));
+    const minT=Math.min(...rs.map(r=>r.t)), maxB=Math.max(...rs.map(r=>r.t+r.h));
+    const s=Math.min(W()/((maxR-minL)+160), H()/((maxB-minT)+160), 1.1);
+    return {x:(minL+maxR)/2, y:(minT+maxB)/2, s};
+  }
+  const p = step.id ? c(step.id) : step.focus;
+  return {x:p.x, y:p.y, s:step.s||1.3};
+}
+function apply(){
+  const st = steps[i];
+  const t = target(st);
+  const tx = W()/2 - t.x*t.s;
+  const ty = H()/2 - t.y*t.s;
+  world.style.transform = `translate(${tx}px,${ty}px) scale(${t.s})`;
+  document.getElementById('counter').textContent = (i+1)+' / '+steps.length;
+  document.querySelector('#titlechip .k').textContent = st.k;
+  document.querySelector('#titlechip .v').textContent = st.label;
+  document.querySelectorAll('.node, .pcard').forEach(n=>n.classList.remove('active'));
+  if(st.id){const el=document.getElementById(st.id); if(el&&(el.classList.contains('node')||el.classList.contains('pcard'))) el.classList.add('active');}
+}
+function go(n){ i = Math.max(0, Math.min(steps.length-1, n)); apply(); }
+
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.getElementById('over').onclick=()=>{const idx=steps.findIndex(s=>s.over&&s.k==='Intro');go(idx);};
+
+// clic sur un nœud → focus
+document.querySelectorAll('.node, .db, .pcard, .stackzone, .casecard').forEach(el=>{
+  el.addEventListener('click',()=>{const idx=steps.findIndex(s=>s.id===el.id); if(idx>=0) go(idx);});
+});
+
+// clavier
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}
+  else if(e.key.toLowerCase()==='o'){go(0);}
+  else if(e.key.toLowerCase()==='h'){document.querySelectorAll('#bar,#titlechip,.hint').forEach(x=>x.classList.toggle('hidden'));}
+});
+// molette = avancer/reculer
+let wheelLock=false;
+document.getElementById('viewport').addEventListener('wheel',e=>{
+  if(wheelLock)return; wheelLock=true; setTimeout(()=>wheelLock=false,650);
+  if(e.deltaY>0||e.deltaX>0)go(i+1); else go(i-1);
+},{passive:true});
+
+// tracés (SVG)
+function drawWires(){
+  const svg=document.getElementById('wires');
+  svg.setAttribute('width',worldW);svg.setAttribute('height',worldH);
+  const arrow=`<defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#9aa4b2"/></marker>
+    <marker id="ahr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#c23b3b"/></marker>
+    <marker id="ahg" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#1f9254"/></marker>
+  </defs>`;
+  const main=['n-start','n-prob','n-e0','n-e1','n-e2','n-e3','n-e4','n-e5','n-e6','n-cta'];
+  let paths='';
+  for(let k=0;k<main.length-1;k++){
+    const a=document.getElementById(main[k]),b=document.getElementById(main[k+1]);
+    const ax=parseFloat(a.style.left)+a.offsetWidth, ay=507;
+    const bx=parseFloat(b.style.left), by=507;
+    paths+=`<path d="M${ax},${ay} L${bx-9},${by}" stroke="#9aa4b2" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>`;
+  }
+  // branche verticale rouge (fausse route)
+  const bad=chains[0];
+  for(let k=0;k<bad.length-1;k++){
+    const a=document.getElementById(bad[k]),b=document.getElementById(bad[k+1]);
+    const ax=505, ay=parseFloat(a.style.top)+a.offsetHeight;
+    const bx=505, by=parseFloat(b.style.top);
+    paths+=`<path d="M${ax},${ay} L${bx},${by-9}" stroke="#c23b3b" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ahr)"/>`;
+  }
+  // étapes 0 à 6 : chaînes verticales alignées sous la case mère
+  chains.slice(1,8).forEach(ch=>{
+    for(let k=0;k<ch.length-1;k++){
+      const a=document.getElementById(ch[k]),b=document.getElementById(ch[k+1]);
+      const cx=parseFloat(a.style.left)+a.offsetWidth/2;
+      const ay=parseFloat(a.style.top)+a.offsetHeight, by=parseFloat(b.style.top);
+      paths+=`<path d="M${cx},${ay} L${cx},${by-9}" stroke="#2f6fed" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#ah)"/>`;
+    }
+  });
+  // boucle continue : 30 premiers jours → retour à l'étape 0 (arc par le haut)
+  const cta=document.getElementById('n-cta'), e0=document.getElementById('n-e0');
+  const ctax=parseFloat(cta.style.left)+cta.offsetWidth/2, ctay=parseFloat(cta.style.top);
+  const e0x=parseFloat(e0.style.left)+e0.offsetWidth/2, e0y=parseFloat(e0.style.top);
+  paths+=`<path d="M${ctax},${ctay} L${ctax},355 L${e0x},355 L${e0x},${e0y-9}" stroke="#1f9254" stroke-width="2.5" stroke-dasharray="8 6" fill="none" marker-end="url(#ahg)"/>`;
+  paths+=`<text x="${(ctax+e0x)/2}" y="347" text-anchor="middle" font-size="15" font-weight="700" fill="#1f9254" font-family="sans-serif">↺ on re-mesure vs baseline, puis chantier suivant</text>`;
+  svg.innerHTML=arrow+paths;
+}
+
+window.addEventListener('resize',apply);
+layoutChains();
+drawWires();
+apply();
+</script>
+</body>
+</html>
