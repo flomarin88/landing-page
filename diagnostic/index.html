@@ -728,7 +728,7 @@
 
       // --- Webhook n8n partagé avec la landing : upsert People dans Attio, tag « Diagnostic CRM 300 ».
       // Laisse vide pour un fallback console.log local pendant les tests.
-      var ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/lead-capture"
+      var ENDPOINT = "https://n8n.florianmarin.me/webhook/lead-capture";
       var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
 
       function track(name, props) { window.plausible(name, props ? { props: props } : undefined); }
