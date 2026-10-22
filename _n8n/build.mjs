@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const dir = dirname(fileURLToPath(import.meta.url));
 const code = readFileSync(join(dir, 'prepare-lead.js'), 'utf8');
+const welcomeCode = readFileSync(join(dir, 'first-welcome-only.js'), 'utf8');
 
 const ATTIO_AUTH = { authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth' };
 const PREP = "$('Prepare lead').first().json";
@@ -24,7 +25,26 @@ const nodes = [
     parameters: { jsCode: code }
   },
   {
-    name: 'Attio · Upsert person', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [440, 0],
+    name: 'Bot ?', type: 'n8n-nodes-base.if', typeVersion: 2, position: [440, 0],
+    parameters: {
+      conditions: {
+        options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
+        conditions: [{
+          id: 'is-bot', leftValue: '={{ $json.bot }}', rightValue: true,
+          operator: { type: 'boolean', operation: 'true', singleValue: true }
+        }],
+        combinator: 'and'
+      },
+      options: {}
+    }
+  },
+  {
+    // Même réponse qu'un vrai succès : le bot n'apprend rien.
+    name: 'Réponse (bot ignoré)', type: 'n8n-nodes-base.respondToWebhook', typeVersion: 1.1, position: [660, -200],
+    parameters: { respondWith: 'json', responseBody: '={{ { "ok": true } }}', options: {} }
+  },
+  {
+    name: 'Attio · Upsert person', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [660, 0],
     parameters: {
       method: 'PUT', url: 'https://api.attio.com/v2/objects/people/records?matching_attribute=email_addresses', ...ATTIO_AUTH,
       sendBody: true, specifyBody: 'json',
@@ -32,7 +52,7 @@ const nodes = [
     }
   },
   {
-    name: 'Attio · Tag + source', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [660, 0],
+    name: 'Attio · Tag + source', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [880, 0],
     parameters: {
       method: 'PATCH', url: `=https://api.attio.com/v2/objects/people/records/{{ ${RECORD_ID} }}`, ...ATTIO_AUTH,
       sendBody: true, specifyBody: 'json',
@@ -40,7 +60,7 @@ const nodes = [
     }
   },
   {
-    name: 'Diagnostic ?', type: 'n8n-nodes-base.if', typeVersion: 2, position: [880, 0],
+    name: 'Diagnostic ?', type: 'n8n-nodes-base.if', typeVersion: 2, position: [1100, 0],
     parameters: {
       conditions: {
         options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
@@ -54,7 +74,7 @@ const nodes = [
     }
   },
   {
-    name: 'Attio · Note diagnostic', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [1100, -120],
+    name: 'Attio · Note diagnostic', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [1320, -120],
     onError: 'continueRegularOutput',
     parameters: {
       method: 'POST', url: 'https://api.attio.com/v2/notes', ...ATTIO_AUTH,
@@ -64,11 +84,15 @@ const nodes = [
     }
   },
   {
-    name: 'Réponse au site', type: 'n8n-nodes-base.respondToWebhook', typeVersion: 1.1, position: [1320, 0],
+    name: 'Réponse au site', type: 'n8n-nodes-base.respondToWebhook', typeVersion: 1.1, position: [1540, 0],
     parameters: { respondWith: 'json', responseBody: '={{ { "ok": true } }}', options: {} }
   },
   {
-    name: 'Email de bienvenue', type: 'n8n-nodes-base.emailSend', typeVersion: 2.1, position: [1540, 0],
+    name: 'Premier email seulement', type: 'n8n-nodes-base.code', typeVersion: 2, position: [1760, 0],
+    parameters: { jsCode: welcomeCode }
+  },
+  {
+    name: 'Email de bienvenue', type: 'n8n-nodes-base.emailSend', typeVersion: 2.1, position: [1980, 0],
     parameters: {
       fromEmail: 'Florian Marin <contact@florianmarin.me>',
       toEmail: `={{ ${PREP}.email }}`,
@@ -87,12 +111,14 @@ const workflow = {
   nodes,
   connections: {
     'Webhook': { main: [[link('Prepare lead')]] },
-    'Prepare lead': { main: [[link('Attio · Upsert person')]] },
+    'Prepare lead': { main: [[link('Bot ?')]] },
+    'Bot ?': { main: [[link('Réponse (bot ignoré)')], [link('Attio · Upsert person')]] },
     'Attio · Upsert person': { main: [[link('Attio · Tag + source')]] },
     'Attio · Tag + source': { main: [[link('Diagnostic ?')]] },
     'Diagnostic ?': { main: [[link('Attio · Note diagnostic')], [link('Réponse au site')]] },
     'Attio · Note diagnostic': { main: [[link('Réponse au site')]] },
-    'Réponse au site': { main: [[link('Email de bienvenue')]] }
+    'Réponse au site': { main: [[link('Premier email seulement')]] },
+    'Premier email seulement': { main: [[link('Email de bienvenue')]] }
   },
   settings: { executionOrder: 'v1' }
 };
@@ -101,9 +127,10 @@ writeFileSync(join(dir, 'lead-capture-workflow.json'), JSON.stringify(workflow, 
 // ---------- Exécution locale du Code node
 const run = (body) => new Function('$input', code)({ first: () => ({ json: { body } }) })[0].json;
 
-const news = run({ source: 'newsletter', location: 'hero', lead: { email: ' Jane@Scaleup.io ', consent: true } });
+const human = { hp: '', elapsed_ms: 9000 };
+const news = run({ ...human, source: 'newsletter', location: 'hero', lead: { email: ' Jane@Scaleup.io ', consent: true } });
 const diag = run({
-  source: 'ton-crm-tient-a-300', lead: { email: 'cro@scaleup.fr', phone: '06 12 34 56 78', consent: true },
+  ...human, source: 'ton-crm-tient-a-300', lead: { email: 'cro@scaleup.fr', phone: '06 12 34 56 78', consent: true },
   score: 42, tier: 'ignored', reps: 12, hours_lost_per_week: 6, top_gaps: ['revenue', 'report', '<script>', 'quality']
 });
 writeFileSync(join(dir, 'preview-newsletter.html'), news.mail.html);
@@ -118,10 +145,31 @@ out('diagnostic note', diag.note);
 out('html contains <script>', diag.mail.html.includes('<script>'));
 out('em dashes (—) in emails', /—/.test(news.mail.html + news.mail.text + diag.mail.html + diag.mail.text));
 for (const bad of [
-  { source: 'newsletter', lead: { email: 'nope' } },
-  { source: 'autre', lead: { email: 'a@b.fr' } },
-  {}
+  { ...human, source: 'newsletter', lead: { email: 'nope' } },
+  { ...human, source: 'autre', lead: { email: 'a@b.fr' } },
+  { ...human }
 ]) {
   try { run(bad); out('SHOULD HAVE FAILED', bad); } catch (e) { out('rejected', e.message); }
 }
-out('low score tier', run({ source: 'ton-crm-tient-a-300', lead: { email: 'a@b.fr' }, score: 'abc', reps: -3, hours_lost_per_week: 99 }).note.title);
+out('low score tier', run({ ...human, source: 'ton-crm-tient-a-300', lead: { email: 'a@b.fr' }, score: 'abc', reps: -3, hours_lost_per_week: 99 }).note.title);
+
+// Anti-bot : chaque cas doit sortir { bot: true } sans rien préparer pour Attio.
+for (const [label, extra] of [
+  ['bot: champ piège rempli', { hp: 'https://spam.example', elapsed_ms: 9000 }],
+  ['bot: envoi en 800 ms', { hp: '', elapsed_ms: 800 }],
+  ['bot: champs absents', {}],
+  ['humain', human]
+]) {
+  out(label, run({ ...extra, source: 'newsletter', lead: { email: 'a@b.fr' } }).bot);
+}
+
+// Doublons : simule la réponse de l'upsert Attio avec les tags déjà présents sur la fiche.
+const welcome = (lead, tags) => new Function('$', welcomeCode)((node) => ({
+  first: () => ({ json: node === 'Prepare lead' ? lead : { data: { values: { tags: tags.map((title) => ({ option: { title } })) } } } })
+}));
+const sends = (lead, tags) => welcome(lead, tags).length === 1;
+out('newsletter, fiche vierge', sends(news, []));
+out('newsletter, déjà abonné', sends(news, ['Newsletter RevOps']));
+out('newsletter, déjà diagnostic', sends(news, ['Diagnostic CRM 300', 'Parent']));
+out('newsletter, autres tags', sends(news, ['Parent', 'Sport']));
+out('diagnostic, déjà diagnostic', sends(diag, ['Diagnostic CRM 300', 'Newsletter RevOps']));
