@@ -10,6 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
     rel="stylesheet">
+  <script defer data-domain="florianmarin.me" src="https://plausible.io/js/script.outbound-links.js"></script>
+  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root {
@@ -350,6 +352,7 @@
     }
 
     add('primary', ic.cal, 'Réserver un créneau', CONFIG.calendly);
+    A.lastElementChild.addEventListener('click', () => plausible('Calendly Click', { props: { location: 'vcard' } }));
     add('ghost', ic.mail, 'Email', 'mailto:' + CONFIG.email);
     if (CONFIG.linkedin && !CONFIG.linkedin.includes('XXXX')) add('ghost', ic.li, 'LinkedIn', CONFIG.linkedin);
     if (CONFIG.site) add('ghost', ic.web, 'Site', CONFIG.site);
