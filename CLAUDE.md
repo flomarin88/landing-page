@@ -51,10 +51,12 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 | Landing newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
 | Diagnostic email gate | `ton-crm-tient-a-300` | Diagnostic CRM 300 | Lead Magnet |
 
-- One workflow serves both forms: Webhook → Prepare lead → Attio upsert (by email) → Attio tags + source → Attio note (diagnostic only: score, tier, cost, gaps) → response to the site → welcome email (SMTP, from `contact@florianmarin.me`).
-- Source of truth is `_n8n/prepare-lead.js` (validation, Attio values, both welcome emails in HTML + text). `node _n8n/build.mjs` regenerates `_n8n/lead-capture-workflow.json` (the file to import in n8n), runs the Code node on sample payloads and writes `_n8n/preview-*.html` (gitignored). Never edit the JSON by hand; never put credentials in these files (they are referenced by name in n8n).
+- One workflow serves both forms: Webhook → Prepare lead → bot filter (bots get the same `{ ok: true }` and nothing else happens) → Attio upsert (by email) → Attio tags + source → Attio note (diagnostic only: score, tier, cost, gaps) → response to the site → first-welcome check → welcome email (SMTP, from `contact@florianmarin.me`).
+- **Anti-bot:** every form has a hidden honeypot `<div class="hp"><input name="website"></div>` and sends `hp` + `elapsed_ms` (time since page load). n8n drops the lead if `hp` is filled, or `elapsed_ms` is missing or under 2.5 s. Keep both on any new form.
+- **No duplicate welcome:** `_n8n/first-welcome-only.js` reads the tags the person already had in Attio. The newsletter welcome is skipped if they already have Newsletter RevOps or Diagnostic CRM 300; the diagnostic email (it carries the results) is sent every time.
+- Source of truth is `_n8n/prepare-lead.js` (validation, bot filter, Attio values, both welcome emails in HTML + text) and `_n8n/first-welcome-only.js`. `node _n8n/build.mjs` regenerates `_n8n/lead-capture-workflow.json` (the file to import in n8n), runs the Code node on sample payloads and writes `_n8n/preview-*.html` (gitignored). Never edit the JSON by hand; never put credentials in these files (they are referenced by name in n8n).
 - `prepare-lead.js` copies the diagnostic tiers and gaps from `diagnostic/index.html` (`tierFor`, `DIMS`): change both together.
-- Payload shape: `{ source, ts, lead: { email, phone?, consent }, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
+- Payload shape: `{ source, ts, lead: { email, phone?, consent }, hp, elapsed_ms, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
 - Endpoint constants: `LEAD_ENDPOINT` in `index.html`, `ENDPOINT` in `diagnostic/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
 - A new form = add `data-lead="<location>"` on the landing, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
 
