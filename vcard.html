@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Florian Marin — CRM RevOps Sprint</title>
+  <title>Florian Marin · CRM RevOps Sprint</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -375,7 +375,7 @@
       if (CONFIG.phone && !CONFIG.phone.includes('X')) v.push(`TEL;TYPE=CELL:${CONFIG.phone}`);
       if (CONFIG.site) v.push(`URL:${CONFIG.site}`);
       if (CONFIG.linkedin && !CONFIG.linkedin.includes('XXXX')) v.push(`URL;TYPE=LinkedIn:${CONFIG.linkedin}`);
-      v.push(`NOTE:${CONFIG.taglineHTML.replace(/<[^>]+>/g, '')} — RDV: ${CONFIG.calendly}`);
+      v.push(`NOTE:${CONFIG.taglineHTML.replace(/<[^>]+>/g, '')} · RDV: ${CONFIG.calendly}`);
       v.push("END:VCARD");
       const blob = new Blob([v.join("\n")], { type: "text/vcard" });
       const a = document.createElement('a');
