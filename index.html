@@ -17,7 +17,6 @@
   PLACEHOLDERS À REMPLIR AVANT MISE EN LIGNE :
   - SUBSTACK_URL  : URL d'abonnement Substack (rebrandé, plus "Le Cadre Notes")
   - LEAD_ENDPOINT : URL du webhook n8n (script newsletter en bas de page)
-  - PHOTO         : remplacer le bloc .portrait par ta photo pro
   - EMAIL_PRO     : email de contact presse
   - FENETRE       : date de la prochaine fenêtre de Sprint (scarcité)
   ===========================================================
@@ -347,19 +346,14 @@
     }
 
     .portrait {
+      display: block;
+      width: 100%;
+      height: auto;
       aspect-ratio: 4/5;
+      object-fit: cover;
       border-radius: var(--r);
-      background: linear-gradient(160deg, #262626, #1C1C1C);
-      border: 1px solid #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #555;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 500;
-      font-size: .82rem;
-      text-align: center;
-      padding: 20px
+      background: var(--ink-2);
+      border: 1px solid #333
     }
 
     /* ---------- TRACK RECORD BAR ---------- */
@@ -1152,6 +1146,7 @@
             précis ? → Travailler avec moi</a>
         </div>
       </div>
+      <img class="portrait" src="assets/portrait.jpg" alt="Florian Marin" width="800" height="800" fetchpriority="high">
     </div>
   </header>
 
