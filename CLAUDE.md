@@ -4,47 +4,64 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Static marketing site for **florianmarin.me** ("Le Cadre Endurance" — coaching offer for tech-exec fathers, copy in French). Three independent, self-contained HTML pages — no build step, no package manager, no tests. Deployed via GitHub Pages with the custom domain set in `CNAME`.
+Static marketing site for **florianmarin.me**: Florian Marin's CRM RevOps offer (the "Sprint RevOps 6 semaines" for B2B SaaS scaleups of 50 to 300 people). Copy is in French. Every page is a self-contained HTML file: no build step, no package manager, no tests. Deployed via GitHub Pages with the custom domain set in `CNAME`. **Everything in the repo is public**, so never commit secrets or internal files.
 
 To preview, open the file directly in a browser (e.g. `open index.html`) or serve the folder (`python3 -m http.server 8000`). To deploy, commit and push to `main`; GitHub Pages serves the repo root.
 
 ## Files
 
-- `index.html` — the landing page. ~1.6k lines of HTML with **all CSS and JS inlined** (no external stylesheet). This is the bulk of the work.
-- `menu/index.html` — standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
-- `banniere-linkedin-le-cadre-v1.html` — LinkedIn banner template (1584×396), exported to image manually.
-- `assets/` — `logo.png`, `favicon.png`, `profile.png`, `opengraph.png` (1200×627), `client-agenda-01.jpeg`.
+- `index.html`: the landing page. ~1.7k lines of HTML with **all CSS and JS inlined** (no external stylesheet). This is the bulk of the work. A comment block at the top of `<head>` lists placeholders still to fill and the offer version applied.
+- `diagnostic/index.html`: lead magnet quiz "Ton CRM tient-il à 300 ?" (10 questions, score, tier, cost estimate, email gate before results).
+- `vcard.html`: digital business card with a QR code to Calendly (QR lib from cdnjs). Links are built from a `CONFIG` object in its script.
+- `menu/index.html`: standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
+- `value-assets/`: internal visual board ("Méthode Stack Possédée") plus `scalezia/` material. Not linked from the site.
+- `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
+- `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
+- `assets/`: images, the client-case videos (`cas-client-crm-16x9.mp4` / `-1x1.mp4` + posters), `opengraph.png` (1200×627), `favicon.png`, `logo.png`, `profile.png`.
 
 ## Conventions that aren't obvious from the code
 
-- **Inline everything in `index.html`.** CSS lives in one `<style>` block, JS in `<script>` blocks. Don't extract to separate files — the deploy is a single static page and the inline approach is intentional.
-- **French copy uses HTML entities** (`&eacute;`, `&agrave;`, `&mdash;`, `&laquo;`, etc.) rather than raw UTF-8 characters in most places. Match the surrounding style when editing.
-- **Brand palette is defined as CSS custom properties** at the top of each file's `<style>`. Landing page is dark (`--bg: #1C1C1C`, `--accent: #FF7A00`); menu is light. Reuse the existing variables — don't hardcode colors.
+- **Inline everything per page.** CSS lives in one `<style>` block, JS in `<script>` blocks. Don't extract to separate files.
+- **Copy:** raw UTF-8 characters (é, à, ·) are the norm in current pages; older pages use HTML entities. Match the surrounding style. No em dashes (`—`, `&mdash;`) in copy: use a colon, parentheses or two short sentences.
+- **Brand palette is defined as CSS custom properties** at the top of each file's `<style>`. Landing page is dark (`--ink: #1C1C1C`, `--ink-2: #262626`, `--accent: #FF7A00`, `--accent-2: #FFD84D`); menu is light. Reuse the existing variables; don't hardcode colors.
 - **Font is Montserrat** loaded from Google Fonts in every page. Keep the same `display=swap` link.
-- **Commit message format**: `feat(<area>): v<version> - <short note>` where `<area>` is one of `homepage`, `menu`, `linkedin`. Version bumps are loose semver in the message, not in any file.
+- **Commit message format**: `feat(<area>): <short note>` where `<area>` is the page or topic (`landing`, `diagnostic`, `vcard`, `menu`, `scalezia`...).
 
-## A/B test system (`index.html`)
+## Analytics: Plausible
 
-The hero headline + subhead are swapped at runtime by an inline IIFE near the top of `<head>` (around line 41). Three variants `a` / `b` / `c` are defined in a `VARIANTS` object. Selection priority:
+Every public page loads `https://plausible.io/js/script.outbound-links.js` with `data-domain="florianmarin.me"`, followed by the `window.plausible` queue stub. Pageviews and outbound clicks are automatic. Custom events are sent from JS with `plausible(name, { props })`:
 
-1. `?v=a|b|c` URL parameter (overrides everything, persisted to `localStorage`)
-2. Existing `localStorage.lce_variant` (sticky across visits)
-3. Random pick
+| Event | Page | Props |
+|---|---|---|
+| `Calendly Click` | landing, diagnostic, vcard | `location` |
+| `Newsletter Signup` | landing (only after the email is saved) | `location` |
+| `Diagnostic Start` / `Diagnostic Completed` / `Diagnostic Lead` | diagnostic | `tier` on `Diagnostic Lead` |
 
-The chosen variant writes `data-variant` on `<body>` and exposes `window.__LCE_VARIANT`. The script also wires Umami events (`ab_exposed`, `ab_cta_click`, `ab_lead_magnet_click`) to all `a[href*="calendly.com"]` and `a[href*="tally.so"]` links automatically — **don't add manual click handlers for those**, the IIFE already covers them. Variant slots in the DOM are marked with `data-ab="headline"` and `data-ab="sub"`; preserve those attributes when restructuring the hero.
+- On the landing, Calendly clicks are wired automatically for every `a[href*="calendly.com"]`; give a new link a `data-loc="<section>"` attribute instead of adding a handler.
+- Any new event or prop must also be declared in Plausible (goal / custom property) to show up.
+- Umami and the old hero A/B test script were removed; don't reintroduce them.
 
-When adding a variant, update the `VARIANTS` object only — no other code change is needed.
+## Lead capture: email → n8n → Attio
 
-## Analytics & external integrations
+The site is static, so the Attio API key never goes in a page. Forms POST JSON to a self-hosted **n8n webhook**, which upserts the person in Attio (People, matched on email) and adds a Tags option and a Source:
 
-- **Umami** (cloud, `data-website-id="5e14483e-..."`) — page-level tracking is automatic. Add `data-umami-event="<event-name>"` to any new CTA so it shows up in the dashboard. Existing names follow `<location>-cta-<purpose>` (e.g. `hero-cta-diagnostic`, `nav-cta-click`, `sticky-cta-diagnostic`). Match that pattern.
-- **Calendly** — primary CTA target is `https://calendly.com/florian-marin/audit-triangle` (the free 30-min diagnostic). Used in nav, hero, post-problem, pricing, final, sticky. If the booking URL changes, update all occurrences.
-- **Tally** — lead magnet quiz at `https://tally.so/r/68OLD5`.
-- **WhatsApp** — secondary contact CTA in pricing/final sections.
+| Form | `source` in payload | Attio Tags | Attio Source |
+|---|---|---|---|
+| Landing newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
+| Diagnostic email gate | `ton-crm-tient-a-300` | Diagnostic CRM 300 | Lead Magnet |
+
+- Payload shape: `{ source, ts, lead: { email, phone?, consent }, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
+- Endpoint constants: `LEAD_ENDPOINT` in `index.html`, `ENDPOINT` in `diagnostic/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
+- A new form = add `data-lead="<location>"` on the landing, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
+
+## External links
+
+- **Calendly**: the booking CTA everywhere is `https://calendly.com/florian-marin/revops-sprint-discovery`. If it changes, update all pages (`grep -rn calendly.com`).
+- **Substack**: still a `YOURSUBSTACK` placeholder in the landing footer.
 
 ## Things not to do
 
 - Don't add a build tool, bundler, or framework. The site is intentionally one-file-per-page static HTML.
-- Don't extract CSS/JS into separate files in `index.html` — see above.
-- Don't add tracking on Calendly/Tally links by hand; the A/B IIFE already wires them.
+- Don't extract CSS/JS into separate files.
+- Don't put API keys, tokens or n8n credentials in any file of this repo (it is served publicly).
 - Don't translate copy to English. The audience is French-speaking.
