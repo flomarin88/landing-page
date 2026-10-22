@@ -1607,7 +1607,7 @@
     // Plausible : clics Calendly et inscriptions newsletter. L'email part vers le webhook n8n, qui l'ajoute
     // dans Attio (People, tag « Newsletter RevOps »). La clé Attio reste côté n8n, jamais dans la page.
     (function () {
-      var LEAD_ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/lead-capture"
+      var LEAD_ENDPOINT = "https://n8n.florianmarin.me/webhook/lead-capture";
       var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
 
       function track(name, props) { window.plausible(name, { props: props }); }
