@@ -18,7 +18,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
 - `_n8n/`: the lead capture workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
-- `_config.yml`: Jekyll `exclude` list for repo files that must not be served (`CLAUDE.md`, `README.md`). Add any new internal file there.
+- `_config.yml`: Jekyll `exclude` list for repo files that must not be served (`CLAUDE.md`, `README.md`, `generate-pdf.mjs`). Add any new internal file there.
 - `assets/`: images, the client-case videos (`cas-client-crm-16x9.mp4` / `-1x1.mp4` + posters), `opengraph.png` (1200×627), `favicon.png`, `logo.png`, `profile.png`.
 
 ## Conventions that aren't obvious from the code

@@ -3,3 +3,4 @@
 exclude:
   - CLAUDE.md
   - README.md
+  - generate-pdf.mjs
