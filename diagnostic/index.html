@@ -247,6 +247,15 @@
       filter: none
     }
 
+    /* Champ piège anti-bot : invisible pour les humains, rempli par les bots */
+    .hp {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden
+    }
+
     .warn {
       color: var(--amber);
       font-size: 13px;
@@ -523,6 +532,7 @@
           newsletter <i>Tactique RevOps</i> (1 email/semaine, désinscription en 1 clic). Mes données ne sont jamais
           revendues. Voir <a href="#" style="color:var(--accent)">mentions légales</a>.</span>
       </label>
+      <div class="hp" aria-hidden="true"><label>Site web <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
       <button class="cta-btn" id="gateSubmit" style="margin-top:16px">Recevoir mon diagnostic →</button>
       <div class="warn" id="gateWarn">Email valide + consentement requis.</div>
       <div id="gateLoading" style="display:none;text-align:center;color:var(--muted);font-size:13px;margin-top:10px">
@@ -719,6 +729,7 @@
       // --- Webhook n8n partagé avec la landing : upsert People dans Attio, tag « Diagnostic CRM 300 ».
       // Laisse vide pour un fallback console.log local pendant les tests.
       var ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/lead-capture"
+      var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
 
       function track(name, props) { window.plausible(name, props ? { props: props } : undefined); }
 
@@ -787,6 +798,8 @@
           return;
         }
         warn.style.display = 'none';
+        if (this.disabled) return;
+        this.disabled = true; // un seul envoi par diagnostic (réactivé par « Refaire le diagnostic »)
         var loading = document.getElementById('gateLoading');
         loading.style.display = 'block';
 
@@ -795,6 +808,8 @@
           source: 'ton-crm-tient-a-300',
           ts: new Date().toISOString(),
           lead: { email: email, phone: phone, consent: true },
+          hp: document.getElementById('website').value,
+          elapsed_ms: Date.now() - LOADED_AT,
           answers: answers,
           score: payload.pct,
           tier: payload.tier.name,
@@ -840,6 +855,7 @@
         document.getElementById('email').value = '';
         document.getElementById('phone').value = '';
         document.getElementById('consent').checked = false;
+        document.getElementById('gateSubmit').disabled = false;
         document.getElementById('gate').style.display = 'none';
         document.getElementById('gateWarn').style.display = 'none';
         document.getElementById('results').style.display = 'none';
