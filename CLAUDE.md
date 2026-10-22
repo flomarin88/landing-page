@@ -17,6 +17,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - `value-assets/`: internal visual board ("Méthode Stack Possédée") plus `scalezia/` material. Not linked from the site.
 - `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
+- `_n8n/`: the lead capture workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
 - `assets/`: images, the client-case videos (`cas-client-crm-16x9.mp4` / `-1x1.mp4` + posters), `opengraph.png` (1200×627), `favicon.png`, `logo.png`, `profile.png`.
 
 ## Conventions that aren't obvious from the code
@@ -50,6 +51,9 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 | Landing newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
 | Diagnostic email gate | `ton-crm-tient-a-300` | Diagnostic CRM 300 | Lead Magnet |
 
+- One workflow serves both forms: Webhook → Prepare lead → Attio upsert (by email) → Attio tags + source → Attio note (diagnostic only: score, tier, cost, gaps) → response to the site → welcome email (SMTP, from `contact@florianmarin.me`).
+- Source of truth is `_n8n/prepare-lead.js` (validation, Attio values, both welcome emails in HTML + text). `node _n8n/build.mjs` regenerates `_n8n/lead-capture-workflow.json` (the file to import in n8n), runs the Code node on sample payloads and writes `_n8n/preview-*.html` (gitignored). Never edit the JSON by hand; never put credentials in these files (they are referenced by name in n8n).
+- `prepare-lead.js` copies the diagnostic tiers and gaps from `diagnostic/index.html` (`tierFor`, `DIMS`): change both together.
 - Payload shape: `{ source, ts, lead: { email, phone?, consent }, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
 - Endpoint constants: `LEAD_ENDPOINT` in `index.html`, `ENDPOINT` in `diagnostic/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
 - A new form = add `data-lead="<location>"` on the landing, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
