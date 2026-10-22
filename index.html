@@ -20,7 +20,6 @@
   - PHOTO         : remplacer le bloc .portrait par ta photo pro
   - EMAIL_PRO     : email de contact presse
   - FENETRE       : date de la prochaine fenêtre de Sprint (scarcité)
-  - WeeCars       : taille + date de livraison anonymisées
   ===========================================================
   OFFRE V2 (appliquée depuis le doc Offre & Positionnement, 22/05/2026) :
   - Foundation 25k · Scale 32k · Migration 40k+
@@ -1034,6 +1033,56 @@
         padding: 24px
       }
     }
+      /* ---------- CAS CLIENT ---------- */
+    .case {background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line)}
+    .case .lead {max-width: 70ch}
+    .case-media {margin: 44px 0 0}
+    .case-video-frame {position: relative; aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; background: var(--ink); border: 1px solid #333; box-shadow: 0 30px 70px -30px rgba(0, 0, 0, .45)}
+    .case-video-frame video {display: block; width: 100%; height: 100%; object-fit: cover}
+    .case-media figcaption {margin-top: 12px; font-size: .82rem; font-style: italic; color: var(--muted-dark)}
+    .case-stats {list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px}
+    .case-stats li {background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 24px}
+    .case-stats b {display: block; font-size: 1.9rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap}
+    .case-stats s {font-size: 1rem; font-weight: 500; color: var(--muted-light); text-decoration-color: var(--accent); text-decoration-thickness: 2px; margin-right: 8px}
+    .case-stats p {margin-top: 10px; font-size: .9rem; line-height: 1.45; color: var(--muted-dark)}
+    .case h3.case-sub {font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted-dark); margin: 64px 0 8px}
+    .case .case-note {font-size: .94rem; color: var(--muted-dark); margin-bottom: 18px}
+    .case-table {width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; font-size: .97rem; line-height: 1.5}
+    .case-table th, .case-table td {text-align: left; vertical-align: top; padding: 18px 22px; border-bottom: 1px solid var(--line)}
+    .case-table tbody tr:last-child th, .case-table tbody tr:last-child td {border-bottom: 0}
+    .case-table thead th {font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-dark); background: var(--paper-2); padding-top: 14px; padding-bottom: 14px}
+    .case-table tbody th {font-weight: 700; width: 22%}
+    .case-table td.before {color: var(--muted-dark); width: 33%}
+    .case-table td.after {position: relative; padding-left: 46px}
+    .case-table td.after::before {content: "→"; position: absolute; left: 22px; color: var(--accent); font-weight: 700}
+    .case-levers {display: grid; grid-template-columns: 1fr 1fr; gap: 18px}
+    .case-levers .mcard {background: #fff}
+    .case-levers .num {display: block; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px}
+    .case .module-callout {margin-top: 48px}
+    .case .module-callout .ktag {justify-self: start}
+    .case .btn {white-space: normal; text-align: center}
+    @media (max-width:980px) {
+      .case-stats {grid-template-columns: 1fr 1fr}
+    }
+    @media (max-width:720px) {
+      .case-table thead {display: none}
+      .case-table, .case-table tbody, .case-table tr, .case-table th, .case-table td {display: block; width: auto}
+      .case-table tbody tr {padding: 18px 20px; border-bottom: 1px solid var(--line)}
+      .case-table tbody tr:last-child {border-bottom: 0}
+      .case-table th, .case-table td {border: 0; padding: 0}
+      .case-table tbody th {font-size: 1.02rem; margin-bottom: 8px; width: auto}
+      .case-table td.before {width: auto; margin-bottom: 6px}
+      .case-table td.before::before {content: "Avant"; display: inline-block; margin-right: 8px; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted-light)}
+      .case-table td.after {padding-left: 24px}
+      .case-table td.after::before {left: 0}
+      .case-levers {grid-template-columns: 1fr}
+    }
+    @media (max-width:640px) {
+      .case-video-frame {aspect-ratio: 1 / 1}
+    }
+    @media (max-width:520px) {
+      .case-stats {grid-template-columns: 1fr}
+    }
   </style>
 </head>
 
@@ -1047,6 +1096,7 @@
         onclick="document.getElementById('navlinks').classList.toggle('open')">☰</button>
       <div class="nav-links" id="navlinks">
         <a href="#parcours">Parcours</a>
+        <a href="#cas-client">Cas client</a>
         <a href="#sprint">Le Sprint</a>
         <a href="#faq">FAQ</a>
         <a href="#newsletter" class="nav-cta">Newsletter</a>
@@ -1153,6 +1203,132 @@
     </div>
   </section>
 
+  <!-- CAS CLIENT -->
+  <section class="block case" id="cas-client">
+    <div class="wrap">
+      <span class="eyebrow">Cas client · Franchiseur automobile</span>
+      <h2>Notion, Make et 19 onglets Sheets remplacés. <span class="gradient">V1 livrée en 6 semaines.</span></h2>
+      <p class="lead">Un franchiseur de voitures d'occasion&nbsp;: 53 agences, 750 contrats par mois. Les contrats se
+        saisissaient dans Notion, les primes des agences passaient par des scénarios Make que personne n'osait toucher,
+        et l'ops rapprochait 19 onglets Sheets à la main chaque début de mois. Pas de licence, pas de recrutement&nbsp;: un
+        CRM sur mesure, livré par paliers, que le client possède à 100&nbsp;%.</p>
+
+      <figure class="case-media">
+        <div class="case-video-frame">
+          <video id="case-video" muted loop playsinline controls preload="none"
+            poster="assets/cas-client-crm-16x9-poster.jpg"
+            data-src-square="assets/cas-client-crm-1x1.mp4"
+            data-poster-square="assets/cas-client-crm-1x1-poster.jpg"
+            aria-label="Avant&nbsp;: Notion, Make et Sheets, 7 minutes par contrat. Après&nbsp;: un CRM sur mesure, moins de 45 secondes par contrat. V1 livrée en 6 semaines.">
+            <source src="assets/cas-client-crm-16x9.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption>15 secondes&nbsp;: avant, après, et ce que ça change à la saisie d'un contrat. Interface recréée, données
+          fictives.</figcaption>
+      </figure>
+
+      <ul class="case-stats">
+        <li><b><s>7 min</s><span class="gradient">&lt; 45&nbsp;s</span></b>
+          <p>par contrat saisi. Médiane mesurée chaque semaine, dans l'outil.</p>
+        </li>
+        <li><b>6 semaines</b>
+          <p>pour la V1 complète. En production dès la 3<sup>e</sup>.</p>
+        </li>
+        <li><b>0 tableur</b>
+          <p>19 onglets Sheets et 25 CSV importés chaque lundi, remplacés.</p>
+        </li>
+        <li><b>100&nbsp;%</b>
+          <p>possédé par le client&nbsp;: code, base, documentation, 4&nbsp;603 tests automatisés.</p>
+        </li>
+      </ul>
+
+      <h3 class="case-sub">Ce qui a changé, flux par flux</h3>
+      <p class="case-note">La V1 (saisie des contrats) en 6 semaines, puis un palier par flux jusqu'en septembre.</p>
+      <table class="case-table">
+        <thead>
+          <tr>
+            <th scope="col">Flux</th>
+            <th scope="col">Avant</th>
+            <th scope="col">Après</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Saisie d'un contrat</th>
+            <td class="before">Notion, 7 min par contrat</td>
+            <td class="after">Formulaire dédié, véhicule rempli depuis la plaque, client connu pré-rempli. Moins de 45&nbsp;s.
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Primes des agences</th>
+            <td class="before">Scénarios Make + 19 onglets Sheets rapprochés à la main</td>
+            <td class="after">Grand livre par agence, traçable ligne à ligne</td>
+          </tr>
+          <tr>
+            <th scope="row">Pilotage réseau</th>
+            <td class="before">Logiciel d'agence, consulté une agence à la fois</td>
+            <td class="after">Collecte nocturne de 61 points de vente, classement des vendeurs</td>
+          </tr>
+          <tr>
+            <th scope="row">Campagnes d'appel</th>
+            <td class="before">25 CSV importés à la main le lundi</td>
+            <td class="after">Listes prêtes à 7 h, dédoublonnées contre l'historique</td>
+          </tr>
+          <tr>
+            <th scope="row">Accès franchisés</th>
+            <td class="before">Exports envoyés par mail</td>
+            <td class="after">Portail en lecture seule, borné à leurs agences</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="case-sub">Ce qui a fait la différence</h3>
+      <div class="case-levers">
+        <div class="mcard">
+          <span class="num">01 · Paliers</span>
+          <h3>Livrer par paliers, pas en big bang.</h3>
+          <p>Trois paliers fin mai, mi-juin, fin juin, chacun utile seul. Le multi-agences a attendu que la base soit
+            solide&nbsp;: tout le budget est allé à la vitesse de saisie.</p>
+        </div>
+        <div class="mcard">
+          <span class="num">02 · Mesure</span>
+          <h3>Mesurer le gain promis dès le jour 1.</h3>
+          <p>Un chrono dans le formulaire, la médiane affichée chaque semaine. Le meilleur gain n'est venu d'aucune ligne
+            de code&nbsp;: remettre les champs dans l'ordre où l'admin lit la facture.</p>
+        </div>
+        <div class="mcard">
+          <span class="num">03 · Argent</span>
+          <h3>Sortir l'argent des boîtes noires.</h3>
+          <p>Primes, versements, campagnes&nbsp;: chaque flux Make rapatrié dans le CRM, un par un, avec des semaines de
+            double écriture avant de débrancher quoi que ce soit.</p>
+        </div>
+        <div class="mcard">
+          <span class="num">04 · Propriété</span>
+          <h3>Une stack possédée, pas louée.</h3>
+          <p>Code, base et documentation appartiennent au client. Chaque écran de pilotage affiche la date de sa donnée.
+            Si j'arrête demain, l'outil continue sans moi.</p>
+        </div>
+      </div>
+
+      <div class="module-callout">
+        <span class="ktag">Et chez toi&nbsp;?</span>
+        <div>
+          <h3>Pas une scaleup SaaS. Le même problème.</h3>
+          <p>Remplace «&nbsp;contrats&nbsp;» par «&nbsp;deals&nbsp;», «&nbsp;primes d'agence&nbsp;» par «&nbsp;commissions&nbsp;», et les 25 CSV du lundi par
+            l'export Athena que ton RevOps recolle dans Sheets. Un outil saturé, du no-code que personne n'ose toucher,
+            du revenu rapproché à la main&nbsp;: <strong>la méthode est la même</strong>, que le cœur soit un CRM sur mesure
+            ou Attio.</p>
+        </div>
+      </div>
+
+      <div class="sprint-cta">
+        <a class="btn btn-dark" href="https://cal.com/florianmarin" target="_blank" rel="noopener">Ton tableur mérite le
+          même sort&nbsp;? → Réserver un échange</a>
+        <a class="link-quiet" href="#newsletter">Le cas détaillé arrive dans la newsletter</a>
+      </div>
+    </div>
+  </section>
+
   <!-- SPRINT : sales section refonte -->
   <section class="block" id="sprint">
     <div class="wrap">
@@ -1232,7 +1408,7 @@
 
       <div class="scarcity">
         <div><strong>1 Sprint actif à la fois.</strong> 6 à 8 sprints par an.</div>
-        <div><em>Prochaine fenêtre : septembre 2026</em></div>
+        <div><em>Prochaine fenêtre : T1 2027 · 2 Sprints disponibles</em></div>
       </div>
 
       <div class="sprint-cta">
@@ -1333,9 +1509,9 @@
       <div class="cards">
         <div class="rcard">
           <span class="k">Chantier en cours</span>
-          <h3>Franchiseur automobile : CRM custom SAV</h3>
-          <p>CRM sur mesure pour leur service après-vente : saisie des contrats de garantie, structuration de la donnée,
-            automatisations. Sprint en cours.</p>
+          <h3>Franchiseur automobile : la suite</h3>
+          <p>Après la V1, la suite s'est enchaînée : grand livre des primes, collecte nocturne des 61 points
+            de vente, portail franchisés en lecture seule. <a href="#cas-client">Voir le cas →</a></p>
         </div>
         <div class="rcard">
           <span class="k">Build journal</span>
@@ -1380,6 +1556,35 @@
       <div class="legal">© 2026 Florian Marin · Mentions légales</div>
     </div>
   </footer>
+
+  <script>
+    // Cas client : vidéo en autoplay muet. Chargée à l'approche de la section, jouée quand elle est visible,
+    // en pause hors écran. Version carrée sur mobile. Sans JS ou avec « réduire les animations » : poster + contrôles.
+    (function () {
+      var v = document.getElementById('case-video');
+      if (!v) return;
+      if (window.matchMedia('(max-width: 640px)').matches) {
+        v.poster = v.dataset.posterSquare;
+        v.src = v.dataset.srcSquare;
+      }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      v.muted = true;
+      v.controls = false;
+      new IntersectionObserver(function (entries, obs) {
+        if (entries[0].isIntersecting) { v.preload = 'auto'; obs.disconnect(); }
+      }, { rootMargin: '600px 0px' }).observe(v);
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.intersectionRatio >= 0.35) {
+            var p = v.play();
+            if (p && p.catch) p.catch(function () { v.controls = true; });
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: [0, 0.35] }).observe(v);
+    })();
+  </script>
 
 </body>
 
