@@ -108,14 +108,14 @@ function newsletterEmail() {
   const body =
     p('Merci pour ton inscription.') +
     p("Chaque mardi, je t'envoie une idée RevOps tirée de mes chantiers : une intégration, un piège évité, une décision d'archi commerciale. Lisible en 3 minutes.") +
-    p("Pour situer d'où je parle : 14 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.") +
+    p("Pour situer d'où je parle : 15 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.") +
     p("En attendant mardi, tu peux voir où en est ton CRM : 10 questions, un score, et ce que ta stack te coûte en heures perdues.") +
     button('Faire le diagnostic de mon CRM →', DIAGNOSTIC_URL) +
     p("Et une question pour démarrer : qu'est-ce qui te fait perdre le plus de temps dans ton CRM aujourd'hui ?");
   const text = [
     'Merci pour ton inscription.',
     "Chaque mardi, je t'envoie une idée RevOps tirée de mes chantiers : une intégration, un piège évité, une décision d'archi commerciale. Lisible en 3 minutes.",
-    "Pour situer d'où je parle : 14 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.",
+    "Pour situer d'où je parle : 15 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.",
     'En attendant mardi, tu peux voir où en est ton CRM (10 questions) : ' + DIAGNOSTIC_URL,
     "Et une question pour démarrer : qu'est-ce qui te fait perdre le plus de temps dans ton CRM aujourd'hui ?",
     'Réponds à cet email. Je lis tout.',
