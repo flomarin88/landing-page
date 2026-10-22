@@ -16,7 +16,7 @@
   ===========================================================
   PLACEHOLDERS À REMPLIR AVANT MISE EN LIGNE :
   - SUBSTACK_URL  : URL d'abonnement Substack (rebrandé, plus "Le Cadre Notes")
-  - CALCOM_URL    : lien Cal.com discovery call
+  - LEAD_ENDPOINT : URL du webhook n8n (script newsletter en bas de page)
   - PHOTO         : remplacer le bloc .portrait par ta photo pro
   - EMAIL_PRO     : email de contact presse
   - FENETRE       : date de la prochaine fenêtre de Sprint (scarcité)
@@ -36,6 +36,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
+  <script defer data-domain="florianmarin.me" src="https://plausible.io/js/script.outbound-links.js"></script>
+  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   <style>
     :root {
       --ink: #1C1C1C;
@@ -884,6 +886,18 @@
       background: var(--accent-hover)
     }
 
+    .form-msg {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--accent);
+      margin-top: 12px
+    }
+
+    .form-msg.err {
+      color: var(--accent-2)
+    }
+
     .news .micro {
       font-family: 'Montserrat', sans-serif;
       font-style: italic;
@@ -1116,8 +1130,7 @@
 
         <div class="capture">
           <div class="label">Reçois une idée RevOps actionnable par semaine.</div>
-          <!-- Remplacer action= par SUBSTACK_URL -->
-          <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+          <form data-lead="hero">
             <input type="email" name="email" placeholder="ton@email.com" required>
             <button class="btn btn-accent" type="submit">S'abonner</button>
           </form>
@@ -1125,8 +1138,7 @@
         </div>
 
         <div class="quiet-wrap">
-          <!-- Remplacer href par CALCOM_URL -->
-          <a class="link-quiet" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Tu as un chantier CRM
+          <a class="link-quiet" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="hero" target="_blank" rel="noopener">Tu as un chantier CRM
             précis ? → Travailler avec moi</a>
         </div>
       </div>
@@ -1322,7 +1334,7 @@
       </div>
 
       <div class="sprint-cta">
-        <a class="btn btn-dark" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Ton tableur mérite le
+        <a class="btn btn-dark" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="cas-client" target="_blank" rel="noopener">Ton tableur mérite le
           même sort&nbsp;? → Réserver un échange</a>
         <a class="link-quiet" href="#newsletter">Le cas détaillé arrive dans la newsletter</a>
       </div>
@@ -1412,7 +1424,7 @@
       </div>
 
       <div class="sprint-cta">
-        <a class="btn btn-dark" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Voir si ton cas colle
+        <a class="btn btn-dark" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="sprint" target="_blank" rel="noopener">Voir si ton cas colle
           → Réserver un échange</a>
         <a class="link-quiet" href="#newsletter">Pas prêt ? Reçois la newsletter d'abord</a>
       </div>
@@ -1534,8 +1546,7 @@
       <h2>Une idée RevOps par semaine. Tirée du <span class="gradient">terrain</span>, pas de Twitter.</h2>
       <p class="lead">Chaque mardi, un pattern concret : une intégration, un piège évité, une décision d'archi
         commerciale. Lisible en 3 minutes. Issu de chantiers réels, pas de threads recyclés.</p>
-      <!-- Remplacer action= par SUBSTACK_URL -->
-      <form action="https://YOURSUBSTACK.substack.com/subscribe" method="get" target="_blank" rel="noopener">
+      <form data-lead="newsletter">
         <input type="email" name="email" placeholder="ton@email.com" required>
         <button class="btn btn-accent" type="submit">Je m'abonne</button>
       </form>
@@ -1551,7 +1562,7 @@
       <div class="flinks">
         <a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://YOURSUBSTACK.substack.com" target="_blank" rel="noopener">Substack</a>
-        <a href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Travailler avec moi</a>
+        <a href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="footer" target="_blank" rel="noopener">Travailler avec moi</a>
       </div>
       <div class="legal">© 2026 Florian Marin · Mentions légales</div>
     </div>
@@ -1583,6 +1594,61 @@
           }
         });
       }, { threshold: [0, 0.35] }).observe(v);
+    })();
+  </script>
+
+  <script>
+    // Plausible : clics Calendly et inscriptions newsletter. L'email part vers le webhook n8n, qui l'ajoute
+    // dans Attio (People, tag « Newsletter RevOps »). La clé Attio reste côté n8n, jamais dans la page.
+    (function () {
+      var LEAD_ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/lead-capture"
+
+      function track(name, props) { window.plausible(name, { props: props }); }
+
+      document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
+        a.addEventListener('click', function () { track('Calendly Click', { location: a.dataset.loc || 'autre' }); });
+      });
+
+      document.querySelectorAll('form[data-lead]').forEach(function (form) {
+        var btn = form.querySelector('button');
+        var msg = document.createElement('div');
+        msg.className = 'form-msg';
+        msg.setAttribute('role', 'status');
+        form.after(msg);
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = form.querySelector('input[type=email]').value.trim();
+          var body = {
+            source: 'newsletter',
+            location: form.dataset.lead,
+            ts: new Date().toISOString(),
+            lead: { email: email, consent: true }
+          };
+          btn.disabled = true;
+          msg.className = 'form-msg';
+          msg.textContent = '';
+
+          var sent = LEAD_ENDPOINT
+            ? fetch(LEAD_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            }).then(function (res) { if (!res.ok) throw new Error('HTTP ' + res.status); })
+            : Promise.resolve(console.log('[lead] payload', body));
+
+          sent.then(function () {
+            track('Newsletter Signup', { location: form.dataset.lead });
+            form.remove();
+            msg.textContent = "C'est noté. Premier email mardi prochain.";
+          }).catch(function (err) {
+            console.warn('[lead] POST failed', err);
+            btn.disabled = false;
+            msg.className = 'form-msg err';
+            msg.textContent = "L'inscription n'est pas passée. Réessaie dans un instant.";
+          });
+        });
+      });
     })();
   </script>
 
