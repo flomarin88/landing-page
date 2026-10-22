@@ -1,0 +1,5 @@
+# GitHub Pages (build Jekyll) : fichiers du repo à ne pas publier sur florianmarin.me.
+# Les dossiers commençant par « _ » (ex. _n8n/) sont déjà exclus par Jekyll.
+exclude:
+  - CLAUDE.md
+  - README.md
