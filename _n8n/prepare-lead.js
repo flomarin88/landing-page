@@ -6,10 +6,15 @@ const SITE = 'https://florianmarin.me';
 const CALENDLY = 'https://calendly.com/florian-marin/revops-sprint-discovery';
 const DIAGNOSTIC_URL = SITE + '/diagnostic/';
 
+// skipWelcomeIfTagged : pas de 2e email de bienvenue si la personne a déjà un de ces tags dans Attio.
+// Le diagnostic n'en a pas : son email contient les résultats demandés, il part à chaque diagnostic.
 const FORMS = {
-  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound' },
-  'ton-crm-tient-a-300': { tag: 'Diagnostic CRM 300', source: 'Lead Magnet' }
+  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound', skipWelcomeIfTagged: ['Newsletter RevOps', 'Diagnostic CRM 300'] },
+  'ton-crm-tient-a-300': { tag: 'Diagnostic CRM 300', source: 'Lead Magnet', skipWelcomeIfTagged: [] }
 };
+
+// Anti-bot : champ piège rempli, ou formulaire envoyé moins de 2,5 s après le chargement de la page.
+const MIN_ELAPSED_MS = 2500;
 
 // Copie de diagnostic/index.html (DIMS + tierFor). À garder synchro si le quiz change.
 const GAPS = {
@@ -180,6 +185,10 @@ function diagnosticEmail(d) {
 // ---------- Traitement du payload
 
 const b = $input.first().json.body || {};
+const elapsed = Number(b.elapsed_ms);
+if (String(b.hp || '') !== '' || !Number.isFinite(elapsed) || elapsed < MIN_ELAPSED_MS) {
+  return [{ json: { bot: true } }];
+}
 const lead = b.lead || {};
 const email = String(lead.email || '').trim().toLowerCase();
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) throw new Error('email invalide');
@@ -223,4 +232,4 @@ if (b.source === 'ton-crm-tient-a-300') {
   mail = newsletterEmail();
 }
 
-return [{ json: { email, values, note, mail } }];
+return [{ json: { bot: false, email, values, note, mail, skipWelcomeIfTagged: form.skipWelcomeIfTagged } }];
