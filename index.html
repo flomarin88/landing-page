@@ -886,6 +886,15 @@
       background: var(--accent-hover)
     }
 
+    /* Champ piège anti-bot : invisible pour les humains, rempli par les bots */
+    .hp {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden
+    }
+
     .form-msg {
       font-family: 'Montserrat', sans-serif;
       font-weight: 600;
@@ -1132,6 +1141,7 @@
           <div class="label">Reçois une idée RevOps actionnable par semaine.</div>
           <form data-lead="hero">
             <input type="email" name="email" placeholder="ton@email.com" required>
+            <div class="hp" aria-hidden="true"><label>Site web <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
             <button class="btn btn-accent" type="submit">S'abonner</button>
           </form>
           <div class="micro">Le mardi. Du concret tiré de mes intégrations réelles. Désabonnement en 1 clic.</div>
@@ -1548,6 +1558,7 @@
         commerciale. Lisible en 3 minutes. Issu de chantiers réels, pas de threads recyclés.</p>
       <form data-lead="newsletter">
         <input type="email" name="email" placeholder="ton@email.com" required>
+        <div class="hp" aria-hidden="true"><label>Site web <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <button class="btn btn-accent" type="submit">Je m'abonne</button>
       </form>
       <div class="micro">Gratuit · Le mardi · Désabonnement en 1 clic</div>
@@ -1602,6 +1613,7 @@
     // dans Attio (People, tag « Newsletter RevOps »). La clé Attio reste côté n8n, jamais dans la page.
     (function () {
       var LEAD_ENDPOINT = ""; // ex: "https://n8n.florianmarin.me/webhook/lead-capture"
+      var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
 
       function track(name, props) { window.plausible(name, { props: props }); }
 
@@ -1623,7 +1635,9 @@
             source: 'newsletter',
             location: form.dataset.lead,
             ts: new Date().toISOString(),
-            lead: { email: email, consent: true }
+            lead: { email: email, consent: true },
+            hp: form.querySelector('input[name=website]').value,
+            elapsed_ms: Date.now() - LOADED_AT
           };
           btn.disabled = true;
           msg.className = 'form-msg';
