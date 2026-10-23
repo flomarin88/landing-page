@@ -35,8 +35,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
-  <script defer data-domain="florianmarin.me" src="https://plausible.io/js/script.outbound-links.js"></script>
-  <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
   <style>
     :root {
       --ink: #1C1C1C;
@@ -1604,13 +1603,13 @@
   </script>
 
   <script>
-    // Plausible : clics Calendly et inscriptions newsletter. L'email part vers le webhook n8n, qui l'ajoute
+    // Umami : clics Calendly et inscriptions newsletter. L'email part vers le webhook n8n, qui l'ajoute
     // dans Attio (People, tag « Newsletter RevOps »). La clé Attio reste côté n8n, jamais dans la page.
     (function () {
       var LEAD_ENDPOINT = "https://n8n.florianmarin.me/webhook/lead-capture";
       var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
 
-      function track(name, props) { window.plausible(name, { props: props }); }
+      function track(name, props) { if (window.umami) window.umami.track(name, props); }
 
       document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
         a.addEventListener('click', function () { track('Calendly Click', { location: a.dataset.loc || 'autre' }); });
