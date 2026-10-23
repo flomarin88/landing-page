@@ -29,9 +29,9 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - **Font is Montserrat** loaded from Google Fonts in every page. Keep the same `display=swap` link.
 - **Commit message format**: `feat(<area>): <short note>` where `<area>` is the page or topic (`landing`, `diagnostic`, `vcard`, `menu`, `scalezia`...).
 
-## Analytics: Plausible
+## Analytics: Umami Cloud
 
-Every public page loads `https://plausible.io/js/script.outbound-links.js` with `data-domain="florianmarin.me"`, followed by the `window.plausible` queue stub. Pageviews and outbound clicks are automatic. Custom events are sent from JS with `plausible(name, { props })`:
+Every public page loads `https://cloud.umami.is/script.js` with `data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"`. Umami is cookieless (no consent banner needed); don't replace it with a cookie-based tool such as Google Analytics without adding a CNIL-compliant consent banner. Pageviews are automatic; outbound clicks are not (only Calendly is tracked, via the event below). Custom events are sent from JS through a local `track(name, props)` helper that calls `window.umami.track(name, props)` only if the script has loaded:
 
 | Event | Page | Props |
 |---|---|---|
@@ -40,8 +40,8 @@ Every public page loads `https://plausible.io/js/script.outbound-links.js` with 
 | `Diagnostic Start` / `Diagnostic Completed` / `Diagnostic Lead` | diagnostic | `tier` on `Diagnostic Lead` |
 
 - On the landing, Calendly clicks are wired automatically for every `a[href*="calendly.com"]`; give a new link a `data-loc="<section>"` attribute instead of adding a handler.
-- Any new event or prop must also be declared in Plausible (goal / custom property) to show up.
-- Umami and the old hero A/B test script were removed; don't reintroduce them.
+- Events and their props show up in Umami without any declaration.
+- The old hero A/B test script was removed; don't reintroduce it.
 
 ## Lead capture: email → n8n → Attio
 
