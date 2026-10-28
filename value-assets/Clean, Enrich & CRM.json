@@ -1,0 +1,927 @@
+{
+  "name": "02 - Clean, Enrich & CRM (RevOps — démo)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        2304,
+        1344
+      ],
+      "id": "1563d531-620b-41cd-822f-698d01962202",
+      "name": "▶ Exécuter"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "0BOAWH30Mdwteg78",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Profiles",
+          "cachedResultUrl": "/projects/SkOxcuVGlqmLfa2e/datatables/0BOAWH30Mdwteg78"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        2528,
+        1344
+      ],
+      "id": "39f7fbf9-e551-4365-839e-a8c2a5cf525f",
+      "name": "Get row(s) — source brute"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── PRINCIPE (board) · Étape 3 · Normaliser & dédupliquer ──────────────\n// Conseil 1 : clé stable  ·  Conseil 2 : normaliser le référentiel  ·  Conseil 3 : garde-fous\n// On produit une CLÉ STABLE (link_canonical) AVANT toute dédup — jamais sur le nom.\n\nfunction str(v){ return (v ?? '').toString(); }\nfunction clean(v){ return str(v).replace(/\\s+/g, ' ').trim(); }\nfunction titleCase(v){\n  return clean(v).toLowerCase().replace(/\\b\\p{L}/gu, c => c.toUpperCase());\n}\nfunction canonicalLinkedIn(url){\n  let u = clean(url).toLowerCase();\n  if(!u) return '';\n  u = u.replace(/^https?:\\/\\//, '').replace(/^www\\./, '');\n  u = u.split('?')[0].split('#')[0];\n  u = u.replace(/\\/+$/, '');\n  const m = u.match(/linkedin\\.com\\/in\\/([^/]+)/);\n  return m ? `linkedin.com/in/${m[1]}` : '';\n}\n\nconst out = [];\nfor (const item of $input.all()){\n  const d = item.json || {};\n  const link_canonical = canonicalLinkedIn(d.link);\n  if (!link_canonical) continue;                       // GARDE-FOU 1\n  const firstName   = titleCase(d.firstName);\n  const lastName    = titleCase(d.lastName);\n  const fullName    = clean(d.fullName) || `${firstName} ${lastName}`.trim();\n  const title       = clean(d.title);\n  const description = clean(d.description);\n  if (!fullName && !title) continue;                   // GARDE-FOU 2\n  out.push({ json: { ...d, firstName, lastName, fullName, title, description,\n                     link: clean(d.link), link_canonical } });\n}\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2752,
+        1344
+      ],
+      "id": "9b9a60e5-b38f-4e61-a4a1-df2ae0979b91",
+      "name": "Normalize & Validate"
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "link_canonical",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        2976,
+        1344
+      ],
+      "id": "16180aa5-a887-4f71-9d96-c0e9d5b4dbc9",
+      "name": "Remove Duplicates (clé stable)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── Filtre ICP — payeur cible ─────────────────────────────────────────\n// CRO · VP Sales · RevOps Lead · Head of Sales Ops (FR + EN)\nconst ICP_TITLE_REGEX = /\\b(?:CRO|Chief\\s+Revenue\\s+Officer|(?:VP|SVP|V\\.?P\\.?|Vice[-\\s]?President)\\s+(?:of\\s+)?Sales|(?:VP|SVP)\\s+Revenue|(?:Directeur|Directrice)\\s+Commercial(?:e)?|Rev[\\s-]?Ops\\s+(?:Lead|Manager|Director|Head)|Revenue\\s+Operations\\s+(?:Lead|Manager|Director|Head)|Sales\\s+Op(?:s|erations)\\s+(?:Lead|Manager|Director|Head)|Head\\s+of\\s+(?:Sales|Revenue)\\s+Operations|Head\\s+of\\s+Rev[\\s-]?Ops|Head\\s+of\\s+Sales)\\b/i;\nreturn $input.all().filter(item => {\n  const value = `${item.json.title ?? ''} ; ${item.json.description ?? ''}`;\n  return ICP_TITLE_REGEX.test(value);\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        1344
+      ],
+      "id": "d7eff5ad-40ea-4109-b76d-1fc5bad15c0e",
+      "name": "Only ICP"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── Scoring ICP CRM RevOps (/10) — niveau PERSONNE ────────────────────\nfunction str(v){ return (v ?? '').toString().toLowerCase(); }\nfunction clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }\nfunction has(text, arr){ return arr.some(k => text.includes(k)); }\nreturn $input.all().map(item => {\n  const d = item.json || {};\n  const title = str(d.title), desc = str(d.description);\n  const blob = `${title} ; ${desc}`;\n  let role = 1;\n  if (has(title, ['cro', 'chief revenue officer'])) role = 4;\n  else if (/\\b(vp|svp|vice[-\\s]?president)\\b/.test(title) && has(title, ['sales','revenue','commercial'])) role = 4;\n  else if (has(title, ['head of revops','head of revenue operations','head of sales operations','director of revenue operations','revops director'])) role = 4;\n  else if (has(title, ['revops lead','revenue operations lead','revenue operations manager','head of sales ops','head of sales','director of sales','sales operations manager','directeur commercial','directrice commercial'])) role = 3;\n  else if (has(title, ['revops','rev ops','revenue operations','sales ops','sales operations'])) role = 2;\n  let fonction = 0;\n  if (has(blob, ['revops','rev ops','revenue operations','sales operations','sales ops'])) fonction = 2;\n  else if (has(blob, ['revenue','commercial','sales'])) fonction = 1;\n  const STACK = ['attio','folk','close crm','pipedrive','hubspot','salesforce','crm','forecast','pipeline','gtm','sales stack','outreach','modjo','aircall'];\n  const stack = clamp(STACK.filter(k => blob.includes(k)).length, 0, 2);\n  const stage = has(blob, ['scaleup','scale-up','series a','series b','series c','hypergrowth','b2b saas','saas','50-','100-','200-']) ? 1 : 0;\n  const geo = has(blob, ['france','paris','lyon','montpellier','🇫🇷','français','french']) ? 1 : 0;\n  const total = clamp(role + fonction + stack + stage + geo, 0, 10);\n  const fit = total >= 8 ? 'Fort' : total >= 5 ? 'Moyen' : 'Faible';\n  d.icp_score = total; d.icp_fit = fit;\n  d.icp_priority = fit === 'Fort' ? 'P1' : fit === 'Moyen' ? 'P2' : 'P3';\n  d.icp_scoring = { score_total: total, fit_icp: fit, breakdown: { role, fonction, stack, stage, geo } };\n  return { json: d };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3424,
+        1344
+      ],
+      "id": "03952003-9c6c-4278-a54d-5a1bc376a2c0",
+      "name": "Scoring ICP RevOps"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UqxvTiKQ2LP1RDoT",
+          "mode": "list",
+          "cachedResultName": "ICP LinkedIn Profiles",
+          "cachedResultUrl": "/projects/SkOxcuVGlqmLfa2e/datatables/UqxvTiKQ2LP1RDoT"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "link",
+              "keyValue": "={{ $json.link_canonical }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "firstName": "={{ $json.firstName }}",
+            "lastName": "={{ $json.lastName }}",
+            "fullName": "={{ $json.fullName }}",
+            "title": "={{ $json.title }}",
+            "description": "={{ $json.description }}",
+            "link": "={{ $json.link_canonical }}",
+            "addedAt": "={{ $json.createdAt }}",
+            "icp_score": "={{ $json.icp_score }}",
+            "icp_fit": "={{ $json.icp_fit }}",
+            "icp_priority": "={{ $json.icp_priority }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "addedAt",
+              "displayName": "addedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "icp_score",
+              "displayName": "icp_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "icp_fit",
+              "displayName": "icp_fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "icp_priority",
+              "displayName": "icp_priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        3648,
+        1344
+      ],
+      "id": "13c88907-1c5a-46ee-83be-ef655d374d44",
+      "name": "Upsert row(s) — data possédée"
+    },
+    {
+      "parameters": {
+        "url": "https://api.pappers.fr/v2/entreprise",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api_token",
+              "value": "={{ $env.PAPPERS_API_TOKEN }}"
+            },
+            {
+              "name": "nom_entreprise",
+              "value": "={{ $json.company_name }}"
+            },
+            {
+              "name": "format_publications",
+              "value": "false"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3872,
+        1344
+      ],
+      "id": "02609da2-50c0-41c6-81f5-f56a0748e0b9",
+      "name": "Pappers · Enrichir la société"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── Score Company (ICP société) — d'après les données Pappers ─────────\n// Cible : scaleup B2B SaaS FR, 50-300 pers. (CA · effectif · secteur NAF)\nfunction num(v){ const n = Number(v); return isNaN(n) ? 0 : n; }\nreturn $input.all().map(item => {\n  const d = item.json || {};\n  const p = d.pappers || d;\n  const effectif = num(p.effectif ?? d.headcount);\n  const ca = num(p.chiffre_affaires ?? d.ca);\n  const naf = (p.libelle_code_naf ?? p.code_naf ?? d.secteur ?? '').toString().toLowerCase();\n\n  let score = 0;\n  if (effectif >= 50 && effectif <= 300) score += 4;          // cœur de cible\n  else if (effectif >= 30 && effectif < 50) score += 2;\n  else if (effectif > 300 && effectif <= 500) score += 2;\n  if (ca >= 5e6 && ca <= 100e6) score += 3;                    // CA scaleup\n  else if (ca > 0) score += 1;\n  if (/(logiciel|software|saas|edition|informatique|programmation|6201|6202|5829|6311)/.test(naf)) score += 3;\n\n  const company_fit = score >= 7 ? 'Fort' : score >= 4 ? 'Moyen' : 'Faible';\n  d.company_fit = company_fit;\n  d.company_scoring = { score_total: score, company_fit, inputs: { effectif, ca, naf } };\n  return { json: d };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4096,
+        1344
+      ],
+      "id": "46456982-23eb-40d0-88a7-bc16c947dbf9",
+      "name": "Score Company (ICP)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-fit",
+              "leftValue": "={{ $json.company_scoring.score_total }}",
+              "rightValue": 4,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4320,
+        1344
+      ],
+      "id": "7b9658dd-1dbf-4160-91f2-a1447b89d44f",
+      "name": "Company dans l'ICP ?"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.attio.com/v2/objects/companies/records?matching_attribute=domains",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ATTIO_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ { values: { name: $json.company_name, domains:[$json.company_domain], employee_count: $json.company_scoring.inputs.effectif, estimated_arr_usd: $json.company_scoring.inputs.ca, categories:[$json.company_scoring.inputs.naf] } } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4544,
+        1248
+      ],
+      "id": "88d0a58c-7c96-448a-9d79-5a2e95187d87",
+      "name": "Attio · Create/Update Company"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.pharow.com/v1/people/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.PROSPECTING_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "company_domain",
+              "value": "={{ $json.company_domain }}"
+            },
+            {
+              "name": "titles",
+              "value": "=[\"CRO\",\"VP Sales\",\"RevOps\",\"Sales Ops\",\"Head of Sales\"]"
+            },
+            {
+              "name": "limit",
+              "value": "5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4768,
+        1248
+      ],
+      "id": "9663d3d7-fa2d-43f8-bdd1-41c52630f7e3",
+      "name": "Rechercher 5 décideurs (Sales/RevOps)"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "profiles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4992,
+        1248
+      ],
+      "id": "8c8bc60a-a056-4214-baaf-00b5089aa144",
+      "name": "Split · 1 profil / item"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.fullenrich.com/api/v1/contact/enrich/bulk",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.FULLENRICH_API_KEY }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "firstname",
+              "value": "={{ $json.firstName }}"
+            },
+            {
+              "name": "lastname",
+              "value": "={{ $json.lastName }}"
+            },
+            {
+              "name": "domain",
+              "value": "={{ $json.company_domain }}"
+            },
+            {
+              "name": "enrich_fields",
+              "value": "=[\"contact.emails\",\"contact.phones\"]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5216,
+        1248
+      ],
+      "id": "f7b15914-3425-4fb2-a193-cdfa92e8bb98",
+      "name": "Enrichir email + téléphone (waterfall)"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.attio.com/v2/objects/people/records?matching_attribute=email_addresses",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ATTIO_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ { values: { name: $json.fullName, job_title: $json.title, email_addresses:[$json.email], phone_numbers:[$json.phone], company:[$json.company_record_id] } } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5440,
+        1248
+      ],
+      "id": "9d6b6a31-211e-4f76-ae8f-cebe6d8745a2",
+      "name": "Attio · Create/Update People"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Tu es SDR RevOps français. Écris un 1er message LinkedIn court (max 60 mots), personnalisé, zéro bullshit, une accroche sur un enjeu RevOps concret de la boîte. Pas de 'j'espère que vous allez bien'.",
+              "role": "system"
+            },
+            {
+              "content": "=Prospect : {{ $json.fullName }} — {{ $json.title }} chez {{ $json.company_name }}.\nSecteur : {{ $json.company_scoring.inputs.naf }} · effectif : {{ $json.company_scoring.inputs.effectif }}.\nAngle : CRM moderne scalé à 50-300 sans migrer vers HubSpot, forecast remonté dans le CRM. Rédige le message."
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.6
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        5664,
+        1248
+      ],
+      "id": "333a5776-56f5-4dbc-aa85-c71b4b7ea46f",
+      "name": "✍️ LLM · Personnaliser le 1er message"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.attio.com/v2/tasks",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.ATTIO_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{ { values: { content: 'Envoyer 1er message à ' + $json.fullName + ' :\\n\\n' + $json.message, deadline_at: $now.plus({days:2}).toISO(), is_completed:false, linked_records:[{ target_object:'people', target_record_id: $json.people_record_id }] } } }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6016,
+        1248
+      ],
+      "id": "29289600-b7dd-41c0-adea-8e42ea0ee7f6",
+      "name": "Attio · Créer une Task (1er contact)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        4544,
+        1440
+      ],
+      "id": "4652b0bc-2c09-4424-a122-76872d5cbc16",
+      "name": "Société écartée (hors ICP)"
+    },
+    {
+      "parameters": {
+        "content": "## 🧭 Méthode Stack Possédée — démo vidéo\n**« Ne migre pas, intègre. »** Tout tourne dans **n8n self-hosted**, autour du CRM (Attio). Zéro migration, zéro lock-in.\n\n**Le flow :** 1 signal LinkedIn → on nettoie → on qualifie → on **enrichit la boîte (Pappers)** → on **mappe 5 décideurs** → on crée tout dans le CRM avec un **1er message écrit par l'IA**.\n\n_⚠️ Démo : clés API (Pappers / enrichment / Attio / OpenAI) et endpoints à brancher — les briques montrent la logique._",
+        "height": 250,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        944
+      ],
+      "id": "4c71c7ad-a516-4c06-89fa-fc1e03d526dc",
+      "name": "Sticky — Méthode"
+    },
+    {
+      "parameters": {
+        "content": "### Normaliser & dédupliquer (Étape 3)\n**Clé stable** : URL LinkedIn canonicalisée (jamais le nom).\n**Normaliser** : casse, espaces, prénom/nom.\n**Garde-fous** : on rejette les profils inexploitables.\n_Automatiser sur data sale = chaos._",
+        "height": 220,
+        "width": 300,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2736,
+        976
+      ],
+      "id": "874c225f-2062-4244-929b-c4e31269acf4",
+      "name": "Sticky — Dédup"
+    },
+    {
+      "parameters": {
+        "content": "### Filtre ICP + scoring PERSONNE\n**Only ICP** : payeur cible seulement (CRO / VP Sales / RevOps / Head of Sales Ops).\n**Score /10** : séniorité · fonction · stack · stade · géo.",
+        "height": 220,
+        "width": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        976
+      ],
+      "id": "f1720f8f-d2b9-4819-b18e-39d4c62c15e9",
+      "name": "Sticky — ICP & score"
+    },
+    {
+      "parameters": {
+        "content": "### Possède ta data\n**Upsert** dans ta datatable : la donnée vit chez toi avant même le CRM.",
+        "height": 220,
+        "width": 200,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3616,
+        976
+      ],
+      "id": "f2eb1db5-73bb-4349-ac35-966ce774438b",
+      "name": "Sticky — Data possédée"
+    },
+    {
+      "parameters": {
+        "content": "### Enrichir la SOCIÉTÉ — Pappers 🇫🇷\nSIREN → **CA · effectif · secteur (NAF)**.\n**Score Company** puis **IF** : on ne prospecte que si la boîte est dans l'ICP (scaleup B2B SaaS, 50-300).\n_Le seed LinkedIn sert à ouvrir tout le compte._",
+        "height": 240,
+        "width": 420,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        3840,
+        960
+      ],
+      "id": "f0be4c14-d01a-4a1d-a8f4-b420eeecfed3",
+      "name": "Sticky — Pappers"
+    },
+    {
+      "parameters": {
+        "content": "### Mapper le compte + enrichir\n**5 décideurs** Sales/RevOps de la boîte.\n**Waterfall** email + téléphone (multi-fournisseurs, on garde le 1er hit).\n1 profil par item → enrichissement en parallèle.",
+        "height": 220,
+        "width": 640,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        4496,
+        960
+      ],
+      "id": "87d49aaa-db80-4745-b3af-35c59aee1106",
+      "name": "Sticky — Prospection"
+    },
+    {
+      "parameters": {
+        "content": "### Possède ta stack → CRM\n**Company + People** créés/mis à jour dans **Attio** (upsert sur domaine / email).\n**Task** de 1er contact, avec un **message personnalisé écrit par le LLM** (contexte société + enjeu RevOps).\n_De la donnée froide → action commerciale, sans quitter le CRM._",
+        "height": 250,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        5360,
+        928
+      ],
+      "id": "a33b7385-2bff-4398-9f7e-5aa64bce0009",
+      "name": "Sticky — CRM + IA"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.anthropicTool",
+      "typeVersion": 1,
+      "position": [
+        5744,
+        1472
+      ],
+      "id": "77c9a20e-5dae-4bdf-bdce-107f946e244b",
+      "name": "Message a model in Anthropic"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "▶ Exécuter": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) — source brute",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) — source brute": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Validate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Validate": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates (clé stable)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates (clé stable)": {
+      "main": [
+        [
+          {
+            "node": "Only ICP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Only ICP": {
+      "main": [
+        [
+          {
+            "node": "Scoring ICP RevOps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scoring ICP RevOps": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s) — data possédée",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s) — data possédée": {
+      "main": [
+        [
+          {
+            "node": "Pappers · Enrichir la société",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pappers · Enrichir la société": {
+      "main": [
+        [
+          {
+            "node": "Score Company (ICP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score Company (ICP)": {
+      "main": [
+        [
+          {
+            "node": "Company dans l'ICP ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Company dans l'ICP ?": {
+      "main": [
+        [
+          {
+            "node": "Attio · Create/Update Company",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Société écartée (hors ICP)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attio · Create/Update Company": {
+      "main": [
+        [
+          {
+            "node": "Rechercher 5 décideurs (Sales/RevOps)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rechercher 5 décideurs (Sales/RevOps)": {
+      "main": [
+        [
+          {
+            "node": "Split · 1 profil / item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split · 1 profil / item": {
+      "main": [
+        [
+          {
+            "node": "Enrichir email + téléphone (waterfall)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrichir email + téléphone (waterfall)": {
+      "main": [
+        [
+          {
+            "node": "Attio · Create/Update People",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attio · Create/Update People": {
+      "main": [
+        [
+          {
+            "node": "✍️ LLM · Personnaliser le 1er message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✍️ LLM · Personnaliser le 1er message": {
+      "main": [
+        [
+          {
+            "node": "Attio · Créer une Task (1er contact)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model in Anthropic": {
+      "ai_tool": [
+        [
+          {
+            "node": "✍️ LLM · Personnaliser le 1er message",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "tHDuPVLBQ2vbZmYg"
+  },
+  "versionId": "af4f12ac-e856-4ab4-8a69-80ab3bd7b3b5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a44bb3e066a60b41d9e622516eb1ddedd436d9d3dcc64f7798ab702180a595f7"
+  },
+  "id": "11l3nU1pUSBnfM8F",
+  "tags": [
+    {
+      "updatedAt": "2025-12-30T22:06:14.133Z",
+      "createdAt": "2025-12-30T22:06:14.133Z",
+      "id": "uhlwBMJvPSFH2aZe",
+      "name": "PENDING"
+    }
+  ]
+}
