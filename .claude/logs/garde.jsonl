@@ -1,0 +1,2 @@
+{"ts":"2026-10-22T20:34:21.801Z","hook":"garde-bash","decision":"demander","raison":"push vers une branche protégée","segment":"git push origin main 2>&1","session":"25268387-95f0-4dee-b3b6-21567f87bea4"}
+{"ts":"2026-10-23T10:11:59.790Z","hook":"garde-bash","decision":"demander","raison":"push vers une branche protégée","segment":"git push origin main 2>&1","session":"25268387-95f0-4dee-b3b6-21567f87bea4"}

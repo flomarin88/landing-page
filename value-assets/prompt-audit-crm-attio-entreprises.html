@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt — Audit fraîcheur & qualité CRM (Attio · Entreprises)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1C1C1C; --panel:#232323; --panel-2:#2b2b2b; --ink:#FFFFFF; --muted:#B8B8B8;
+    --line:#3a3a3a; --accent:#FF7A00; --accent-2:#FFD84D;
+    --grad:linear-gradient(90deg,#FF7A00,#FFD84D);
+    --radius:16px; --maxw:880px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.7; font-weight:400; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:64px 26px 110px}
+
+  /* HERO */
+  header.hero{ padding:20px 4px 46px; margin-bottom:20px; }
+  .eyebrow{font-size:.74rem; letter-spacing:.28em; text-transform:uppercase; color:var(--accent);
+    font-weight:700; margin:0 0 22px}
+  h1{font-size:2.5rem; line-height:1.15; margin:0 0 20px; letter-spacing:-.02em; font-weight:800; text-transform:uppercase}
+  .grad{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .sub{color:var(--muted); margin:0; font-size:1.08rem; font-weight:400; max-width:640px}
+  .tags{display:flex; flex-wrap:wrap; gap:9px; margin-top:30px}
+  .tag{font-size:.76rem; padding:6px 14px; border-radius:999px; border:1px solid var(--line);
+    background:transparent; color:var(--muted); font-weight:500; letter-spacing:.02em}
+
+  .rule{height:1px; background:var(--line); border:0; margin:0 0 44px}
+
+  .howto{
+    border-left:2px solid var(--accent); padding:6px 0 6px 22px; margin:0 0 40px;
+    color:var(--muted); font-size:.98rem; font-weight:400;
+  }
+  .howto b{color:var(--ink); font-weight:600}
+
+  h2{font-size:1.4rem; margin:46px 0 8px; letter-spacing:-.01em; font-weight:700}
+  h3{font-size:1.02rem; margin:24px 0 6px; color:#e6e6e6; font-weight:600; letter-spacing:.02em}
+  p{margin:12px 0}
+  ul,ol{margin:12px 0; padding-left:22px}
+  li{margin:8px 0}
+  li::marker{color:var(--accent)}
+  code{background:#333; padding:2px 7px; border-radius:6px; font-size:.86em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:#ffd; font-weight:500}
+  strong{color:#fff; font-weight:700}
+
+  /* PROMPT PANEL */
+  .promptcard{
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+    background:var(--panel); margin:8px 0;
+  }
+  .promptbar{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:16px 22px; background:var(--panel-2); border-bottom:1px solid var(--line);
+  }
+  .promptbar .label{font-size:.76rem; color:var(--muted); font-weight:700; letter-spacing:.22em; text-transform:uppercase}
+  .copybtn{
+    appearance:none; border:0; background:var(--grad); color:#1C1C1C;
+    font-family:inherit; font-weight:700; font-size:.84rem; letter-spacing:.02em;
+    padding:10px 20px; border-radius:999px; cursor:pointer;
+    transition:transform .08s ease, filter .2s ease;
+  }
+  .copybtn:hover{filter:brightness(1.06)}
+  .copybtn:active{transform:scale(.97)}
+  .copybtn.done{background:#fff; color:#1C1C1C}
+  .promptbody{padding:34px 38px}
+  .promptbody h2:first-child{margin-top:0}
+
+  .step{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:22px 26px; margin:22px 0;
+  }
+  .kicker{color:var(--accent); font-weight:700; font-size:.76rem; letter-spacing:.14em;
+    text-transform:uppercase; display:block; margin-bottom:6px}
+
+  .callout{
+    margin-top:52px; border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--panel); padding:28px 32px; position:relative;
+  }
+  .callout::before{content:""; position:absolute; left:0; top:26px; bottom:26px; width:3px;
+    background:var(--grad); border-radius:3px}
+  .callout h2{margin-top:0}
+
+  .signature{margin-top:64px; text-align:center; color:var(--muted)}
+  .chrono{font-size:1.6rem; color:var(--accent)}
+  .signature .name{margin-top:8px; font-style:italic; font-size:.9rem; color:var(--muted); font-weight:400}
+
+  @media (max-width:560px){
+    h1{font-size:1.8rem} .wrap{padding:44px 18px 80px} .promptbody{padding:24px 20px}
+    .promptbar{padding:13px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Business Analyst · CRM B2B</p>
+    <h1>Audit fraîcheur<br>&amp; <span class="grad">qualité</span> des données CRM</h1>
+    <p class="sub">Prompt prêt à l'emploi, calibré pour un export <strong>Attio</strong> — objet <strong>Entreprises&nbsp;/&nbsp;Companies</strong> au format CSV&nbsp;/&nbsp;Excel.</p>
+    <div class="tags">
+      <span class="tag">Attio</span>
+      <span class="tag">Objet Entreprises</span>
+      <span class="tag">Export CSV / Excel</span>
+      <span class="tag">6 dimensions qualité</span>
+      <span class="tag">Score de fraîcheur</span>
+      <span class="tag">Plan d'action</span>
+    </div>
+  </header>
+
+  <hr class="rule">
+
+  <div class="howto">
+    <b>Comment l'utiliser :</b> copie le bloc ci-dessous (bouton <b>Copier le prompt</b>), colle-le dans une nouvelle conversation, puis joins ton export Attio de l'objet <em>Entreprises</em>. L'IA commence par cartographier tes colonnes avant de lancer l'analyse.
+  </div>
+
+  <div class="promptcard">
+    <div class="promptbar">
+      <span class="label">Prompt à copier</span>
+      <button class="copybtn" id="copyBtn" onclick="copyPrompt()">Copier le prompt</button>
+    </div>
+    <div class="promptbody" id="promptText">
+
+      <p>Tu es un <strong>business analyst senior spécialisé en CRM B2B</strong>, avec une expertise pointue sur <strong>Attio</strong> et sur la gouvernance de données commerciales (data quality management). Tu as déjà audité des dizaines de bases CRM et tu sais traduire un audit technique en décisions business.</p>
+
+      <h3>Contexte</h3>
+      <p>Je te fournis un <strong>export de l'objet « Entreprises » (Companies) de mon CRM Attio</strong>, au format CSV/Excel. Chaque ligne = une entreprise. Je veux un <strong>audit de la fraîcheur et de la qualité</strong> de cette base, avec des scores chiffrés, des exemples concrets et un plan d'action priorisé.</p>
+
+      <div class="step">
+        <span class="kicker">Étape 0 — Cartographie des colonnes (avant toute analyse)</span>
+        <ol>
+          <li>Liste toutes les colonnes présentes dans le fichier et le nombre de lignes.</li>
+          <li>Mappe chaque colonne aux catégories ci-dessous (une colonne peut ne correspondre à rien → « non classée »). Intitulés Attio courants entre parenthèses :
+            <ul>
+              <li><strong>Identité / firmographie</strong> : Nom (Name), Domaines (Domains), Description, Catégories/Secteur (Categories), Effectif (Employee range), ARR estimé (Estimated ARR / Annual revenue), Localisation (Location : ville, pays), LinkedIn, Fondée en (Foundation date).</li>
+              <li><strong>Propriété &amp; organisation</strong> : Propriétaire (Owner), Équipe, Listes (Lists), Connexion la plus forte (Strongest connection), Étape/Statut si pipeline présent (Stage/Status).</li>
+              <li><strong>Signaux de fraîcheur (timeliness)</strong> : Créée le (Created at), Dernière interaction (Last interaction), Dernier email (Last email interaction), Dernière réunion (Last calendar interaction), Prochaine interaction (Next interaction), Dernière modification (Last updated / Modified at).</li>
+              <li><strong>Attributs personnalisés</strong> : tout champ custom propre à mon workflow.</li>
+            </ul>
+          </li>
+          <li>Signale-moi les colonnes clés <strong>absentes</strong> qui limiteraient l'audit, et <strong>demande-moi confirmation du mapping si une colonne est ambiguë</strong> avant de continuer. Prends comme date « aujourd'hui » la date du jour réelle, et précise-la.</li>
+        </ol>
+      </div>
+
+      <div class="step">
+        <span class="kicker">Étape 1 — Analyse de la QUALITÉ</span>
+        <p>Évalue la base sur ces <strong>6 dimensions</strong>, chacune notée /100 avec la méthode de calcul explicite :</p>
+        <ol>
+          <li><strong>Complétude (Completeness)</strong> — taux de remplissage par champ critique (Domaine, Secteur, Effectif, Localisation, Propriétaire, ARR…). Tableau : champ → % rempli → % vide → verdict. Distingue champs « obligatoires métier » et « optionnels ».</li>
+          <li><strong>Validité / Conformité (Validity)</strong> — les valeurs respectent-elles le format attendu ? Domaine bien formé (pas de <code>http://</code>, pas d'espace, TLD présent), URL LinkedIn plausible, effectif cohérent, pays normalisé, ARR numérique positif. Compte et illustre les non-conformités.</li>
+          <li><strong>Cohérence (Consistency)</strong> — valeurs contradictoires ou hétérogènes : même secteur écrit de 5 façons (« SaaS » / « Saas » / « Logiciel »), casse non standardisée, ARR incohérent avec l'effectif, pays vs ville qui ne matchent pas. Liste les axes de normalisation.</li>
+          <li><strong>Unicité / Doublons (Uniqueness)</strong> — doublons probables : même domaine racine, noms très proches (normalise en retirant « SAS », « Inc », « Ltd », accents, casse). Nombre de clusters + exemples de paires.</li>
+          <li><strong>Exactitude (Accuracy)</strong> — valeurs improbables ou périmées repérables sans source externe : effectif=0, ARR aberrant, entreprise sans domaine mais ARR élevé, champs de test (« test », « asdf », « aaa »).</li>
+          <li><strong>Enrichissement / Actionnabilité</strong> — part des entreprises <strong>exploitables commercialement</strong> = domaine + secteur + propriétaire + un signal d'activité. Le vrai socle activable.</li>
+        </ol>
+      </div>
+
+      <div class="step">
+        <span class="kicker">Étape 2 — Analyse de la FRAÎCHEUR</span>
+        <p>Cœur de la demande. Calcule à partir des colonnes de dates :</p>
+        <ol>
+          <li><strong>Récence d'interaction</strong> — buckets d'ancienneté de la <strong>dernière interaction</strong> : Actives (&lt; 30 j) · Tièdes (30–90 j) · Refroidies (90–180 j) · Froides (180–365 j) · Dormantes (&gt; 365 j) · Aucune interaction jamais. Nombre et % par bucket + mini-tableau.</li>
+          <li><strong>Ancienneté de mise à jour</strong> — même logique sur « Dernière modification » : part de la base immobile depuis &gt; 6 mois / &gt; 12 mois.</li>
+          <li><strong>Couverture de suivi</strong> — % d'entreprises <strong>sans prochaine interaction planifiée</strong> alors qu'elles sont actives ou tièdes → risque de churn de suivi.</li>
+          <li><strong>Orphelines</strong> — % d'entreprises <strong>sans propriétaire</strong> ; croise avec la fraîcheur (compte chaud sans owner = alerte).</li>
+          <li><strong>Fraîcheur par propriétaire / équipe</strong> — si la colonne existe : classe les propriétaires par % de comptes dormants.</li>
+          <li><strong>Score de fraîcheur global /100</strong> — pondère les buckets (actif=100 … dormant=0), moyenne pondérée.</li>
+        </ol>
+      </div>
+
+      <div class="step">
+        <span class="kicker">Étape 3 — Score de santé global &amp; synthèse</span>
+        <ul>
+          <li><strong>CRM Health Score /100</strong>, moyenne pondérée : Complétude 25 %, Validité 15 %, Cohérence 15 %, Unicité 10 %, Fraîcheur 25 %, Actionnabilité 10 % (indique les poids, laisse-moi les ajuster).</li>
+          <li><strong>Note lettre (A–F)</strong> et une phrase de verdict pour un dirigeant pressé.</li>
+          <li><strong>Tableau de bord</strong> récapitulatif : dimension → score → constat en une ligne.</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <span class="kicker">Étape 4 — Plan d'action priorisé</span>
+        <p>Recommandations classées par <strong>impact × effort</strong> :</p>
+        <ul>
+          <li><strong>Quick wins</strong> (fort impact, faible effort) : normaliser les secteurs, réassigner les orphelines chaudes, purger les enregistrements de test.</li>
+          <li><strong>Chantiers de fond</strong> : dédoublonnage, enrichissement des champs critiques, champs obligatoires dans Attio.</li>
+          <li><strong>Hygiène récurrente</strong> : revue des comptes dormants, alertes sur comptes sans prochaine action, routine de mise à jour.</li>
+        </ul>
+        <p>Pour chaque reco : le <strong>quoi</strong>, le <strong>pourquoi (risque business)</strong>, et le <strong>volume d'enregistrements concernés</strong>.</p>
+      </div>
+
+      <h3>Format de sortie attendu</h3>
+      <ul>
+        <li>Réponds en <strong>français</strong>, ton d'analyste : factuel, chiffré, sans jargon inutile.</li>
+        <li>Utilise des <strong>tableaux</strong> pour tous les résultats quantitatifs.</li>
+        <li>Cite <strong>3 à 5 exemples réels</strong> (anonymise si besoin) par problème majeur.</li>
+        <li><strong>Ne surinterprète pas</strong> : si une donnée manque, dis-le plutôt que d'inventer.</li>
+        <li>Finis par les <strong>3 actions à lancer cette semaine</strong>.</li>
+      </ul>
+      <p>Commence par l'Étape 0 (cartographie des colonnes) et attends ma validation du mapping si quoi que ce soit est ambigu avant de dérouler l'analyse complète.</p>
+
+    </div>
+  </div>
+
+  <div class="callout">
+    <h2>Astuces d'usage</h2>
+    <ul>
+      <li>Si ton export est volumineux, garde toutes les colonnes de <strong>dates</strong> et de <strong>propriétaire</strong> : ce sont elles qui portent la fraîcheur.</li>
+      <li>Relance le prompt trimestriellement sur un nouvel export et compare le <strong>Health Score</strong> dans le temps.</li>
+      <li>Pour un audit multi-objets, duplique le prompt en remplaçant « Entreprises » par « Contacts » ou « Deals » et ajuste les champs de l'Étape 0.</li>
+    </ul>
+  </div>
+
+  <div class="signature">
+    <div class="chrono">⏱</div>
+    <div class="name">Florian Marin — Audit CRM Attio · fraîcheur &amp; qualité des données</div>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt(){
+  var el = document.getElementById('promptText');
+  var text = el.innerText.replace(/\n{3,}/g,'\n\n').trim();
+  var btn = document.getElementById('copyBtn');
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent = '✓ Copié !';
+    btn.classList.add('done');
+    setTimeout(function(){ btn.textContent='Copier le prompt'; btn.classList.remove('done'); }, 2200);
+  }).catch(function(){
+    var r = document.createRange(); r.selectNode(el);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    try{ document.execCommand('copy'); btn.textContent='✓ Copié !'; btn.classList.add('done');
+      setTimeout(function(){ btn.textContent='Copier le prompt'; btn.classList.remove('done'); }, 2200);
+    }catch(e){ btn.textContent='Sélectionne + Ctrl/Cmd+C'; }
+    s.removeAllRanges();
+  });
+}
+</script>
+</body>
+</html>
