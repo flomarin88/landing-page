@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt — Audit fraîcheur & qualité CRM (Attio · Entreprises)</title>
+<title>Le prompt qui audite votre CRM Attio en 10 minutes · Florian Marin</title>
+<meta name="description" content="Prompt prêt à l'emploi : collez un export Attio (Entreprises) et obtenez un audit de qualité et de fraîcheur des données, un score sur 100 et un plan d'action.">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -97,6 +99,11 @@
     h1{font-size:1.8rem} .wrap{padding:44px 18px 80px} .promptbody{padding:24px 20px}
     .promptbar{padding:13px 16px}
   }
+  .callout.next{border-color:var(--accent)}
+  .next-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:18px}
+  .next-btn{display:inline-block;background:var(--accent);color:#fff;font-weight:700;text-decoration:none;padding:14px 22px;border-radius:10px}
+  .next-btn:hover{filter:brightness(1.08)}
+  .next-link{color:var(--accent);font-weight:600;text-decoration:none}
 </style>
 </head>
 <body>
@@ -105,7 +112,7 @@
   <header class="hero">
     <p class="eyebrow">Business Analyst · CRM B2B</p>
     <h1>Audit fraîcheur<br>&amp; <span class="grad">qualité</span> des données CRM</h1>
-    <p class="sub">Prompt prêt à l'emploi, calibré pour un export <strong>Attio</strong> — objet <strong>Entreprises&nbsp;/&nbsp;Companies</strong> au format CSV&nbsp;/&nbsp;Excel.</p>
+    <p class="sub">Prompt prêt à l'emploi, calibré pour un export <strong>Attio</strong>, objet <strong>Entreprises&nbsp;/&nbsp;Companies</strong> au format CSV&nbsp;/&nbsp;Excel.</p>
     <div class="tags">
       <span class="tag">Attio</span>
       <span class="tag">Objet Entreprises</span>
@@ -135,7 +142,7 @@
       <p>Je te fournis un <strong>export de l'objet « Entreprises » (Companies) de mon CRM Attio</strong>, au format CSV/Excel. Chaque ligne = une entreprise. Je veux un <strong>audit de la fraîcheur et de la qualité</strong> de cette base, avec des scores chiffrés, des exemples concrets et un plan d'action priorisé.</p>
 
       <div class="step">
-        <span class="kicker">Étape 0 — Cartographie des colonnes (avant toute analyse)</span>
+        <span class="kicker">Étape 0 : Cartographie des colonnes (avant toute analyse)</span>
         <ol>
           <li>Liste toutes les colonnes présentes dans le fichier et le nombre de lignes.</li>
           <li>Mappe chaque colonne aux catégories ci-dessous (une colonne peut ne correspondre à rien → « non classée »). Intitulés Attio courants entre parenthèses :
@@ -151,33 +158,33 @@
       </div>
 
       <div class="step">
-        <span class="kicker">Étape 1 — Analyse de la QUALITÉ</span>
+        <span class="kicker">Étape 1 : Analyse de la QUALITÉ</span>
         <p>Évalue la base sur ces <strong>6 dimensions</strong>, chacune notée /100 avec la méthode de calcul explicite :</p>
         <ol>
-          <li><strong>Complétude (Completeness)</strong> — taux de remplissage par champ critique (Domaine, Secteur, Effectif, Localisation, Propriétaire, ARR…). Tableau : champ → % rempli → % vide → verdict. Distingue champs « obligatoires métier » et « optionnels ».</li>
-          <li><strong>Validité / Conformité (Validity)</strong> — les valeurs respectent-elles le format attendu ? Domaine bien formé (pas de <code>http://</code>, pas d'espace, TLD présent), URL LinkedIn plausible, effectif cohérent, pays normalisé, ARR numérique positif. Compte et illustre les non-conformités.</li>
-          <li><strong>Cohérence (Consistency)</strong> — valeurs contradictoires ou hétérogènes : même secteur écrit de 5 façons (« SaaS » / « Saas » / « Logiciel »), casse non standardisée, ARR incohérent avec l'effectif, pays vs ville qui ne matchent pas. Liste les axes de normalisation.</li>
-          <li><strong>Unicité / Doublons (Uniqueness)</strong> — doublons probables : même domaine racine, noms très proches (normalise en retirant « SAS », « Inc », « Ltd », accents, casse). Nombre de clusters + exemples de paires.</li>
-          <li><strong>Exactitude (Accuracy)</strong> — valeurs improbables ou périmées repérables sans source externe : effectif=0, ARR aberrant, entreprise sans domaine mais ARR élevé, champs de test (« test », « asdf », « aaa »).</li>
-          <li><strong>Enrichissement / Actionnabilité</strong> — part des entreprises <strong>exploitables commercialement</strong> = domaine + secteur + propriétaire + un signal d'activité. Le vrai socle activable.</li>
+          <li><strong>Complétude (Completeness)</strong> : taux de remplissage par champ critique (Domaine, Secteur, Effectif, Localisation, Propriétaire, ARR…). Tableau : champ → % rempli → % vide → verdict. Distingue champs « obligatoires métier » et « optionnels ».</li>
+          <li><strong>Validité / Conformité (Validity)</strong> : les valeurs respectent-elles le format attendu ? Domaine bien formé (pas de <code>http://</code>, pas d'espace, TLD présent), URL LinkedIn plausible, effectif cohérent, pays normalisé, ARR numérique positif. Compte et illustre les non-conformités.</li>
+          <li><strong>Cohérence (Consistency)</strong> : valeurs contradictoires ou hétérogènes : même secteur écrit de 5 façons (« SaaS » / « Saas » / « Logiciel »), casse non standardisée, ARR incohérent avec l'effectif, pays vs ville qui ne matchent pas. Liste les axes de normalisation.</li>
+          <li><strong>Unicité / Doublons (Uniqueness)</strong> : doublons probables : même domaine racine, noms très proches (normalise en retirant « SAS », « Inc », « Ltd », accents, casse). Nombre de clusters + exemples de paires.</li>
+          <li><strong>Exactitude (Accuracy)</strong> : valeurs improbables ou périmées repérables sans source externe : effectif=0, ARR aberrant, entreprise sans domaine mais ARR élevé, champs de test (« test », « asdf », « aaa »).</li>
+          <li><strong>Enrichissement / Actionnabilité</strong> : part des entreprises <strong>exploitables commercialement</strong> = domaine + secteur + propriétaire + un signal d'activité. Le vrai socle activable.</li>
         </ol>
       </div>
 
       <div class="step">
-        <span class="kicker">Étape 2 — Analyse de la FRAÎCHEUR</span>
+        <span class="kicker">Étape 2 : Analyse de la FRAÎCHEUR</span>
         <p>Cœur de la demande. Calcule à partir des colonnes de dates :</p>
         <ol>
-          <li><strong>Récence d'interaction</strong> — buckets d'ancienneté de la <strong>dernière interaction</strong> : Actives (&lt; 30 j) · Tièdes (30–90 j) · Refroidies (90–180 j) · Froides (180–365 j) · Dormantes (&gt; 365 j) · Aucune interaction jamais. Nombre et % par bucket + mini-tableau.</li>
-          <li><strong>Ancienneté de mise à jour</strong> — même logique sur « Dernière modification » : part de la base immobile depuis &gt; 6 mois / &gt; 12 mois.</li>
-          <li><strong>Couverture de suivi</strong> — % d'entreprises <strong>sans prochaine interaction planifiée</strong> alors qu'elles sont actives ou tièdes → risque de churn de suivi.</li>
-          <li><strong>Orphelines</strong> — % d'entreprises <strong>sans propriétaire</strong> ; croise avec la fraîcheur (compte chaud sans owner = alerte).</li>
-          <li><strong>Fraîcheur par propriétaire / équipe</strong> — si la colonne existe : classe les propriétaires par % de comptes dormants.</li>
-          <li><strong>Score de fraîcheur global /100</strong> — pondère les buckets (actif=100 … dormant=0), moyenne pondérée.</li>
+          <li><strong>Récence d'interaction</strong> : buckets d'ancienneté de la <strong>dernière interaction</strong> : Actives (&lt; 30 j) · Tièdes (30–90 j) · Refroidies (90–180 j) · Froides (180–365 j) · Dormantes (&gt; 365 j) · Aucune interaction jamais. Nombre et % par bucket + mini-tableau.</li>
+          <li><strong>Ancienneté de mise à jour</strong> : même logique sur « Dernière modification » : part de la base immobile depuis &gt; 6 mois / &gt; 12 mois.</li>
+          <li><strong>Couverture de suivi</strong> : % d'entreprises <strong>sans prochaine interaction planifiée</strong> alors qu'elles sont actives ou tièdes → risque de churn de suivi.</li>
+          <li><strong>Orphelines</strong> : % d'entreprises <strong>sans propriétaire</strong> ; croise avec la fraîcheur (compte chaud sans owner = alerte).</li>
+          <li><strong>Fraîcheur par propriétaire / équipe</strong> : si la colonne existe : classe les propriétaires par % de comptes dormants.</li>
+          <li><strong>Score de fraîcheur global /100</strong> : pondère les buckets (actif=100 … dormant=0), moyenne pondérée.</li>
         </ol>
       </div>
 
       <div class="step">
-        <span class="kicker">Étape 3 — Score de santé global &amp; synthèse</span>
+        <span class="kicker">Étape 3 : Score de santé global &amp; synthèse</span>
         <ul>
           <li><strong>CRM Health Score /100</strong>, moyenne pondérée : Complétude 25 %, Validité 15 %, Cohérence 15 %, Unicité 10 %, Fraîcheur 25 %, Actionnabilité 10 % (indique les poids, laisse-moi les ajuster).</li>
           <li><strong>Note lettre (A–F)</strong> et une phrase de verdict pour un dirigeant pressé.</li>
@@ -186,7 +193,7 @@
       </div>
 
       <div class="step">
-        <span class="kicker">Étape 4 — Plan d'action priorisé</span>
+        <span class="kicker">Étape 4 : Plan d'action priorisé</span>
         <p>Recommandations classées par <strong>impact × effort</strong> :</p>
         <ul>
           <li><strong>Quick wins</strong> (fort impact, faible effort) : normaliser les secteurs, réassigner les orphelines chaudes, purger les enregistrements de test.</li>
@@ -218,9 +225,18 @@
     </ul>
   </div>
 
+  <div class="callout next">
+    <h2>Le prompt a trouvé des trous&nbsp;? Je les bouche en 7 jours.</h2>
+    <p>Doublons, champs vides, comptes sans propriétaire : derrière chaque trou, il y a souvent une tâche que ton équipe refait à la main. <strong>La Semaine Sans Ressaisie</strong> automatise la plus coûteuse, en production le vendredi, ou je te rembourse. Je travaille seul : une semaine, un client.</p>
+    <p class="next-actions">
+      <a class="next-btn" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener" data-loc="prompt-attio">Réserver le Chrono 20 minutes →</a>
+      <a class="next-link" href="/calculateur/">Ou chiffre d'abord ce que la ressaisie te coûte →</a>
+    </p>
+  </div>
+
   <div class="signature">
     <div class="chrono">⏱</div>
-    <div class="name">Florian Marin — Audit CRM Attio · fraîcheur &amp; qualité des données</div>
+    <div class="name">Florian Marin · Audit CRM Attio · fraîcheur &amp; qualité des données</div>
   </div>
 
 </div>
@@ -243,6 +259,17 @@ function copyPrompt(){
     s.removeAllRanges();
   });
 }
+</script>
+<script>
+  // Umami : clic Calendly (data-loc) et copie du prompt.
+  (function () {
+    function track(name, props) { if (window.umami) window.umami.track(name, props); }
+    document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
+      a.addEventListener('click', function () { track('Calendly Click', { location: a.dataset.loc || 'prompt-attio' }); });
+    });
+    var btn = document.getElementById('copyBtn');
+    if (btn) btn.addEventListener('click', function () { track('Prompt Copied', { prompt: 'audit-crm-attio' }); });
+  })();
 </script>
 </body>
 </html>
