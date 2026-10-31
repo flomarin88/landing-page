@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Combien vous coûte la ressaisie ? Le calculateur · Florian Marin</title>
+<meta name="description" content="Listez les tâches que vos équipes refont à la main : heures et euros perdus par an, et la tâche à supprimer en premier. 2 minutes, gratuit.">
+<meta property="og:title" content="Combien vous coûte la ressaisie ?">
+<meta property="og:description" content="Les heures et les euros que vos équipes perdent chaque année à recopier. Et la tâche à supprimer en premier.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://florianmarin.me/calculateur/">
+<meta property="og:image" content="https://florianmarin.me/assets/opengraph.png">
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
+<style>
+  :root{
+    --bg:#1C1C1C;
+    --panel:#252525;
+    --panel-2:#2E2E2E;
+    --line:#3A3A3A;
+    --text:#FFFFFF;
+    --muted:#B8B8B8;
+    --accent:#FF7A00;
+    --accent-2:#FFD84D;
+    --amber:#F1B24A;
+    --radius:14px;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font-family:'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:48px 28px 96px}
+  a{color:inherit}
+  .badge{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent);border:1px solid var(--line);background:var(--panel);
+    padding:6px 12px;border-radius:999px;font-weight:600}
+  h1{font-size:32px;line-height:1.15;margin:18px 0 10px;font-weight:800;letter-spacing:-.02em}
+  .grad{background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--muted);font-size:16px;max-width:60ch;font-weight:500;margin:0}
+  .section-title{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+    margin:36px 0 14px;font-weight:700}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:12px}
+  .task{display:grid;grid-template-columns:1fr 84px 150px 84px 40px;gap:8px;align-items:end}
+  .task label{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:4px}
+  input,select{width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit}
+  input:focus,select:focus{outline:none;border-color:var(--accent)}
+  input::placeholder{color:#7a7a7a}
+  .del{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:10px;height:44px;cursor:pointer;font-size:18px}
+  .del:hover{color:var(--text);border-color:#5a5a5a}
+  .add{background:transparent;border:1px dashed var(--line);color:var(--muted);border-radius:var(--radius);
+    padding:14px;width:100%;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600}
+  .add:hover{color:var(--text);border-color:var(--accent)}
+  .add[disabled]{display:none}
+  .rate{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .rate input{width:110px}
+  .hint{color:var(--muted);font-size:12.5px}
+  /* résultat */
+  .result{margin-top:28px;border-radius:var(--radius);padding:26px;
+    background:linear-gradient(135deg,#2A1A0F,#3A1F12);border:1px solid #5A2F0A}
+  .result .k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .big{font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:6px 0 2px}
+  .eur{font-size:24px;font-weight:800;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .bars{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .bar .row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px}
+  .bar .row b{white-space:nowrap}
+  .bar .track{height:8px;background:#3a2a1f;border-radius:99px;margin-top:5px;overflow:hidden}
+  .bar .fill{height:100%;background:var(--muted);border-radius:99px}
+  .bar.top .fill{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .bar.top .row span{color:var(--accent);font-weight:700}
+  .empty{color:var(--muted);font-size:14px}
+  .share{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .ghost{background:transparent;border:1px solid #5A2F0A;color:var(--text);border-radius:10px;padding:10px 14px;
+    font-size:13.5px;cursor:pointer;font-family:inherit;font-weight:600;text-decoration:none}
+  .ghost:hover{border-color:var(--accent)}
+  /* offre */
+  .offer{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px;text-align:center}
+  .offer h2{font-size:22px;margin:0 0 8px;font-weight:800;line-height:1.25}
+  .offer p{color:var(--muted);font-size:14.5px;margin:0 auto 16px;max-width:52ch}
+  .cta-btn{display:inline-block;width:100%;text-align:center;border:none;cursor:pointer;text-decoration:none;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#1C1C1C;font-weight:700;
+    font-size:16px;padding:16px;border-radius:12px;font-family:inherit}
+  .cta-btn:hover{filter:brightness(1.08)}
+  .reason{display:inline-block;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;
+    font-size:13px;margin:0 0 16px}
+  .reason b{color:var(--accent)}
+  /* e-mail */
+  .mail{margin-top:16px}
+  .mail form{display:flex;gap:10px;margin-top:12px}
+  .mail form input{flex:1}
+  .mail form button{background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:10px;
+    padding:0 18px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .mail form button:hover{border-color:var(--accent)}
+  .consent{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .consent input{width:auto;margin-top:3px;accent-color:var(--accent)}
+  .warn{color:var(--amber);font-size:13px;margin-top:10px;display:none}
+  .ok{color:#3CC79A;font-size:14px;margin-top:10px;display:none;font-weight:600}
+  /* Champ piège anti-bot : invisible pour les humains, rempli par les bots */
+  .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:28px;line-height:1.6;font-style:italic}
+  .foot a{color:var(--accent);text-decoration:none}
+  @media(max-width:640px){
+    .wrap{padding:32px 16px 72px}
+    h1{font-size:26px}
+    .task{grid-template-columns:58px 1fr 58px 40px;gap:8px}
+    .task .f-name{grid-column:1/-1}
+    .task select,.task input{padding:10px 6px;font-size:14px}
+    .big{font-size:36px}
+    .mail form{flex-direction:column}
+    .mail form button{padding:12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="badge">Calculateur · 2 min · gratuit</span>
+  <h1>Combien vous coûte <span class="grad">la ressaisie&nbsp;?</span></h1>
+  <p class="lede">Listez les tâches que vos équipes refont à la main : recopier, recoller des exports, consolider un fichier. Vous voyez tout de suite les heures et les euros perdus chaque année, et la tâche à supprimer en premier.</p>
+
+  <div class="section-title">Vos tâches manuelles</div>
+  <div id="tasks"></div>
+  <button class="add" id="add" type="button">+ Ajouter une tâche</button>
+
+  <div class="card" style="margin-top:12px">
+    <div class="rate">
+      <label for="rate" style="font-weight:600;font-size:14px">Coût horaire chargé moyen</label>
+      <input type="number" id="rate" min="15" max="200" value="45" inputmode="numeric"> <span class="hint">€ / heure (salaire et charges). 45 € par défaut.</span>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="k">Ce que la ressaisie vous coûte</div>
+    <div id="resultBody"><p class="empty">Renseignez au moins une tâche avec sa durée : le résultat s'affiche ici.</p></div>
+  </div>
+
+  <div class="offer">
+    <h2 id="offerTitle">Votre tâche la plus coûteuse se supprime souvent en 7 jours.</h2>
+    <p>La Semaine Sans Ressaisie : j'automatise la tâche qui vous coûte le plus, en production le vendredi, ou je vous rembourse. Audit, roadmap et transfert de connaissance offerts.</p>
+    <div class="reason"><b>Capacité réelle :</b> je travaille seul, une semaine, un client.</div>
+    <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Réserver le Chrono 20 minutes →</a>
+    <p style="margin:12px auto 0;font-size:13px">En 20 minutes, je chronomètre la tâche avec vous et je vous dis si elle tient en 7 jours.</p>
+  </div>
+
+  <div class="card mail">
+    <div style="font-weight:700">Recevoir ce résultat par e-mail</div>
+    <div class="hint">Le détail par tâche, à garder comme point de départ.</div>
+    <form id="mailForm" novalidate>
+      <input type="email" id="email" placeholder="prenom@entreprise.com" autocomplete="email" inputmode="email" required>
+      <div class="hp" aria-hidden="true"><label>Site web <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit">Envoyer</button>
+    </form>
+    <label class="consent"><input type="checkbox" id="consent"> <span>J'accepte de recevoir mon résultat et, de temps en temps, un conseil de Florian Marin par e-mail. Désinscription en 1 clic. Mes données ne sont jamais revendues.</span></label>
+    <div class="warn" id="mailWarn">Il faut une tâche chiffrée, un e-mail valide et votre accord.</div>
+    <div class="ok" id="mailOk">C'est envoyé. Vérifiez votre boîte de réception.</div>
+  </div>
+
+  <p class="foot">
+    Un outil de <a href="/">Florian Marin</a>, ingénieur, 15 ans en software engineering (ex-CTO Tiime, ex-Aircall, ex-Teads).<br>
+    Calcul indicatif : 47 semaines travaillées par an, 5 jours par semaine, 11 mois. Rien n'est enregistré tant que vous n'envoyez pas le résultat.
+  </p>
+
+</div>
+
+<script>
+(function(){
+  var ENDPOINT = "https://n8n.florianmarin.me/webhook/lead-capture";
+  var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
+  var WEEKS = 47;
+  // Copié dans _n8n/prepare-lead.js (FREQ, bornes) : changer les deux ensemble.
+  var FREQ = { jour: { perYear: WEEKS * 5, label: 'par jour' }, semaine: { perYear: WEEKS, label: 'par semaine' }, mois: { perYear: 11, label: 'par mois' } };
+  var MAX_TASKS = 5;
+  var PLACEHOLDERS = ['Recopier les ventes dans le logiciel', 'Recoller les exports dans Excel le lundi', 'Relancer les factures à la main', 'Consolider les chiffres du mois', 'Saisir les demandes reçues par e-mail'];
+  var completed = false;
+
+  function track(name, props){ if(window.umami) window.umami.track(name, props); }
+  function euro(n){ return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n); }
+  function nf(n){ return new Intl.NumberFormat('fr-FR').format(n); }
+  function clamp(v, min, max){ var n = Math.round(Number(v)); return isFinite(n) ? Math.min(max, Math.max(min, n)) : null; }
+
+  var list = document.getElementById('tasks');
+  var addBtn = document.getElementById('add');
+
+  function addTask(){
+    var i = list.children.length;
+    if(i >= MAX_TASKS) return;
+    var row = document.createElement('div');
+    row.className = 'card task';
+    row.innerHTML =
+      '<div class="f-name"><label>Tâche</label><input type="text" class="t-name" maxlength="80"></div>' +
+      '<div><label>Minutes</label><input type="number" class="t-min" min="1" max="480" inputmode="numeric" placeholder="15"></div>' +
+      '<div><label>Fréquence</label><select class="t-freq"><option value="jour">par jour</option><option value="semaine" selected>par semaine</option><option value="mois">par mois</option></select></div>' +
+      '<div class="f-people"><label>Personnes</label><input type="number" class="t-people" min="1" max="200" value="1" inputmode="numeric"></div>' +
+      '<button type="button" class="del" aria-label="Supprimer la tâche">×</button>';
+    row.querySelector('.t-name').placeholder = PLACEHOLDERS[i] || 'Une autre tâche';
+    list.appendChild(row);
+    addBtn.disabled = list.children.length >= MAX_TASKS;
+  }
+
+  function readTasks(){
+    var out = [];
+    Array.prototype.forEach.call(list.children, function(row, i){
+      var minutes = clamp(row.querySelector('.t-min').value, 1, 480);
+      if(minutes === null || !row.querySelector('.t-min').value) return;
+      var freq = row.querySelector('.t-freq').value;
+      var people = clamp(row.querySelector('.t-people').value, 1, 200) || 1;
+      var name = row.querySelector('.t-name').value.trim().slice(0, 80) || ('Tâche ' + (i + 1));
+      var hours = Math.round(minutes / 60 * FREQ[freq].perYear * people);
+      out.push({ name: name, minutes: minutes, freq: freq, people: people, hours: hours });
+    });
+    return out;
+  }
+
+  function rate(){ return clamp(document.getElementById('rate').value, 15, 200) || 45; }
+
+  var lastSummary = '';
+  function render(){
+    var tasks = readTasks();
+    var body = document.getElementById('resultBody');
+    if(tasks.length === 0){
+      body.innerHTML = '<p class="empty">Renseignez au moins une tâche avec sa durée : le résultat s\'affiche ici.</p>';
+      lastSummary = '';
+      return;
+    }
+    var r = rate();
+    var total = tasks.reduce(function(n, t){ return n + t.hours; }, 0);
+    var top = tasks.reduce(function(a, t){ return t.hours > a.hours ? t : a; }, tasks[0]);
+    var max = Math.max(1, top.hours);
+    body.innerHTML = '';
+    var big = document.createElement('div'); big.className = 'big'; big.textContent = nf(total) + ' h par an';
+    var eur = document.createElement('div'); eur.className = 'eur'; eur.textContent = euro(total * r) + ' par an';
+    var sub = document.createElement('div'); sub.className = 'sub';
+    sub.textContent = 'Soit ' + nf(Math.round(total / 35)) + ' semaines de travail à temps plein. Base : ' + r + ' €/h chargé.';
+    var bars = document.createElement('div'); bars.className = 'bars';
+    tasks.slice().sort(function(a, b){ return b.hours - a.hours; }).forEach(function(t){
+      var bar = document.createElement('div'); bar.className = 'bar' + (t === top ? ' top' : '');
+      var row = document.createElement('div'); row.className = 'row';
+      var name = document.createElement('span'); name.textContent = (t === top ? 'La plus coûteuse : ' : '') + t.name;
+      var val = document.createElement('b'); val.textContent = nf(t.hours) + ' h · ' + euro(t.hours * r);
+      row.appendChild(name); row.appendChild(val);
+      var track_ = document.createElement('div'); track_.className = 'track';
+      var fill = document.createElement('div'); fill.className = 'fill'; fill.style.width = Math.max(3, t.hours / max * 100) + '%';
+      track_.appendChild(fill); bar.appendChild(row); bar.appendChild(track_); bars.appendChild(bar);
+    });
+    var share = document.createElement('div'); share.className = 'share';
+    share.innerHTML = '<button type="button" class="ghost" id="copy">Copier mon résultat</button>' +
+      '<a class="ghost" id="li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://florianmarin.me/calculateur/') + '">Partager sur LinkedIn</a>';
+    body.appendChild(big); body.appendChild(eur); body.appendChild(sub); body.appendChild(bars); body.appendChild(share);
+    document.getElementById('offerTitle').textContent = '« ' + top.name + ' » vous coûte ' + nf(top.hours) + ' h par an. Elle se supprime souvent en 7 jours.';
+    lastSummary = 'Mon équipe perd ' + nf(total) + ' h par an à recopier des informations, soit ' + euro(total * r) + '. Calculé en 2 minutes : https://florianmarin.me/calculateur/';
+    if(!completed){ completed = true; track('Calculateur Completed'); }
+  }
+
+  document.getElementById('resultBody').addEventListener('click', function(e){
+    if(e.target.id === 'copy'){
+      var done = function(){ e.target.textContent = 'Copié'; };
+      if(navigator.clipboard){ navigator.clipboard.writeText(lastSummary).then(done, function(){}); }
+      track('Calculateur Share', { via: 'copie' });
+    }
+    if(e.target.id === 'li') track('Calculateur Share', { via: 'linkedin' });
+  });
+
+  list.addEventListener('input', render);
+  list.addEventListener('change', render);
+  list.addEventListener('click', function(e){
+    if(e.target.classList.contains('del')){
+      e.target.closest('.task').remove();
+      if(list.children.length === 0) addTask();
+      addBtn.disabled = list.children.length >= MAX_TASKS;
+      render();
+    }
+  });
+  document.getElementById('rate').addEventListener('input', render);
+  addBtn.addEventListener('click', addTask);
+  addTask(); addTask(); addTask();
+
+  document.getElementById('book').addEventListener('click', function(){ track('Calendly Click', { location: 'calculateur' }); });
+
+  document.getElementById('mailForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = (document.getElementById('email').value || '').trim();
+    var tasks = readTasks();
+    var warn = document.getElementById('mailWarn');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || !document.getElementById('consent').checked || tasks.length === 0){
+      warn.style.display = 'block'; return;
+    }
+    warn.style.display = 'none';
+    var body = {
+      source: 'calculateur-ressaisie',
+      ts: new Date().toISOString(),
+      lead: { email: email, consent: true },
+      hp: document.getElementById('website').value,
+      elapsed_ms: Date.now() - LOADED_AT,
+      rate: rate(),
+      tasks: tasks.map(function(t){ return { name: t.name, minutes: t.minutes, freq: t.freq, people: t.people }; })
+    };
+    track('Calculateur Lead');
+    var ok = function(){ document.getElementById('mailOk').style.display = 'block'; document.getElementById('mailForm').style.display = 'none'; };
+    if(!ENDPOINT){ console.log('[calculateur] payload', body); ok(); return; }
+    fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .catch(function(err){ console.warn('[calculateur] POST failed', err); })
+      .finally(ok);
+  });
+})();
+</script>
+</body>
+</html>
