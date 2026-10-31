@@ -11,6 +11,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 ## Files
 
 - `index.html`: the landing page. ~1.7k lines of HTML with **all CSS and JS inlined** (no external stylesheet). This is the bulk of the work. A comment block at the top of `<head>` lists placeholders still to fill and the offer version applied.
+- `reseaux/index.html`: page dédiée aux têtes de réseau (franchiseurs, groupements multi-sites), offre « livraison 4 semaines → abonnement ». Vouvoiement (dirigeants), une seule action (Calendly, `data-loc="reseaux-*"`), pas de newsletter. Son `<style>` reprend celui de `index.html` plus un bloc « PAGE RÉSEAUX » en fin : si tu modifies un style partagé, reporte-le. Le commentaire en tête de `<head>` liste ce qui reste à valider avant diffusion.
 - `diagnostic/index.html`: lead magnet quiz "Ton CRM tient-il à 300 ?" (10 questions, score, tier, cost estimate, email gate before results).
 - `vcard.html`: digital business card with a QR code to Calendly (QR lib from cdnjs). Links are built from a `CONFIG` object in its script.
 - `menu/index.html`: standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
