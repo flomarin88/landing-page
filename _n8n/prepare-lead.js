@@ -5,12 +5,14 @@
 const SITE = 'https://florianmarin.me';
 const CALENDLY = 'https://calendly.com/florian-marin/revops-sprint-discovery';
 const DIAGNOSTIC_URL = SITE + '/diagnostic/';
+const CALCULATEUR_URL = SITE + '/calculateur/';
 
 // skipWelcomeIfTagged : pas de 2e email de bienvenue si la personne a déjà un de ces tags dans Attio.
 // Le diagnostic n'en a pas : son email contient les résultats demandés, il part à chaque diagnostic.
 const FORMS = {
-  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound', skipWelcomeIfTagged: ['Newsletter RevOps', 'Diagnostic CRM 300'] },
-  'ton-crm-tient-a-300': { tag: 'Diagnostic CRM 300', source: 'Lead Magnet', skipWelcomeIfTagged: [] }
+  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound', skipWelcomeIfTagged: ['Newsletter RevOps', 'Diagnostic CRM 300', 'Calculateur Ressaisie'] },
+  'ton-crm-tient-a-300': { tag: 'Diagnostic CRM 300', source: 'Lead Magnet', skipWelcomeIfTagged: [] },
+  'calculateur-ressaisie': { tag: 'Calculateur Ressaisie', source: 'Lead Magnet', skipWelcomeIfTagged: [] }
 };
 
 // Anti-bot : champ piège rempli, ou formulaire envoyé moins de 2,5 s après le chargement de la page.
@@ -39,6 +41,13 @@ function tierFor(pct) {
 
 const WEEKS = 47;
 const LOADED = 45;
+
+// Copie de calculateur/index.html (FREQ, bornes). À garder synchro si le calculateur change.
+const FREQ = { jour: { perYear: WEEKS * 5, label: 'par jour' }, semaine: { perYear: WEEKS, label: 'par semaine' }, mois: { perYear: 11, label: 'par mois' } };
+
+function esc(v) {
+  return String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 function int(v, min, max) {
   const n = Math.round(Number(v));
@@ -155,8 +164,9 @@ function diagnosticEmail(d) {
     p(`${d.reps} commerciaux × ${d.hours} h/sem × ${WEEKS} sem × ${LOADED} €/h chargé. Soit ${euro(d.weekly)} chaque semaine. Hors deals perdus pour cause de données sales ou de relances trop lentes.`, 'font-size:14px') +
     `<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim};margin:8px 0 14px">Tes 3 chantiers prioritaires</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${gaps}</table>` +
-    p("Si tu veux qu'on regarde ces chantiers sur ton cas réel, on en parle en Discovery Call. Je te dis franchement si un Sprint a du sens chez toi, ou pas.", 'margin-top:8px') +
-    button('Réserver mon Discovery Call →', CALENDLY) +
+    p("Ton trou n°1 se bouche souvent en une semaine. C'est La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse. Je travaille seul : une semaine, un client.", 'margin-top:8px') +
+    p("En 20 minutes, je chronomètre la tâche avec toi et je te dis franchement si elle tient en 7 jours.") +
+    button('Réserver le Chrono 20 minutes →', CALENDLY) +
     p("Tu recevras aussi ma newsletter, une idée RevOps chaque mardi.", 'font-size:14px');
 
   const text = [
@@ -164,7 +174,8 @@ function diagnosticEmail(d) {
     `Score : ${d.score}/100 · ${d.tier.name}\n${d.tier.desc}`,
     `Ce que ta stack te coûte : ${euro(d.annual)} / an (${d.reps} commerciaux × ${d.hours} h/sem × ${WEEKS} sem × ${LOADED} €/h chargé, soit ${euro(d.weekly)} par semaine).`,
     'Tes 3 chantiers prioritaires :\n' + d.gaps.map(([g, f]) => `- ${g} : ${f}`).join('\n'),
-    "Si tu veux qu'on regarde ces chantiers sur ton cas réel, on en parle en Discovery Call : " + CALENDLY,
+    "Ton trou n°1 se bouche souvent en une semaine. C'est La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse.",
+    'Réserve le Chrono 20 minutes : je chronomètre la tâche avec toi et je te dis si elle tient en 7 jours. ' + CALENDLY,
     'Réponds à cet email. Je lis tout.',
     'Florian',
     '--\nPour ne plus rien recevoir, réponds STOP.'
@@ -176,6 +187,48 @@ function diagnosticEmail(d) {
       preheader: `${d.tier.name} · ${euro(d.annual)} / an perdus · tes 3 chantiers prioritaires`,
       eyebrow: 'Diagnostic · Ton CRM tient-il à 300 ?',
       title: 'Ton diagnostic CRM',
+      body
+    }),
+    text
+  };
+}
+
+function calculateurEmail(c) {
+  const rows = c.tasks.map((t) =>
+    `<tr><td style="padding:10px 0;border-top:1px solid ${C.line};font-family:${FONT};font-size:14px;color:#FFFFFF">${t.top ? `<span style="color:${C.accent}">■</span>&nbsp; ` : ''}${esc(t.name)}<div style="font-size:12.5px;color:${C.dim}">${t.minutes} min ${FREQ[t.freq].label} × ${t.people} pers.</div></td>
+<td align="right" style="padding:10px 0;border-top:1px solid ${C.line};font-family:${FONT};font-size:14px;font-weight:700;color:#FFFFFF;white-space:nowrap">${t.hours} h · ${euro(t.cost)}</td></tr>`).join('');
+  const top = c.tasks.find((t) => t.top);
+  const body =
+    p("Voici votre résultat. Gardez-le : c'est votre point de départ le jour où vous voudrez mesurer ce qui a changé.") +
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 20px;border:1px solid ${C.line};border-radius:10px">
+<tr><td style="padding:22px;background:${C.ink};border-radius:10px">
+<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Ce que la ressaisie vous coûte</div>
+<div style="font-family:${FONT};font-size:40px;font-weight:700;line-height:1.1;color:#FFFFFF;margin:6px 0 4px">${c.hours} h<span style="font-size:18px;color:${C.dim}"> / an</span></div>
+<div style="font-family:${FONT};font-size:22px;font-weight:700;color:${C.accent}">${euro(c.cost)} / an</div>
+<div style="font-family:${FONT};font-size:13px;color:${C.muted};margin-top:8px">Soit ${c.weeks} semaines de travail à temps plein. Base : ${c.rate} €/h chargé.</div>
+</td></tr></table>` +
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 20px">${rows}</table>` +
+    p(`Votre tâche la plus coûteuse : <strong style="color:#FFFFFF">${esc(top.name)}</strong>, ${top.hours} h et ${euro(top.cost)} par an.`) +
+    p("C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je vous rembourse. Audit, roadmap et transfert de connaissance offerts. Je travaille seul : une semaine, un client.") +
+    button('Réserver le Chrono 20 minutes →', CALENDLY) +
+    p('En 20 minutes, je chronomètre la tâche avec vous et je vous dis si elle tient en 7 jours.', 'font-size:14px');
+  const text = [
+    "Voici votre résultat. Gardez-le : c'est votre point de départ le jour où vous voudrez mesurer ce qui a changé.",
+    `Ce que la ressaisie vous coûte : ${c.hours} h / an, ${euro(c.cost)} / an (${c.weeks} semaines de travail à temps plein, base ${c.rate} €/h chargé).`,
+    c.tasks.map((t) => `- ${t.name} : ${t.minutes} min ${FREQ[t.freq].label} × ${t.people} pers. = ${t.hours} h, ${euro(t.cost)} / an`).join('\n'),
+    `Votre tâche la plus coûteuse : ${top.name}, ${top.hours} h et ${euro(top.cost)} par an.`,
+    "C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je vous rembourse.",
+    'Réservez le Chrono 20 minutes : ' + CALENDLY,
+    'Répondez à cet email. Je lis tout.',
+    'Florian',
+    '--\nPour ne plus rien recevoir, répondez STOP.'
+  ].join('\n\n');
+  return {
+    subject: `La ressaisie vous coûte ${c.hours} h par an`,
+    html: layout({
+      preheader: `${euro(c.cost)} par an · votre tâche la plus coûteuse : ${esc(top.name)}`,
+      eyebrow: 'Calculateur · Combien vous coûte la ressaisie ?',
+      title: 'Votre résultat',
       body
     }),
     text
@@ -226,6 +279,29 @@ if (b.source === 'ton-crm-tient-a-300') {
       `Coût estimé : ${euro(d.annual)} / an (${euro(d.weekly)} / semaine)`,
       'Chantiers prioritaires : ' + d.gaps.map(([g]) => g).join(', '),
       phone ? `Téléphone saisi : ${lead.phone}` : 'Téléphone : non renseigné'
+    ].join('\n')
+  };
+} else if (b.source === 'calculateur-ressaisie') {
+  const rate = int(b.rate, 15, 200);
+  const tasks = (Array.isArray(b.tasks) ? b.tasks : []).slice(0, 5).map((t, i) => {
+    const freq = FREQ[t && t.freq] ? t.freq : 'semaine';
+    const minutes = int(t && t.minutes, 1, 480);
+    const people = int(t && t.people, 1, 200);
+    const hours = Math.round(minutes / 60 * FREQ[freq].perYear * people);
+    const name = String((t && t.name) || '').trim().slice(0, 80) || `Tâche ${i + 1}`;
+    return { name, freq, minutes, people, hours, cost: hours * rate };
+  });
+  if (tasks.length === 0) throw new Error('aucune tâche');
+  const top = tasks.reduce((a, t) => (t.hours > a.hours ? t : a), tasks[0]);
+  top.top = true;
+  const hours = tasks.reduce((n, t) => n + t.hours, 0);
+  const c = { rate, tasks, hours, cost: hours * rate, weeks: Math.round(hours / 35) };
+  mail = calculateurEmail(c);
+  note = {
+    title: `Calculateur ressaisie : ${hours} h/an (${euro(c.cost)})`,
+    content: [
+      `Total : ${hours} h/an · ${euro(c.cost)}/an (base ${rate} €/h)`,
+      ...tasks.map((t) => `${t.top ? '★ ' : '- '}${t.name} : ${t.minutes} min ${FREQ[t.freq].label} × ${t.people} pers. = ${t.hours} h/an`)
     ].join('\n')
   };
 } else {
