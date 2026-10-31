@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ton CRM tient-il à 300 ? Le diagnostic Florian Marin · CRM RevOps Sprint</title>
+<title>Ton CRM tient-il à 300 ? Le diagnostic · Florian Marin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
 <style>
   :root{
     --bg:#1C1C1C;
@@ -102,6 +103,8 @@
   .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:28px;line-height:1.6;
     font-style:italic;font-weight:400}
   .foot a{color:var(--accent);text-decoration:none;font-style:italic}
+  /* Champ piège anti-bot : invisible pour les humains, rempli par les bots */
+  .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
   @media(max-width:520px){
     h1{font-size:25px}
     .wrap{padding:32px 20px 72px}
@@ -155,6 +158,7 @@
         placeholder="06 ..."
         style="width:100%;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit">
     </div>
+    <div class="hp" aria-hidden="true"><label>Site web <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
     <label class="opt" style="background:transparent;cursor:pointer;align-items:flex-start">
       <input type="checkbox" id="consent" required style="margin-top:4px;accent-color:var(--accent)">
       <span style="font-size:13.5px;color:var(--muted);line-height:1.5">J'accepte de recevoir mon diagnostic et la newsletter <i>Scaler sans alourdir</i> de Florian Marin (1 email/semaine, le mardi, désinscription en 1 clic). Mes données ne sont jamais revendues. Voir <a href="#" style="color:var(--accent)">mentions légales</a>.</span>
@@ -196,19 +200,19 @@
     </div>
 
     <div class="res-card final">
-      <h2>Faire tenir ton CRM à 300 : c'est exactement le job d'un Sprint.</h2>
-      <p>Un Sprint intègre ta stack commerciale autour d'un CRM qui scale, en 6 semaines. Pas de TJM, pas de retainer imposé. Une seule mission active à la fois.</p>
+      <h2>Ton trou n°1 se bouche en 7 jours.</h2>
+      <p>La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi. Prix fixe, et remboursé si ce n'est pas en production. Audit, roadmap et transfert de connaissance offerts.</p>
       <div class="reasons">
-        <div class="reason"><b>Capacité limitée :</b> 1 seul Sprint actif, 6 à 8 créneaux par an.</div>
+        <div class="reason"><b>Capacité réelle :</b> je travaille seul, une semaine, un client.</div>
         <div class="reason"><b>Chaque semaine compte :</b> <span id="weeklyLeak">…</span> qui fuient pendant que rien ne bouge.</div>
       </div>
-      <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener" style="text-decoration:none">Réserver mon Discovery Call →</a>
+      <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener" style="text-decoration:none">Réserver le Chrono 20 minutes →</a>
       <button class="restart" id="restart">Refaire le diagnostic</button>
     </div>
   </div>
 
   <p class="foot">
-    Ton CRM tient-il à 300 ?, un outil de Florian Marin. 14 ans en Sales Tech (ex-Aircall, ex-Teads, ex-CTO Tiime).<br>
+    Ton CRM tient-il à 300 ?, un outil de Florian Marin. 15 ans en software engineering (ex-CTO Tiime, ex-Aircall, ex-Teads).<br>
     Le score et le chiffrage sont indicatifs et basés sur tes réponses.
     <span id="footlink"></span>
   </p>
@@ -281,6 +285,7 @@
   qWrap.addEventListener('change', function(e){
     if(e.target && e.target.type==='radio'){
       var key = e.target.name;
+      if(Object.keys(answers).length===0) track('Diagnostic Start');
       answers[key] = parseInt(e.target.value,10);
       // visual selection
       var labels = qWrap.querySelectorAll('.opt[data-key="'+key+'"]');
@@ -329,6 +334,8 @@
   // --- Config (à câbler sur ton n8n self-hosted ou autre webhook)
   // Laisse vide pour un fallback console.log local pendant les tests.
   var ENDPOINT = "https://n8n.florianmarin.me/webhook/lead-capture";
+  var LOADED_AT = Date.now(); // anti-bot : n8n ignore les envois trop rapides (et le champ piège rempli)
+  function track(name, props){ if(window.umami) window.umami.track(name, props); }
 
   function computePayload(){
     var pct = currentScorePct();
@@ -373,6 +380,7 @@
       return;
     }
     document.getElementById('warn').style.display='none';
+    track('Diagnostic Completed');
     var gate = document.getElementById('gate');
     gate.style.display='block';
     gate.scrollIntoView({behavior:'smooth', block:'center'});
@@ -402,6 +410,8 @@
       source: 'ton-crm-tient-a-300',
       ts: new Date().toISOString(),
       lead: { email: email, phone: phone, consent: true },
+      hp: document.getElementById('website').value,
+      elapsed_ms: Date.now() - LOADED_AT,
       answers: answers,
       score: payload.pct,
       tier: payload.tier.name,
@@ -411,6 +421,8 @@
       weekly_leak_eur: payload.weekly,
       top_gaps: payload.top.map(function(d){ return d.key; })
     };
+
+    track('Diagnostic Lead', { tier: payload.tier.name });
 
     function reveal(){
       loading.style.display='none';
@@ -432,6 +444,8 @@
     }).catch(function(err){ console.warn('[scan-stack] POST failed', err); })
       .finally(reveal);
   });
+
+  document.getElementById('book').addEventListener('click', function(){ track('Calendly Click', { location: 'diagnostic' }); });
 
   document.getElementById('restart').addEventListener('click', function(){
     answers = {}; hoursTouched=false;
