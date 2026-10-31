@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Florian Marin · Offre têtes de réseau</title>
+  <!--
+  PDF d'une page de l'offre réseaux (même contenu que reseaux/index.html, version courte).
+  Dossier _print/ : non publié par GitHub Pages. Générer le PDF :
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --no-pdf-header-footer \
+      --virtual-time-budget=5000 --print-to-pdf=_print/offre-reseaux.pdf _print/offre-reseaux.html
+  Mêmes points à valider que la page (accord du client sur les chiffres, citation, prix).
+-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1C1C1C;
+      --ink-2: #262626;
+      --paper-2: #FAFAFA;
+      --muted-light: #B8B8B8;
+      --muted-dark: #6B6B6B;
+      --line: #EAEAEA;
+      --accent: #FF7A00;
+      --gradient: linear-gradient(90deg, #FF7A00 0%, #FFD84D 100%);
+    }
+
+    @page {size: A4; margin: 0}
+    * {box-sizing: border-box; margin: 0; padding: 0}
+    html, body {width: 210mm; height: 297mm}
+    body {font-family: 'Montserrat', system-ui, sans-serif; color: var(--ink); background: #fff; font-size: 8.6pt; line-height: 1.45;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact; display: flex; flex-direction: column; overflow: hidden}
+    h1, h2, h3 {font-weight: 700; letter-spacing: -0.02em; line-height: 1.1}
+    .gradient {background: var(--gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent}
+    .eyebrow {font-weight: 700; font-size: 6.6pt; letter-spacing: .2em; text-transform: uppercase; color: var(--accent)}
+    .pad {padding: 0 14mm}
+
+    /* bandeau */
+    .top {flex-shrink: 0; background: var(--ink); color: #fff; padding: 7mm 14mm 6.5mm; position: relative; overflow: hidden}
+    .top::before {content: ""; position: absolute; inset: 0; background: radial-gradient(420px 220px at 88% 0%, rgba(255, 122, 0, .22), transparent 65%)}
+    .top > * {position: relative}
+    .brandline {display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4.5mm}
+    .brand {font-weight: 700; font-size: 11pt}
+    .brand span {color: var(--accent)}
+    h1 {font-size: 19pt; margin: 0 0 2.5mm; max-width: 160mm}
+    .sub {color: var(--muted-light); font-size: 9.2pt; max-width: 150mm}
+
+    .stats {list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 4.5mm}
+    .stats li {background: var(--ink-2); border: 1px solid #333; border-radius: 6px; padding: 3mm 3.5mm}
+    .stats .gradient {display: inline-block; padding-right: 1px}
+    .stats b {display: block; font-size: 13pt; line-height: 1.15; white-space: nowrap; color: #fff}
+    .stats s {font-size: 8pt; font-weight: 500; color: var(--muted-light); text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; margin-right: 4px}
+    .stats p {color: var(--muted-light); font-size: 7pt; line-height: 1.35; margin-top: 1.5mm}
+
+    /* corps */
+    main {flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 3mm; padding-top: 4.5mm}
+    h2 {font-size: 11pt; margin: 1mm 0 2mm}
+    .cols {display: grid; grid-template-columns: 1fr 1.15fr; gap: 8mm}
+    .arrows {list-style: none; display: grid; gap: 1.2mm}
+    .arrows li {padding-left: 4.5mm; position: relative}
+    .arrows li::before {content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700}
+    .arrows strong {font-weight: 700}
+    table {width: 100%; border-collapse: collapse; font-size: 7.6pt}
+    th, td {text-align: left; vertical-align: top; padding: 1.2mm 2mm 1.2mm 0; border-bottom: 1px solid var(--line)}
+    thead th {font-size: 6.2pt; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-dark)}
+    tbody th {font-weight: 700; width: 25%}
+    td.before {color: var(--muted-dark); width: 33%}
+    .note {font-size: 7pt; color: var(--muted-dark); margin-top: 2mm}
+
+    .steps {list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm}
+    .step {background: var(--paper-2); border: 1px solid var(--line); border-radius: 6px; padding: 3mm 3.5mm; display: flex; flex-direction: column; gap: 1.2mm}
+    .step.featured {border: 1.5px solid var(--accent); background: #fff}
+    .step .snum {font-size: 6.2pt; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent)}
+    .step h3 {font-size: 9.6pt; line-height: 1.2}
+    .step p {color: var(--muted-dark); font-size: 7.6pt}
+    .step p strong {color: var(--ink)}
+    .step .sfoot {margin-top: auto; padding-top: 1.6mm; border-top: 1px solid var(--line); font-size: 7pt}
+
+    .guar {display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm}
+    .g {border-left: 2.5px solid var(--accent); padding: .5mm 0 .5mm 3mm}
+    .g b {display: block; font-size: 8.4pt; margin-bottom: .8mm}
+    .g p {color: var(--muted-dark); font-size: 7.4pt}
+
+    /* pied */
+    .foot {flex-shrink: 0; background: var(--ink); color: #fff; padding: 5mm 14mm; display: grid; grid-template-columns: 1.3fr 1fr; gap: 8mm; align-items: center; margin-top: 4mm}
+    .foot h3 {font-size: 11.5pt; line-height: 1.2}
+    .foot p {color: var(--muted-light); font-size: 7.6pt; margin-top: 1.5mm}
+    .contact {font-size: 8pt; display: grid; gap: 1.2mm}
+    .contact .cta {display: inline-block; background: var(--accent); color: #fff; font-weight: 700; padding: 2mm 4mm; border-radius: 5px; text-decoration: none; justify-self: start; margin-bottom: 1mm}
+    .contact a {color: #fff; text-decoration: none}
+    .contact span {color: var(--muted-light)}
+  </style>
+</head>
+
+<body>
+  <header class="top">
+    <div class="brandline">
+      <div class="brand">Florian Marin<span>.</span></div>
+      <span class="eyebrow">Franchiseurs · Groupements · Réseaux multi-sites</span>
+    </div>
+    <h1>Votre siège ressaisit ce que vos agences ont déjà saisi. <span class="gradient">En 4 semaines, c'est fini.</span></h1>
+    <p class="sub">Un outil sur mesure qui remonte la donnée de chaque agence jusqu'au siège, sans double saisie et sans
+      tableur. Prix fixe pour la livraison, puis un budget annuel. Pas de jours facturés.</p>
+    <ul class="stats" aria-label="Résultats mesurés chez un réseau de 40 agences">
+      <li><b><s>7 min 30</s><span class="gradient">39 s</span></b>
+        <p>par vente saisie au siège. Médiane d'octobre, 344 ventes sur 344.</p>
+      </li>
+      <li><b>0 tableur</b>
+        <p>pour les primes des agences. Le calcul automatique a révélé un trop-versé.</p>
+      </li>
+      <li><b>5 000 €</b>
+        <p>payés deux fois sur un même sinistre. Ce double paiement ne passe plus inaperçu.</p>
+      </li>
+      <li><b>≈ 140 h/mois</b>
+        <p>rendues au siège, presque un temps plein (estimation de l'équipe).</p>
+      </li>
+    </ul>
+  </header>
+
+  <main class="pad">
+    <div class="cols">
+      <section>
+        <span class="eyebrow">Le constat</span>
+        <h2>Votre réseau a grandi plus vite que les outils du siège.</h2>
+        <ul class="arrows">
+          <li>Chaque vente d'agence est <strong>ressaisie au siège</strong>, puis envoyée à la main.</li>
+          <li>Les <strong>primes des agences</strong> se calculent dans un tableur que seule une personne comprend.</li>
+          <li>Pour savoir qui vend, on ouvre le logiciel des agences <strong>une agence à la fois</strong>.</li>
+          <li>Les demandes de remboursement vivent dans une boîte mail, sans suivi.</li>
+          <li>Chaque agence ouverte ajoute du travail au siège. <strong>La croissance coûte des embauches.</strong></li>
+        </ul>
+      </section>
+      <section>
+        <span class="eyebrow">Cas client · 40 agences auto franchisées</span>
+        <h2>Notion, tableurs et boîte mail remplacés.</h2>
+        <table>
+          <thead>
+            <tr><th scope="col">Flux</th><th scope="col">Avant</th><th scope="col">Après</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Saisie d'une vente</th><td class="before">Notion, 7 min 30</td><td>Formulaire dans l'ordre de la facture, contrat envoyé seul. 39 s.</td></tr>
+            <tr><th scope="row">Primes</th><td class="before">Tableur de 19 onglets</td><td>Calcul automatique, traçable ligne à ligne</td></tr>
+            <tr><th scope="row">SAV</th><td class="before">Boîte mail</td><td>Un dossier par demande, cumul payé affiché</td></tr>
+            <tr><th scope="row">Pilotage</th><td class="before">Une agence à la fois, 2 h/jour</td><td>Tout le réseau sur un écran, collecte chaque nuit</td></tr>
+          </tbody>
+        </table>
+        <p class="note">≈ 370 ventes par mois. Temps mesuré dans l'outil, sur chaque vente.</p>
+      </section>
+    </div>
+
+    <section>
+      <span class="eyebrow">L'offre</span>
+      <h2>Un résultat livré en 4 semaines. Puis un budget annuel, pas des jours.</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="snum">Étape 0 · Demi-journée</span>
+          <h3>Cartographier, chiffrer, signer.</h3>
+          <p>Je chronomètre le flux qui coûte le plus au siège et j'écris un périmètre avec des critères de réception.
+            <strong>Vous signez avant tout développement.</strong></p>
+          <p class="sfoot">Incluse dans la livraison. Si le flux ne tient pas en 4 semaines, on réduit le périmètre ou
+            vous ne payez que la demi-journée.</p>
+        </li>
+        <li class="step featured">
+          <span class="snum">Semaines 1 à 4 · Prix fixe</span>
+          <h3>Une double saisie supprimée, un tableau de bord par agence.</h3>
+          <p>La donnée part de l'agence et arrive au siège sans être ressaisie. Réception selon les critères signés.</p>
+          <p class="sfoot">Prix fixe, écrit dans le devis après l'étape 0.</p>
+        </li>
+        <li class="step">
+          <span class="snum">Ensuite · Abonnement 12 mois</span>
+          <h3>L'outil grandit avec le réseau.</h3>
+          <p>Pannes corrigées avec un délai écrit, nouveaux flux priorisés chaque trimestre, qualité des données
+            surveillée, équipes accompagnées.</p>
+          <p class="sfoot">En option dans le même devis. Montant mensuel fixe.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="guar">
+      <div class="g"><b>Réception sur critères signés</b>
+        <p>Un critère non atteint à 4 semaines&nbsp;: je continue sans facturer jusqu'à ce qu'il le soit.</p>
+      </div>
+      <div class="g"><b>Vos données, vos règles</b>
+        <p>Données, paramétrage et règles métier vous appartiennent. Mes briques&nbsp;: licence perpétuelle.</p>
+      </div>
+      <div class="g"><b>Données sensibles</b>
+        <p>Contrat RGPD (article 28) annexé. Chaque agence ne voit que ses données, vérifié par des tests.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div>
+      <h3>Racontez-moi comment vos agences remontent leurs données.</h3>
+      <p>20 minutes en visio, sans présentation commerciale. Je vous dis si votre flux tient en 4 semaines. Une seule
+        livraison en cours à la fois&nbsp;: c'est moi qui code, du début à la fin.</p>
+    </div>
+    <div class="contact">
+      <a class="cta" href="https://calendly.com/florian-marin/revops-sprint-discovery">Prendre 20 minutes</a>
+      <a href="https://florianmarin.me/reseaux/">florianmarin.me/reseaux</a>
+      <a href="mailto:contact@florianmarin.me">contact@florianmarin.me</a>
+      <span>15 ans en développement logiciel · ex-CTO Tiime · ex-EM Aircall</span>
+    </div>
+  </footer>
+</body>
+
+</html>
