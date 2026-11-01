@@ -199,36 +199,36 @@ function calculateurEmail(c) {
 <td align="right" style="padding:10px 0;border-top:1px solid ${C.line};font-family:${FONT};font-size:14px;font-weight:700;color:#FFFFFF;white-space:nowrap">${t.hours} h · ${euro(t.cost)}</td></tr>`).join('');
   const top = c.tasks.find((t) => t.top);
   const body =
-    p("Voici votre résultat. Gardez-le : c'est votre point de départ le jour où vous voudrez mesurer ce qui a changé.") +
+    p("Voici ton résultat. Garde-le : c'est ton point de départ le jour où tu voudras mesurer ce qui a changé.") +
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 20px;border:1px solid ${C.line};border-radius:10px">
 <tr><td style="padding:22px;background:${C.ink};border-radius:10px">
-<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Ce que la ressaisie vous coûte</div>
+<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Ce que la ressaisie te coûte</div>
 <div style="font-family:${FONT};font-size:40px;font-weight:700;line-height:1.1;color:#FFFFFF;margin:6px 0 4px">${c.hours} h<span style="font-size:18px;color:${C.dim}"> / an</span></div>
 <div style="font-family:${FONT};font-size:22px;font-weight:700;color:${C.accent}">${euro(c.cost)} / an</div>
 <div style="font-family:${FONT};font-size:13px;color:${C.muted};margin-top:8px">Soit ${c.weeks} semaines de travail à temps plein. Base : ${c.rate} €/h chargé.</div>
 </td></tr></table>` +
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 20px">${rows}</table>` +
-    p(`Votre tâche la plus coûteuse : <strong style="color:#FFFFFF">${esc(top.name)}</strong>, ${top.hours} h et ${euro(top.cost)} par an.`) +
-    p("C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je vous rembourse. Audit, roadmap et transfert de connaissance offerts. Je travaille seul : une semaine, un client.") +
+    p(`Ta tâche la plus coûteuse : <strong style="color:#FFFFFF">${esc(top.name)}</strong>, ${top.hours} h et ${euro(top.cost)} par an.`) +
+    p("C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je te rembourse. Audit, roadmap et transfert de connaissance offerts. Je travaille seul : une semaine, un client.") +
     button('Réserver le Chrono 20 minutes →', CALENDLY) +
-    p('En 20 minutes, je chronomètre la tâche avec vous et je vous dis si elle tient en 7 jours.', 'font-size:14px');
+    p('En 20 minutes, je chronomètre la tâche avec toi et je te dis si elle tient en 7 jours.', 'font-size:14px');
   const text = [
-    "Voici votre résultat. Gardez-le : c'est votre point de départ le jour où vous voudrez mesurer ce qui a changé.",
-    `Ce que la ressaisie vous coûte : ${c.hours} h / an, ${euro(c.cost)} / an (${c.weeks} semaines de travail à temps plein, base ${c.rate} €/h chargé).`,
+    "Voici ton résultat. Garde-le : c'est ton point de départ le jour où tu voudras mesurer ce qui a changé.",
+    `Ce que la ressaisie te coûte : ${c.hours} h / an, ${euro(c.cost)} / an (${c.weeks} semaines de travail à temps plein, base ${c.rate} €/h chargé).`,
     c.tasks.map((t) => `- ${t.name} : ${t.minutes} min ${FREQ[t.freq].label} × ${t.people} pers. = ${t.hours} h, ${euro(t.cost)} / an`).join('\n'),
-    `Votre tâche la plus coûteuse : ${top.name}, ${top.hours} h et ${euro(top.cost)} par an.`,
-    "C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je vous rembourse.",
-    'Réservez le Chrono 20 minutes : ' + CALENDLY,
-    'Répondez à cet email. Je lis tout.',
+    `Ta tâche la plus coûteuse : ${top.name}, ${top.hours} h et ${euro(top.cost)} par an.`,
+    "C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je te rembourse.",
+    'Réserve le Chrono 20 minutes : ' + CALENDLY,
+    'Réponds à cet email. Je lis tout.',
     'Florian',
-    '--\nPour ne plus rien recevoir, répondez STOP.'
+    '--\nPour ne plus rien recevoir, réponds STOP.'
   ].join('\n\n');
   return {
-    subject: `La ressaisie vous coûte ${c.hours} h par an`,
+    subject: `La ressaisie te coûte ${c.hours} h par an`,
     html: layout({
-      preheader: `${euro(c.cost)} par an · votre tâche la plus coûteuse : ${esc(top.name)}`,
-      eyebrow: 'Calculateur · Combien vous coûte la ressaisie ?',
-      title: 'Votre résultat',
+      preheader: `${euro(c.cost)} par an · ta tâche la plus coûteuse : ${esc(top.name)}`,
+      eyebrow: 'Calculateur · Combien te coûte la ressaisie ?',
+      title: 'Ton résultat',
       body
     }),
     text

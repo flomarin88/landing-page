@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Visuels positionnement</title>
+  <!--
+  Sources des deux visuels du positionnement « Ton CRM branché sur toute ta stack » (2026-11-01).
+  Rendu : ?v=og → assets/opengraph.png (1200×627) · ?v=banner → _print/banniere-linkedin.png (1584×396).
+  Commande (depuis la racine, serveur local sur 8765) :
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+      --window-size=1200,627 --virtual-time-budget=4000 --screenshot=assets/opengraph.png "http://localhost:8765/_print/visuels-positionnement.html?v=og"
+  Bannière LinkedIn : la photo de profil masque le coin bas gauche, le mobile rogne les côtés : texte à droite du centre.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #1C1C1C; --ink-2: #262626; --accent: #FF7A00; --accent-2: #FFD84D; --muted: #B8B8B8; --gradient: linear-gradient(90deg, #FF7A00 0%, #FFD84D 100%); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--ink); }
+    body { font-family: 'Montserrat', system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+    .grad { width: fit-content; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .frame { position: relative; overflow: hidden; background: var(--ink); }
+    .frame::before { content: ""; position: absolute; inset: 0; background: radial-gradient(700px 360px at 85% 0%, rgba(255,122,0,.20), transparent 60%); }
+    .frame::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: var(--gradient); }
+    .pill { display: inline-block; border: 1.5px solid var(--accent); color: var(--accent); border-radius: 999px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    /* Image de partage */
+    .og { width: 1200px; height: 627px; display: none; }
+    .og .in { position: relative; height: 100%; padding: 72px 80px; display: flex; flex-direction: column; }
+    .og .pill { font-size: 15px; padding: 9px 18px; align-self: flex-start; }
+    .og h1 .l, .banner h1 .l { display: block; text-wrap: balance; }
+    .og h1 { font-size: 68px; line-height: 1.05; letter-spacing: -0.02em; font-weight: 800; margin-top: 40px; }
+    .og p { font-size: 26px; color: var(--muted); margin-top: 28px; font-weight: 500; }
+    .og .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; font-size: 22px; }
+    .og .foot b { color: var(--accent); font-weight: 700; }
+    .og .foot span { color: #8a8a8a; font-size: 18px; }
+    /* Bannière LinkedIn */
+    .banner { width: 1584px; height: 396px; display: none; }
+    .banner .in { position: relative; height: 100%; padding: 0 64px 0 480px; display: flex; flex-direction: column; justify-content: center; }
+    .banner h1 { white-space: nowrap; font-size: 44px; line-height: 1.08; letter-spacing: -0.02em; font-weight: 800; }
+    .banner p { font-size: 22px; color: var(--muted); margin-top: 22px; font-weight: 500; }
+    .banner p b { color: #fff; font-weight: 700; }
+    .banner .pill { font-size: 13px; padding: 7px 14px; margin-bottom: 22px; align-self: flex-start; }
+    body.v-og .og, body.v-banner .banner { display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame og">
+    <div class="in">
+      <span class="pill">La Semaine Sans Ressaisie · 7 jours · prix fixe</span>
+      <h1><span class="l">Ton CRM branché sur toute ta stack.</span><span class="l grad">Tes équipes ne saisissent qu'une fois.</span></h1>
+      <p>Première automatisation en production en 7 jours.</p>
+      <div class="foot"><b>florianmarin.me</b><span>Florian Marin · ex-CTO, 15 ans de code</span></div>
+    </div>
+  </div>
+  <div class="frame banner">
+    <div class="in">
+      <span class="pill">Équipes revenue · SaaS et tech B2B</span>
+      <h1><span class="l">Ton CRM branché sur toute ta stack.</span><span class="l grad">Tes équipes ne saisissent qu'une fois.</span></h1>
+      <p><b>Première automatisation en production en 7 jours</b> · florianmarin.me</p>
+    </div>
+  </div>
+  <script>
+    document.body.className = 'v-' + (new URLSearchParams(location.search).get('v') || 'og');
+  </script>
+</body>
+</html>
