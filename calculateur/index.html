@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Combien vous coûte la ressaisie ? Le calculateur · Florian Marin</title>
-<meta name="description" content="Listez les tâches que vos équipes refont à la main : heures et euros perdus par an, et la tâche à supprimer en premier. 2 minutes, gratuit.">
-<meta property="og:title" content="Combien vous coûte la ressaisie ?">
-<meta property="og:description" content="Les heures et les euros que vos équipes perdent chaque année à recopier. Et la tâche à supprimer en premier.">
+<title>Combien te coûte la ressaisie ? Le calculateur · Florian Marin</title>
+<meta name="description" content="Liste les tâches que tes équipes refont à la main : heures et euros perdus par an, et la tâche à supprimer en premier. 2 minutes, gratuit.">
+<meta property="og:title" content="Combien te coûte la ressaisie ?">
+<meta property="og:description" content="Les heures et les euros que tes équipes perdent chaque année à recopier. Et la tâche à supprimer en premier.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://florianmarin.me/calculateur/">
 <meta property="og:image" content="https://florianmarin.me/assets/opengraph.png">
@@ -122,10 +122,10 @@
 <div class="wrap">
 
   <span class="badge">Calculateur · 2 min · gratuit</span>
-  <h1>Combien vous coûte <span class="grad">la ressaisie&nbsp;?</span></h1>
-  <p class="lede">Listez les tâches que vos équipes refont à la main : recopier, recoller des exports, consolider un fichier. Vous voyez tout de suite les heures et les euros perdus chaque année, et la tâche à supprimer en premier.</p>
+  <h1>Combien te coûte <span class="grad">la ressaisie&nbsp;?</span></h1>
+  <p class="lede">Liste les tâches que tes équipes refont à la main : recopier, recoller des exports, consolider un fichier. Tu vois tout de suite les heures et les euros perdus chaque année, et la tâche à supprimer en premier.</p>
 
-  <div class="section-title">Vos tâches manuelles</div>
+  <div class="section-title">Tes tâches manuelles</div>
   <div id="tasks"></div>
   <button class="add" id="add" type="button">+ Ajouter une tâche</button>
 
@@ -137,16 +137,16 @@
   </div>
 
   <div class="result" id="result">
-    <div class="k">Ce que la ressaisie vous coûte</div>
-    <div id="resultBody"><p class="empty">Renseignez au moins une tâche avec sa durée : le résultat s'affiche ici.</p></div>
+    <div class="k">Ce que la ressaisie te coûte</div>
+    <div id="resultBody"><p class="empty">Renseigne au moins une tâche avec sa durée : le résultat s'affiche ici.</p></div>
   </div>
 
   <div class="offer">
-    <h2 id="offerTitle">Votre tâche la plus coûteuse se supprime souvent en 7 jours.</h2>
-    <p>La Semaine Sans Ressaisie : j'automatise la tâche qui vous coûte le plus, en production le vendredi, ou je vous rembourse. Audit, roadmap et transfert de connaissance offerts.</p>
+    <h2 id="offerTitle">Ta tâche la plus coûteuse se supprime souvent en 7 jours.</h2>
+    <p>La Semaine Sans Ressaisie : j'automatise la tâche qui te coûte le plus, en production le vendredi, ou je te rembourse. Audit, roadmap et transfert de connaissance offerts.</p>
     <div class="reason"><b>Capacité réelle :</b> je travaille seul, une semaine, un client.</div>
     <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Réserver le Chrono 20 minutes →</a>
-    <p style="margin:12px auto 0;font-size:13px">En 20 minutes, je chronomètre la tâche avec vous et je vous dis si elle tient en 7 jours.</p>
+    <p style="margin:12px auto 0;font-size:13px">En 20 minutes, je chronomètre la tâche avec toi et je te dis si elle tient en 7 jours.</p>
   </div>
 
   <div class="card mail">
@@ -158,13 +158,13 @@
       <button type="submit">Envoyer</button>
     </form>
     <label class="consent"><input type="checkbox" id="consent"> <span>J'accepte de recevoir mon résultat et, de temps en temps, un conseil de Florian Marin par e-mail. Désinscription en 1 clic. Mes données ne sont jamais revendues.</span></label>
-    <div class="warn" id="mailWarn">Il faut une tâche chiffrée, un e-mail valide et votre accord.</div>
-    <div class="ok" id="mailOk">C'est envoyé. Vérifiez votre boîte de réception.</div>
+    <div class="warn" id="mailWarn">Il faut une tâche chiffrée, un e-mail valide et ton accord.</div>
+    <div class="ok" id="mailOk">C'est envoyé. Vérifie ta boîte de réception.</div>
   </div>
 
   <p class="foot">
     Un outil de <a href="/">Florian Marin</a>, ingénieur, 15 ans en software engineering (ex-CTO Tiime, ex-Aircall, ex-Teads).<br>
-    Calcul indicatif : 47 semaines travaillées par an, 5 jours par semaine, 11 mois. Rien n'est enregistré tant que vous n'envoyez pas le résultat.
+    Calcul indicatif : 47 semaines travaillées par an, 5 jours par semaine, 11 mois. Rien n'est enregistré tant que tu n'envoies pas le résultat.
   </p>
 
 </div>
@@ -225,7 +225,7 @@
     var tasks = readTasks();
     var body = document.getElementById('resultBody');
     if(tasks.length === 0){
-      body.innerHTML = '<p class="empty">Renseignez au moins une tâche avec sa durée : le résultat s\'affiche ici.</p>';
+      body.innerHTML = '<p class="empty">Renseigne au moins une tâche avec sa durée : le résultat s\'affiche ici.</p>';
       lastSummary = '';
       return;
     }
@@ -253,7 +253,7 @@
     share.innerHTML = '<button type="button" class="ghost" id="copy">Copier mon résultat</button>' +
       '<a class="ghost" id="li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://florianmarin.me/calculateur/') + '">Partager sur LinkedIn</a>';
     body.appendChild(big); body.appendChild(eur); body.appendChild(sub); body.appendChild(bars); body.appendChild(share);
-    document.getElementById('offerTitle').textContent = '« ' + top.name + ' » vous coûte ' + nf(top.hours) + ' h par an. Elle se supprime souvent en 7 jours.';
+    document.getElementById('offerTitle').textContent = '« ' + top.name + ' » te coûte ' + nf(top.hours) + ' h par an. Elle se supprime souvent en 7 jours.';
     lastSummary = 'Mon équipe perd ' + nf(total) + ' h par an à recopier des informations, soit ' + euro(total * r) + '. Calculé en 2 minutes : https://florianmarin.me/calculateur/';
     if(!completed){ completed = true; track('Calculateur Completed'); }
   }

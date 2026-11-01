@@ -4,20 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-Static marketing site for **florianmarin.me**: Florian Marin's CRM RevOps offer (the "Sprint RevOps 6 semaines" for B2B SaaS scaleups of 50 to 300 people). Copy is in French. Every page is a self-contained HTML file: no build step, no package manager, no tests. Deployed via GitHub Pages with the custom domain set in `CNAME`. **Everything in the repo is public**, so never commit secrets or internal files.
+Static marketing site for **florianmarin.me**. Positioning since 2026-11-01: « Je branche ton CRM sur le reste de ta stack pour que tes équipes ne saisissent qu'une fois. Première automatisation en 7 jours. » The homepage sells the entry offer **La Semaine Sans Ressaisie** (SaaS and tech B2B, 20 to 500 people, FR/BE/CH, tutoiement); the Sprint RevOps 6 semaines lives on `/sprint/`, unlinked. Copy is in French. Every page is a self-contained HTML file: no build step, no package manager, no tests. Deployed via GitHub Pages with the custom domain set in `CNAME`. **Everything in the repo is public**, so never commit secrets or internal files.
 
 To preview, open the file directly in a browser (e.g. `open index.html`) or serve the folder (`python3 -m http.server 8000`). To deploy, commit and push to `main`; GitHub Pages serves the repo root.
 
 ## Files
 
-- `index.html`: the landing page. ~1.7k lines of HTML with **all CSS and JS inlined** (no external stylesheet). This is the bulk of the work. A comment block at the top of `<head>` lists placeholders still to fill and the offer version applied.
-- `reseaux/index.html`: page dédiée aux têtes de réseau (franchiseurs, groupements multi-sites), offre « livraison 4 semaines → abonnement ». Vouvoiement (dirigeants), une seule action (Calendly, `data-loc="reseaux-*"`), pas de newsletter. Son `<style>` reprend celui de `index.html` plus un bloc « PAGE RÉSEAUX » en fin : si tu modifies un style partagé, reporte-le. Le commentaire en tête de `<head>` liste ce qui reste à valider avant diffusion.
+- `index.html`: the homepage, La Semaine Sans Ressaisie (built from the local draft `_versions/v2-saas.html`). All CSS and JS inlined. Single action: Calendly (Chrono 20 minutes); a « Pas prêt pour un appel ? » section links the calculateur and the diagnostic. No newsletter form. The head comment holds the positioning sentence.
+- `sprint/index.html`: the former landing (Sprint RevOps 6 semaines, ~1.7k lines, newsletter forms). **Not linked** from the homepage or any page: sent directly to clients after a Semaine Sans Ressaisie. Uses absolute `/assets/` paths; Umami locations are prefixed `sprint-`.
+- `reseaux/index.html`: **en ligne mais liée de nulle part** (décision du 2026-11-01, hors cible du plan GTM). Page dédiée aux têtes de réseau (franchiseurs, groupements multi-sites), offre « livraison 4 semaines → abonnement ». Vouvoiement (dirigeants), une seule action (Calendly, `data-loc="reseaux-*"`), pas de newsletter. Son `<style>` reprend celui de `sprint/index.html` plus un bloc « PAGE RÉSEAUX » en fin : si tu modifies un style partagé, reporte-le. Le commentaire en tête de `<head>` liste ce qui reste à valider avant diffusion.
 - `diagnostic/index.html`: lead magnet quiz "Ton CRM tient-il à 300 ?" (10 questions, score, tier, cost estimate, email gate before results). Tutoiement, SaaS audience; its offer block points to La Semaine Sans Ressaisie (Chrono 20 minutes).
-- `calculateur/index.html`: lead magnet "Combien vous coûte la ressaisie ?" (vouvoiement). Up to 5 manual tasks → hours and euros lost per year, costliest task highlighted, result shown without a gate; optional email to receive it. `FREQ` and bounds are copied in `_n8n/prepare-lead.js`: change both together.
+- `calculateur/index.html`: lead magnet "Combien te coûte la ressaisie ?" (tutoiement since 2026-11-01, like its email in `prepare-lead.js`). Up to 5 manual tasks → hours and euros lost per year, costliest task highlighted, result shown without a gate; optional email to receive it. `FREQ` and bounds are copied in `_n8n/prepare-lead.js`: change both together.
 - `vcard.html`: digital business card with a QR code to Calendly (QR lib from cdnjs). Links are built from a `CONFIG` object in its script.
 - `menu/index.html`: standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
 - `value-assets/`: internal visual board ("Méthode Stack Possédée") plus `scalezia/` material. Not linked from the site. Exception: `prompt-audit-crm-attio-entreprises.html` is a public lead magnet (prompt to copy, CTA to the Chrono 20 minutes and the calculator).
 - `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
+- `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both.
+- `_versions/`: earlier homepage drafts (v1 réseaux, v2 SaaS, v3 neutral), **local only, never committed** (their comments name a client).
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
 - `_n8n/`: the lead capture workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
 - `_config.yml`: Jekyll `exclude` list for repo files that must not be served (`CLAUDE.md`, `README.md`, `generate-pdf.mjs`). Add any new internal file there.
@@ -37,13 +40,13 @@ Every public page loads `https://cloud.umami.is/script.js` with `data-website-id
 
 | Event | Page | Props |
 |---|---|---|
-| `Calendly Click` | landing, diagnostic, calculateur, prompt Attio, vcard | `location` |
-| `Newsletter Signup` | landing (only after the email is saved) | `location` |
+| `Calendly Click` | homepage, sprint (`sprint-` prefix), diagnostic, calculateur, prompt Attio, vcard | `location` |
+| `Newsletter Signup` | sprint (only after the email is saved, `sprint-` prefix) | `location` |
 | `Diagnostic Start` / `Diagnostic Completed` / `Diagnostic Lead` | diagnostic | `tier` on `Diagnostic Lead` |
 | `Calculateur Completed` / `Calculateur Lead` / `Calculateur Share` | calculateur | `via` (`copie`, `linkedin`) on `Calculateur Share` |
 | `Prompt Copied` | prompt Attio | `prompt` |
 
-- On the landing, Calendly clicks are wired automatically for every `a[href*="calendly.com"]`; give a new link a `data-loc="<section>"` attribute instead of adding a handler.
+- On the homepage and the sprint page, Calendly clicks are wired automatically for every `a[href*="calendly.com"]`; give a new link a `data-loc="<section>"` attribute instead of adding a handler.
 - Events and their props show up in Umami without any declaration.
 - The old hero A/B test script was removed; don't reintroduce it.
 
@@ -53,7 +56,7 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 
 | Form | `source` in payload | Attio Tags | Attio Source |
 |---|---|---|---|
-| Landing newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
+| Sprint page newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
 | Diagnostic email gate | `ton-crm-tient-a-300` | Diagnostic CRM 300 | Lead Magnet |
 | Calculateur (optional email) | `calculateur-ressaisie` | Calculateur Ressaisie | Lead Magnet |
 
@@ -63,13 +66,13 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 - Source of truth is `_n8n/prepare-lead.js` (validation, bot filter, Attio values, both welcome emails in HTML + text) and `_n8n/first-welcome-only.js`. `node _n8n/build.mjs` regenerates `_n8n/lead-capture-workflow.json` (the file to import in n8n), runs the Code node on sample payloads and writes `_n8n/preview-*.html` (gitignored). Never edit the JSON by hand; never put credentials in these files (they are referenced by name in n8n).
 - `prepare-lead.js` copies the diagnostic tiers and gaps from `diagnostic/index.html` (`tierFor`, `DIMS`): change both together.
 - Payload shape: `{ source, ts, lead: { email, phone?, consent }, hp, elapsed_ms, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
-- Endpoint constants: `LEAD_ENDPOINT` in `index.html`, `ENDPOINT` in `diagnostic/index.html` and `calculateur/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
-- A new form = add `data-lead="<location>"` on the landing, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
+- Endpoint constants: `LEAD_ENDPOINT` in `sprint/index.html`, `ENDPOINT` in `diagnostic/index.html` and `calculateur/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
+- A new form = add `data-lead="<location>"` on the sprint page, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
 
 ## External links
 
 - **Calendly**: the booking CTA everywhere is `https://calendly.com/florian-marin/revops-sprint-discovery`. If it changes, update all pages (`grep -rn calendly.com`).
-- **Substack**: still a `YOURSUBSTACK` placeholder in the landing footer.
+- **Substack**: still a `YOURSUBSTACK` placeholder in the sprint page footer; the homepage has no Substack link until the URL is known.
 
 ## Things not to do
 
