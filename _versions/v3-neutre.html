@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Florian Marin · La tâche qui vous coûte le plus, supprimée en 7&nbsp;jours</title>
+  <meta name="description" content="Vos équipes passent des heures à recopier. En 7&nbsp;jours, j'automatise la tâche qui vous coûte le plus. Prix fixe, audit et roadmap offerts.">
+  <!--
+  VERSION DE TRAVAIL v3 (Neutre PME, offre 7&nbsp;jours), non publiée&nbsp;: _versions/ n'est pas servi par GitHub Pages.
+  Principe&nbsp;: une douleur forte dans laquelle le client se reconnaît, puis l'offre d'entrée «&nbsp;La Semaine Sans Ressaisie&nbsp;».
+  À valider avant publication&nbsp;:
+  - chiffres du cas et histoire du forfait d'entrée (accord de Romain, WeeCars)&nbsp;;
+  - nom de l'offre («&nbsp;La Semaine Sans Ressaisie&nbsp;», alternatives dans la session du 31/10).
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"></script>
+  <style>
+:root{--ink:#1C1C1C;--ink-2:#262626;--paper:#FFFFFF;--paper-2:#FAFAFA;--muted-light:#B8B8B8;--muted-dark:#6B6B6B;--line:#EAEAEA;--accent:#FF7A00;--accent-hover:#E66E00;--accent-2:#FFD84D;--gradient:linear-gradient(90deg,#FF7A00 0%,#FFD84D 100%);--maxw:1120px;--r:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+h1,h2,h3{font-weight:700;line-height:1.08;letter-spacing:-0.02em}
+a{color:inherit}
+.gradient{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.eyebrow{font-weight:700;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-block}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700;font-size:1rem;padding:15px 26px;border-radius:8px;text-decoration:none;transition:transform .15s ease,background .15s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-hover)}
+.micro{font-size:.82rem;color:var(--muted-dark);margin-top:12px}
+/* nav */
+nav{background:var(--ink);color:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid #333}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-weight:700;font-size:1.1rem;text-decoration:none}
+.brand span{color:var(--accent)}
+nav .btn{padding:10px 18px;font-size:.9rem}
+/* hero */
+.hero{background:var(--ink);color:#fff;padding:96px 0 0;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 460px at 82% 6%,rgba(255,122,0,.18),transparent 60%);pointer-events:none}
+.hero>.wrap{position:relative;display:grid;grid-template-columns:1.35fr .65fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem);margin:20px 0 24px}
+.hero .sub{font-size:1.14rem;color:var(--muted-light);max-width:44ch;margin-bottom:32px}
+.hero .micro{color:#9a9a9a}
+.portrait{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r);border:1px solid #333}
+.proof{position:relative;margin-top:72px;border-top:1px solid #333;background:var(--ink-2)}
+.proof ul{list-style:none;display:grid;grid-template-columns:repeat(4,1fr)}
+.proof li{padding:26px 24px;border-right:1px solid #333}
+.proof li:last-child{border-right:0}
+.proof b{display:block;font-size:1.7rem;letter-spacing:-0.02em;line-height:1.1;white-space:nowrap}
+.proof s{font-size:.95rem;font-weight:500;color:#8a8a8a;text-decoration-color:var(--accent);text-decoration-thickness:2px;margin-right:6px}
+.proof p{font-size:.84rem;color:var(--muted-light);margin-top:8px}
+.proof .src{font-size:.74rem;color:#8a8a8a;padding:0 24px 18px}
+/* blocks */
+.block{padding:96px 0}
+.block.alt{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.block h2{font-size:clamp(1.8rem,3.6vw,2.6rem);margin:14px 0 18px;max-width:24ch}
+.lead{font-size:1.1rem;color:#444;max-width:62ch}
+.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.pain{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:16px}
+.pain q{font-style:italic;color:var(--muted-dark);quotes:"«&nbsp;" "&nbsp;»"}
+.pain .arrow{color:var(--accent);font-weight:700}
+.pain h3{font-size:1.15rem;line-height:1.3}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:36px;align-items:start}
+.story .prose p{margin-bottom:16px;font-size:1.04rem;color:#333}
+.ba{width:100%;border-collapse:collapse;font-size:.94rem}
+.ba th,.ba td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.ba thead th{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-dark)}
+.ba td.before{color:var(--muted-dark)}
+.ba td.after{font-weight:600}
+.more{display:inline-block;margin-top:20px;font-weight:700;color:var(--accent);text-decoration:none}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.step{border:1px solid var(--line);border-radius:var(--r);padding:28px;background:#fff}
+.step .k{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.step h3{font-size:1.15rem;margin:12px 0 10px;line-height:1.3}
+.step p{font-size:.95rem;color:#444}
+.step .fine{font-size:.82rem;color:var(--muted-dark);margin-top:12px}
+.guarantee{margin-top:24px;border-left:4px solid var(--accent);background:var(--paper-2);padding:20px 24px;border-radius:0 var(--r) var(--r) 0}
+.guarantee b{display:block;margin-bottom:6px}
+.guarantee em{color:#333}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:36px;align-items:start}
+.why ul{list-style:none;display:flex;flex-direction:column;gap:18px}
+.why li{padding-left:28px;position:relative}
+.why li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+.cmp{width:100%;border-collapse:collapse;font-size:.9rem}
+.cmp th,.cmp td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp thead th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-dark)}
+.cmp td.me,.cmp th.me{background:#FFF4EA;font-weight:600}
+.route{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
+.route a{display:block;border:1px solid var(--line);border-radius:var(--r);padding:24px;text-decoration:none;background:#fff}
+.route a:hover{border-color:var(--accent)}
+.route b{display:block;font-size:1.08rem;margin-bottom:6px}
+.route span{color:var(--accent);font-weight:700}
+.faq{margin-top:32px;max-width:780px}
+.faq details{border-bottom:1px solid var(--line);padding:20px 0}
+.faq summary{font-weight:700;cursor:pointer;font-size:1.05rem;list-style:none}
+.faq summary::before{content:"+ ";color:var(--accent)}
+.faq details[open] summary::before{content:"− "}
+.faq p{margin-top:12px;color:#444}
+.final{background:var(--ink);color:#fff;text-align:center;padding:96px 0}
+.final h2{font-size:clamp(1.8rem,3.6vw,2.6rem);max-width:22ch;margin:0 auto 18px}
+.final p{color:var(--muted-light);max-width:56ch;margin:0 auto 30px}
+.final .micro{color:#9a9a9a}
+footer{background:var(--ink);color:#9a9a9a;border-top:1px solid #333;padding:28px 0;font-size:.85rem}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{text-decoration:none;margin-left:18px}
+footer a:hover{color:#fff}
+@media (max-width:860px){
+ .wrap{padding:0 16px}
+ .hero{padding-top:56px}
+ .hero>.wrap,.story,.why,.route{grid-template-columns:1fr;gap:32px}
+ .portrait{max-width:220px;aspect-ratio:1/1}
+ .proof{margin-top:48px}
+ .proof ul{grid-template-columns:1fr 1fr}
+ .proof li{border-bottom:1px solid #333}
+ .proof li:nth-child(2n){border-right:0}
+ .pains,.steps{grid-template-columns:1fr}
+ .block{padding:64px 0}
+ .btn{white-space:normal;text-align:center}
+ nav .btn{white-space:nowrap}
+ .cmp{font-size:.8rem}
+ .cmp th,.cmp td{padding:10px 6px}
+}
+
+.scene{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;margin-top:28px;align-items:start}
+.scene .story-txt p{font-size:1.12rem;color:#333;margin-bottom:16px}
+.signals{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:28px}
+.signals b{display:block;margin-bottom:14px}
+.signals ul{list-style:none;display:flex;flex-direction:column;gap:12px}
+.signals li{padding-left:30px;position:relative}
+.signals li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:3px}
+.calc{margin-top:32px;background:var(--ink);color:#fff;border-radius:var(--r);padding:26px 28px;font-size:1.05rem}
+.calc strong{color:var(--accent-2)}
+.offer{display:grid;grid-template-columns:1.15fr .85fr;gap:32px;margin-top:36px;align-items:start}
+.card{border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;background:#fff}
+.card .head{background:var(--ink);color:#fff;padding:22px 28px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.card .head b{font-size:1.25rem}
+.card .head .price{font-size:1.6rem;font-weight:700}
+.card .head .price small{font-size:.8rem;font-weight:500;color:var(--muted-light)}
+.stack{list-style:none}
+.stack li{padding:20px 28px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:6px 16px}
+.stack li:last-child{border-bottom:0}
+.stack .tag{grid-column:1/-1;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.stack h3{font-size:1.05rem;line-height:1.3}
+.stack .val{font-weight:700;white-space:nowrap;text-align:right}
+.stack .val.free{color:var(--accent)}
+.stack p{grid-column:1/-1;font-size:.92rem;color:#555}
+.week{list-style:none;display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.week li{position:relative;padding:0 0 22px 24px}
+.week li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.week b{display:block}
+.week span{font-size:.92rem;color:#555}
+.after{margin-top:8px;font-size:.92rem;color:#555}
+.scarce{margin-top:20px;font-weight:600}
+.solo{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:36px}
+.solo div{border:1px solid var(--line);border-radius:var(--r);padding:26px;background:#fff}
+.solo h3{font-size:1.1rem;margin-bottom:8px;line-height:1.3}
+.solo p{font-size:.95rem;color:#444}
+@media (max-width:860px){
+ .scene,.offer,.solo{grid-template-columns:1fr;gap:24px}
+ .stack li,.card .head{padding-left:20px;padding-right:20px}
+}
+</style>
+</head>
+<body>
+  <nav>
+    <div class="wrap">
+      <a href="#" class="brand">Florian Marin<span>.</span></a>
+      <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="nav" target="_blank" rel="noopener">Réserver 20 minutes</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Dirigeants de PME · Automatisation sur mesure</span>
+        <h1>Vos équipes passent des heures à recopier. <span class="gradient">En 7&nbsp;jours, je supprime la tâche qui vous coûte le plus.</span></h1>
+        <p class="sub">Je repère la tâche manuelle la plus coûteuse de votre entreprise et je l'automatise, entre vos logiciels, vos tableurs et vos e-mails. En production en une semaine, à prix fixe. Sur mesure, réalisé par moi.</p>
+        <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="hero" target="_blank" rel="noopener">Réserver 20 minutes</a>
+        <p class="micro">La Semaine Sans Ressaisie · Votre tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</p>
+      </div>
+      <img class="portrait" src="../assets/portrait.jpg" alt="Florian Marin" width="800" height="800" fetchpriority="high">
+    </div>
+    <div class="proof">
+      <div class="wrap"><ul><li><b><s>7 min 30</s><span class="gradient">39&nbsp;s</span></b><p>par vente saisie. Médiane d'octobre, 344 ventes chronométrées.</p></li><li><b>0 tableur</b><p>19 onglets Sheets et 25 CSV du lundi, remplacés.</p></li><li><b>40 agences</b><p>suivies sur un seul écran par le siège.</p></li><li><b>~140 h</b><p>par mois rendues au siège, selon l'équipe.</p></li></ul></div>
+      <div class="wrap"><p class="src">Résultats d'un réseau de 40 agences franchisées, client depuis mai 2026.</p></div>
+    </div>
+  </header>
+
+  <section class="block" id="douleur">
+    <div class="wrap">
+      <span class="eyebrow">Vous vous reconnaissez&nbsp;?</span>
+      <h2>Fin de mois, 18 h.</h2>
+      <div class="scene">
+        <div class="story-txt"><p>Quelqu'un ouvre trois exports, un fichier Excel et sa boîte mail pour reconstituer les chiffres du mois. Ça prend une journée. Personne d'autre ne sait le faire.</p><p>Et quand une erreur passe, personne ne la voit. Chez un de mes clients, c'est ainsi qu'un remboursement de 5 000 € a été payé deux fois sur le même dossier.</p></div>
+        <div class="signals"><b>C'est pour vous si…</b><ul><li>une seule personne sait faire «&nbsp;le fichier&nbsp;», et ses congés posent problème&nbsp;;</li><li>la même information est saisie dans deux logiciels&nbsp;;</li><li>vous attendez le 10 du mois pour connaître vos chiffres&nbsp;;</li><li>des demandes clients se perdent dans une boîte mail, sans suivi.</li></ul></div>
+      </div>
+      <p class="calc">Une journée par mois et 3 heures par semaine de ressaisie, c'est <strong>plus de 200 heures par an</strong>. Sans compter les erreurs qui partent en paiement.</p>
+    </div>
+  </section>
+
+  <section class="block alt" id="offre">
+    <div class="wrap">
+      <span class="eyebrow">L'offre</span>
+      <h2>Votre première automatisation en production en 7&nbsp;jours.</h2>
+      <p class="lead">Une tâche, une semaine, un prix fixe. Vous jugez sur un résultat qui tourne, pas sur une présentation.</p>
+      <div class="offer">
+        <div class="card">
+          <div class="head"><b>La Semaine Sans Ressaisie</b><span class="price"><small>Votre tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</small></span></div>
+          <ul class="stack"><li><span class="tag">Le cœur</span><h3>L'automatisation de la tâche qui vous coûte le plus</h3><span class="val"></span><p>En production entre vos outils actuels&nbsp;: logiciel métier, CRM, Excel, e-mails. Sur mesure, testée sur vos vraies données.</p></li><li><span class="tag">Bonus 1</span><h3>L'audit de vos processus et de vos outils</h3><span class="val free">Offert</span><p>Chaque tâche manuelle repérée et chronométrée, avec l'équipe qui la fait.</p></li><li><span class="tag">Bonus 2</span><h3>La roadmap priorisée</h3><span class="val free">Offert</span><p>Les prochaines automatisations, classées par heures gagnées et par difficulté. Avec l'audit, c'est une mission que je propose aussi seule.</p></li><li><span class="tag">Bonus 3</span><h3>Le transfert de connaissance</h3><span class="val free">Offert</span><p>Documentation et session de passation&nbsp;: votre équipe sait comment ça marche et comment le modifier.</p></li></ul>
+        </div>
+        <div>
+          <ul class="week"><li><b>Lundi · Audit</b><span>Deux heures avec vous et l'équipe, puis l'analyse. Le soir, vous signez le périmètre.</span></li><li><b>Mardi à jeudi · Construction</b><span>Je construis et je teste sur vos vraies données. Vous voyez l'avancement chaque jour.</span></li><li><b>Vendredi · Mise en production</b><span>L'automatisation tourne. Passation à l'équipe, remise de l'audit et de la roadmap.</span></li></ul>
+          <div class="guarantee"><b>La Garantie Vendredi</b><em>«&nbsp;Si l'automatisation n'est pas en production vendredi, selon le périmètre signé lundi, je vous rembourse intégralement.&nbsp;»</em></div>
+          <p class="scarce">Je travaille seul, sans sous-traitant&nbsp;: une semaine, un client. Pour l'instant, c'est ma seule capacité.</p>
+          <p class="after">Et après&nbsp;? Vous avez la roadmap. On la déroule ensemble au mois, ou votre équipe s'en charge. Aucun engagement.</p>
+          <p style="margin-top:20px"><a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="offre" target="_blank" rel="noopener">Réserver 20 minutes</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="cas">
+    <div class="wrap">
+      <span class="eyebrow">Cas client · Réseau de 40 agences</span>
+      <h2>Tout a commencé par <span class="gradient">une seule automatisation.</span></h2>
+      <div class="story">
+        <div class="prose"><p>Un réseau de 40 agences, environ 370 ventes par mois. Le client m'a d'abord confié une seule tâche, au forfait. Puis la suite, flux par flux.</p><p>Chaque vente se saisissait dans Notion en 7 minutes 30. Les primes passaient par des automatisations que personne n'osait toucher, et le siège rapprochait 19 onglets Sheets à la main chaque début de mois.</p><p>Aujourd'hui, une vente se saisit en 39 secondes, et plus personne ne recolle de tableur.</p></div>
+        <div>
+          <table class="ba">
+            <thead><tr><th scope="col">Flux</th><th scope="col">Avant</th><th scope="col">Après</th></tr></thead>
+            <tbody><tr><th scope="row">Saisie d'une vente</th><td class="before">Notion, 7 min 30</td><td class="after">Formulaire dédié, véhicule rempli depuis la plaque&nbsp;: 39&nbsp;s</td></tr><tr><th scope="row">Primes des agences</th><td class="before">Scénarios Make et 19 onglets Sheets rapprochés à la main</td><td class="after">Grand livre par agence, traçable ligne à ligne</td></tr><tr><th scope="row">Campagnes d'appel</th><td class="before">25 CSV importés à la main le lundi</td><td class="after">Listes prêtes à 7 h, dédoublonnées</td></tr><tr><th scope="row">Pilotage du réseau</th><td class="before">Une agence à la fois, dans le logiciel d'agence</td><td class="after">Collecte chaque nuit, les 40 agences sur un écran</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="moi">
+    <div class="wrap">
+      <span class="eyebrow">Pourquoi moi</span>
+      <h2>Pas une agence. Un ingénieur senior, sur votre problème.</h2>
+      <div class="solo"><div><h3>Vous parlez à celui qui construit.</h3><p>Pas de chef de projet, pas de junior, pas de brief qui se perd entre deux personnes.</p></div><div><h3>Sur mesure, pas un template.</h3><p>Je pars de votre façon de travailler. L'outil s'adapte à vos équipes, pas l'inverse.</p></div><div><h3>15 ans à construire des logiciels.</h3><p>Ex-CTO de Tiime, ex-Engineering Manager chez Aircall, passé par Teads.</p></div><div><h3>Tout vous appartient.</h3><p>Code, accès, documentation. Aucune commission d'éditeur&nbsp;: je recommande ce qui sert votre activité.</p></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <div class="wrap">
+      <span class="eyebrow">Questions</span>
+      <h2>Les questions qu'on me pose.</h2>
+      <div class="faq"><details><summary>Nous ne sommes pas une entreprise «&nbsp;tech&nbsp;».</summary><p>C'est justement pour vous. Vous ne changez pas de logiciels&nbsp;: je relie ceux que vous avez, et j'explique tout à votre équipe.</p></details><details><summary>Une semaine à prix fixe, c'est sérieux pour du sur-mesure&nbsp;?</summary><p>C'est un point d'entrée volontairement simple&nbsp;: une tâche, une semaine, un prix fixe. Vous jugez sur un résultat en production avant de décider de la suite.</p></details><details><summary>Une semaine, c'est réaliste&nbsp;?</summary><p>Oui, parce qu'on choisit lundi une tâche qui tient en une semaine. Si la plus coûteuse est trop grosse, je livre une première partie utile et le reste va dans la roadmap.</p></details><details><summary>Qui maintient l'automatisation ensuite&nbsp;?</summary><p>Elle est documentée et lisible, et votre équipe est formée pendant la passation. Si vous préférez, je reste disponible au mois.</p></details></div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <h2>Quelle tâche vos équipes refont-elles chaque semaine&nbsp;?</h2>
+      <p>Racontez-la-moi en 20 minutes. Je vous dis si elle tient en 7&nbsp;jours, et combien d'heures elle vous coûte.</p>
+      <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="final" target="_blank" rel="noopener">Réserver 20 minutes</a>
+      <p class="micro">La Semaine Sans Ressaisie · Votre tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>Florian Marin · Automatisation sur mesure pour PME · Montpellier</span>
+      <span><a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a><a href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="footer" target="_blank" rel="noopener">Réserver 20 minutes</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Umami&nbsp;: clics Calendly, avec la section d'origine (data-loc).
+    (function () {
+      function track(name, props) { if (window.umami) window.umami.track(name, props); }
+      document.querySelectorAll('a[href*="calendly.com"]').forEach(function (a) {
+        a.addEventListener('click', function () { track('Calendly Click', { location: 'v3-' + (a.dataset.loc || 'page') }); });
+      });
+    })();
+  </script>
+</body>
+</html>
