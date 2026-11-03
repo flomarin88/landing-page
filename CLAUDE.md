@@ -22,7 +22,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both.
 - `_versions/`: earlier homepage drafts (v1 réseaux, v2 SaaS, v3 neutral), **local only, never committed** (their comments name a client).
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
-- `_n8n/`: the lead capture workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
+- `_n8n/`: the lead capture workflow and the Calendly → Attio workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
 - `_config.yml`: Jekyll `exclude` list for repo files that must not be served (`CLAUDE.md`, `README.md`, `generate-pdf.mjs`). Add any new internal file there.
 - `assets/`: images, the client-case videos (`cas-client-crm-16x9.mp4` / `-1x1.mp4` + posters), `opengraph.png` (1200×627), `favicon.png`, `logo.png`, `profile.png`.
 
@@ -68,6 +68,14 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 - Payload shape: `{ source, ts, lead: { email, phone?, consent }, hp, elapsed_ms, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
 - Endpoint constants: `LEAD_ENDPOINT` in `sprint/index.html`, `ENDPOINT` in `diagnostic/index.html` and `calculateur/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
 - A new form = add `data-lead="<location>"` on the sprint page, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
+
+## Calendly → Attio (préparation du Chrono)
+
+`_n8n/calendly-attio-workflow.json` (generated, import it in n8n): Calendly trigger (`invitee.created`, `invitee.canceled`) → Prépare le rendez-vous → Attio upsert person (by email) → in parallel: add the Calendly name only if the record has none, and a note (« Chrono réservé / annulé / déplacé », slot in Paris time, form answers, UTM) → for a booking, an Attio task « Préparer le Chrono » 2 h before the slot.
+
+- Source of truth: `_n8n/prepare-booking.js` (filter `KEEP_EVENT` on the Calendly event name, note and task content) and `_n8n/complete-person.js`. `node _n8n/build.mjs` regenerates both workflows and runs the booking test cases (via `build-booking.mjs`).
+- Credentials are referenced in n8n only: Calendly API (personal access token, paid Calendly plan required for webhooks) and the same Attio header auth as the lead workflow.
+- A cancellation does not close the earlier task: the note reminds to close it by hand.
 
 ## External links
 

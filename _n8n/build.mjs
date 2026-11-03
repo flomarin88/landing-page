@@ -189,3 +189,7 @@ out('newsletter, autres tags', sends(news, ['Parent', 'Sport']));
 out('diagnostic, déjà diagnostic', sends(diag, ['Diagnostic CRM 300', 'Newsletter RevOps']));
 out('newsletter, déjà calculateur', sends(news, ['Calculateur Ressaisie']));
 out('calculateur, déjà abonné', sends(calc, ['Newsletter RevOps', 'Calculateur Ressaisie']));
+
+// Workflow Calendly → Attio (fiche, note, tâche de préparation du Chrono).
+console.log('\n---------- Calendly → Attio');
+await import('./build-booking.mjs');
