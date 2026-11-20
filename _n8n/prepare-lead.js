@@ -10,34 +10,19 @@ const CALCULATEUR_URL = SITE + '/calculateur/';
 // skipWelcomeIfTagged : pas de 2e email de bienvenue si la personne a déjà un de ces tags dans Attio.
 // Le diagnostic n'en a pas : son email contient les résultats demandés, il part à chaque diagnostic.
 const FORMS = {
-  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound', skipWelcomeIfTagged: ['Newsletter RevOps', 'Diagnostic CRM 300', 'Calculateur Ressaisie'] },
-  'ton-crm-tient-a-300': { tag: 'Diagnostic CRM 300', source: 'Lead Magnet', skipWelcomeIfTagged: [] },
+  'newsletter': { tag: 'Newsletter RevOps', source: 'Inbound', skipWelcomeIfTagged: ['Newsletter RevOps', 'Diagnostic CRM 300', 'Diagnostic Ressaisie', 'Calculateur Ressaisie'] },
+  'diagnostic-ressaisie': { tag: 'Diagnostic Ressaisie', source: 'Lead Magnet', skipWelcomeIfTagged: [] },
   'calculateur-ressaisie': { tag: 'Calculateur Ressaisie', source: 'Lead Magnet', skipWelcomeIfTagged: [] }
 };
 
 // Anti-bot : champ piège rempli, ou formulaire envoyé moins de 2,5 s après le chargement de la page.
 const MIN_ELAPSED_MS = 2500;
 
-// Copie de diagnostic/index.html (DIMS + tierFor). À garder synchro si le quiz change.
-const GAPS = {
-  truth: ['Source de vérité unique', 'Le CRM devient la référence : fini les Sheets parallèles et les versions qui divergent.'],
-  capture: ['Capture & routing des leads', 'Auto-création + assignation des leads : zéro lead qui tombe entre deux chaises.'],
-  convo: ['Conversation intelligence', 'Logging auto des appels et résumés sur la bonne fiche, sans ressaisie.'],
-  engage: ['Sales engagement synchronisé', 'Synchro bidirectionnelle outreach ↔ CRM : aucune double-saisie, statut toujours juste.'],
-  revenue: ['Revenue & billing dans le CRM', 'Stripe dans le CRM : MRR, paiements et signaux de churn visibles côté commercial.'],
-  alert: ['Alerting & handoffs', "Alertes Slack sur les events qui comptent : l'équipe réagit en minutes, pas en jours."],
-  report: ['Reporting RevOps en live', 'Pipeline & forecast en temps réel, sans un seul export ni retraitement Excel.'],
-  quality: ['Qualité de données', 'Dédup + enrichissement + validation automatisés : on arrête de décider sur des données pourries.'],
-  automation: ["Couche d'automatisation", "Une couche d'orchestration (type n8n) remplace les tâches répétitives par des workflows."],
-  ramp: ['Ramp des nouveaux reps', 'Tooling intégré = nouveaux reps opérationnels en jours, pas en semaines.']
-};
+// Questions, profils et calcul du diagnostic : bloc DIAG de diagnostic/index.html, injecté ici par
+// build.mjs à la place de la ligne ci-dessous (une seule source, rien à garder synchro à la main).
+// @@DIAG@@
 
-function tierFor(pct) {
-  if (pct <= 35) return { name: 'Cassera avant 150', color: '#EF5D6F', desc: 'Ton CRM ne tient déjà plus. Tes équipes compensent à la main, tes données ne sont pas fiables, ton forecast est faux. Plus tu ajoutes de monde, pire ça devient. Tu vas droit dans le mur avant 150 personnes.' };
-  if (pct <= 65) return { name: 'Va fissurer entre 150 et 250', color: '#F1B24A', desc: 'Ça tient encore. Mais les premières fissures sont là : Zaps fragiles, exports manuels, source de vérité dispersée. Tu vas le sentir entre 150 et 250 personnes. Ton forecast va commencer à mentir.' };
-  if (pct <= 85) return { name: "Tient pour l'instant", color: '#FF7A00', desc: 'Bonne base. Tu peux pousser jusqu\'à 250 sans douleur majeure. Au-delà, il te reste des angles morts qui vont coûter cher : qualité de données, automatisation, ramp des nouveaux reps. Optimisable vite.' };
-  return { name: 'Tient à 300 et au-delà', color: '#3CC79A', desc: 'Solide. Ton CRM est un actif qui scale, pas un boulet qui freine. On parle d\'optimisation fine, pas de chantier. Tu peux pousser sans le remplacer.' };
-}
+const TONES = { green: '#3CC79A', amber: '#F1B24A', red: '#EF5D6F' };
 
 const WEEKS = 47;
 const LOADED = 45;
@@ -118,14 +103,14 @@ function newsletterEmail() {
     p('Merci pour ton inscription.') +
     p("Chaque mardi, je t'envoie une idée RevOps tirée de mes chantiers : une intégration, un piège évité, une décision d'archi commerciale. Lisible en 3 minutes.") +
     p("Pour situer d'où je parle : 15 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.") +
-    p("En attendant mardi, tu peux voir où en est ton CRM : 10 questions, un score, et ce que ta stack te coûte en heures perdues.") +
-    button('Faire le diagnostic de mon CRM →', DIAGNOSTIC_URL) +
+    p("En attendant mardi, tu peux faire le diagnostic : 10 questions, ton profil, ce que la ressaisie te coûte et le plan de ta première automatisation.") +
+    button('Faire le diagnostic →', DIAGNOSTIC_URL) +
     p("Et une question pour démarrer : qu'est-ce qui te fait perdre le plus de temps dans ton CRM aujourd'hui ?");
   const text = [
     'Merci pour ton inscription.',
     "Chaque mardi, je t'envoie une idée RevOps tirée de mes chantiers : une intégration, un piège évité, une décision d'archi commerciale. Lisible en 3 minutes.",
     "Pour situer d'où je parle : 15 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.",
-    'En attendant mardi, tu peux voir où en est ton CRM (10 questions) : ' + DIAGNOSTIC_URL,
+    'En attendant mardi, tu peux faire le diagnostic (10 questions, 3 minutes) : ' + DIAGNOSTIC_URL,
     "Et une question pour démarrer : qu'est-ce qui te fait perdre le plus de temps dans ton CRM aujourd'hui ?",
     'Réponds à cet email. Je lis tout.',
     'Florian',
@@ -144,49 +129,84 @@ function newsletterEmail() {
 }
 
 function diagnosticEmail(d) {
-  const gaps = d.gaps.map(([gap, fix]) =>
+  const r = d.r;
+  const label = (k, mt) => `<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim};margin:${mt || '8px'} 0 10px">${k}</div>`;
+  const h3 = (t) => `<div style="font-family:${FONT};font-size:17px;font-weight:700;color:#FFFFFF;margin:24px 0 8px">${t}</div>`;
+  const bars = r.axes.map((a) => {
+    const tag = a.key === r.weakest.key && r.profileKey !== 'solide' ? 'Ton plafond' : a.level.name;
+    return `<tr><td style="padding:0 0 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="font-family:${FONT};font-size:14px;font-weight:700;color:#FFFFFF">${a.label}</td>
+<td align="right" style="font-family:${FONT};font-size:13px;color:${TONES[a.level.tone]};white-space:nowrap">${a.pct} % · ${tag}</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:5px"><tr>
+<td width="${Math.max(a.pct, 3)}%" height="8" bgcolor="${TONES[a.level.tone]}" style="border-radius:4px;font-size:0;line-height:0">&nbsp;</td>
+<td height="8" bgcolor="${C.line}" style="font-size:0;line-height:0">&nbsp;</td></tr></table>
+</td></tr>`;
+  }).join('');
+  const mirrors = r.mirrors.map((m) =>
+    `<tr><td style="padding:0 0 8px;font-family:${FONT};font-size:15px;line-height:1.55;color:#FFFFFF"><span style="color:${TONES.red}">■</span>&nbsp; ${m}</td></tr>`).join('');
+  const prios = r.profile.prios.map((x, i) =>
     `<tr><td style="padding:0 0 14px">
-<div style="font-family:${FONT};font-size:15px;font-weight:700;color:#FFFFFF;margin:0 0 4px"><span style="color:${C.accent}">■</span>&nbsp; ${gap}</div>
-<div style="font-family:${FONT};font-size:14px;line-height:1.55;color:${C.muted}">${fix}</div>
+<div style="font-family:${FONT};font-size:15px;font-weight:700;color:#FFFFFF;margin:0 0 4px"><span style="color:${C.accent}">${i + 1}.</span>&nbsp; ${x.t}</div>
+<div style="font-family:${FONT};font-size:14px;line-height:1.55;color:${C.muted}">${x.d}</div>
 </td></tr>`).join('');
+  const recipeRow = (k, v) => `<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.accent};margin:12px 0 2px">${k}</div>
+<div style="font-family:${FONT};font-size:14px;line-height:1.55;color:${C.muted}">${v}</div>`;
+  const formula = `${r.people} ${r.people > 1 ? 'personnes' : 'personne'} × ${r.hours} h par semaine × ${DIAG.weeks} semaines × ${DIAG.loaded} €/h chargé`;
 
   const body =
-    p("Voici ton diagnostic. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.") +
-    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 24px;border:1px solid ${C.line};border-radius:10px">
-<tr><td style="padding:22px 22px 18px;background:${C.ink};border-radius:10px">
-<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Ton score</div>
-<div style="font-family:${FONT};font-size:44px;font-weight:700;line-height:1.1;color:#FFFFFF;margin:6px 0 4px">${d.score}<span style="font-size:20px;color:${C.dim}">/100</span></div>
-<div style="font-family:${FONT};font-size:17px;font-weight:700;color:${d.tier.color};margin:0 0 10px">${d.tier.name}</div>
-<div style="font-family:${FONT};font-size:14px;line-height:1.6;color:${C.muted}">${d.tier.desc}</div>
+    p(`${d.firstName ? esc(d.firstName) + ', voici' : 'Voici'} ton diagnostic. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.`) +
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 8px;border:1px solid ${C.line};border-radius:10px">
+<tr><td style="padding:22px;background:${C.ink};border-radius:10px">
+<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Ton profil</div>
+<div style="font-family:${FONT};font-size:28px;font-weight:700;line-height:1.2;color:#FFFFFF;margin:6px 0 6px">${r.profile.name}</div>
+<div style="font-family:${FONT};font-size:15px;font-weight:600;color:${C.accent};margin:0 0 18px">${r.profile.ceil}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${bars}</table>
+<div style="font-family:${FONT};font-size:13px;color:${C.muted}">Score global : ${r.score} / 100</div>
 </td></tr></table>` +
-    `<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim};margin:0 0 6px">Ce que ta stack te coûte</div>
-<div style="font-family:${FONT};font-size:30px;font-weight:700;color:${C.accent};margin:0 0 6px">${euro(d.annual)} / an</div>` +
-    p(`${d.reps} commerciaux × ${d.hours} h/sem × ${WEEKS} sem × ${LOADED} €/h chargé. Soit ${euro(d.weekly)} chaque semaine. Hors deals perdus pour cause de données sales ou de relances trop lentes.`, 'font-size:14px') +
-    `<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim};margin:8px 0 14px">Tes 3 chantiers prioritaires</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${gaps}</table>` +
-    p("Ton trou n°1 se bouche souvent en une semaine. C'est La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse. Je travaille seul : une semaine, un client.", 'margin-top:8px') +
-    p("En 20 minutes, je chronomètre la tâche avec toi et je te dis franchement si elle tient en 7 jours.") +
+    h3('Ce qui te plafonne') + p(r.profile.ceilText) +
+    h3('Où tu en es') + `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${mirrors}</table>` +
+    p(`Ton point fort : <strong style="color:${TONES.green}">${r.strongest.label} (${r.strongest.pct} %)</strong>.`, 'font-size:14px') +
+    label('Ce que la ressaisie te coûte', '16px') +
+    `<div style="font-family:${FONT};font-size:30px;font-weight:700;color:${C.accent};margin:0 0 6px">${euro(r.annual)} / an</div>` +
+    p(`${formula}. Soit ${euro(r.weekly)} chaque semaine, sans compter les deals perdus sur des données en retard.`, 'font-size:14px') +
+    h3('Ce que ça te coûte de rester comme ça') + p(r.profile.cost) +
+    p(`<strong style="color:#FFFFFF">Fais le calcul.</strong> ${r.profile.calc}`, `border-left:3px solid ${C.accent};padding-left:14px`) +
+    h3('Tes 3 priorités') + `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${prios}</table>` +
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 24px;border:1px solid ${C.line};border-radius:10px">
+<tr><td style="padding:22px;background:${C.ink};border-radius:10px">
+<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Le plan de ta première automatisation</div>
+<div style="font-family:${FONT};font-size:17px;font-weight:700;color:#FFFFFF;margin:6px 0 4px">${r.recette.name}</div>
+${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.recette.actions)}${recipeRow('Ce que ça supprime', r.recette.removes)}
+</td></tr></table>` +
+    p("Cette automatisation, je peux la mettre en production chez toi en une semaine. C'est La Semaine Sans Ressaisie : la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse. Je travaille seul : une semaine, un client.") +
+    p("En 20 minutes, on chronomètre la tâche ensemble et je te dis franchement si elle tient en 7 jours.") +
     button('Réserver le Chrono 20 minutes →', CALENDLY) +
-    p("Tu recevras aussi ma newsletter, une idée RevOps chaque mardi.", 'font-size:14px');
+    p('Tu recevras aussi ma newsletter, une idée RevOps chaque mardi.', 'font-size:14px');
 
   const text = [
-    "Voici ton diagnostic. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.",
-    `Score : ${d.score}/100 · ${d.tier.name}\n${d.tier.desc}`,
-    `Ce que ta stack te coûte : ${euro(d.annual)} / an (${d.reps} commerciaux × ${d.hours} h/sem × ${WEEKS} sem × ${LOADED} €/h chargé, soit ${euro(d.weekly)} par semaine).`,
-    'Tes 3 chantiers prioritaires :\n' + d.gaps.map(([g, f]) => `- ${g} : ${f}`).join('\n'),
-    "Ton trou n°1 se bouche souvent en une semaine. C'est La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse.",
-    'Réserve le Chrono 20 minutes : je chronomètre la tâche avec toi et je te dis si elle tient en 7 jours. ' + CALENDLY,
+    `${d.firstName ? d.firstName + ', voici' : 'Voici'} ton diagnostic. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.`,
+    `Ton profil : ${r.profile.name}\n${r.profile.ceil}`,
+    r.axes.map((a) => `- ${a.label} : ${a.pct} % (${a.key === r.weakest.key && r.profileKey !== 'solide' ? 'ton plafond' : a.level.name})`).join('\n') + `\nScore global : ${r.score} / 100`,
+    `Ce qui te plafonne\n${r.profile.ceilText}`,
+    'Où tu en es\n' + r.mirrors.map((m) => `- ${m}`).join('\n') + `\nTon point fort : ${r.strongest.label} (${r.strongest.pct} %).`,
+    `Ce que la ressaisie te coûte : ${euro(r.annual)} / an (${formula}, soit ${euro(r.weekly)} par semaine).`,
+    `Ce que ça te coûte de rester comme ça\n${r.profile.cost}\nFais le calcul. ${r.profile.calc}`,
+    'Tes 3 priorités\n' + r.profile.prios.map((x, i) => `${i + 1}. ${x.t} : ${x.d}`).join('\n'),
+    `Le plan de ta première automatisation : ${r.recette.name}\nDéclencheur : ${r.recette.trigger}\nCe qui se passe : ${r.recette.actions}\nCe que ça supprime : ${r.recette.removes}`,
+    "Cette automatisation, je peux la mettre en production chez toi en une semaine. C'est La Semaine Sans Ressaisie : en production le vendredi, ou je te rembourse.",
+    'Réserve le Chrono 20 minutes : ' + CALENDLY,
     'Réponds à cet email. Je lis tout.',
     'Florian',
     '--\nPour ne plus rien recevoir, réponds STOP.'
   ].join('\n\n');
 
   return {
-    subject: `Ton diagnostic CRM : ${d.score}/100, ${d.tier.name.toLowerCase()}`,
+    subject: `Ton diagnostic : ${r.profile.name}`,
     html: layout({
-      preheader: `${d.tier.name} · ${euro(d.annual)} / an perdus · tes 3 chantiers prioritaires`,
-      eyebrow: 'Diagnostic · Ton CRM tient-il à 300 ?',
-      title: 'Ton diagnostic CRM',
+      preheader: `${r.profile.ceil} ${euro(r.annual)} par an en ressaisie, et le plan de ta première automatisation.`,
+      eyebrow: 'Diagnostic · Tes équipes saisissent tout deux fois ?',
+      title: 'Ton diagnostic',
       body
     }),
     text
@@ -250,35 +270,29 @@ if (!form) throw new Error('source inconnue: ' + b.source);
 
 const values = { tags: [form.tag], source: [form.source] };
 
-// Téléphone (diagnostic) : seulement s'il est propre, sinon Attio rejette toute la requête.
-const phone = String(lead.phone || '').replace(/[\s.()-]/g, '');
-if (/^(\+\d{10,15}|0\d{9})$/.test(phone)) {
-  values.phone_numbers = [{ original_phone_number: phone, country_code: 'FR' }];
-}
-
 let mail;
 let note = null;
 
-if (b.source === 'ton-crm-tient-a-300') {
-  const score = int(b.score, 0, 100);
-  const reps = int(b.reps, 1, 1000);
-  const hours = int(b.hours_lost_per_week, 0, 20);
-  const d = {
-    score, reps, hours,
-    tier: tierFor(score),
-    annual: reps * hours * WEEKS * LOADED,
-    weekly: reps * hours * LOADED,
-    gaps: (Array.isArray(b.top_gaps) ? b.top_gaps : []).filter((k) => GAPS[k]).slice(0, 3).map((k) => GAPS[k])
-  };
-  mail = diagnosticEmail(d);
+if (b.source === 'diagnostic-ressaisie') {
+  // Tout est recalculé depuis les réponses brutes (points 0-3 par question, le reste ignoré).
+  const raw = b.answers && typeof b.answers === 'object' ? b.answers : {};
+  const answers = {};
+  DIAG.questions.forEach((q) => { answers[q.id] = diagPts(raw[q.id]); });
+  const r = diagCompute(answers, { people: b.people, hours: b.hours });
+  const size = DIAG.sizes.find((x) => x.id === b.size);
+  const crm = DIAG.crms.find((x) => x.id === b.crm);
+  const firstName = String(lead.first_name || '').trim().replace(/\s+/g, ' ').slice(0, 40);
+  mail = diagnosticEmail({ r, firstName });
   note = {
-    title: `Diagnostic CRM 300 : ${score}/100 (${d.tier.name})`,
+    title: `Diagnostic ressaisie : ${r.profile.name} (${r.score}/100)`,
     content: [
-      `Score : ${score}/100 · ${d.tier.name}`,
-      `Commerciaux : ${reps} · Heures perdues : ${hours} h/sem/personne`,
-      `Coût estimé : ${euro(d.annual)} / an (${euro(d.weekly)} / semaine)`,
-      'Chantiers prioritaires : ' + d.gaps.map(([g]) => g).join(', '),
-      phone ? `Téléphone saisi : ${lead.phone}` : 'Téléphone : non renseigné'
+      `Profil : ${r.profile.name} · score ${r.score}/100`,
+      'Axes : ' + r.axes.map((a) => `${a.label} ${a.pct} %`).join(' · '),
+      `Taille : ${size ? size.label : 'non renseignée'}${size && (size.id === 'lt20' || size.id === 'gt500') ? ' (hors cible 20-500)' : ''} · CRM : ${crm ? crm.label : 'non renseigné'}`,
+      `Ressaisie : ${r.people} pers. × ${r.hours} h/sem = ${euro(r.annual)} / an (${euro(r.weekly)} / semaine)`,
+      'Ses réponses les plus basses :\n' + r.mirrors.map((m) => `- ${m}`).join('\n'),
+      `Première automatisation proposée : ${r.recette.name}`,
+      `Prénom saisi : ${firstName || 'aucun'}`
     ].join('\n')
   };
 } else if (b.source === 'calculateur-ressaisie') {

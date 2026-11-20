@@ -9,6 +9,8 @@
   Commande (depuis la racine, serveur local sur 8765) :
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
       --window-size=1200,627 --virtual-time-budget=4000 --screenshot=assets/opengraph.png "http://localhost:8765/_print/visuels-positionnement.html?v=og"
+  ?v=og-diagnostic → assets/opengraph-diagnostic.png (1200×627, même commande) : partage et Featured LinkedIn du diagnostic.
+  Featured rogne un peu les bords : rien d'important à moins de 48 px du bord.
   Bannière LinkedIn : la photo de profil masque le coin bas gauche, le mobile rogne les côtés : texte à droite du centre.
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +43,43 @@
     .banner p { font-size: 22px; color: var(--muted); margin-top: 22px; font-weight: 500; }
     .banner p b { color: #fff; font-weight: 700; }
     .banner .pill { font-size: 13px; padding: 7px 14px; margin-bottom: 22px; align-self: flex-start; }
-    body.v-og .og, body.v-banner .banner { display: block; }
+    /* Image de partage du diagnostic */
+    .ogd { width: 1200px; height: 627px; display: none; }
+    .ogd::before { background: radial-gradient(620px 420px at 82% 38%, rgba(255,122,0,.26), transparent 65%), radial-gradient(500px 300px at 0% 100%, rgba(255,216,77,.08), transparent 60%); }
+    .ogd .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(700px 500px at 80% 40%, #000, transparent 75%); -webkit-mask-image: radial-gradient(700px 500px at 80% 40%, #000, transparent 75%); }
+    .ogd .in { position: relative; height: 100%; padding: 64px 0 56px 72px; display: flex; }
+    .ogd .left { width: 600px; display: flex; flex-direction: column; }
+    .ogd .pill { font-size: 14px; padding: 8px 16px; align-self: flex-start; }
+    .ogd h1 { font-size: 66px; line-height: 1.04; letter-spacing: -0.03em; font-weight: 800; margin-top: 30px; }
+    .ogd ul { list-style: none; margin-top: 30px; display: grid; gap: 12px; }
+    .ogd li { font-size: 22px; font-weight: 600; color: #E6E6E6; display: flex; gap: 12px; align-items: center; }
+    .ogd li::before { content: ""; width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto; background: var(--gradient); -webkit-mask: radial-gradient(circle, transparent 0 4px, #000 5px); mask: radial-gradient(circle, transparent 0 4px, #000 5px); }
+    .ogd .who { margin-top: auto; display: flex; align-items: center; gap: 16px; }
+    .ogd .who img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+    .ogd .who b { display: block; font-size: 20px; font-weight: 700; }
+    .ogd .who span { font-size: 17px; color: #9a9a9a; }
+    .ogd .who .url { color: var(--accent); font-weight: 700; }
+    .ogd .stage { position: relative; flex: 1; }
+    .ogd .card { position: absolute; width: 420px; border-radius: 20px; background: linear-gradient(160deg, #2c2c2c, #222); border: 1px solid #3a3a3a; box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.03) inset; padding: 28px 30px; }
+    .ogd .back { right: 64px; top: 326px; transform: rotate(3deg); }
+    .ogd .back .blur { filter: blur(5px); opacity: .8; }
+    .ogd .front { right: 104px; top: 10px; transform: rotate(-3deg); z-index: 1; }
+    .ogd .eb { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #8f8f8f; font-weight: 700; }
+    .ogd .pname { font-size: 31px; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
+    .ogd .pceil { font-size: 15px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+    .ogd .bars { margin-top: 18px; display: grid; gap: 10px; }
+    .ogd .bh { display: flex; justify-content: space-between; font-size: 13.5px; font-weight: 700; margin-bottom: 6px; }
+    .ogd .bh span { color: #9a9a9a; font-weight: 600; }
+    .ogd .bh .ceil { color: var(--accent); }
+    .ogd .tr { height: 8px; border-radius: 99px; background: #3a3a3a; overflow: hidden; }
+    .ogd .tr i { display: block; height: 100%; border-radius: 99px; }
+    .ogd .red { background: #EF5D6F; } .ogd .amber { background: #F1B24A; }
+    .ogd .cost { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
+    .ogd .lines { margin-top: 14px; display: grid; gap: 8px; }
+    .ogd .lines i { display: block; height: 10px; border-radius: 99px; background: #3d3d3d; }
+    .ogd .lock { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-4deg); white-space: nowrap; background: var(--ink); border: 1.5px solid var(--accent); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 15px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+    .ogd .lock b { color: var(--accent); }
+    body.v-og .og, body.v-banner .banner, body.v-og-diagnostic .ogd { display: block; }
   </style>
 </head>
 <body>
@@ -58,6 +96,45 @@
       <span class="pill">Équipes revenue · SaaS et tech B2B</span>
       <h1><span class="l">Ton CRM branché sur toute ta stack.</span><span class="l grad">Tes équipes ne saisissent qu'une fois.</span></h1>
       <p><b>Première automatisation en production en 7 jours</b> · florianmarin.me</p>
+    </div>
+  </div>
+  <div class="frame ogd">
+    <div class="grid"></div>
+    <div class="in">
+      <div class="left">
+        <span class="pill">Diagnostic gratuit · 3 minutes</span>
+        <h1>Tes équipes saisissent <span class="grad">tout deux fois&nbsp;?</span></h1>
+        <ul>
+          <li>Ton profil et ce qui te plafonne</li>
+          <li>Ce que la ressaisie te coûte, en euros</li>
+          <li>Le plan de ta première automatisation</li>
+        </ul>
+        <div class="who">
+          <img src="../assets/profile.png" alt="">
+          <div><b>Florian Marin</b><span>ex-CTO, 15 ans de code · <span class="url">florianmarin.me/diagnostic</span></span></div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="card back">
+          <div class="blur">
+            <div class="eb">Ce que la ressaisie te coûte</div>
+            <div class="cost grad">101 520 € / an</div>
+            <div class="lines"><i style="width:88%"></i><i style="width:64%"></i></div>
+          </div>
+          <div class="lock">🔒 Le détail <b>arrive par email</b></div>
+        </div>
+        <div class="card front">
+          <div class="eb">Ton profil</div>
+          <div class="pname">La stack spaghetti</div>
+          <div class="pceil">Tes outils sont reliés par des bouts de ficelle.</div>
+          <div class="bars">
+            <div><div class="bh">Saisie<span>44 %</span></div><div class="tr"><i class="red" style="width:44%"></i></div></div>
+            <div><div class="bh">Flux entre outils<span class="ceil">11 % · Ton plafond</span></div><div class="tr"><i class="red" style="width:11%"></i></div></div>
+            <div><div class="bh">Automatisation<span>67 %</span></div><div class="tr"><i class="amber" style="width:67%"></i></div></div>
+            <div><div class="bh">Adoption du CRM<span>33 %</span></div><div class="tr"><i class="red" style="width:33%"></i></div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <script>

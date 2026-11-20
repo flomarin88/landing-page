@@ -11,15 +11,15 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 ## Files
 
 - `index.html`: the homepage, La Semaine Sans Ressaisie (built from the local draft `_versions/v2-saas.html`). All CSS and JS inlined. Single action: Calendly (Chrono 20 minutes); a « Pas prêt pour un appel ? » section links the calculateur and the diagnostic. No newsletter form. The head comment holds the positioning sentence.
-- `sprint/index.html`: the former landing (Sprint RevOps 6 semaines, ~1.7k lines, newsletter forms). **Not linked** from the homepage or any page: sent directly to clients after a Semaine Sans Ressaisie. Uses absolute `/assets/` paths; Umami locations are prefixed `sprint-`.
+- `sprint/index.html`: the former landing (Sprint RevOps 6 semaines, ~1.7k lines, newsletter forms). **Not linked** from the homepage or any page: sent directly to clients after a Semaine Sans Ressaisie. Uses relative `../assets/` paths; Umami locations are prefixed `sprint-`.
 - `reseaux/index.html`: **en ligne mais liée de nulle part** (décision du 2026-11-01, hors cible du plan GTM). Page dédiée aux têtes de réseau (franchiseurs, groupements multi-sites), offre « livraison 4 semaines → abonnement ». Vouvoiement (dirigeants), une seule action (Calendly, `data-loc="reseaux-*"`), pas de newsletter. Son `<style>` reprend celui de `sprint/index.html` plus un bloc « PAGE RÉSEAUX » en fin : si tu modifies un style partagé, reporte-le. Le commentaire en tête de `<head>` liste ce qui reste à valider avant diffusion.
-- `diagnostic/index.html`: lead magnet quiz "Ton CRM tient-il à 300 ?" (10 questions, score, tier, cost estimate, email gate before results). Tutoiement, SaaS audience; its offer block points to La Semaine Sans Ressaisie (Chrono 20 minutes).
+- `diagnostic/index.html`: lead magnet quiz « Tes équipes saisissent tout deux fois ? » (refonte du 2026-11-20). One question per screen, options shuffled, 10 questions on 4 axes (Saisie, Flux entre outils, Automatisation, Adoption du CRM), then a context screen outside the score (company size, CRM, people × hours of ressaisie). Weakest axis gives one of 4 profiles (Le CRM-tableur, La stack spaghetti, L'Ops fantôme, Le CRM qu'on contourne; « La stack branchée » if every axis is ≥ 85 %). Profile, axes and first automation are shown; the rest (mirror sentences, cost, « Fais le calcul », 3 priorities, automation plan, offer) stays blurred until the gate (prénom + email pro + consent). Questions, profiles and the scoring function live in the `/* DIAG:start */ … /* DIAG:end */` block: keep it ES5 and self-contained, `_n8n/build.mjs` copies it into the n8n workflow.
 - `calculateur/index.html`: lead magnet "Combien te coûte la ressaisie ?" (tutoiement since 2026-11-01, like its email in `prepare-lead.js`). Up to 5 manual tasks → hours and euros lost per year, costliest task highlighted, result shown without a gate; optional email to receive it. `FREQ` and bounds are copied in `_n8n/prepare-lead.js`: change both together.
 - `vcard.html`: digital business card with a QR code to Calendly (QR lib from cdnjs). Links are built from a `CONFIG` object in its script.
 - `menu/index.html`: standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
 - `value-assets/`: internal visual board ("Méthode Stack Possédée") plus `scalezia/` material. Not linked from the site. Exception: `prompt-audit-crm-attio-entreprises.html` is a public lead magnet (prompt to copy, CTA to the Chrono 20 minutes and the calculator).
 - `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
-- `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both.
+- `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both. `?v=og-diagnostic` renders `assets/opengraph-diagnostic.png` (1200×627), the share image of the diagnostic (used as a LinkedIn Featured link): re-render it if the quiz title or profiles change.
 - `_versions/`: earlier homepage drafts (v1 réseaux, v2 SaaS, v3 neutral), **local only, never committed** (their comments name a client).
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
 - `_n8n/`: the lead capture workflow and the Calendly → Attio workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
@@ -42,7 +42,7 @@ Every public page loads `https://cloud.umami.is/script.js` with `data-website-id
 |---|---|---|
 | `Calendly Click` | homepage, sprint (`sprint-` prefix), diagnostic, calculateur, prompt Attio, vcard | `location` |
 | `Newsletter Signup` | sprint (only after the email is saved, `sprint-` prefix) | `location` |
-| `Diagnostic Start` / `Diagnostic Completed` / `Diagnostic Lead` | diagnostic | `tier` on `Diagnostic Lead` |
+| `Diagnostic Start` / `Diagnostic Step` / `Diagnostic Completed` / `Diagnostic Lead` / `Diagnostic Abandon` | diagnostic | `n` on Step, `profil` + `score` on Completed, `profil` + `taille` on Lead, `etape` on Abandon (best effort, sent when the tab is hidden before the email) |
 | `Calculateur Completed` / `Calculateur Lead` / `Calculateur Share` | calculateur | `via` (`copie`, `linkedin`) on `Calculateur Share` |
 | `Prompt Copied` | prompt Attio | `prompt` |
 
@@ -57,15 +57,15 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 | Form | `source` in payload | Attio Tags | Attio Source |
 |---|---|---|---|
 | Sprint page newsletter (`form[data-lead]`, hero + section) | `newsletter` | Newsletter RevOps | Inbound |
-| Diagnostic email gate | `ton-crm-tient-a-300` | Diagnostic CRM 300 | Lead Magnet |
+| Diagnostic email gate | `diagnostic-ressaisie` | Diagnostic Ressaisie | Lead Magnet |
 | Calculateur (optional email) | `calculateur-ressaisie` | Calculateur Ressaisie | Lead Magnet |
 
-- One workflow serves all forms: Webhook → Prepare lead → bot filter (bots get the same `{ ok: true }` and nothing else happens) → Attio upsert (by email) → Attio tags + source → Attio note (diagnostic: score, tier, cost, gaps; calculateur: tasks and hours) → response to the site → first-welcome check → welcome email (SMTP, from `contact@florianmarin.me`).
+- One workflow serves all forms: Webhook → Prepare lead → bot filter (bots get the same `{ ok: true }` and nothing else happens) → Attio upsert (by email) → Attio tags + source → Attio note (diagnostic: profile, axes, size, CRM, cost, lowest answers, proposed automation; calculateur: tasks and hours) → response to the site → first-welcome check → welcome email (SMTP, from `contact@florianmarin.me`).
 - **Anti-bot:** every form has a hidden honeypot `<div class="hp"><input name="website"></div>` and sends `hp` + `elapsed_ms` (time since page load). n8n drops the lead if `hp` is filled, or `elapsed_ms` is missing or under 2.5 s. Keep both on any new form.
-- **No duplicate welcome:** `_n8n/first-welcome-only.js` reads the tags the person already had in Attio. The newsletter welcome is skipped if they already have Newsletter RevOps, Diagnostic CRM 300 or Calculateur Ressaisie; the diagnostic and calculateur emails (they carry the results) are sent every time.
+- **No duplicate welcome:** `_n8n/first-welcome-only.js` reads the tags the person already had in Attio. The newsletter welcome is skipped if they already have Newsletter RevOps, Diagnostic CRM 300 (old quiz), Diagnostic Ressaisie or Calculateur Ressaisie; the diagnostic and calculateur emails (they carry the results) are sent every time.
 - Source of truth is `_n8n/prepare-lead.js` (validation, bot filter, Attio values, both welcome emails in HTML + text) and `_n8n/first-welcome-only.js`. `node _n8n/build.mjs` regenerates `_n8n/lead-capture-workflow.json` (the file to import in n8n), runs the Code node on sample payloads and writes `_n8n/preview-*.html` (gitignored). Never edit the JSON by hand; never put credentials in these files (they are referenced by name in n8n).
-- `prepare-lead.js` copies the diagnostic tiers and gaps from `diagnostic/index.html` (`tierFor`, `DIMS`): change both together.
-- Payload shape: `{ source, ts, lead: { email, phone?, consent }, hp, elapsed_ms, ...extra }`. The tag mapping lives in the n8n workflow, not in the pages.
+- The diagnostic content is not copied: `prepare-lead.js` has a `// @@DIAG@@` line that `build.mjs` replaces with the `DIAG` block of `diagnostic/index.html` (the build fails if either marker is missing). After any change to the quiz, rerun `node _n8n/build.mjs` and re-import the workflow.
+- Payload shape: `{ source, ts, lead: { email, first_name?, consent }, hp, elapsed_ms, ...extra }` (diagnostic extra: `answers` as `{ questionId: points 0-3 }`, `size`, `crm`, `people`, `hours`; n8n recomputes everything from them). The tag mapping lives in the n8n workflow, not in the pages.
 - Endpoint constants: `LEAD_ENDPOINT` in `sprint/index.html`, `ENDPOINT` in `diagnostic/index.html` and `calculateur/index.html`. When empty, the page only `console.log`s the payload (local testing): never deploy with an empty endpoint.
 - A new form = add `data-lead="<location>"` on the sprint page, or reuse the same payload shape elsewhere, then add its `source` to the n8n mapping. Attio rejects Tags/Source values that don't already exist as select options: create them in Attio first.
 
@@ -81,6 +81,10 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 
 - **Calendly**: the booking CTA everywhere is `https://calendly.com/florian-marin/revops-sprint-discovery`. If it changes, update all pages (`grep -rn calendly.com`).
 - **Substack**: still a `YOURSUBSTACK` placeholder in the sprint page footer; the homepage has no Substack link until the URL is known.
+
+## Asset paths
+
+Reference assets with a relative path (`../assets/x.png` from a subfolder, `assets/x.png` from the root) or a full URL (`https://florianmarin.me/assets/x.png`, required for `og:image`), never `/assets/...`. `node _n8n/check-paths.mjs` enforces it on every HTML file and `node _n8n/build.mjs` fails if it doesn't pass.
 
 ## Things not to do
 

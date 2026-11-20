@@ -3,9 +3,24 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkPaths } from './check-paths.mjs';
+
+// Chemins d'assets : relatif ou URL complète, jamais « /assets/… ». Le build échoue sinon.
+const badPaths = checkPaths();
+if (badPaths.length) {
+  console.error('Chemins /assets/ interdits (utiliser ../assets/ ou https://florianmarin.me/assets/) :\n' + badPaths.join('\n'));
+  process.exit(1);
+}
 
 const dir = dirname(fileURLToPath(import.meta.url));
-const code = readFileSync(join(dir, 'prepare-lead.js'), 'utf8');
+// Le bloc DIAG (questions, profils, calcul) vient tel quel de diagnostic/index.html : la page et l'email
+// ne peuvent pas diverger.
+const page = readFileSync(join(dir, '..', 'diagnostic', 'index.html'), 'utf8');
+const diagBlock = page.match(/\/\* DIAG:start[\s\S]*?\/\* DIAG:end \*\//);
+if (!diagBlock) throw new Error('bloc DIAG:start / DIAG:end introuvable dans diagnostic/index.html');
+const source = readFileSync(join(dir, 'prepare-lead.js'), 'utf8');
+if (!source.includes('// @@DIAG@@')) throw new Error('marqueur // @@DIAG@@ absent de prepare-lead.js');
+const code = source.replace('// @@DIAG@@', () => diagBlock[0]);
 const welcomeCode = readFileSync(join(dir, 'first-welcome-only.js'), 'utf8');
 
 const ATTIO_AUTH = { authentication: 'genericCredentialType', genericAuthType: 'httpHeaderAuth' };
@@ -130,8 +145,9 @@ const run = (body) => new Function('$input', code)({ first: () => ({ json: { bod
 const human = { hp: '', elapsed_ms: 9000 };
 const news = run({ ...human, source: 'newsletter', location: 'hero', lead: { email: ' Jane@Scaleup.io ', consent: true } });
 const diag = run({
-  ...human, source: 'ton-crm-tient-a-300', lead: { email: 'cro@scaleup.fr', phone: '06 12 34 56 78', consent: true },
-  score: 42, tier: 'ignored', reps: 12, hours_lost_per_week: 6, top_gaps: ['revenue', 'report', '<script>', 'quality']
+  ...human, source: 'diagnostic-ressaisie', lead: { email: 'cro@scaleup.fr', first_name: ' Julie <b> ', consent: true },
+  answers: { cr: 1, signature: 0, doublon: 2, facturation: 1, outils: 0, casse: 1, forecast: 2, repetitif: 1, usage: 3, onboarding: 2, pirate: 3 },
+  size: '51-150', crm: 'hubspot', people: 12, hours: 4
 });
 writeFileSync(join(dir, 'preview-newsletter.html'), news.mail.html);
 writeFileSync(join(dir, 'preview-diagnostic.html'), diag.mail.html);
@@ -151,12 +167,21 @@ out('newsletter subject', news.mail.subject);
 out('diagnostic values', diag.values);
 out('diagnostic subject', diag.mail.subject);
 out('diagnostic note', diag.note);
-out('html contains <script>', diag.mail.html.includes('<script>'));
+out('html contains raw <b>', diag.mail.html.includes('Julie <b>'));
+const diagOf = (answers, extra = {}) => run({ ...human, source: 'diagnostic-ressaisie', lead: { email: 'a@b.fr' }, answers, ...extra });
+const all = (v) => ({ cr: v, signature: v, doublon: v, facturation: v, outils: v, casse: v, forecast: v, repetitif: v, usage: v, onboarding: v });
+out('tout à 3 → profil', diagOf(all(3)).note.title);
+out('tout à 2 → profil', diagOf(all(2)).note.title);
+out('tout à 0 → profil', diagOf(all(0)).note.title);
+out('auto faible → profil', diagOf({ ...all(3), forecast: 0, repetitif: 1 }).note.title);
+out('adoption faible → profil', diagOf({ ...all(2), usage: 0, onboarding: 1 }).note.title);
+out('réponses pourries', diagOf({ cr: 'abc', signature: 99, doublon: -1 }, { people: -4, hours: 999, size: 'x', crm: '<script>' }).note.content);
+out('sans prénom, gt500', diagOf(all(1), { size: 'gt500', crm: 'aucun' }).mail.html.includes('>Voici ton diagnostic'));
 out('calculateur values', calc.values);
 out('calculateur subject', calc.mail.subject);
 out('calculateur note', calc.note);
 out('calc html has raw <img', calc.mail.html.includes('<img src=x'));
-out('em dashes (—) in emails', /—/.test(news.mail.html + news.mail.text + diag.mail.html + diag.mail.text + calc.mail.html + calc.mail.text));
+out('em dashes (—) in emails', /—|&mdash;/.test(news.mail.html + news.mail.text + diag.mail.html + diag.mail.text + calc.mail.html + calc.mail.text + page));
 for (const bad of [
   { ...human, source: 'newsletter', lead: { email: 'nope' } },
   { ...human, source: 'autre', lead: { email: 'a@b.fr' } },
@@ -165,7 +190,6 @@ for (const bad of [
 ]) {
   try { run(bad); out('SHOULD HAVE FAILED', bad); } catch (e) { out('rejected', e.message); }
 }
-out('low score tier', run({ ...human, source: 'ton-crm-tient-a-300', lead: { email: 'a@b.fr' }, score: 'abc', reps: -3, hours_lost_per_week: 99 }).note.title);
 
 // Anti-bot : chaque cas doit sortir { bot: true } sans rien préparer pour Attio.
 for (const [label, extra] of [
@@ -185,8 +209,9 @@ const sends = (lead, tags) => welcome(lead, tags).length === 1;
 out('newsletter, fiche vierge', sends(news, []));
 out('newsletter, déjà abonné', sends(news, ['Newsletter RevOps']));
 out('newsletter, déjà diagnostic', sends(news, ['Diagnostic CRM 300', 'Parent']));
+out('newsletter, déjà diag ressaisie', sends(news, ['Diagnostic Ressaisie']));
 out('newsletter, autres tags', sends(news, ['Parent', 'Sport']));
-out('diagnostic, déjà diagnostic', sends(diag, ['Diagnostic CRM 300', 'Newsletter RevOps']));
+out('diagnostic, déjà diagnostic', sends(diag, ['Diagnostic Ressaisie', 'Newsletter RevOps']));
 out('newsletter, déjà calculateur', sends(news, ['Calculateur Ressaisie']));
 out('calculateur, déjà abonné', sends(calc, ['Newsletter RevOps', 'Calculateur Ressaisie']));
 
