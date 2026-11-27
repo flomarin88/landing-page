@@ -1,3 +1,4 @@
 .DS_Store
 _n8n/preview-*.html
 .claude/logs/garde.jsonl
+_versions/
