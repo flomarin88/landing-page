@@ -12,6 +12,10 @@
   ?v=og-diagnostic → assets/opengraph-diagnostic.png : partage et Featured LinkedIn du diagnostic. Rendu en 2× (2400×1254) avec
   --force-device-scale-factor=2 en plus (même --window-size=1200,627) : LinkedIn recompresse, en 1× la miniature est floue.
   Après un nouveau rendu, incrémente ?v= sur og:image dans diagnostic/index.html puis repasse l'URL dans le Post Inspector LinkedIn.
+  ?v=calendly → _print/calendly-linkedin.png : visuel LinkedIn (4:5) à poster avec le lien Calendly. Rendu 2× :
+    --force-device-scale-factor=2 --window-size=1080,1350 → 2160×2700.
+  ?v=calendly-featured → _print/calendly-featured.png : même visuel en paysage pour le lien Calendly en Featured LinkedIn
+    (Featured recadre en ~1,91:1, le 4:5 y est coupé). Rendu 2× : --window-size=1200,627 → 2400×1254.
   Featured rogne un peu les bords : rien d'important à moins de 48 px du bord.
   Bannière LinkedIn : la photo de profil masque le coin bas gauche, le mobile rogne les côtés : texte à droite du centre.
   -->
@@ -87,7 +91,56 @@
     .ogd .lines i { display: block; height: 10px; border-radius: 99px; background: #3d3d3d; }
     .ogd .lock { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-4deg); white-space: nowrap; background: var(--ink); border: 1.5px solid var(--accent); color: #fff; border-radius: 999px; padding: 10px 18px; font-size: 15px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
     .ogd .lock b { color: var(--accent); }
-    body.v-og .og, body.v-banner .banner, body.v-og-diagnostic .ogd { display: block; }
+    /* Visuel LinkedIn du rendez-vous (Calendly) */
+    .cal { width: 1080px; height: 1350px; display: none; }
+    .cal::before { background: radial-gradient(760px 520px at 90% 52%, rgba(255,122,0,.22), transparent 65%), radial-gradient(600px 360px at 0% 0%, rgba(255,216,77,.07), transparent 60%); }
+    .cal .in { position: relative; height: 100%; padding: 76px 84px 72px; display: flex; flex-direction: column; }
+    .cal .pill { font-size: 17px; padding: 10px 20px; align-self: flex-start; }
+    .cal h1 { font-size: 72px; line-height: 1.04; letter-spacing: -0.03em; font-weight: 800; margin-top: 32px; }
+    .cal .sub { font-size: 27px; line-height: 1.42; color: var(--muted); font-weight: 500; margin-top: 24px; max-width: 34ch; }
+    .cal .sub b { color: #fff; font-weight: 700; }
+    .cal .sheet { margin-top: 40px; border-radius: 22px; background: linear-gradient(160deg, #2c2c2c, #222); border: 1px solid #3a3a3a; box-shadow: 0 30px 80px rgba(0,0,0,.5); padding: 30px 34px 26px; transform: rotate(-1.5deg); }
+    .cal .sheet .eb { display: flex; justify-content: space-between; font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: #8f8f8f; font-weight: 700; }
+    .cal .sheet .eb span { color: #6f6f6f; }
+    .cal .sheet h2 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 10px; }
+    .cal .task { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0; border-top: 1px solid #383838; font-size: 21px; font-weight: 600; color: #E6E6E6; }
+    .cal .tag { flex: 0 0 auto; font-size: 15px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 6px 14px; }
+    .cal .tag.a { background: var(--gradient); color: var(--ink); }
+    .cal .tag.h { border: 1.5px solid #555; color: #a8a8a8; }
+    .cal .total { margin-top: 12px; padding-top: 14px; border-top: 1px solid #383838; font-size: 22px; font-weight: 700; color: var(--muted); }
+    .cal .total b { font-weight: 800; }
+    .cal .cta { margin-top: auto; padding-top: 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .cal .btn { background: var(--gradient); color: var(--ink); font-size: 28px; font-weight: 800; border-radius: 14px; padding: 22px 30px; white-space: nowrap; }
+    .cal .btn small { display: block; font-size: 17px; font-weight: 700; opacity: .75; margin-top: 2px; }
+    .cal .who { display: flex; align-items: center; gap: 16px; }
+    .cal .who img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+    .cal .who b { display: block; font-size: 22px; font-weight: 700; }
+    .cal .who span { font-size: 18px; color: #9a9a9a; }
+    /* Visuel Calendly, version paysage pour Featured */
+    .calf { width: 1200px; height: 627px; display: none; }
+    .calf::before { background: radial-gradient(620px 420px at 82% 45%, rgba(255,122,0,.24), transparent 65%), radial-gradient(500px 300px at 0% 100%, rgba(255,216,77,.08), transparent 60%); }
+    .calf .in { position: relative; height: 100%; padding: 62px 0 56px 72px; display: flex; }
+    .calf .left { width: 560px; display: flex; flex-direction: column; }
+    .calf .pill { font-size: 14px; padding: 8px 16px; align-self: flex-start; }
+    .calf h1 { font-size: 58px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 800; margin-top: 28px; }
+    .calf .sub { font-size: 21px; line-height: 1.45; color: var(--muted); font-weight: 500; margin-top: 22px; max-width: 30ch; }
+    .calf .sub b { color: #fff; font-weight: 700; }
+    .calf .who { margin-top: auto; display: flex; align-items: center; gap: 16px; }
+    .calf .who img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+    .calf .who b { display: block; font-size: 20px; font-weight: 700; }
+    .calf .who span { font-size: 17px; color: #9a9a9a; }
+    .calf .stage { position: relative; flex: 1; }
+    .calf .sheet { position: absolute; right: 72px; top: 8px; width: 470px; border-radius: 20px; background: linear-gradient(160deg, #2c2c2c, #222); border: 1px solid #3a3a3a; box-shadow: 0 30px 80px rgba(0,0,0,.55); padding: 24px 28px 20px; transform: rotate(-2.5deg); }
+    .calf .eb { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #8f8f8f; font-weight: 700; }
+    .calf .eb span { color: #6f6f6f; }
+    .calf h2 { font-size: 25px; font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 8px; }
+    .calf .task { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-top: 1px solid #383838; font-size: 16.5px; font-weight: 600; color: #E6E6E6; }
+    .calf .tag { flex: 0 0 auto; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; border-radius: 999px; padding: 5px 11px; }
+    .calf .tag.a { background: var(--gradient); color: var(--ink); }
+    .calf .tag.h { border: 1.5px solid #555; color: #a8a8a8; }
+    .calf .total { margin-top: 6px; padding-top: 10px; border-top: 1px solid #383838; font-size: 17px; font-weight: 700; color: var(--muted); }
+    .calf .total b { font-weight: 800; display: inline-block; }
+    body.v-og .og, body.v-banner .banner, body.v-og-diagnostic .ogd, body.v-calendly .cal, body.v-calendly-featured .calf { display: block; }
   </style>
 </head>
 <body>
@@ -146,6 +199,57 @@
             <div><div class="bh">Automatisation<span>67 %</span></div><div class="tr"><i class="amber" style="width:67%"></i></div></div>
             <div><div class="bh">Adoption du CRM<span>33 %</span></div><div class="tr"><i class="red" style="width:33%"></i></div></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="frame cal">
+    <div class="in">
+      <span class="pill">Appel de 20 minutes · gratuit</span>
+      <h1>Avant de recruter ton RevOps, <span class="grad">envoie-moi sa fiche de poste.</span></h1>
+      <p class="sub">On la passe ligne par ligne. Je te dis franchement <b>quelles tâches des agents peuvent reprendre</b>, et lesquelles restent à ton équipe.</p>
+      <div class="sheet">
+        <div class="eb">Fiche de poste<span>Exemple</span></div>
+        <h2>RevOps · Scaleup SaaS</h2>
+        <div class="task">Mettre à jour le CRM après les calls<span class="tag a">Agent</span></div>
+        <div class="task">Rapprocher Stripe et le CRM<span class="tag a">Agent</span></div>
+        <div class="task">Relancer les deals qui dorment<span class="tag a">Agent</span></div>
+        <div class="task">Préparer la revue du lundi<span class="tag a">Agent</span></div>
+        <div class="task">Fixer les règles du forecast<span class="tag h">Humain</span></div>
+        <div class="task">Former les nouveaux commerciaux<span class="tag h">Humain</span></div>
+        <div class="total"><b class="grad" style="display:inline-block">4 tâches sur 6</b> reprises par des agents.</div>
+      </div>
+      <div class="cta">
+        <div class="btn">Envoie-moi ta fiche de poste<small>20 minutes · lien dans le post</small></div>
+        <div class="who">
+          <img src="../assets/profile.png" alt="">
+          <div><b>Florian Marin</b><span>ex-CTO, 15 ans de code</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="frame calf">
+    <div class="in">
+      <div class="left">
+        <span class="pill">Appel de 20 minutes · gratuit</span>
+        <h1>Avant de recruter ton RevOps, <span class="grad">envoie-moi sa fiche de poste.</span></h1>
+        <p class="sub">On la passe ligne par ligne : <b>ce que des agents peuvent reprendre</b>, et ce qui reste à ton équipe.</p>
+        <div class="who">
+          <img src="../assets/profile.png" alt="">
+          <div><b>Florian Marin</b><span>ex-CTO, 15 ans de code</span></div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="sheet">
+          <div class="eb">Fiche de poste<span>Exemple</span></div>
+          <h2>RevOps · Scaleup SaaS</h2>
+          <div class="task">Mettre à jour le CRM après les calls<span class="tag a">Agent</span></div>
+          <div class="task">Rapprocher Stripe et le CRM<span class="tag a">Agent</span></div>
+          <div class="task">Relancer les deals qui dorment<span class="tag a">Agent</span></div>
+          <div class="task">Préparer la revue du lundi<span class="tag a">Agent</span></div>
+          <div class="task">Fixer les règles du forecast<span class="tag h">Humain</span></div>
+          <div class="task">Former les nouveaux commerciaux<span class="tag h">Humain</span></div>
+          <div class="total"><b class="grad">4 tâches sur 6</b> reprises par des agents.</div>
         </div>
       </div>
     </div>
