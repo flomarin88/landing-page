@@ -14,6 +14,10 @@ const SKIP = new Set(['.git', 'node_modules', '_versions', '.claude']);
 const BAD = /=\s*["']\/assets\/|url\(\s*["']?\/assets\//g;
 const UMAMI = /<script[^>]*cloud\.umami\.is\/script\.js[^>]*>/g;
 const PROD_ONLY = 'data-domains="florianmarin.me"';
+// Aucun prix sur le site ni dans les emails (décision du 2026-11-27) : « 2 000 € HT », prix du JSON-LD.
+// Les euros des outils (coût de la ressaisie, €/h) restent permis : ils n'ont pas « HT ».
+const PRICE = /(€|&euro;)(\s|&nbsp;|\u00a0|\u202f)*HT\b|"price"\s*:|priceCurrency/;
+const PRICE_EXTRA = ['llms.txt', '_n8n/prepare-lead.js', '_n8n/prepare-booking.js'];
 
 function htmlFiles(dir) {
   return readdirSync(dir).flatMap((name) => {
@@ -60,6 +64,12 @@ export function checkPaths() {
       }
     });
   }
+  const served = htmlFiles(root).filter((f) => !relative(root, f).split('/').some((part) => part.startsWith('_')));
+  for (const file of served.concat(PRICE_EXTRA.map((p) => join(root, p)))) {
+    readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+      if (PRICE.test(line)) errors.push(`${relative(root, file)}:${i + 1}  prix interdit sur le site (donné en appel) : ${line.trim().slice(0, 100)}`);
+    });
+  }
   return errors.concat(checkSeo(htmlFiles(root)));
 }
 
@@ -69,5 +79,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error(errors.join('\n'));
     process.exit(1);
   }
-  console.log('chemins d\'assets, Umami prod seulement, canonical/noindex/sitemap : OK');
+  console.log('chemins d\'assets, Umami prod seulement, canonical/noindex/sitemap, aucun prix : OK');
 }

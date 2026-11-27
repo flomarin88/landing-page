@@ -68,17 +68,11 @@
         {
           "@type": "Offer",
           "name": "Le Premier Agent",
-          "price": "2000",
-          "priceCurrency": "EUR",
-          "valueAddedTaxIncluded": false,
-          "description": "Un premier agent en production en 7 jours. 2 000 € HT crédités à 100 % sur le Sprint signé sous 30 jours. Garantie Vendredi : pas en production le vendredi, remboursé."
+          "description": "Un premier agent en production en 7 jours, à prix fixe, crédité à 100 % sur le Sprint signé sous 30 jours. Garantie Vendredi : pas en production le vendredi, remboursé."
         },
         {
           "@type": "Offer",
           "name": "Sprint Fiche de Poste",
-          "price": "25000",
-          "priceCurrency": "EUR",
-          "valueAddedTaxIncluded": false,
           "description": "Les tâches de ton futur RevOps reprises par des agents en 6 semaines, à prix fixe, garantie Go-Live."
         }
       ]
@@ -133,8 +127,9 @@
 }
   </script>
   <!--
-  ACCUEIL depuis le 2026-11-25 : Méthode Fiche de Poste. Porte d'entrée « Le Premier Agent » (7 jours, 2 000 € HT crédités à 100 %
-  sur le Sprint signé sous 30 jours, Garantie Vendredi), puis le Sprint Fiche de Poste (6 semaines, 25 000 € HT, garantie Go-Live).
+  ACCUEIL depuis le 2026-11-25 : Méthode Fiche de Poste. Porte d'entrée « Le Premier Agent » (7 jours, crédité à 100 %
+  sur le Sprint signé sous 30 jours, Garantie Vendredi), puis le Sprint Fiche de Poste (6 semaines, garantie Go-Live).
+  Aucun prix affiché sur le site (décision du 2026-11-27) : ils se donnent en appel. node _n8n/check-paths.mjs le vérifie.
   R1 = 20 minutes sur la fiche de poste. Remplace « La Semaine Sans Ressaisie » (2026-11-01 au 2026-11-25).
   Phrase socle, reprise sur LinkedIn, Substack, YouTube et Calendly : « Avant de recruter ton RevOps, donne sa fiche de poste à des agents. »
   Cible : VP Sales et CRO, scaleups SaaS et tech B2B de 50 à 300 personnes, France, Belgique, Suisse romande. Tutoiement.
@@ -363,14 +358,14 @@ footer a:hover{color:#fff}
       <p class="lead">Une tâche, une semaine, un prix fixe crédité sur le Sprint. Tu juges sur un agent qui tourne, pas sur une présentation.</p>
       <div class="offer">
         <div class="card">
-          <div class="head"><b>Le Premier Agent</b><span class="price">2&nbsp;000&nbsp;€ HT <small>crédités à 100&nbsp;% sur le Sprint signé sous 30&nbsp;jours</small></span></div>
+          <div class="head"><b>Le Premier Agent</b><span class="price">Prix fixe <small>crédité à 100&nbsp;% sur le Sprint signé sous 30&nbsp;jours</small></span></div>
           <ul class="stack"><li><span class="tag">Le cœur</span><h3>Un premier agent en production</h3><span class="val"></span><p>La tâche répétitive qui te coûte le plus, reprise par un agent testé sur tes vraies données. Il tourne dans ton CRM et tes outils.</p></li><li><span class="tag">Inclus</span><h3>Ta fiche de poste décortiquée</h3><span class="val free">Inclus</span><p>Chaque tâche Ops chronométrée et marquée agent ou humain. C'est ta mesure de départ.</p></li><li><span class="tag">Inclus</span><h3>Le Sprint chiffré ligne par ligne</h3><span class="val free">Inclus</span><p>Les agents suivants, classés par heures gagnées. Tu connais le contenu et le prix des 6 semaines avant de décider.</p></li><li><span class="tag">Inclus</span><h3>Le transfert de connaissance</h3><span class="val free">Inclus</span><p>Documentation et passation&nbsp;: ton équipe sait comment l'agent marche et comment le modifier.</p></li></ul>
         </div>
         <div>
           <ul class="week"><li><b>Lundi · Décortiquer</b><span>Deux heures avec toi et l'équipe sur la fiche de poste, ou sur le travail Ops actuel. Le soir, tu signes le périmètre de l'agent.</span></li><li><b>Mardi à jeudi · Construction</b><span>Je code et je teste sur tes vraies données. Tu vois l'avancement chaque jour.</span></li><li><b>Vendredi · Mise en production</b><span>L'agent tourne. Passation à l'équipe, remise de la fiche annotée et du Sprint chiffré.</span></li></ul>
           <div class="guarantee"><b>La Garantie Vendredi</b><em>«&nbsp;Si l'agent n'est pas en production vendredi, selon le périmètre signé lundi, je te rembourse intégralement.&nbsp;»</em></div>
           <p class="scarce">Je travaille seul, sans sous-traitant&nbsp;: 2 Premiers Agents par mois au maximum, et un seul Sprint à la fois.</p>
-          <p class="after">Et après&nbsp;? Le Sprint Fiche de Poste&nbsp;: 6 semaines, 8 à 10 agents, 25&nbsp;000&nbsp;€ HT à prix fixe, garantie Go-Live. Les 2&nbsp;000&nbsp;€ du Premier Agent sont déduits si tu signes sous 30&nbsp;jours. Sinon, tu gardes l'agent et la fiche, sans engagement.</p>
+          <p class="after">Et après&nbsp;? Le Sprint Fiche de Poste&nbsp;: 6 semaines, 8 à 10 agents, à prix fixe, garantie Go-Live. Le Premier Agent est déduit à 100&nbsp;% si tu signes sous 30&nbsp;jours. Sinon, tu gardes l'agent et la fiche, sans engagement.</p>
           <p class="after">Inclus dans le Sprint&nbsp;: la fiche annotée, le kit référent (runbook, vidéos, une journée de formation), 30 jours de supervision des agents et, si tu recrutes quand même, la fiche de poste du RevOps qui les pilotera.</p>
           <p style="margin-top:20px"><a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="offre" target="_blank" rel="noopener">Envoie-moi ta fiche de poste</a></p>
         </div>
@@ -427,7 +422,7 @@ footer a:hover{color:#fff}
       <h2>Envoie-moi ta fiche de poste.</h2>
       <p>En 20 minutes, on la regarde ligne par ligne. Je te dis lesquelles de ses tâches des agents peuvent reprendre, et ce qu'elles te coûtent aujourd'hui.</p>
       <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="final" target="_blank" rel="noopener">Réserver 20 minutes</a>
-      <p class="micro">Le Premier Agent · Un agent en production en 7&nbsp;jours · 2&nbsp;000&nbsp;€ HT, crédités sur le Sprint</p>
+      <p class="micro">Le Premier Agent · Un agent en production en 7&nbsp;jours · Crédité sur le Sprint</p>
     </div>
   </section>
 

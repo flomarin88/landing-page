@@ -274,8 +274,8 @@ const OPS = {
   revops: 'Un RevOps ou Sales Ops en poste',
   recrute: 'On recrute un RevOps'
 };
-const OFFER_DIAG = "Tes 3 priorités, c'est l'étape 1 de la Méthode Fiche de Poste. La suite, c'est Le Premier Agent : en 7 jours, je décortique les tâches Ops de ton équipe, je mets un premier agent en production et je chiffre le reste. 2 000 € HT, crédités à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
-const OFFER_CALC = "C'est souvent la première tâche qu'un agent reprend. Le Premier Agent : en 7 jours, je mets en production l'agent qui la supprime, je décortique tes autres tâches Ops et je chiffre la suite. 2 000 € HT, crédités à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
+const OFFER_DIAG = "Tes 3 priorités, c'est l'étape 1 de la Méthode Fiche de Poste. La suite, c'est Le Premier Agent : en 7 jours, je décortique les tâches Ops de ton équipe, je mets un premier agent en production et je chiffre le reste. Prix fixe, crédité à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
+const OFFER_CALC = "C'est souvent la première tâche qu'un agent reprend. Le Premier Agent : en 7 jours, je mets en production l'agent qui la supprime, je décortique tes autres tâches Ops et je chiffre la suite. Prix fixe, crédité à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
 function fteLine(r) {
   const fte = r.people * r.hours / 35;
   if (!(fte > 0)) return '';

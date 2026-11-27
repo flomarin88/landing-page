@@ -6,8 +6,8 @@ Florian Marin a 15 ans d'expérience en développement logiciel : ex-CTO de Tiim
 
 ## Offres
 
-- [Le Premier Agent](https://florianmarin.me/): un premier agent en production en 7 jours. 2 000 € HT, crédités à 100 % sur le Sprint signé sous 30 jours. Garantie Vendredi : si l'agent n'est pas en production le vendredi, selon le périmètre signé le lundi, remboursement intégral.
-- [Sprint Fiche de Poste](https://florianmarin.me/): les tâches du futur RevOps reprises par des agents en 6 semaines, 25 000 € HT à prix fixe, garantie Go-Live, passation et 30 jours de surveillance.
+- [Le Premier Agent](https://florianmarin.me/): un premier agent en production en 7 jours, à prix fixe, crédité à 100 % sur le Sprint signé sous 30 jours. Garantie Vendredi : si l'agent n'est pas en production le vendredi, selon le périmètre signé le lundi, remboursement intégral.
+- [Sprint Fiche de Poste](https://florianmarin.me/): les tâches du futur RevOps reprises par des agents en 6 semaines, à prix fixe, garantie Go-Live, passation et 30 jours de surveillance.
 - [Méthode Fiche de Poste](https://florianmarin.me/value-assets/methode-fiche-de-poste/): la méthode en 4 étapes, de la fiche de poste du RevOps aux agents en production.
 
 ## Outils gratuits

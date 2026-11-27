@@ -33,6 +33,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - **Copy:** raw UTF-8 characters (é, à, ·) are the norm in current pages; older pages use HTML entities. Match the surrounding style. No em dashes (`—`, `&mdash;`) in copy: use a colon, parentheses or two short sentences.
 - **Brand palette is defined as CSS custom properties** at the top of each file's `<style>`. Landing page is dark (`--ink: #1C1C1C`, `--ink-2: #262626`, `--accent: #FF7A00`, `--accent-2: #FFD84D`); menu is light. Reuse the existing variables; don't hardcode colors.
 - **Font is Montserrat** loaded from Google Fonts in every page. Keep the same `display=swap` link.
+- **No prices on the site** (decision of 2026-11-27): the offers say « prix fixe » and « crédité à 100 % sur le Sprint », amounts are given on the call. No price in the JSON-LD `Offer` either, nor in the welcome emails. `node _n8n/check-paths.mjs` fails on « € HT » or a JSON-LD `price` in served pages, `llms.txt` and `_n8n/prepare-*.js`. The euros computed by the diagnostic and the calculateur (cost of ressaisie, €/h) are not prices and stay.
 - **Commit message format**: `feat(<area>): <short note>` where `<area>` is the page or topic (`landing`, `diagnostic`, `vcard`, `menu`, `scalezia`...).
 
 ## Analytics: Umami Cloud
@@ -90,7 +91,7 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 
 - `robots.txt` allows everything, AI assistants named explicitly (GPTBot, ClaudeBot, PerplexityBot, Google-Extended…), and points to `sitemap.xml`. No `Disallow`: pages kept out of search carry `<meta name="robots" content="noindex">` instead (sprint, réseaux, menu, Stack Possédée board, Scalezia, LinkedIn banner, vcard).
 - Indexable pages (homepage, diagnostic, calculateur, method board, prompt Attio, mentions légales) have a `<link rel="canonical">` equal to their `sitemap.xml` entry, plus `og:*` and `twitter:card`. `node _n8n/check-paths.mjs` fails if a served page has neither canonical nor noindex, if canonicals and sitemap differ, or if a JSON-LD block does not parse. A new public page = canonical + sitemap entry; a new internal page = noindex.
-- The homepage carries JSON-LD (`Person`, `ProfessionalService` with both offers and prices, `FAQPage` copied from the visible FAQ): when the FAQ, the offers or the bio change, update it too.
+- The homepage carries JSON-LD (`Person`, `ProfessionalService` with both offers, without prices, `FAQPage` copied from the visible FAQ): when the FAQ, the offers or the bio change, update it too.
 - `llms.txt` summarises the positioning, offers, free tools and contact for AI assistants: keep it in sync with the homepage.
 
 ## External links
