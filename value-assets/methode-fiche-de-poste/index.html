@@ -62,6 +62,15 @@
   .node.start{border-left-color:var(--gray);background:var(--graySoft);}
   .node.agent{border-left-color:var(--heart);}
   .node.quote .t{font-size:17px;font-style:italic;}
+  .node h2.t{margin:4px 0 0;}
+
+  /* En-tête lisible sans JS (titre, intro, liens) : visible en vue d'ensemble */
+  .intro{position:absolute;max-width:640px;}
+  .intro h1{margin:0;font-size:34px;font-weight:800;line-height:1.1;}
+  .intro p{margin:10px 0 0;font-size:15px;line-height:1.45;color:var(--sub);}
+  .intro nav{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;font-weight:700;}
+  .intro nav a{color:var(--blue);text-decoration:none;}
+  .intro nav a:hover{text-decoration:underline;}
 
   .pcard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-top:5px solid var(--blue);border-radius:14px;
     padding:12px 15px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;transition:box-shadow .2s;}
@@ -144,6 +153,13 @@
   <div id="world">
     <svg class="wires" id="wires"></svg>
 
+    <!-- En-tête : H1, intro et liens, lus par les moteurs et les IA (le parcours en étapes est en JS) -->
+    <header class="intro" id="n-intro" style="left:2px;top:0px;width:640px;">
+      <h1>Méthode Fiche de Poste</h1>
+      <p>Avant de recruter ton RevOps, donne sa fiche de poste à des agents. On découpe la fiche ligne par ligne, chaque tâche répétitive devient un agent testé, en production en 6 semaines, puis je pars et tout reste chez toi. Pour les SaaS et sociétés tech B2B de 50 à 300 personnes.</p>
+      <nav aria-label="Liens du site"><a href="../../" target="_top">Le Premier Agent : commencer en 7 jours</a><a href="../../diagnostic/" target="_top">Faire le diagnostic gratuit</a><a href="../../calculateur/" target="_top">Calculer le coût de la ressaisie</a></nav>
+    </header>
+
     <!-- Cadres (principes) -->
     <div class="frame" data-cover="n-e1" style="left:670px;top:398px;width:310px;height:210px;"><span class="tag">Avant tout · Mesurer</span></div>
     <div class="frame" data-cover="n-e2 n-e2b" style="left:1030px;top:388px;width:670px;height:250px;"><span class="tag">PRINCIPE 1 · Une tâche = un agent, testé</span></div>
@@ -176,7 +192,7 @@
         <div><div class="ct">Cas réel · réseau de 40 agences</div><div class="cs">agents en production · mesurés vs baseline</div></div>
       </div>
       <div class="metrics">
-        <div class="m"><b>7 min 30 → 39 s</b><span>saisie d'une vente (médiane, ~370 ventes/mois)</span></div>
+        <div class="m"><b>7 min 30 → 40 s</b><span>saisie d'une vente (médiane, ~370 ventes/mois)</span></div>
         <div class="m"><b>19 onglets → 0</b><span>tableurs rapprochés à la main chaque mois</span></div>
         <div class="m"><b>+7 700 tests</b><span>derrière les agents en production</span></div>
       </div>
@@ -216,7 +232,7 @@
 
     <!-- ÉTAPE 1 · Décortiquer -->
     <div class="node" id="n-e1" style="left:700px;top:450px;width:250px;">
-      <div class="n">Étape 1 · S1</div><div class="t">Décortiquer la fiche de poste</div>
+      <div class="n">Étape 1 · S1</div><h2 class="t">Décortiquer la fiche de poste</h2>
       <div class="s">chaque tâche découpée et chronométrée</div>
     </div>
     <div class="pcard why" id="n-e1-why" style="left:700px;top:600px;width:250px;">
@@ -259,7 +275,7 @@
     <!-- ÉTAPE 2 · Automatiser (le cœur) -->
     <div class="node heart" id="n-e2" style="left:1060px;top:445px;width:250px;">
       <span class="badge">le cœur</span>
-      <div class="n">Étape 2 · S2-S4</div><div class="t">Une tâche = un agent</div>
+      <div class="n">Étape 2 · S2-S4</div><h2 class="t">Une tâche = un agent</h2>
       <div class="s">8 à 10 agents et intégrations autour du CRM</div>
     </div>
     <div class="pcard why" id="n-e2-why" style="left:1060px;top:600px;width:250px;">
@@ -302,7 +318,7 @@
     <!-- ÉTAPE 2 · le mécanisme -->
     <div class="node" id="n-e2b" style="left:1420px;top:445px;width:250px;">
       <span class="badge blue">la différence</span>
-      <div class="n">Étape 2 · le mécanisme</div><div class="t">Construits comme du logiciel</div>
+      <div class="n">Étape 2 · le mécanisme</div><h2 class="t">Construits comme du logiciel</h2>
       <div class="s">pas des workflows bricolés</div>
     </div>
     <div class="pcard why" id="n-e2b-why" style="left:1420px;top:600px;width:250px;">
@@ -344,7 +360,7 @@
 
     <!-- ÉTAPE 3 · Mettre en prod -->
     <div class="node" id="n-e3" style="left:1780px;top:450px;width:250px;">
-      <div class="n">Étape 3 · S5-S6</div><div class="t">Mettre en production</div>
+      <div class="n">Étape 3 · S5-S6</div><h2 class="t">Mettre en production</h2>
       <div class="s">agents en prod · garantie Go-Live</div>
     </div>
     <div class="pcard why" id="n-e3-why" style="left:1780px;top:600px;width:250px;">
@@ -387,7 +403,7 @@
 
     <!-- ÉTAPE 4 · Transmettre et partir -->
     <div class="node" id="n-e4" style="left:2140px;top:450px;width:260px;">
-      <div class="n">Étape 4 · S6 → J+30</div><div class="t">Transmettre et partir</div>
+      <div class="n">Étape 4 · S6 → J+30</div><h2 class="t">Transmettre et partir</h2>
       <div class="s">équipe formée · stack possédée · je pars</div>
     </div>
     <div class="pcard why" id="n-e4-why" style="left:2140px;top:600px;width:260px;">
