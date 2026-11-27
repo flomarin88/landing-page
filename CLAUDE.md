@@ -77,9 +77,13 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 - Credentials are referenced in n8n only: Calendly API (personal access token, paid Calendly plan required for webhooks) and the same Attio header auth as the lead workflow.
 - A cancellation does not close the earlier task: the note reminds to close it by hand.
 
+## Slack notifications
+
+`_n8n/slack-notification-workflow.json` (generated, import it first): sub-workflow « Slack notification », Execute Workflow Trigger with one input `text` (Slack mrkdwn) → Slack post to `#leads` (`SLACK_CHANNEL` in `_n8n/build-slack.mjs`). The lead workflow calls it when `prepare-lead.js` returns a `slack` text (diagnostic only; newsletter and calculateur return `null`), the Calendly workflow calls it for every booking, cancellation and reschedule (`slack` from `prepare-booking.js`). Callers use `slackCall()` from `build-slack.mjs`: fire and forget (`waitForSubWorkflow: false`, `onError: continue`), placed above the other branch so it runs first in v1 order. After import, pick the sub-workflow in each « Slack · notification » node (its id only exists once imported) and the Slack credential on its « Slack » node; the bot must be invited in the channel. Escape `&`, `<`, `>` in any text sent to Slack.
+
 ## Error notifications
 
-`_n8n/error-notifications-workflow.json` (generated, import it in n8n): Error Trigger → Prépare l'alerte → email to `contact@florianmarin.me` (same SMTP credential as the welcome email). Generic: any workflow points to it in its settings (« Error workflow »). It fires only on production executions (not manual test runs) and does not need to be activated. The alert gives workflow, failing node, message, time (Paris), mode, a link to the execution when n8n provides one, and the first 12 lines of the stack. Source of truth: `_n8n/format-error.js`; `node _n8n/build.mjs` regenerates it and runs its test cases (via `build-error.mjs`).
+`_n8n/error-notifications-workflow.json` (generated, import it in n8n): Error Trigger → Prépare l'alerte → in parallel, email to `contact@florianmarin.me` (same SMTP credential as the welcome email) and a Slack post to `#alertes-n8n` (`ALERT_CHANNEL`). The Slack node is direct, not the sub-workflow, so a Slack outage cannot loop alerts, and it has `onError: continue` so the email always leaves. Set « Error workflow » = Error notifications on the lead, Calendly and Slack notification workflows. Generic: any workflow points to it in its settings (« Error workflow »). It fires only on production executions (not manual test runs) and does not need to be activated. The alert gives workflow, failing node, message, time (Paris), mode, a link to the execution when n8n provides one, and the first 12 lines of the stack. Source of truth: `_n8n/format-error.js`; `node _n8n/build.mjs` regenerates it and runs its test cases (via `build-error.mjs`).
 
 ## External links
 

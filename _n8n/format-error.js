@@ -1,5 +1,5 @@
 // n8n Code node « Prépare l'alerte » du workflow « Error notifications » : lit la sortie de l'Error Trigger
-// et prépare un email (sujet, texte, HTML). Générique : il sert à tout workflow qui le déclare comme
+// et prépare un email (sujet, texte, HTML) et un message Slack. Générique : il sert à tout workflow qui le déclare comme
 // « Error workflow » dans ses réglages. Deux formes possibles en entrée :
 // - une exécution qui a échoué : { execution: { id, url, error, lastNodeExecuted, mode, retryOf }, workflow }
 // - le déclencheur lui-même qui a échoué (pas d'exécution) : { trigger: { error, mode }, workflow }
@@ -61,4 +61,14 @@ ${url ? `<a href="${esc(url)}" style="display:inline-block;background:#FF7A00;co
 ${stack ? `<pre style="white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.5;color:#B8B8B8;background:#1C1C1C;border-radius:8px;padding:12px;margin:18px 0 0">${esc(stack)}</pre>` : ''}
 </td></tr></table></body></html>`;
 
-return [{ json: { subject, text, html } }];
+// Version Slack (mrkdwn) : le message, le nœud et le lien suffisent, le détail est dans l'email.
+const sl = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const quote = (v) => '> ' + sl(v).replace(/\n/g, '\n> ');
+const slack = [
+  `:rotating_light: *${sl(wfName)}* : échec sur « ${sl(node)} »`,
+  quote(message),
+  description ? quote(description) : '',
+  url ? `<${url.replace(/[<>|]/g, '')}|Ouvrir l'exécution>` : (trigger ? 'Le déclencheur a échoué, pas d\'exécution.' : ''),
+].filter(Boolean).join('\n');
+
+return [{ json: { subject, text, html, slack } }];

@@ -88,4 +88,19 @@ if (kind === 'created') {
   };
 }
 
-return [{ json: { kind, email, name, company, note, task } }];
+// Texte Slack (mrkdwn) envoyé au sous-workflow « Slack notification ».
+const sl = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const icons = { created: ':calendar:', canceled: ':x:', rescheduled: ':arrows_counterclockwise:' };
+const slackLines = [`${icons[kind]} *${titles[kind]}* : ${sl(who)}`, `${sl(eventName)} · ${sl(slot)}`];
+if (kind === 'created') {
+  if (company) slackLines.push(`Société : ${sl(company)}`);
+  const firstAnswer = (Array.isArray(p.questions_and_answers) ? p.questions_and_answers : []).find((qa) => qa && clean(qa.answer));
+  if (firstAnswer) slackLines.push(`> ${sl(clean(firstAnswer.answer, 300))}`);
+} else if (kind === 'rescheduled') {
+  slackLines.push('Nouveau créneau dans la notification « Chrono réservé » qui suit.');
+} else if (p.cancellation && p.cancellation.reason) {
+  slackLines.push(`Raison : ${sl(clean(p.cancellation.reason, 300))}`);
+}
+const slack = slackLines.join('\n');
+
+return [{ json: { kind, email, name, company, note, task, slack } }];

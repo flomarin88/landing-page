@@ -301,6 +301,9 @@ const values = { tags: [form.tag], source: [form.source] };
 
 let mail;
 let note = null;
+// Texte Slack (mrkdwn) envoyé au sous-workflow « Slack notification ». null = pas de notification.
+let slack = null;
+const sl = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 if (b.source === 'diagnostic-ressaisie') {
   // Tout est recalculé depuis les réponses brutes (points 0-3 par question, le reste ignoré).
@@ -327,6 +330,15 @@ if (b.source === 'diagnostic-ressaisie') {
       `Prénom saisi : ${firstName || 'aucun'}`
     ].join('\n')
   };
+  const target = !!size && !small && size.id !== 'gt500';
+  slack = [
+    `:clipboard: *Diagnostic rempli* : ${sl(firstName ? `${firstName} (${email})` : email)}`,
+    `Profil : ${sl(r.profile.name)} · ${r.score}/100 · axe faible : ${sl(r.axes.reduce((a, x) => (x.pct < a.pct ? x : a), r.axes[0]).label)}`,
+    `Taille : ${sl(size ? size.label : 'non renseignée')}${size ? (target ? ' (cible)' : ' (hors cible)') : ''} · CRM : ${sl(crm ? crm.label : 'non renseigné')}`,
+    `Travail Ops : ${sl(ops || 'non renseigné')}${b.ops === 'recrute' ? ' :fire: recrute un RevOps' : ''}`,
+    `Ressaisie : ${r.people} pers. × ${r.hours} h/sem = ${sl(euro(r.annual))} / an`,
+    `Premier agent : ${sl(r.recette.name)}`
+  ].join('\n');
 } else if (b.source === 'calculateur-ressaisie') {
   const rate = int(b.rate, 15, 200);
   const tasks = (Array.isArray(b.tasks) ? b.tasks : []).slice(0, 5).map((t, i) => {
@@ -354,4 +366,4 @@ if (b.source === 'diagnostic-ressaisie') {
   mail = newsletterEmail();
 }
 
-return [{ json: { bot: false, email, values, note, mail, skipWelcomeIfTagged: form.skipWelcomeIfTagged } }];
+return [{ json: { bot: false, email, values, note, mail, slack, skipWelcomeIfTagged: form.skipWelcomeIfTagged } }];

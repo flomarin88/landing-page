@@ -26,7 +26,7 @@
         0
       ],
       "parameters": {
-        "jsCode": "// n8n Code node « Prépare le rendez-vous » : lit le webhook Calendly (invitee.created ou\n// invitee.canceled) et prépare ce qu'il faut écrire dans Attio : l'email de la personne, son nom,\n// une note (créneau, réponses au formulaire, provenance) et, pour une réservation, une tâche\n// « Préparer le Chrono » avant l'heure du rendez-vous. Zéro item en sortie = événement ignoré.\n\n// Types d'événements Calendly traités, testés sur le nom de l'événement. Les autres sont ignorés.\nconst KEEP_EVENT = /chrono|revops|sprint/i;\n// La tâche de préparation tombe 2 h avant le rendez-vous (ou à l'heure du rendez-vous si on réserve à la dernière minute).\nconst PREP_HOURS_BEFORE = 2;\nconst TZ = 'Europe/Paris';\n// Domaines grand public : pas de « société » à déduire de l'email.\nconst FREE_MAIL = new Set(['gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.fr', 'outlook.com', 'outlook.fr', 'live.fr', 'live.com', 'yahoo.com', 'yahoo.fr', 'icloud.com', 'me.com', 'orange.fr', 'free.fr', 'sfr.fr', 'laposte.net', 'wanadoo.fr', 'proton.me', 'protonmail.com', 'gmx.fr', 'bluewin.ch', 'skynet.be']);\n\nconst clean = (v, max = 500) => String(v == null ? '' : v).replace(/[\\u0000-\\u0008\\u000B-\\u001F\\u007F]/g, '').trim().slice(0, max);\nconst when = (iso) => new Intl.DateTimeFormat('fr-FR', { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(iso));\n\nconst body = $input.first().json;\nconst event = body.event;\nif (event !== 'invitee.created' && event !== 'invitee.canceled') return [];\n\nconst p = body.payload || {};\nconst ev = p.scheduled_event || {};\nconst eventName = clean(ev.name, 120);\nif (!KEEP_EVENT.test(eventName)) return [];\n\nconst email = clean(p.email, 254).toLowerCase();\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) throw new Error('Calendly : email de l\\'invité invalide');\nconst start = new Date(ev.start_time);\nif (isNaN(start)) throw new Error('Calendly : start_time manquant ou invalide');\n\n// Nom : Calendly envoie first_name/last_name si le formulaire les demande, sinon seulement name.\nlet first = clean(p.first_name, 100);\nlet last = clean(p.last_name, 100);\nconst full = clean(p.name, 200) || [first, last].filter(Boolean).join(' ');\nif (!first && !last && full) {\n  const parts = full.split(/\\s+/);\n  first = parts.shift();\n  last = parts.join(' ');\n}\nconst name = full ? { first_name: first, last_name: last, full_name: full } : null;\n\nconst domain = email.split('@')[1];\nconst company = FREE_MAIL.has(domain) ? null : domain;\nconst slot = when(start.toISOString());\nconst who = full ? `${full} <${email}>` : email;\n\nlet kind = 'created';\nif (event === 'invitee.canceled') kind = p.rescheduled ? 'rescheduled' : 'canceled';\n\nconst lines = [];\nif (kind === 'created') {\n  lines.push(`${eventName} · ${slot} (heure de Paris)`);\n  lines.push(`Invité : ${who}`);\n  if (company) lines.push(`Société (domaine de l'email) : ${company}`);\n  const join = ev.location && clean(ev.location.join_url, 300);\n  if (join) lines.push(`Visio : ${join}`);\n  if (p.timezone && p.timezone !== TZ) lines.push(`Fuseau de l'invité : ${clean(p.timezone, 60)}`);\n  const answers = (Array.isArray(p.questions_and_answers) ? p.questions_and_answers : [])\n    .filter((qa) => qa && clean(qa.answer))\n    .map((qa) => `- ${clean(qa.question, 200)} : ${clean(qa.answer, 2000)}`);\n  if (answers.length) lines.push('', 'Réponses au formulaire', ...answers);\n  const t = p.tracking || {};\n  const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']\n    .filter((k) => clean(t[k])).map((k) => `${k}=${clean(t[k], 100)}`);\n  if (utm.length) lines.push('', `Provenance : ${utm.join(' · ')}`);\n  if (p.reschedule_url) lines.push('', `Déplacer : ${clean(p.reschedule_url, 300)}`);\n} else {\n  const c = p.cancellation || {};\n  lines.push(`Créneau ${kind === 'rescheduled' ? 'libéré' : 'annulé'} : ${slot} (heure de Paris)`);\n  lines.push(`Invité : ${who}`);\n  if (kind === 'rescheduled') lines.push('Le nouveau créneau arrive dans une note « Chrono réservé » séparée.');\n  else {\n    if (c.canceled_by) lines.push(`Annulé par : ${clean(c.canceled_by, 200)}`);\n    if (c.reason) lines.push(`Raison : ${clean(c.reason, 1000)}`);\n  }\n  lines.push('', 'Pense à fermer la tâche « Préparer le Chrono » de ce créneau.');\n}\n\nconst titles = { created: 'Chrono réservé', canceled: 'Chrono annulé', rescheduled: 'Chrono déplacé' };\nconst note = { title: `${titles[kind]} · ${slot}`, content: lines.join('\\n') };\n\nlet task = null;\nif (kind === 'created') {\n  const prepAt = new Date(Math.max(start.getTime() - PREP_HOURS_BEFORE * 3600e3, Math.min(Date.now(), start.getTime())));\n  task = {\n    content: `Préparer le Chrono avec ${full || email} (${slot}) : relire la fiche, les signaux, les derniers DM et les comptes rendus, noter 3 questions.`,\n    deadline_at: prepAt.toISOString()\n  };\n}\n\nreturn [{ json: { kind, email, name, company, note, task } }];\n"
+        "jsCode": "// n8n Code node « Prépare le rendez-vous » : lit le webhook Calendly (invitee.created ou\n// invitee.canceled) et prépare ce qu'il faut écrire dans Attio : l'email de la personne, son nom,\n// une note (créneau, réponses au formulaire, provenance) et, pour une réservation, une tâche\n// « Préparer le Chrono » avant l'heure du rendez-vous. Zéro item en sortie = événement ignoré.\n\n// Types d'événements Calendly traités, testés sur le nom de l'événement. Les autres sont ignorés.\nconst KEEP_EVENT = /chrono|revops|sprint/i;\n// La tâche de préparation tombe 2 h avant le rendez-vous (ou à l'heure du rendez-vous si on réserve à la dernière minute).\nconst PREP_HOURS_BEFORE = 2;\nconst TZ = 'Europe/Paris';\n// Domaines grand public : pas de « société » à déduire de l'email.\nconst FREE_MAIL = new Set(['gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.fr', 'outlook.com', 'outlook.fr', 'live.fr', 'live.com', 'yahoo.com', 'yahoo.fr', 'icloud.com', 'me.com', 'orange.fr', 'free.fr', 'sfr.fr', 'laposte.net', 'wanadoo.fr', 'proton.me', 'protonmail.com', 'gmx.fr', 'bluewin.ch', 'skynet.be']);\n\nconst clean = (v, max = 500) => String(v == null ? '' : v).replace(/[\\u0000-\\u0008\\u000B-\\u001F\\u007F]/g, '').trim().slice(0, max);\nconst when = (iso) => new Intl.DateTimeFormat('fr-FR', { timeZone: TZ, weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(iso));\n\nconst body = $input.first().json;\nconst event = body.event;\nif (event !== 'invitee.created' && event !== 'invitee.canceled') return [];\n\nconst p = body.payload || {};\nconst ev = p.scheduled_event || {};\nconst eventName = clean(ev.name, 120);\nif (!KEEP_EVENT.test(eventName)) return [];\n\nconst email = clean(p.email, 254).toLowerCase();\nif (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) throw new Error('Calendly : email de l\\'invité invalide');\nconst start = new Date(ev.start_time);\nif (isNaN(start)) throw new Error('Calendly : start_time manquant ou invalide');\n\n// Nom : Calendly envoie first_name/last_name si le formulaire les demande, sinon seulement name.\nlet first = clean(p.first_name, 100);\nlet last = clean(p.last_name, 100);\nconst full = clean(p.name, 200) || [first, last].filter(Boolean).join(' ');\nif (!first && !last && full) {\n  const parts = full.split(/\\s+/);\n  first = parts.shift();\n  last = parts.join(' ');\n}\nconst name = full ? { first_name: first, last_name: last, full_name: full } : null;\n\nconst domain = email.split('@')[1];\nconst company = FREE_MAIL.has(domain) ? null : domain;\nconst slot = when(start.toISOString());\nconst who = full ? `${full} <${email}>` : email;\n\nlet kind = 'created';\nif (event === 'invitee.canceled') kind = p.rescheduled ? 'rescheduled' : 'canceled';\n\nconst lines = [];\nif (kind === 'created') {\n  lines.push(`${eventName} · ${slot} (heure de Paris)`);\n  lines.push(`Invité : ${who}`);\n  if (company) lines.push(`Société (domaine de l'email) : ${company}`);\n  const join = ev.location && clean(ev.location.join_url, 300);\n  if (join) lines.push(`Visio : ${join}`);\n  if (p.timezone && p.timezone !== TZ) lines.push(`Fuseau de l'invité : ${clean(p.timezone, 60)}`);\n  const answers = (Array.isArray(p.questions_and_answers) ? p.questions_and_answers : [])\n    .filter((qa) => qa && clean(qa.answer))\n    .map((qa) => `- ${clean(qa.question, 200)} : ${clean(qa.answer, 2000)}`);\n  if (answers.length) lines.push('', 'Réponses au formulaire', ...answers);\n  const t = p.tracking || {};\n  const utm = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']\n    .filter((k) => clean(t[k])).map((k) => `${k}=${clean(t[k], 100)}`);\n  if (utm.length) lines.push('', `Provenance : ${utm.join(' · ')}`);\n  if (p.reschedule_url) lines.push('', `Déplacer : ${clean(p.reschedule_url, 300)}`);\n} else {\n  const c = p.cancellation || {};\n  lines.push(`Créneau ${kind === 'rescheduled' ? 'libéré' : 'annulé'} : ${slot} (heure de Paris)`);\n  lines.push(`Invité : ${who}`);\n  if (kind === 'rescheduled') lines.push('Le nouveau créneau arrive dans une note « Chrono réservé » séparée.');\n  else {\n    if (c.canceled_by) lines.push(`Annulé par : ${clean(c.canceled_by, 200)}`);\n    if (c.reason) lines.push(`Raison : ${clean(c.reason, 1000)}`);\n  }\n  lines.push('', 'Pense à fermer la tâche « Préparer le Chrono » de ce créneau.');\n}\n\nconst titles = { created: 'Chrono réservé', canceled: 'Chrono annulé', rescheduled: 'Chrono déplacé' };\nconst note = { title: `${titles[kind]} · ${slot}`, content: lines.join('\\n') };\n\nlet task = null;\nif (kind === 'created') {\n  const prepAt = new Date(Math.max(start.getTime() - PREP_HOURS_BEFORE * 3600e3, Math.min(Date.now(), start.getTime())));\n  task = {\n    content: `Préparer le Chrono avec ${full || email} (${slot}) : relire la fiche, les signaux, les derniers DM et les comptes rendus, noter 3 questions.`,\n    deadline_at: prepAt.toISOString()\n  };\n}\n\n// Texte Slack (mrkdwn) envoyé au sous-workflow « Slack notification ».\nconst sl = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst icons = { created: ':calendar:', canceled: ':x:', rescheduled: ':arrows_counterclockwise:' };\nconst slackLines = [`${icons[kind]} *${titles[kind]}* : ${sl(who)}`, `${sl(eventName)} · ${sl(slot)}`];\nif (kind === 'created') {\n  if (company) slackLines.push(`Société : ${sl(company)}`);\n  const firstAnswer = (Array.isArray(p.questions_and_answers) ? p.questions_and_answers : []).find((qa) => qa && clean(qa.answer));\n  if (firstAnswer) slackLines.push(`> ${sl(clean(firstAnswer.answer, 300))}`);\n} else if (kind === 'rescheduled') {\n  slackLines.push('Nouveau créneau dans la notification « Chrono réservé » qui suit.');\n} else if (p.cancellation && p.cancellation.reason) {\n  slackLines.push(`Raison : ${sl(clean(p.cancellation.reason, 300))}`);\n}\nconst slack = slackLines.join('\\n');\n\nreturn [{ json: { kind, email, name, company, note, task, slack } }];\n"
       }
     },
     {
@@ -149,6 +149,48 @@
         "jsonBody": "={{ JSON.stringify({ data: { content: $('Prépare le rendez-vous').first().json.task.content, format: 'plaintext', deadline_at: $('Prépare le rendez-vous').first().json.task.deadline_at, is_completed: false, linked_records: [{ target_object: 'people', target_record_id: $('Attio · Upsert person').first().json.data.id.record_id }], assignees: [] } }) }}",
         "options": {}
       }
+    },
+    {
+      "name": "Slack · notification",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        -320
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "",
+          "cachedResultName": "Slack notification"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $json.slack }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      }
     }
   ],
   "connections": {
@@ -168,6 +210,11 @@
         [
           {
             "node": "Attio · Upsert person",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Slack · notification",
             "type": "main",
             "index": 0
           }

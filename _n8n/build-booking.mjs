@@ -3,6 +3,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { slackCall } from './build-slack.mjs';
 
 const dir = dirname(fileURLToPath(import.meta.url));
 const code = readFileSync(join(dir, 'prepare-booking.js'), 'utf8');
@@ -53,7 +54,9 @@ const nodes = [
     }
   },
   attio('Attio · Tâche préparer le Chrono', [1100, -80], 'POST', 'https://api.attio.com/v2/tasks',
-    `={{ JSON.stringify({ data: { content: ${PREP}.task.content, format: 'plaintext', deadline_at: ${PREP}.task.deadline_at, is_completed: false, linked_records: [{ target_object: 'people', target_record_id: ${RECORD_ID} }], assignees: [] } }) }}`)
+    `={{ JSON.stringify({ data: { content: ${PREP}.task.content, format: 'plaintext', deadline_at: ${PREP}.task.deadline_at, is_completed: false, linked_records: [{ target_object: 'people', target_record_id: ${RECORD_ID} }], assignees: [] } }) }}`),
+  // Placé au-dessus : en ordre v1, n8n exécute cette branche avant Attio, donc la notif part même si Attio échoue.
+  slackCall('Slack · notification', [440, -320], '$json.slack')
 ];
 
 const link = (to) => ({ node: to, type: 'main', index: 0 });
@@ -62,7 +65,7 @@ const workflow = {
   nodes,
   connections: {
     'Calendly': { main: [[link('Prépare le rendez-vous')]] },
-    'Prépare le rendez-vous': { main: [[link('Attio · Upsert person')]] },
+    'Prépare le rendez-vous': { main: [[link('Attio · Upsert person'), link('Slack · notification')]] },
     'Attio · Upsert person': { main: [[link('Nom à compléter'), link('Attio · Note rendez-vous')]] },
     'Nom à compléter': { main: [[link('Attio · Ajoute le nom')]] },
     'Attio · Note rendez-vous': { main: [[link('Réservation ?')]] },
@@ -128,4 +131,8 @@ for (const bad of [created({ email: 'pas-un-email' }), created({ scheduled_event
 out('nom : fiche vide → ajouté', complete(a, null));
 out('nom : fiche déjà nommée → rien', complete(a, 'Jane Doe (Groovin)').length);
 out('nom : Calendly sans nom → rien', complete({ ...a, name: null }, null).length);
+for (const [label, x] of [['slack réservation', a], ['slack annulation', c], ['slack déplacement', r]]) {
+  console.log(label + '\n' + x.slack.split('\n').map((l) => '    | ' + l).join('\n'));
+}
+out('slack : <email> échappé', a.slack.includes('&lt;jane.doe@scaleup.io&gt;'));
 out('tirets cadratins', /—/.test(JSON.stringify([a, b, c, r])));

@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkPaths } from './check-paths.mjs';
+import { slackCall } from './build-slack.mjs';
 
 // Chemins d'assets : relatif ou URL complète, jamais « /assets/… ». Le build échoue sinon.
 const badPaths = checkPaths();
@@ -117,7 +118,24 @@ const nodes = [
       html: `={{ ${PREP}.mail.html }}`,
       options: { appendAttribution: false, replyTo: 'contact@florianmarin.me' }
     }
-  }
+  },
+  {
+    // Seuls les formulaires qui préparent un texte Slack notifient (aujourd'hui : le diagnostic). Placé au-dessus
+    // de l'email : en ordre v1, cette branche passe avant, la notif part même si l'email échoue.
+    name: 'Notif Slack ?', type: 'n8n-nodes-base.if', typeVersion: 2, position: [1760, -200],
+    parameters: {
+      conditions: {
+        options: { caseSensitive: true, leftValue: '', typeValidation: 'strict' },
+        conditions: [{
+          id: 'has-slack', leftValue: `={{ !!${PREP}.slack }}`, rightValue: true,
+          operator: { type: 'boolean', operation: 'true', singleValue: true }
+        }],
+        combinator: 'and'
+      },
+      options: {}
+    }
+  },
+  slackCall('Slack · notification', [1980, -200], `${PREP}.slack`)
 ];
 
 const link = (to, index = 0) => ({ node: to, type: 'main', index });
@@ -132,7 +150,8 @@ const workflow = {
     'Attio · Tag + source': { main: [[link('Diagnostic ?')]] },
     'Diagnostic ?': { main: [[link('Attio · Note diagnostic')], [link('Réponse au site')]] },
     'Attio · Note diagnostic': { main: [[link('Réponse au site')]] },
-    'Réponse au site': { main: [[link('Premier email seulement')]] },
+    'Réponse au site': { main: [[link('Premier email seulement'), link('Notif Slack ?')]] },
+    'Notif Slack ?': { main: [[link('Slack · notification')], []] },
     'Premier email seulement': { main: [[link('Email de bienvenue')]] }
   },
   settings: { executionOrder: 'v1' }
@@ -181,7 +200,11 @@ out('calculateur values', calc.values);
 out('calculateur subject', calc.mail.subject);
 out('calculateur note', calc.note);
 out('calc html has raw <img', calc.mail.html.includes('<img src=x'));
-out('em dashes (—) in emails', /—|&mdash;/.test(news.mail.html + news.mail.text + diag.mail.html + diag.mail.text + calc.mail.html + calc.mail.text + page));
+console.log('diagnostic slack\n' + diag.slack.split('\n').map((l) => '    | ' + l).join('\n'));
+out('slack : newsletter, calculateur', [news.slack, calc.slack]);
+out('slack : prénom échappé', diag.slack.includes('Julie &lt;b&gt;') && !diag.slack.includes('<b>'));
+out('slack : gt500 hors cible', diagOf(all(1), { size: 'gt500', crm: 'aucun' }).slack.includes('(hors cible)'));
+out('em dashes (—) in emails', /—|&mdash;/.test(diag.slack + news.mail.html + news.mail.text + diag.mail.html + diag.mail.text + calc.mail.html + calc.mail.text + page));
 for (const bad of [
   { ...human, source: 'newsletter', lead: { email: 'nope' } },
   { ...human, source: 'autre', lead: { email: 'a@b.fr' } },

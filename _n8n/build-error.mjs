@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { slackPost, ALERT_CHANNEL } from './build-slack.mjs';
 
 const dir = dirname(fileURLToPath(import.meta.url));
 const code = readFileSync(join(dir, 'format-error.js'), 'utf8');
@@ -32,11 +33,14 @@ const workflow = {
         html: '={{ $json.html }}',
         options: { appendAttribution: false }
       }
-    }
+    },
+    // Slack en direct (pas via le sous-workflow « Slack notification ») : si Slack tombe, pas de boucle
+    // d'alertes, et l'email part quand même (onError).
+    slackPost('Slack alerte', [440, 200], ALERT_CHANNEL, { onError: 'continueRegularOutput' })
   ],
   connections: {
     'Error Trigger': { main: [[{ node: "Prépare l'alerte", type: 'main', index: 0 }]] },
-    "Prépare l'alerte": { main: [[{ node: 'Email alerte', type: 'main', index: 0 }]] }
+    "Prépare l'alerte": { main: [[{ node: 'Email alerte', type: 'main', index: 0 }, { node: 'Slack alerte', type: 'main', index: 0 }]] }
   },
   settings: { executionOrder: 'v1' }
 };
@@ -76,3 +80,7 @@ const empty = run({});
 out('entrée vide : sujet', empty.subject);
 out('url non http ignorée', !run({ execution: { url: 'javascript:alert(1)', error: { message: 'x' } }, workflow: { name: 'W' } }).html.includes('javascript:'));
 out('tirets cadratins', /—|&mdash;/.test(execFail.html + execFail.text + trigFail.text + empty.text + code));
+console.log('slack exécution\n' + execFail.slack.split('\n').map((l) => '    | ' + l).join('\n'));
+out('slack déclencheur', trigFail.slack);
+out('slack : < échappé', execFail.slack.includes('&lt;Ressaisie&gt;'));
+out('slack : url non http absente', !run({ execution: { url: 'javascript:x', error: { message: 'x' } }, workflow: { name: 'W' } }).slack.includes('javascript'));
