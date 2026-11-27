@@ -2,6 +2,7 @@
 // jamais « /assets/... » (cassé dès qu'on ouvre la page en fichier local ou hors racine).
 // Vérifie aussi que le script Umami ne compte que la production (data-domains="florianmarin.me") : sans lui,
 // les pages ouvertes en local (file:///Users/…) ou en preview remontent dans les stats.
+// Et le SEO : canonical ou noindex sur chaque page servie, cohérence avec sitemap.xml, JSON-LD valide.
 // Lancé par build.mjs (le build échoue), ou seul : node _n8n/check-paths.mjs
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -23,6 +24,31 @@ function htmlFiles(dir) {
   });
 }
 
+// SEO : chaque page servie (hors dossiers « _ », non publiés) est soit indexable (canonical + présente dans
+// sitemap.xml), soit en noindex. Le JSON-LD doit parser.
+function checkSeo(files) {
+  const errors = [];
+  const sitemap = new Set([...readFileSync(join(root, 'sitemap.xml'), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+  const canonicals = new Set();
+  for (const file of files) {
+    const rel = relative(root, file);
+    if (rel.split('/').some((part) => part.startsWith('_'))) continue;
+    const html = readFileSync(file, 'utf8');
+    const canonical = (html.match(/<link rel="canonical" href="([^"]+)"/) || [])[1];
+    const noindex = /<meta name="robots" content="[^"]*noindex/.test(html);
+    if (!canonical === !noindex) errors.push(`${rel}  il faut soit <link rel="canonical">, soit <meta name="robots" content="noindex"> (un seul des deux)`);
+    if (canonical) {
+      canonicals.add(canonical);
+      if (!sitemap.has(canonical)) errors.push(`${rel}  canonical ${canonical} absente de sitemap.xml`);
+    }
+    for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { JSON.parse(m[1]); } catch (e) { errors.push(`${rel}  JSON-LD invalide : ${e.message}`); }
+    }
+  }
+  for (const url of sitemap) if (!canonicals.has(url)) errors.push(`sitemap.xml  ${url} ne correspond à aucune page avec cette canonical`);
+  return errors;
+}
+
 export function checkPaths() {
   const errors = [];
   for (const file of htmlFiles(root)) {
@@ -34,7 +60,7 @@ export function checkPaths() {
       }
     });
   }
-  return errors;
+  return errors.concat(checkSeo(htmlFiles(root)));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -43,5 +69,5 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     console.error(errors.join('\n'));
     process.exit(1);
   }
-  console.log('chemins d\'assets et Umami prod seulement : OK');
+  console.log('chemins d\'assets, Umami prod seulement, canonical/noindex/sitemap : OK');
 }

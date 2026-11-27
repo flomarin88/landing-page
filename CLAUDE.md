@@ -85,6 +85,13 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 
 `_n8n/error-notifications-workflow.json` (generated, import it in n8n): Error Trigger → Prépare l'alerte → in parallel, email to `contact@florianmarin.me` (same SMTP credential as the welcome email) and a Slack post to `#alertes-n8n` (`ALERT_CHANNEL`). The Slack node is direct, not the sub-workflow, so a Slack outage cannot loop alerts, and it has `onError: continue` so the email always leaves. Set « Error workflow » = Error notifications on the lead, Calendly and Slack notification workflows. Generic: any workflow points to it in its settings (« Error workflow »). It fires only on production executions (not manual test runs) and does not need to be activated. The alert gives workflow, failing node, message, time (Paris), mode, a link to the execution when n8n provides one, and the first 12 lines of the stack. Source of truth: `_n8n/format-error.js`; `node _n8n/build.mjs` regenerates it and runs its test cases (via `build-error.mjs`).
 
+## SEO and GEO
+
+- `robots.txt` allows everything, AI assistants named explicitly (GPTBot, ClaudeBot, PerplexityBot, Google-Extended…), and points to `sitemap.xml`. No `Disallow`: pages kept out of search carry `<meta name="robots" content="noindex">` instead (sprint, réseaux, menu, Stack Possédée board, Scalezia, LinkedIn banner, vcard).
+- Indexable pages (homepage, diagnostic, calculateur, method board, prompt Attio) have a `<link rel="canonical">` equal to their `sitemap.xml` entry, plus `og:*` and `twitter:card`. `node _n8n/check-paths.mjs` fails if a served page has neither canonical nor noindex, if canonicals and sitemap differ, or if a JSON-LD block does not parse. A new public page = canonical + sitemap entry; a new internal page = noindex.
+- The homepage carries JSON-LD (`Person`, `ProfessionalService` with both offers and prices, `FAQPage` copied from the visible FAQ): when the FAQ, the offers or the bio change, update it too.
+- `llms.txt` summarises the positioning, offers, free tools and contact for AI assistants: keep it in sync with the homepage.
+
 ## External links
 
 - **Calendly**: the booking CTA everywhere is `https://calendly.com/florian-marin/revops-sprint-discovery`. If it changes, update all pages (`grep -rn calendly.com`).

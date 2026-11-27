@@ -1,0 +1,21 @@
+# florianmarin.me : tout est ouvert aux moteurs de recherche et aux assistants IA (référencement SEO et GEO).
+# Les pages à ne pas indexer portent <meta name="robots" content="noindex"> (un Disallow les cacherait au robot,
+# qui ne verrait alors jamais le noindex).
+User-agent: *
+Allow: /
+
+# Assistants IA, autorisés explicitement : ils citent les pages qu'ils peuvent lire.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: MistralAI-User
+Allow: /
+
+Sitemap: https://florianmarin.me/sitemap.xml

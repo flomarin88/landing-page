@@ -1,0 +1,22 @@
+# Florian Marin · Méthode Fiche de Poste
+
+> Consultant RevOps pour les scaleups SaaS et tech B2B de 50 à 300 personnes (France, Belgique, Suisse). Positionnement : avant de recruter ton RevOps, donne sa fiche de poste à des agents. Florian Marin met en production des agents (workflows avec de l'IA quand elle sert) qui reprennent les tâches Ops répétitives : saisie dans le CRM, flux entre outils, relances, reporting.
+
+Florian Marin a 15 ans d'expérience en développement logiciel : ex-CTO de Tiime, ex-Engineering Manager chez Aircall, passé par Teads. Il code lui-même les agents, testés et documentés, qui appartiennent au client.
+
+## Offres
+
+- [Le Premier Agent](https://florianmarin.me/): un premier agent en production en 7 jours. 2 000 € HT, crédités à 100 % sur le Sprint signé sous 30 jours. Garantie Vendredi : si l'agent n'est pas en production le vendredi, selon le périmètre signé le lundi, remboursement intégral.
+- [Sprint Fiche de Poste](https://florianmarin.me/): les tâches du futur RevOps reprises par des agents en 6 semaines, 25 000 € HT à prix fixe, garantie Go-Live, passation et 30 jours de surveillance.
+- [Méthode Fiche de Poste](https://florianmarin.me/value-assets/methode-fiche-de-poste/): la méthode en 4 étapes, de la fiche de poste du RevOps aux agents en production.
+
+## Outils gratuits
+
+- [Diagnostic « Tes équipes saisissent tout deux fois ? »](https://florianmarin.me/diagnostic/): 10 questions sur la stack commerciale, un profil, le coût de la ressaisie, 3 priorités et la fiche de poste du premier agent. 3 minutes.
+- [Calculateur « Combien te coûte la ressaisie ? »](https://florianmarin.me/calculateur/): heures et euros perdus par an sur les tâches refaites à la main.
+- [Prompt d'audit CRM Attio](https://florianmarin.me/value-assets/prompt-audit-crm-attio-entreprises.html): un prompt qui audite la qualité des données Entreprises d'Attio en 10 minutes.
+
+## Contact
+
+- [Appel de 20 minutes (Calendly)](https://calendly.com/florian-marin/revops-sprint-discovery)
+- [LinkedIn](https://www.linkedin.com/in/florian-marin/)

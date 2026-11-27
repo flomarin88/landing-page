@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Pages indexables de florianmarin.me. Chaque URL a sa <link rel="canonical"> identique ;
+     node _n8n/check-paths.mjs vérifie la correspondance. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://florianmarin.me/</loc><lastmod>2026-11-27</lastmod></url>
+  <url><loc>https://florianmarin.me/diagnostic/</loc><lastmod>2026-11-27</lastmod></url>
+  <url><loc>https://florianmarin.me/calculateur/</loc><lastmod>2026-11-25</lastmod></url>
+  <url><loc>https://florianmarin.me/value-assets/methode-fiche-de-poste/</loc><lastmod>2026-11-25</lastmod></url>
+  <url><loc>https://florianmarin.me/value-assets/prompt-audit-crm-attio-entreprises.html</loc><lastmod>2026-11-27</lastmod></url>
+</urlset>
