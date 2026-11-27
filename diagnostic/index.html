@@ -170,6 +170,14 @@
   .recipe dl{margin:0;display:grid;gap:12px}
   .recipe dt{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
   .recipe dd{margin:2px 0 0;color:var(--muted);font-size:14.5px}
+  .prompt-card .hint{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+  .prompt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;flex-wrap:wrap}
+  .prompt-head h3{margin:0}
+  .copybtn{appearance:none;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:var(--bg);font-family:inherit;
+    font-weight:700;font-size:13.5px;padding:9px 18px;border-radius:999px;cursor:pointer}
+  .copybtn.done{background:var(--text)}
+  .prompt-text{white-space:pre-wrap;word-wrap:break-word;font-family:inherit;font-size:13px;line-height:1.55;color:var(--muted);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:16px;margin:0;max-height:320px;overflow:auto}
   .final{text-align:center;background:linear-gradient(135deg,#1F1F1F,var(--panel))}
   .final h2{font-size:22px;margin:0 0 8px;font-weight:800}
   .final p{color:var(--muted);font-size:14.5px;margin:0 auto 18px;max-width:50ch;font-weight:500}
@@ -352,6 +360,14 @@
           <div><dt>Ce qu'il supprime</dt><dd id="rRemoves"></dd></div>
         </dl>
       </div>
+      <div class="card full prompt-card">
+        <div class="prompt-head">
+          <h3>Fais écrire sa fiche de poste par ton IA</h3>
+          <button class="copybtn" id="copyPrompt" type="button">Copier le prompt</button>
+        </div>
+        <p class="hint">Colle-le dans ChatGPT ou Claude. Il te pose 5 questions sur tes outils, puis il écrit la fiche complète : données, règles, cas limites, tests. Il est déjà rempli avec tes réponses.</p>
+        <pre class="prompt-text" id="rPrompt"></pre>
+      </div>
       <div class="card final">
         <div id="finalOffer">
           <h2>Tes 3 priorités, c'est l'étape 1 de la Méthode Fiche de Poste.</h2>
@@ -472,7 +488,8 @@ var DIAG = {
         name: "Deal gagné → client et abonnement créés dans la facturation",
         trigger: "Un deal passe en Gagné dans le CRM.",
         actions: "Le client et l'abonnement sont créés dans Stripe (ou ton outil de facturation), le lien de la facture revient sur la fiche, la compta reçoit un message Slack.",
-        removes: "La ressaisie à chaque signature, et les écarts de montant entre le devis et la facture."
+        removes: "La ressaisie à chaque signature, et les écarts de montant entre le devis et la facture.",
+        pieges: ["un deal passé en Gagné puis remis en cours", "un client qui existe déjà dans la facturation", "un montant ou une remise modifiés après la signature", "plusieurs produits ou un engagement annuel dans le même deal", "un contact de facturation absent de la fiche"]
       }
     },
     flux: {
@@ -490,7 +507,8 @@ var DIAG = {
         name: "Facturation synchronisée en continu dans le CRM",
         trigger: "Un paiement, un impayé ou un changement d'abonnement côté facturation.",
         actions: "MRR, statut de paiement et date de renouvellement se mettent à jour sur la fiche entreprise. En cas d'impayé, le commercial du compte est prévenu.",
-        removes: "Les exports CSV, et le Zap que personne n'ose toucher."
+        removes: "Les exports CSV, et le Zap que personne n'ose toucher.",
+        pieges: ["un client de la facturation sans fiche entreprise dans le CRM", "plusieurs abonnements pour la même entreprise", "une devise différente de l'euro", "un remboursement ou un avoir", "le même événement reçu deux fois, ou dans le désordre"]
       }
     },
     auto: {
@@ -508,7 +526,8 @@ var DIAG = {
         name: "Deals qui dorment → alerte au commercial",
         trigger: "Chaque matin, les deals ouverts sans activité depuis 14 jours.",
         actions: "Un message Slack au commercial concerné, avec le lien du deal. Le lundi, un récap au manager.",
-        removes: "La revue de pipe à la main, et les deals oubliés jusqu'au comité."
+        removes: "La revue de pipe à la main, et les deals oubliés jusqu'au comité.",
+        pieges: ["un deal en pause volontaire, avec une date de relance plus tard", "un commercial absent ou parti", "une activité faite hors du CRM (email non synchronisé)", "trop d'alertes le même jour pour la même personne", "un deal sans propriétaire"]
       }
     },
     adoption: {
@@ -526,7 +545,8 @@ var DIAG = {
         name: "L'appel arrive tout seul sur la fiche",
         trigger: "La fin d'un appel (Aircall, Ringover) ou d'une visio.",
         actions: "L'appel, sa durée et son résumé arrivent sur la fiche du contact. La prochaine étape devient une tâche dans le CRM.",
-        removes: "Le compte rendu retapé le soir, et la meilleure excuse pour ne pas ouvrir le CRM."
+        removes: "Le compte rendu retapé le soir, et la meilleure excuse pour ne pas ouvrir le CRM.",
+        pieges: ["un numéro inconnu du CRM", "un appel avec plusieurs participants", "un appel très court ou personnel", "un résumé qui contient une info sensible", "un contact présent en double dans le CRM"]
       }
     },
     solide: {
@@ -594,6 +614,40 @@ function diagCompute(ans, ctx){
     annual: people * hours * DIAG.weeks * DIAG.loaded,
     weekly: people * hours * DIAG.loaded
   };
+}
+// Le prompt qui fait écrire la fiche de poste du premier agent (page et email : même texte).
+// r : résultat de diagCompute. sizeId, crmId : réponses de l'écran contexte (peuvent manquer).
+function diagPrompt(r, sizeId, crmId){
+  function find(list, id){ for (var i = 0; i < list.length; i++){ if (list[i].id === id) return list[i]; } return null; }
+  var size = find(DIAG.sizes, sizeId), crm = find(DIAG.crms, crmId);
+  var crmLine = !crm ? "à préciser" : crm.id === 'aucun' ? "pas encore de vrai CRM (tableur ou outil maison)" : crm.id === 'autre' ? "un CRM que je te préciserai" : crm.label;
+  var t = r.recette;
+  return [
+    "Tu es un consultant RevOps senior. Tu m'aides à écrire la fiche de poste d'un agent qui va reprendre une tâche de mon équipe commerciale. Pas de code : une fiche claire qu'un développeur ou un prestataire pourra construire et tester.",
+    "MON CONTEXTE\n" +
+      "- Taille de l'entreprise : " + (size ? size.label.toLowerCase() + " personnes" : "à préciser") + "\n" +
+      "- CRM : " + crmLine + "\n" +
+      "- " + r.people + (r.people > 1 ? " personnes saisissent" : " personne saisit") + " des données commerciales, environ " + r.hours + " h par semaine et par personne à ressaisir ou recopier\n" +
+      "- Mon diagnostic : « " + r.profile.name + " », axe le plus faible " + r.weakest.label + " (" + r.weakest.pct + " %)",
+    "L'AGENT\n" +
+      "- Nom : " + t.name + "\n" +
+      "- Il se déclenche quand : " + t.trigger + "\n" +
+      "- Ce qu'il fait : " + t.actions + "\n" +
+      "- Ce qu'il supprime : " + t.removes,
+    "AVANT D'ÉCRIRE\nPose-moi tes questions (5 au maximum, numérotées) sur mes outils et sur la façon dont cette tâche est faite aujourd'hui. Attends mes réponses.",
+    "LA FICHE DE POSTE\nEnsuite, rédige la fiche avec ces 10 rubriques :\n" +
+      "1. Mission : en une phrase, ce qu'il fait et pour qui.\n" +
+      "2. Déclencheur : l'événement exact, l'outil d'où il vient, et comment éviter de traiter deux fois le même.\n" +
+      "3. Données lues : pour chacune, l'outil, l'objet et le champ.\n" +
+      "4. Données écrites : pour chacune, l'outil, l'objet, le champ, et s'il crée ou met à jour.\n" +
+      "5. Règles de décision : ce qu'il fait seul, et ce qu'il soumet à un humain avant d'agir.\n" +
+      "6. Cas limites : pour chacun, ce que l'agent doit faire. Pars de ceux-ci et complète : " + t.pieges.join(" ; ") + ".\n" +
+      "7. Accès : les comptes et les droits minimum dans chaque outil.\n" +
+      "8. Tests : 5 scénarios concrets (situation de départ, résultat attendu) à passer avant la mise en production.\n" +
+      "9. Critère de réussite : ce qu'on mesure 30 jours après, et le chiffre de départ à relever cette semaine.\n" +
+      "10. Surveillance : qui est prévenu quand il échoue, et comment.",
+    "RÈGLES\nReste concret et cite les vrais noms de mes outils. Signale ce que tu supposes. Si une info te manque, écris « À confirmer » plutôt que d'inventer."
+  ].join("\n\n");
 }
 /* DIAG:end */
 
@@ -730,6 +784,7 @@ function diagCompute(ans, ctx){
     $('rTrigger').textContent = r.recette.trigger;
     $('rActions').textContent = r.recette.actions;
     $('rRemoves').textContent = r.recette.removes;
+    $('rPrompt').textContent = diagPrompt(r, size, crm);
     $('rWeekly').textContent = euro(r.weekly)+' par semaine';
     var fte = r.people * r.hours / 35;
     var fr1 = new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1});
@@ -784,6 +839,18 @@ function diagCompute(ans, ctx){
     fetch(ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })
       .catch(function(err){ console.warn('[diagnostic] POST failed', err); })
       .finally(reveal);
+  });
+
+  $('copyPrompt').addEventListener('click', function(){
+    var btn = this, text = $('rPrompt').textContent;
+    function ok(){ btn.textContent = 'Copié'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = 'Copier le prompt'; btn.classList.remove('done'); }, 2200); }
+    function fallback(){
+      var range = document.createRange(); range.selectNodeContents($('rPrompt'));
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      try { document.execCommand('copy'); ok(); } catch(e){ btn.textContent = 'Sélectionne puis Cmd+C'; }
+    }
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+    track('Prompt Copied', { prompt: 'diagnostic-' + result.profileKey });
   });
 
   $('book').addEventListener('click', function(){ track('Calendly Click', { location: 'diagnostic' }); });

@@ -180,6 +180,10 @@ function diagnosticEmail(d) {
 <div style="font-family:${FONT};font-size:22px;font-weight:700;color:#FFFFFF;margin:8px 0 6px;line-height:1.25">${r.recette.name}</div>
 ${recipeRow('Il se déclenche quand', r.recette.trigger)}${recipeRow('Ce qu\'il fait', r.recette.actions)}${recipeRow('Ce qu\'il supprime', r.recette.removes)}
 </td></tr></table>` +
+    h3('Fais écrire sa fiche de poste par ton IA') +
+    p("Copie le bloc ci-dessous dans ChatGPT ou Claude. Il te pose 5 questions sur tes outils, puis il écrit la fiche complète : données, règles, cas limites, tests. Il est déjà rempli avec tes réponses.", 'font-size:14px') +
+    `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 24px;border:1px solid ${C.line};border-radius:10px">
+<tr><td style="padding:18px;background:${C.ink2};border-radius:10px;font-family:${FONT};font-size:13px;line-height:1.6;color:${C.muted}">${esc(d.prompt).replace(/\n/g, '<br>')}</td></tr></table>` +
     (d.small
       ? p("Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus. Chaque mardi, la newsletter t'apporte un cas terrain pour avancer.")
       : (d.hiring ? p("Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre.") : '') +
@@ -198,6 +202,7 @@ ${recipeRow('Il se déclenche quand', r.recette.trigger)}${recipeRow('Ce qu\'il 
     `Ce que ça te coûte de rester comme ça\n${r.profile.cost}\nFais le calcul. ${r.profile.calc}`,
     'Tes 3 priorités\n' + r.profile.prios.map((x, i) => `${i + 1}. ${x.t} : ${x.d}`).join('\n'),
     `La fiche de poste de ton premier agent : ${r.recette.name}\nIl se déclenche quand : ${r.recette.trigger}\nCe qu'il fait : ${r.recette.actions}\nCe qu'il supprime : ${r.recette.removes}`,
+    `Fais écrire sa fiche de poste par ton IA : copie ce prompt dans ChatGPT ou Claude, il est déjà rempli avec tes réponses.\n\n${d.prompt}`,
     ...(d.small
       ? ["Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus."]
       : [(d.hiring ? "Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre.\n\n" : '') + OFFER_DIAG,
@@ -308,7 +313,7 @@ if (b.source === 'diagnostic-ressaisie') {
   const firstName = String(lead.first_name || '').trim().replace(/\s+/g, ' ').slice(0, 40);
   const small = !!size && (size.id === 'lt20' || size.id === '20-50');
   const ops = OPS[b.ops];
-  mail = diagnosticEmail({ r, firstName, small, hiring: b.ops === 'recrute' });
+  mail = diagnosticEmail({ r, firstName, small, hiring: b.ops === 'recrute', prompt: diagPrompt(r, b.size, b.crm) });
   note = {
     title: `Diagnostic ressaisie : ${r.profile.name} (${r.score}/100)`,
     content: [
