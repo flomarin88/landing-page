@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Florian Marin · Ton CRM branché sur toute ta stack</title>
+  <title>Florian Marin · Avant de recruter ton RevOps, donne sa fiche de poste à des agents</title>
+  <meta name="description" content="Avant de recruter ton RevOps, donne sa fiche de poste à des agents. Un premier agent en production en 7 jours.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -287,7 +288,7 @@
       <div class="photo" id="photo"><span class="f">F</span><span class="m">M</span></div>
       <div>
         <h1 id="c-name">Florian Marin</h1>
-        <div class="role" id="c-role">CRM et automatisation · équipes revenue</div>
+        <div class="role" id="c-role">Agents RevOps · Scaleups SaaS</div>
       </div>
     </div>
 
@@ -308,8 +309,8 @@
   <script>
     const CONFIG = {
       name: "Florian Marin",
-      role: "CRM et automatisation · équipes revenue",
-      taglineHTML: "Je branche ton CRM sur le reste de ta stack pour que tes équipes <b>ne saisissent qu'une fois</b>. Première automatisation en 7 jours.",
+      role: "Agents RevOps · Scaleups SaaS",
+      taglineHTML: "Avant de recruter ton RevOps, <b>donne sa fiche de poste à des agents</b>. Un premier agent en production en 7 jours.",
       email: "contact@florianmarin.me",
       calendly: "https://calendly.com/florian-marin/revops-sprint-discovery",
       site: "https://florianmarin.me",
@@ -350,7 +351,7 @@
         `<a class="btn ${cls}" href="${href}" target="_blank" rel="noopener">${icon}<span>${label}</span></a>`);
     }
 
-    add('primary', ic.cal, 'Réserver un créneau', CONFIG.calendly);
+    add('primary', ic.cal, 'Envoie-moi ta fiche de poste', CONFIG.calendly);
     A.lastElementChild.addEventListener('click', () => window.umami && umami.track('Calendly Click', { location: 'vcard' }));
     add('ghost', ic.mail, 'Email', 'mailto:' + CONFIG.email);
     if (CONFIG.linkedin && !CONFIG.linkedin.includes('XXXX')) add('ghost', ic.li, 'LinkedIn', CONFIG.linkedin);
@@ -377,7 +378,7 @@
       if (CONFIG.phone && !CONFIG.phone.includes('X')) v.push(`TEL;TYPE=CELL:${CONFIG.phone}`);
       if (CONFIG.site) v.push(`URL:${CONFIG.site}`);
       if (CONFIG.linkedin && !CONFIG.linkedin.includes('XXXX')) v.push(`URL;TYPE=LinkedIn:${CONFIG.linkedin}`);
-      v.push(`NOTE:${CONFIG.taglineHTML.replace(/<[^>]+>/g, '')} · RDV: ${CONFIG.calendly}`);
+      v.push(`NOTE:${CONFIG.taglineHTML.replace(/<[^>]+>/g, '')} · RDV 20 min : ${CONFIG.calendly}`);
       v.push("END:VCARD");
       const blob = new Blob([v.join("\n")], { type: "text/vcard" });
       const a = document.createElement('a');
