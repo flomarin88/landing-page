@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tes équipes saisissent tout deux fois ? Le diagnostic · Florian Marin</title>
-<meta name="description" content="10 questions sur ta stack commerciale : ton profil, ce que la ressaisie te coûte, tes 3 priorités et le plan de ta première automatisation. 3 minutes, gratuit.">
+<meta name="description" content="10 questions sur ta stack commerciale : ton profil, ce que la ressaisie te coûte, tes 3 priorités et la fiche de poste de ton premier agent. 3 minutes, gratuit.">
 <meta property="og:title" content="Tes équipes saisissent tout deux fois ?">
-<meta property="og:description" content="Le diagnostic en 10 questions : ton profil, ce que la ressaisie te coûte et ta première automatisation.">
+<meta property="og:description" content="Le diagnostic en 10 questions : ton profil, ce que la ressaisie te coûte et ton premier agent.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://florianmarin.me/diagnostic/">
 <meta property="og:image" content="https://florianmarin.me/assets/opengraph-diagnostic.png">
@@ -123,8 +123,14 @@
   .profile .p-ceil{font-size:17px;font-weight:600;margin:0 0 18px}
   .profile .meta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:13.5px;margin:0 0 22px}
   .profile .meta b{color:var(--text)}
-  .teaser{border-top:1px solid var(--line);margin-top:22px;padding-top:16px;font-size:14.5px}
-  .teaser b{color:var(--accent)}
+  .agent{position:relative;overflow:hidden;background:linear-gradient(135deg,#2A1A0F,var(--panel) 70%);border-color:#5A2F0A}
+  .agent::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent),var(--accent-2))}
+  .agent .eyebrow{color:var(--accent)}
+  .agent .a-name{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:0 0 14px}
+  .agent .a-trigger{font-size:15px;margin:0;color:var(--muted)}
+  .agent .a-trigger b{color:var(--text)}
+  .agent .a-offer{font-size:14.5px;margin:16px 0 0;padding-top:14px;border-top:1px solid #5A2F0A}
+  .agent .a-offer b{color:var(--accent)}
   .gate{border-color:var(--accent)}
   .gate h2{font-size:21px;margin:0 0 6px;font-weight:800}
   .gate .hint{margin-bottom:18px}
@@ -159,7 +165,8 @@
     justify-content:center;font-weight:800;font-size:13px;color:var(--accent)}
   .prio .t{font-weight:700;font-size:15px;margin-bottom:2px}
   .prio .d{color:var(--muted);font-size:14px}
-  .recipe .r-name{font-size:18px;font-weight:800;margin:0 0 14px}
+  .recipe .r-name{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:0 0 16px}
+  .recipe .eyebrow{color:var(--accent)}
   .recipe dl{margin:0;display:grid;gap:12px}
   .recipe dt{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
   .recipe dd{margin:2px 0 0;color:var(--muted);font-size:14.5px}
@@ -195,7 +202,7 @@
     <ul class="checks">
       <li>Ton profil, et ce qui te plafonne aujourd'hui</li>
       <li>Ce que la ressaisie te coûte, en euros, avec tes chiffres</li>
-      <li>3 priorités avec un premier pas, et le plan de ta première automatisation</li>
+      <li>3 priorités avec un premier pas, et la fiche de poste de ton premier agent</li>
     </ul>
     <button class="cta-btn" id="start">Je fais mon diagnostic →</button>
     <p class="micro">Ton profil s'affiche tout de suite. Le diagnostic complet arrive par email.</p>
@@ -277,12 +284,18 @@
       <p class="p-ceil" id="rCeil"></p>
       <div class="meta"><span>Ton axe le plus faible : <b id="rWeak"></b></span><span>Score global : <b id="rScore"></b></span></div>
       <div class="bars" id="rBars"></div>
-      <div class="teaser">Ta première automatisation : <b id="rRecipeName"></b></div>
+    </div>
+
+    <div class="card agent">
+      <div class="eyebrow">Ton premier agent</div>
+      <div class="a-name grad" id="rRecipeName"></div>
+      <p class="a-trigger"><b>Il se déclenche quand :</b> <span id="rAgentTrigger"></span></p>
+      <p class="a-offer" id="rAgentOffer">C'est ce que je mets en production chez toi en 7 jours avec <b>Le Premier Agent</b>.</p>
     </div>
 
     <div class="card gate" id="gate">
       <h2>Je t'envoie tout par email</h2>
-      <p class="hint">Où tu en es, ce que ça te coûte, tes 3 priorités et le plan de ta première automatisation. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.</p>
+      <p class="hint">Où tu en es, ce que ça te coûte, tes 3 priorités et la fiche de poste de ton premier agent. Garde-le : c'est ta base de comparaison le jour où tu voudras mesurer ce qui a bougé.</p>
       <div class="field" style="margin-bottom:14px">
         <label for="firstName">Ton prénom</label>
         <input type="text" id="firstName" autocomplete="given-name" maxlength="40">
@@ -331,12 +344,12 @@
         <div id="rPrios"></div>
       </div>
       <div class="card full recipe">
-        <div class="eyebrow">Le plan de ta première automatisation</div>
+        <div class="eyebrow">La fiche de poste de ton premier agent</div>
         <div class="r-name" id="rRecipe"></div>
         <dl>
-          <div><dt>Déclencheur</dt><dd id="rTrigger"></dd></div>
-          <div><dt>Ce qui se passe</dt><dd id="rActions"></dd></div>
-          <div><dt>Ce que ça supprime</dt><dd id="rRemoves"></dd></div>
+          <div><dt>Il se déclenche quand</dt><dd id="rTrigger"></dd></div>
+          <div><dt>Ce qu'il fait</dt><dd id="rActions"></dd></div>
+          <div><dt>Ce qu'il supprime</dt><dd id="rRemoves"></dd></div>
         </dl>
       </div>
       <div class="card final">
@@ -700,6 +713,7 @@ function diagCompute(ans, ctx){
         '<div class="track"><div class="fill tone-'+a.level.tone+'" style="width:'+Math.max(a.pct,3)+'%"></div></div></div>';
     }).join('');
     $('rRecipeName').textContent = r.recette.name;
+    $('rAgentTrigger').textContent = r.recette.trigger;
     $('rCeilText').textContent = p.ceilText;
     $('rMirror').innerHTML = '';
     r.mirrors.forEach(function(m){ var li = document.createElement('li'); li.textContent = m; $('rMirror').appendChild(li); });
@@ -725,6 +739,7 @@ function diagCompute(ans, ctx){
     var small = SMALL.indexOf(size) >= 0;
     $('finalOffer').style.display = small ? 'none' : 'block';
     $('finalSmall').style.display = small ? 'block' : 'none';
+    $('rAgentOffer').style.display = small ? 'none' : 'block';
     $('rHiring').textContent = ops === 'recrute' ? "Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre. " : '';
   }
 

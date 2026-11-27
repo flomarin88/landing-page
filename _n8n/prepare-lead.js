@@ -103,7 +103,7 @@ function newsletterEmail() {
     p('Merci pour ton inscription.') +
     p("Chaque mardi, je t'envoie une idée RevOps tirée de mes chantiers : une intégration, un piège évité, une décision d'archi commerciale. Lisible en 3 minutes.") +
     p("Pour situer d'où je parle : 15 ans en software engineering, ex-CTO Tiime, ex-EM Aircall (j'y ai codé la sales tech depuis l'intérieur), ex-Teads. Aujourd'hui je fais scaler des CRM modernes comme Attio, Folk ou Close dans des scaleups B2B SaaS de 50 à 300 personnes.") +
-    p("En attendant mardi, tu peux faire le diagnostic : 10 questions, ton profil, ce que la ressaisie te coûte et le plan de ta première automatisation.") +
+    p("En attendant mardi, tu peux faire le diagnostic : 10 questions, ton profil, ce que la ressaisie te coûte et la fiche de poste de ton premier agent.") +
     button('Faire le diagnostic →', DIAGNOSTIC_URL) +
     p("Et une question pour démarrer : qu'est-ce qui te fait perdre le plus de temps dans ton CRM aujourd'hui ?");
   const text = [
@@ -176,9 +176,9 @@ function diagnosticEmail(d) {
     h3('Tes 3 priorités') + `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${prios}</table>` +
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 24px;border:1px solid ${C.line};border-radius:10px">
 <tr><td style="padding:22px;background:${C.ink};border-radius:10px">
-<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.dim}">Le plan de ta première automatisation</div>
-<div style="font-family:${FONT};font-size:17px;font-weight:700;color:#FFFFFF;margin:6px 0 4px">${r.recette.name}</div>
-${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.recette.actions)}${recipeRow('Ce que ça supprime', r.recette.removes)}
+<div style="font-family:${FONT};font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${C.accent}">La fiche de poste de ton premier agent</div>
+<div style="font-family:${FONT};font-size:22px;font-weight:700;color:#FFFFFF;margin:8px 0 6px;line-height:1.25">${r.recette.name}</div>
+${recipeRow('Il se déclenche quand', r.recette.trigger)}${recipeRow('Ce qu\'il fait', r.recette.actions)}${recipeRow('Ce qu\'il supprime', r.recette.removes)}
 </td></tr></table>` +
     (d.small
       ? p("Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus. Chaque mardi, la newsletter t'apporte un cas terrain pour avancer.")
@@ -197,7 +197,7 @@ ${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.
     `Ce que la ressaisie te coûte : ${euro(r.annual)} / an (${formula}, soit ${euro(r.weekly)} par semaine).` + (fteLine(r) ? '\n' + fteLine(r) : ''),
     `Ce que ça te coûte de rester comme ça\n${r.profile.cost}\nFais le calcul. ${r.profile.calc}`,
     'Tes 3 priorités\n' + r.profile.prios.map((x, i) => `${i + 1}. ${x.t} : ${x.d}`).join('\n'),
-    `Le plan de ta première automatisation : ${r.recette.name}\nDéclencheur : ${r.recette.trigger}\nCe qui se passe : ${r.recette.actions}\nCe que ça supprime : ${r.recette.removes}`,
+    `La fiche de poste de ton premier agent : ${r.recette.name}\nIl se déclenche quand : ${r.recette.trigger}\nCe qu'il fait : ${r.recette.actions}\nCe qu'il supprime : ${r.recette.removes}`,
     ...(d.small
       ? ["Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus."]
       : [(d.hiring ? "Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre.\n\n" : '') + OFFER_DIAG,
@@ -210,7 +210,7 @@ ${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.
   return {
     subject: `Ton diagnostic : ${r.profile.name}`,
     html: layout({
-      preheader: `${r.profile.ceil} ${euro(r.annual)} par an en ressaisie, et le plan de ta première automatisation.`,
+      preheader: `${r.profile.ceil} ${euro(r.annual)} par an en ressaisie, et la fiche de poste de ton premier agent.`,
       eyebrow: 'Diagnostic · Tes équipes saisissent tout deux fois ?',
       title: 'Ton diagnostic',
       body
@@ -318,7 +318,7 @@ if (b.source === 'diagnostic-ressaisie') {
       `Travail Ops : ${ops || 'non renseigné'}${b.ops === 'recrute' ? ' (signal : recrute un RevOps)' : ''}`,
       `Ressaisie : ${r.people} pers. × ${r.hours} h/sem = ${euro(r.annual)} / an (${euro(r.weekly)} / semaine)`,
       'Ses réponses les plus basses :\n' + r.mirrors.map((m) => `- ${m}`).join('\n'),
-      `Première automatisation proposée : ${r.recette.name}`,
+      `Premier agent proposé : ${r.recette.name}`,
       `Prénom saisi : ${firstName || 'aucun'}`
     ].join('\n')
   };
