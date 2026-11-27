@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Icône de l'app Slack « n8n » (notifications leads, Chrono, alertes). Slack arrondit les coins lui-même :
+     le carré est plein. Rendu (depuis la racine, python3 -m http.server 8765) :
+     Chrome --headless --hide-scrollbars --force-device-scale-factor=2 --window-size=512,512
+       --screenshot=_print/icone-slack-n8n.png "http://localhost:8765/_print/icone-slack-n8n.html" -->
+<html lang="fr"><head><meta charset="UTF-8"><title>Icône Slack n8n</title>
+<style>
+  :root { --ink: #1C1C1C; --ink-2: #262626; --accent: #FF7A00; --accent-2: #FFD84D; }
+  html, body { margin: 0; width: 512px; height: 512px; overflow: hidden; background: var(--ink); }
+  svg { display: block; }
+</style></head>
+<body>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF7A00"/><stop offset="1" stop-color="#FFD84D"/>
+    </linearGradient>
+    <radialGradient id="bg" cx="0.3" cy="0.2" r="0.9">
+      <stop offset="0" stop-color="#2E2E2E"/><stop offset="1" stop-color="#1C1C1C"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- Un flux : déclencheur → traitement → notification -->
+  <path d="M136 330 C 200 330, 196 182, 256 182 S 312 330, 376 330" fill="none" stroke="url(#g)" stroke-width="26" stroke-linecap="round"/>
+  <circle cx="136" cy="330" r="46" fill="#1C1C1C" stroke="url(#g)" stroke-width="22"/>
+  <circle cx="256" cy="182" r="46" fill="#1C1C1C" stroke="url(#g)" stroke-width="22"/>
+  <circle cx="376" cy="330" r="58" fill="url(#g)"/>
+  <!-- Cloche dans le dernier nœud -->
+  <g transform="translate(376 330)" fill="#1C1C1C">
+    <path d="M-22 12 C -22 -2, -18 -24, 0 -26 C 18 -24, 22 -2, 22 12 L 28 18 L -28 18 Z"/>
+    <circle cx="0" cy="26" r="7"/>
+    <rect x="-4" y="-34" width="8" height="10" rx="4"/>
+  </g>
+</svg>
+</body></html>
