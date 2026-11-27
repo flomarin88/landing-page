@@ -19,7 +19,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 - `menu/index.html`: standalone printable A4 weekly family menu (light theme, `@page` print rules). Unrelated to the landing page; do not share styles between the two.
 - `value-assets/`: internal visual board ("Méthode Stack Possédée", `index.html`) plus `scalezia/` material, not linked from the site. Exceptions: `prompt-audit-crm-attio-entreprises.html` is a public lead magnet (prompt to copy, CTA to the 20-minute call and the calculator), and `methode-fiche-de-poste/index.html` is the public board of the Méthode Fiche de Poste (2026-11-25), linked from the homepage (iframe + footer) and the diagnostic. Same engine as the Stack Possédée and Scalezia boards; in an iframe or with `?embed` the mouse wheel no longer changes steps and a « Plein écran » button appears. Its client figures are the anonymised ones of the homepage.
 - `banniere-linkedin-le-cadre-v1.html`: legacy LinkedIn banner template (1584×396) from the previous "Le Cadre" offer.
-- `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both. `?v=og-diagnostic` renders `assets/opengraph-diagnostic.png` (1200×627), the share image of the diagnostic (used as a LinkedIn Featured link): re-render it if the quiz title or profiles change.
+- `_print/visuels-positionnement.html`: source of `assets/opengraph.png` (`?v=og`, 1200×627) and of the LinkedIn banner `_print/banniere-linkedin.png` (`?v=banner`, 1584×396). Render command in its head comment (headless Chrome). Change the positioning there, then re-render both. `?v=og-diagnostic` renders `assets/opengraph-diagnostic.png` at 2× (2400×1254, `--force-device-scale-factor=2`; at 1× LinkedIn shows it blurry; bump `?v=` on its `og:image` after each render), the share image of the diagnostic (used as a LinkedIn Featured link): re-render it if the quiz title or profiles change.
 - `_versions/`: earlier homepage drafts (v1 réseaux, v2 SaaS, v3 neutral), **local only, never committed** (their comments name a client).
 - `generate-pdf.mjs`: legacy script for the old "Pacte Famille-Sport" lead magnet; its template is no longer in the repo.
 - `_n8n/`: the lead capture workflow and the Calendly → Attio workflow (see below). Folders starting with `_` are not published by GitHub Pages (Jekyll build), which is why it lives here.
@@ -76,6 +76,10 @@ The site is static, so the Attio API key never goes in a page. Forms POST JSON t
 - Source of truth: `_n8n/prepare-booking.js` (filter `KEEP_EVENT` on the Calendly event name, note and task content) and `_n8n/complete-person.js`. `node _n8n/build.mjs` regenerates both workflows and runs the booking test cases (via `build-booking.mjs`).
 - Credentials are referenced in n8n only: Calendly API (personal access token, paid Calendly plan required for webhooks) and the same Attio header auth as the lead workflow.
 - A cancellation does not close the earlier task: the note reminds to close it by hand.
+
+## Error notifications
+
+`_n8n/error-notifications-workflow.json` (generated, import it in n8n): Error Trigger → Prépare l'alerte → email to `contact@florianmarin.me` (same SMTP credential as the welcome email). Generic: any workflow points to it in its settings (« Error workflow »). It fires only on production executions (not manual test runs) and does not need to be activated. The alert gives workflow, failing node, message, time (Paris), mode, a link to the execution when n8n provides one, and the first 12 lines of the stack. Source of truth: `_n8n/format-error.js`; `node _n8n/build.mjs` regenerates it and runs its test cases (via `build-error.mjs`).
 
 ## External links
 

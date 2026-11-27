@@ -1,0 +1,74 @@
+{
+  "name": "Error notifications",
+  "nodes": [
+    {
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "name": "Prépare l'alerte",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "// n8n Code node « Prépare l'alerte » du workflow « Error notifications » : lit la sortie de l'Error Trigger\n// et prépare un email (sujet, texte, HTML). Générique : il sert à tout workflow qui le déclare comme\n// « Error workflow » dans ses réglages. Deux formes possibles en entrée :\n// - une exécution qui a échoué : { execution: { id, url, error, lastNodeExecuted, mode, retryOf }, workflow }\n// - le déclencheur lui-même qui a échoué (pas d'exécution) : { trigger: { error, mode }, workflow }\n\nconst TZ = 'Europe/Paris';\nconst STACK_LINES = 12;\n\nconst clean = (v, max = 2000) => String(v == null ? '' : v).replace(/[\\u0000-\\u0008\\u000B-\\u001F\\u007F]/g, '').trim().slice(0, max);\nconst esc = (v) => clean(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');\nconst when = (t) => {\n  const d = new Date(t);\n  return new Intl.DateTimeFormat('fr-FR', { timeZone: TZ, dateStyle: 'full', timeStyle: 'medium' }).format(isNaN(d) ? new Date() : d);\n};\n\nconst d = $input.first().json || {};\nconst workflow = d.workflow || {};\nconst execution = d.execution || null;\nconst trigger = d.trigger || null;\nconst error = (execution && execution.error) || (trigger && trigger.error) || {};\n\nconst wfName = clean(workflow.name, 200) || 'Workflow sans nom';\nconst node = clean((error.node && error.node.name) || (execution && execution.lastNodeExecuted), 200) || (trigger ? 'Déclencheur' : 'inconnu');\nconst message = clean(error.message, 1000) || 'Erreur sans message';\nconst description = clean(error.description, 1000);\nconst mode = clean((execution && execution.mode) || (trigger && trigger.mode), 50);\nconst url = /^https?:\\/\\//.test(String(execution && execution.url || '')) ? clean(execution.url, 500) : '';\nconst stack = clean(error.stack, 4000).split('\\n').slice(0, STACK_LINES).join('\\n');\n\nconst rows = [\n  ['Workflow', wfName + (workflow.id ? ` (id ${clean(workflow.id, 50)})` : '')],\n  ['Nœud', node],\n  ['Quand', when(error.timestamp || Date.now())],\n  ['Mode', mode],\n  ['Exécution', execution && execution.id ? clean(execution.id, 50) + (execution.retryOf ? ` (relance de ${clean(execution.retryOf, 50)})` : '') : (trigger ? 'aucune : le déclencheur a échoué' : '')],\n].filter(([, v]) => v);\n\nconst subject = `[n8n] ${wfName} : échec sur « ${node} »`.slice(0, 200);\n\nconst text = [\n  `${wfName} a échoué.`,\n  `Erreur : ${message}` + (description ? `\\n${description}` : ''),\n  rows.map(([k, v]) => `${k} : ${v}`).join('\\n'),\n  url ? `Ouvrir l'exécution : ${url}` : \"Pas de lien vers l'exécution (exécutions non enregistrées, ou déclencheur en échec).\",\n  stack ? `Stack :\\n${stack}` : '',\n].filter(Boolean).join('\\n\\n');\n\nconst FONT = \"Montserrat, 'Helvetica Neue', Arial, sans-serif\";\nconst html = `<!DOCTYPE html><html lang=\"fr\"><head><meta charset=\"UTF-8\"><title>${esc(subject)}</title></head>\n<body style=\"margin:0;padding:24px;background:#1C1C1C;font-family:${FONT};color:#FFFFFF\">\n<table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width:640px;margin:0 auto;background:#262626;border:1px solid #333333;border-radius:10px\">\n<tr><td style=\"padding:24px\">\n<div style=\"font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FF7A00\">Échec n8n</div>\n<div style=\"font-size:20px;font-weight:700;margin:6px 0 14px\">${esc(wfName)}</div>\n<div style=\"font-size:15px;line-height:1.55;color:#FFFFFF;border-left:3px solid #FF7A00;padding-left:12px;margin:0 0 18px\">${esc(message)}${description ? `<div style=\"color:#B8B8B8;font-size:14px;margin-top:6px\">${esc(description)}</div>` : ''}</div>\n<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"font-size:14px;line-height:1.5;margin:0 0 18px\">\n${rows.map(([k, v]) => `<tr><td style=\"color:#6B6B6B;padding:2px 16px 2px 0;white-space:nowrap;vertical-align:top\">${esc(k)}</td><td style=\"color:#B8B8B8\">${esc(v)}</td></tr>`).join('\\n')}\n</table>\n${url ? `<a href=\"${esc(url)}\" style=\"display:inline-block;background:#FF7A00;color:#FFFFFF;text-decoration:none;font-weight:700;font-size:14px;padding:12px 20px;border-radius:8px\">Ouvrir l'exécution</a>` : `<div style=\"font-size:13px;color:#6B6B6B\">Pas de lien vers l'exécution (exécutions non enregistrées, ou déclencheur en échec).</div>`}\n${stack ? `<pre style=\"white-space:pre-wrap;word-break:break-word;font-size:12px;line-height:1.5;color:#B8B8B8;background:#1C1C1C;border-radius:8px;padding:12px;margin:18px 0 0\">${esc(stack)}</pre>` : ''}\n</td></tr></table></body></html>`;\n\nreturn [{ json: { subject, text, html } }];\n"
+      }
+    },
+    {
+      "name": "Email alerte",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "fromEmail": "n8n florianmarin.me <contact@florianmarin.me>",
+        "toEmail": "contact@florianmarin.me",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "both",
+        "text": "={{ $json.text }}",
+        "html": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prépare l'alerte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prépare l'alerte": {
+      "main": [
+        [
+          {
+            "node": "Email alerte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

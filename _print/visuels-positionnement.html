@@ -9,7 +9,9 @@
   Commande (depuis la racine, serveur local sur 8765) :
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
       --window-size=1200,627 --virtual-time-budget=4000 --screenshot=assets/opengraph.png "http://localhost:8765/_print/visuels-positionnement.html?v=og"
-  ?v=og-diagnostic → assets/opengraph-diagnostic.png (1200×627, même commande) : partage et Featured LinkedIn du diagnostic.
+  ?v=og-diagnostic → assets/opengraph-diagnostic.png : partage et Featured LinkedIn du diagnostic. Rendu en 2× (2400×1254) avec
+  --force-device-scale-factor=2 en plus (même --window-size=1200,627) : LinkedIn recompresse, en 1× la miniature est floue.
+  Après un nouveau rendu, incrémente ?v= sur og:image dans diagnostic/index.html puis repasse l'URL dans le Post Inspector LinkedIn.
   Featured rogne un peu les bords : rien d'important à moins de 48 px du bord.
   Bannière LinkedIn : la photo de profil masque le coin bas gauche, le mobile rogne les côtés : texte à droite du centre.
   -->
@@ -118,7 +120,7 @@
         <ul>
           <li>Ton profil et ce qui te plafonne</li>
           <li>Ce que la ressaisie te coûte, en euros</li>
-          <li>Le plan de ta première automatisation</li>
+          <li>La fiche de poste de ton premier agent</li>
         </ul>
         <div class="who">
           <img src="../assets/profile.png" alt="">

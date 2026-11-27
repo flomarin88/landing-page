@@ -218,3 +218,7 @@ out('calculateur, déjà abonné', sends(calc, ['Newsletter RevOps', 'Calculateu
 // Workflow Calendly → Attio (fiche, note, tâche de préparation du Chrono).
 console.log('\n---------- Calendly → Attio');
 await import('./build-booking.mjs');
+
+// Workflow « Error notifications » (alerte email quand un workflow échoue).
+console.log('\n---------- Error notifications');
+await import('./build-error.mjs');
