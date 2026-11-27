@@ -6,10 +6,10 @@ import { fileURLToPath } from 'node:url';
 import { checkPaths } from './check-paths.mjs';
 import { slackCall } from './build-slack.mjs';
 
-// Chemins d'assets : relatif ou URL complète, jamais « /assets/… ». Le build échoue sinon.
+// Chemins d'assets (relatif ou URL complète, jamais « /assets/… ») et Umami limité à la prod. Le build échoue sinon.
 const badPaths = checkPaths();
 if (badPaths.length) {
-  console.error('Chemins /assets/ interdits (utiliser ../assets/ ou https://florianmarin.me/assets/) :\n' + badPaths.join('\n'));
+  console.error(badPaths.join('\n'));
   process.exit(1);
 }
 

@@ -36,7 +36,7 @@ To preview, open the file directly in a browser (e.g. `open index.html`) or serv
 
 ## Analytics: Umami Cloud
 
-Every public page loads `https://cloud.umami.is/script.js` with `data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"`. Umami is cookieless (no consent banner needed); don't replace it with a cookie-based tool such as Google Analytics without adding a CNIL-compliant consent banner. Pageviews are automatic; outbound clicks are not (only Calendly is tracked, via the event below). Custom events are sent from JS through a local `track(name, props)` helper that calls `window.umami.track(name, props)` only if the script has loaded:
+Every public page loads `https://cloud.umami.is/script.js` with `data-website-id="5e14483e-d3dc-4855-90ee-d3461fc6dcc2"` and `data-domains="florianmarin.me"` (only production is counted: pages opened locally as `file:///Users/…` or served on localhost send nothing, custom events included; `node _n8n/check-paths.mjs` fails on a Umami tag without it). Umami is cookieless (no consent banner needed); don't replace it with a cookie-based tool such as Google Analytics without adding a CNIL-compliant consent banner. Pageviews are automatic; outbound clicks are not (only Calendly is tracked, via the event below). Custom events are sent from JS through a local `track(name, props)` helper that calls `window.umami.track(name, props)` only if the script has loaded:
 
 | Event | Page | Props |
 |---|---|---|
