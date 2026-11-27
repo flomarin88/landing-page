@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Florian Marin · Ton CRM branché sur toute ta stack</title>
-  <meta name="description" content="Je branche ton CRM sur le reste de ta stack pour que tes équipes ne saisissent qu'une fois. Première automatisation en production en 7 jours, à prix fixe.">
-  <meta property="og:title" content="Florian Marin · Ton CRM branché sur toute ta stack">
-  <meta property="og:description" content="Tes équipes ne saisissent qu'une fois. Première automatisation en production en 7 jours, à prix fixe.">
+  <title>Florian Marin · Avant de recruter ton RevOps, donne sa fiche de poste à des agents</title>
+  <meta name="description" content="Avant de recruter ton RevOps, donne sa fiche de poste à des agents. Un premier agent en production en 7 jours, puis les tâches de ton futur RevOps en 6 semaines, à prix fixe.">
+  <meta property="og:title" content="Florian Marin · Avant de recruter ton RevOps, donne sa fiche de poste à des agents">
+  <meta property="og:description" content="Un premier agent en production en 7 jours, puis les tâches de ton futur RevOps en 6 semaines. Prix fixe, et je pars.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://florianmarin.me/">
   <meta property="og:image" content="https://florianmarin.me/assets/opengraph.png">
   <link rel="icon" href="assets/favicon.png">
   <!--
-  ACCUEIL depuis le 2026-11-01 : offre d'entrée « La Semaine Sans Ressaisie » (porte d'entrée, R1 = Chrono 20 minutes).
-  Phrase socle, reprise sur LinkedIn, Substack et Calendly : « Je branche ton CRM sur le reste de ta stack pour que tes
-  équipes ne saisissent qu'une fois. Première automatisation en 7 jours. »
-  Cible : SaaS et tech B2B sales-led, 20 à 500 personnes, France, Belgique, Suisse romande. Tutoiement.
-  Le Sprint RevOps vit sur /sprint/ (non lié d'ici). /reseaux/ reste en ligne, sans lien.
+  ACCUEIL depuis le 2026-11-25 : Méthode Fiche de Poste. Porte d'entrée « Le Premier Agent » (7 jours, 2 000 € HT crédités à 100 %
+  sur le Sprint signé sous 30 jours, Garantie Vendredi), puis le Sprint Fiche de Poste (6 semaines, 25 000 € HT, garantie Go-Live).
+  R1 = 20 minutes sur la fiche de poste. Remplace « La Semaine Sans Ressaisie » (2026-11-01 au 2026-11-25).
+  Phrase socle, reprise sur LinkedIn, Substack, YouTube et Calendly : « Avant de recruter ton RevOps, donne sa fiche de poste à des agents. »
+  Cible : VP Sales et CRO, scaleups SaaS et tech B2B de 50 à 300 personnes, France, Belgique, Suisse romande. Tutoiement.
+  Board de la méthode : value-assets/methode-fiche-de-poste/ (intégré dans #methode). /sprint/ et /reseaux/ restent en ligne, sans lien.
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,9 +165,18 @@ footer a:hover{color:#fff}
 .solo div{border:1px solid var(--line);border-radius:var(--r);padding:26px;background:#fff}
 .solo h3{font-size:1.1rem;margin-bottom:8px;line-height:1.3}
 .solo p{font-size:.95rem;color:#444}
+.steps.four{grid-template-columns:repeat(4,1fr)}
+.boardframe{margin-top:32px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;height:620px;background:#f4f5f7}
+.boardframe iframe{display:block;width:100%;height:100%;border:0}
+.boardfoot{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between;color:#444}
+.boardfoot .more{margin-top:0}
 @media (max-width:860px){
  .scene,.offer,.solo{grid-template-columns:1fr;gap:24px}
  .stack li,.card .head{padding-left:20px;padding-right:20px}
+}
+@media (max-width:860px){
+ .steps.four{grid-template-columns:1fr}
+ .boardframe{height:520px}
 }
 </style>
 </head>
@@ -181,16 +191,16 @@ footer a:hover{color:#fff}
   <header class="hero">
     <div class="wrap">
       <div>
-        <span class="eyebrow">Équipes revenue · SaaS et tech B2B</span>
-        <h1>Ton CRM branché sur toute ta stack. <span class="gradient">Tes équipes ne saisissent qu'une fois.</span></h1>
-        <p class="sub">Je relie ton CRM à ton outil de prospection, à ton outil d'appels, à Stripe et à ta facturation. On commence par la tâche que ton équipe refait le plus à la main&nbsp;: en production en 7&nbsp;jours, à prix fixe. Codé par moi.</p>
-        <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="hero" target="_blank" rel="noopener">Réserver 20 minutes</a>
-        <p class="micro">La Semaine Sans Ressaisie · Ta tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</p>
+        <span class="eyebrow">VP Sales et CRO · Scaleups SaaS 50 à 300</span>
+        <h1>Avant de recruter ton RevOps, <span class="gradient">donne sa fiche de poste à des agents.</span></h1>
+        <p class="sub">Mettre à jour le CRM après les calls, rapprocher Stripe, relancer les deals qui dorment, préparer la revue du lundi&nbsp;: des agents le font. Je les construis comme du logiciel, testés et documentés, je forme ton équipe et je pars. On commence par un premier agent en production en 7&nbsp;jours.</p>
+        <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="hero" target="_blank" rel="noopener">Envoie-moi ta fiche de poste</a>
+        <p class="micro">20 minutes · Le Premier Agent&nbsp;: un agent en production en 7&nbsp;jours, crédité sur le Sprint</p>
       </div>
       <img class="portrait" src="assets/portrait.jpg" alt="Florian Marin" width="800" height="800" fetchpriority="high">
     </div>
     <div class="proof">
-      <div class="wrap"><ul><li><b><s>7 min 30</s><span class="gradient">39&nbsp;s</span></b><p>par vente saisie. Médiane d'octobre, 344 ventes chronométrées.</p></li><li><b>0 tableur</b><p>19 onglets Sheets et 25 CSV du lundi, remplacés.</p></li><li><b>40 agences</b><p>suivies sur un seul écran par le siège.</p></li><li><b>~140 h</b><p>par mois rendues au siège, selon l'équipe.</p></li></ul></div>
+      <div class="wrap"><ul><li><b><s>7 min 30</s><span class="gradient">39&nbsp;s</span></b><p>par vente saisie. Médiane d'octobre, 344 ventes chronométrées.</p></li><li><b>0 tableur</b><p>19 onglets Sheets et 25 CSV du lundi, remplacés.</p></li><li><b>+7 700 tests</b><p>automatisés derrière les agents en production.</p></li><li><b>~140 h</b><p>par mois rendues au siège, selon l'équipe.</p></li></ul></div>
       <div class="wrap"><p class="src">Résultats d'un réseau de 40 agences franchisées, client depuis mai 2026.</p></div>
     </div>
   </header>
@@ -201,35 +211,52 @@ footer a:hover{color:#fff}
       <h2>Lundi, 8 h 47.</h2>
       <div class="scene">
         <div class="story-txt"><p>Ton VP Sales a un comité à 10 h. Quelqu'un exporte le pipe du CRM, la facturation de Stripe, l'usage depuis la base, et recolle le tout dans le Google Sheet que seule une personne comprend.</p><p>Deux heures plus tard, le forecast est prêt. Mardi, il est déjà faux&nbsp;: un deal a bougé dans le CRM, pas dans le fichier.</p><p>Personne n'a le temps de régler ça. Alors ça recommence lundi prochain.</p></div>
-        <div class="signals"><b>C'est pour toi si…</b><ul><li>une seule personne sait mettre à jour «&nbsp;le fichier&nbsp;»&nbsp;;</li><li>tes commerciaux saisissent la même info dans deux outils&nbsp;;</li><li>le chiffre change selon qui le sort&nbsp;;</li><li>on t'a déjà dit que la solution, c'était Salesforce.</li></ul></div>
+        <div class="signals"><b>C'est pour toi si…</b><ul><li>une seule personne sait mettre à jour «&nbsp;le fichier&nbsp;»&nbsp;;</li><li>tes commerciaux saisissent la même info dans deux outils&nbsp;;</li><li>le chiffre change selon qui le sort&nbsp;;</li><li>tu t'apprêtes à recruter un RevOps pour remettre de l'ordre&nbsp;;</li><li>on t'a déjà dit que la solution, c'était Salesforce.</li></ul></div>
       </div>
       <p class="calc">2 h par semaine à recoller des exports, c'est <strong>près de 100 heures par an</strong>. Du temps de RevOps payé à copier-coller, et des décisions prises sur des chiffres en retard.</p>
       <a class="more" href="/calculateur/">Calcule ce que la ressaisie te coûte, en 2 minutes →</a>
     </div>
   </section>
 
-  <section class="block alt" id="offre">
+  <section class="block alt" id="methode">
     <div class="wrap">
-      <span class="eyebrow">L'offre</span>
-      <h2>Ta première automatisation en production en 7&nbsp;jours.</h2>
-      <p class="lead">Une tâche, une semaine, un prix fixe. Tu juges sur un résultat qui tourne, pas sur une présentation.</p>
+      <span class="eyebrow">La méthode</span>
+      <h2>La Méthode Fiche de Poste.</h2>
+      <p class="lead">On part des tâches du RevOps que tu allais recruter. On finit avec des agents en production, testés comme du logiciel, et une équipe formée. Puis je pars.</p>
+      <div class="steps four">
+        <div class="step"><span class="k">Étape 1 · S1</span><h3>Décortiquer</h3><p>Chaque tâche de la fiche découpée et chronométrée&nbsp;: agent ou humain.</p></div>
+        <div class="step"><span class="k">Étape 2 · S2 à S4</span><h3>Automatiser</h3><p>Une tâche répétitive devient un agent, avec ses tests, ses logs et ses alertes.</p></div>
+        <div class="step"><span class="k">Étape 3 · S5 et S6</span><h3>Mettre en production</h3><p>Agents en production en semaine 6, sinon je continue sans facturer.</p></div>
+        <div class="step"><span class="k">Étape 4 · S6 à J+30</span><h3>Transmettre et partir</h3><p>Doc, vidéos, un référent formé. Tout reste chez toi.</p></div>
+      </div>
+      <div class="boardframe"><iframe src="value-assets/methode-fiche-de-poste/?embed" title="Board de la Méthode Fiche de Poste" loading="lazy"></iframe></div>
+      <p class="boardfoot"><em>«&nbsp;Demande à ton agence combien de tests couvrent ses workflows.&nbsp;»</em><a class="more" href="value-assets/methode-fiche-de-poste/" target="_blank" rel="noopener">Voir le board en plein écran →</a></p>
+    </div>
+  </section>
+
+  <section class="block" id="offre">
+    <div class="wrap">
+      <span class="eyebrow">Pour commencer</span>
+      <h2>Ton premier agent en production en 7&nbsp;jours.</h2>
+      <p class="lead">Une tâche, une semaine, un prix fixe crédité sur le Sprint. Tu juges sur un agent qui tourne, pas sur une présentation.</p>
       <div class="offer">
         <div class="card">
-          <div class="head"><b>La Semaine Sans Ressaisie</b><span class="price"><small>Ta tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</small></span></div>
-          <ul class="stack"><li><span class="tag">Le cœur</span><h3>L'automatisation de la tâche qui te coûte le plus</h3><span class="val"></span><p>En production dans ton CRM et tes outils. Sur mesure, testée sur tes vraies données.</p></li><li><span class="tag">Bonus 1</span><h3>L'audit de ta stack revenue</h3><span class="val free">Offert</span><p>Tes outils, tes flux et chaque tâche manuelle, chronomètre à l'appui.</p></li><li><span class="tag">Bonus 2</span><h3>La roadmap priorisée</h3><span class="val free">Offert</span><p>Les prochaines automatisations, classées par heures gagnées et par difficulté. Avec l'audit, c'est une mission que je propose aussi seule.</p></li><li><span class="tag">Bonus 3</span><h3>Le transfert de connaissance</h3><span class="val free">Offert</span><p>Documentation et session de passation&nbsp;: ton équipe sait comment ça marche et comment le modifier.</p></li></ul>
+          <div class="head"><b>Le Premier Agent</b><span class="price">2&nbsp;000&nbsp;€ HT <small>crédités à 100&nbsp;% sur le Sprint signé sous 30&nbsp;jours</small></span></div>
+          <ul class="stack"><li><span class="tag">Le cœur</span><h3>Un premier agent en production</h3><span class="val"></span><p>La tâche répétitive qui te coûte le plus, reprise par un agent testé sur tes vraies données. Il tourne dans ton CRM et tes outils.</p></li><li><span class="tag">Inclus</span><h3>Ta fiche de poste décortiquée</h3><span class="val free">Inclus</span><p>Chaque tâche Ops chronométrée et marquée agent ou humain. C'est ta mesure de départ.</p></li><li><span class="tag">Inclus</span><h3>Le Sprint chiffré ligne par ligne</h3><span class="val free">Inclus</span><p>Les agents suivants, classés par heures gagnées. Tu connais le contenu et le prix des 6 semaines avant de décider.</p></li><li><span class="tag">Inclus</span><h3>Le transfert de connaissance</h3><span class="val free">Inclus</span><p>Documentation et passation&nbsp;: ton équipe sait comment l'agent marche et comment le modifier.</p></li></ul>
         </div>
         <div>
-          <ul class="week"><li><b>Lundi · Audit</b><span>Deux heures avec toi et l'équipe, puis l'analyse. Le soir, tu signes le périmètre.</span></li><li><b>Mardi à jeudi · Construction</b><span>Je code et je teste sur tes vraies données. Tu vois l'avancement chaque jour.</span></li><li><b>Vendredi · Mise en production</b><span>L'automatisation tourne. Passation à l'équipe, remise de l'audit et de la roadmap.</span></li></ul>
-          <div class="guarantee"><b>La Garantie Vendredi</b><em>«&nbsp;Si l'automatisation n'est pas en production vendredi, selon le périmètre signé lundi, je te rembourse intégralement.&nbsp;»</em></div>
-          <p class="scarce">Je travaille seul, sans sous-traitant&nbsp;: une semaine, un client. Pour l'instant, c'est ma seule capacité.</p>
-          <p class="after">Et après&nbsp;? Tu as la roadmap. On la déroule ensemble au mois, ou ton équipe s'en charge. Aucun engagement.</p>
-          <p style="margin-top:20px"><a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="offre" target="_blank" rel="noopener">Réserver 20 minutes</a></p>
+          <ul class="week"><li><b>Lundi · Décortiquer</b><span>Deux heures avec toi et l'équipe sur la fiche de poste, ou sur le travail Ops actuel. Le soir, tu signes le périmètre de l'agent.</span></li><li><b>Mardi à jeudi · Construction</b><span>Je code et je teste sur tes vraies données. Tu vois l'avancement chaque jour.</span></li><li><b>Vendredi · Mise en production</b><span>L'agent tourne. Passation à l'équipe, remise de la fiche annotée et du Sprint chiffré.</span></li></ul>
+          <div class="guarantee"><b>La Garantie Vendredi</b><em>«&nbsp;Si l'agent n'est pas en production vendredi, selon le périmètre signé lundi, je te rembourse intégralement.&nbsp;»</em></div>
+          <p class="scarce">Je travaille seul, sans sous-traitant&nbsp;: 2 Premiers Agents par mois au maximum, et un seul Sprint à la fois.</p>
+          <p class="after">Et après&nbsp;? Le Sprint Fiche de Poste&nbsp;: 6 semaines, 8 à 10 agents, 25&nbsp;000&nbsp;€ HT à prix fixe, garantie Go-Live. Les 2&nbsp;000&nbsp;€ du Premier Agent sont déduits si tu signes sous 30&nbsp;jours. Sinon, tu gardes l'agent et la fiche, sans engagement.</p>
+          <p class="after">Inclus dans le Sprint&nbsp;: la fiche annotée, le kit référent (runbook, vidéos, une journée de formation), 30 jours de supervision des agents et, si tu recrutes quand même, la fiche de poste du RevOps qui les pilotera.</p>
+          <p style="margin-top:20px"><a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="offre" target="_blank" rel="noopener">Envoie-moi ta fiche de poste</a></p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="block" id="cas">
+  <section class="block alt" id="cas">
     <div class="wrap">
       <span class="eyebrow">Cas client · Réseau de 40 agences</span>
       <h2>Tout a commencé par <span class="gradient">une seule automatisation.</span></h2>
@@ -245,23 +272,23 @@ footer a:hover{color:#fff}
     </div>
   </section>
 
-  <section class="block alt" id="moi">
+  <section class="block" id="moi">
     <div class="wrap">
       <span class="eyebrow">Pourquoi moi</span>
       <h2>Pas une agence. Un ingénieur senior, sur ton problème.</h2>
-      <div class="solo"><div><h3>Tu parles à celui qui code.</h3><p>Pas de chef de projet, pas de junior, pas de brief qui se perd entre deux personnes.</p></div><div><h3>Sur mesure, pas un template.</h3><p>Je pars de ta façon de vendre. L'outil s'adapte à ton équipe, pas l'inverse.</p></div><div><h3>15 ans à construire des logiciels.</h3><p>Ex-CTO de Tiime, ex-Engineering Manager chez Aircall (la sales tech vue de l'intérieur), passé par Teads.</p></div><div><h3>Tout est à toi.</h3><p>Code, accès, documentation. Aucune commission éditeur&nbsp;: je recommande ce qui sert ton revenu.</p></div></div>
+      <div class="solo"><div><h3>Tu parles à celui qui code.</h3><p>Pas de chef de projet, pas de junior, pas de brief qui se perd entre deux personnes.</p></div><div><h3>Des agents construits comme du logiciel.</h3><p>Chaque agent a ses tests, ses logs et ses alertes. Chez mon client actuel, plus de 7 700 tests tournent derrière. Demande à ton agence combien en ont ses workflows.</p></div><div><h3>15 ans à construire des logiciels.</h3><p>Ex-CTO de Tiime, ex-Engineering Manager chez Aircall (la sales tech vue de l'intérieur), passé par Teads.</p></div><div><h3>Tout est à toi, et je pars.</h3><p>Code, accès, documentation, dans ton GitHub. Aucune commission éditeur&nbsp;: je recommande ce qui sert ton revenu. Un RevOps est payé pour rester, moi pour finir.</p></div></div>
     </div>
   </section>
 
-  <section class="block" id="faq">
+  <section class="block alt" id="faq">
     <div class="wrap">
       <span class="eyebrow">Questions</span>
       <h2>Les questions qu'on me pose.</h2>
-      <div class="faq"><details><summary>Une semaine à prix fixe, c'est sérieux pour du sur-mesure&nbsp;?</summary><p>C'est un point d'entrée volontairement simple&nbsp;: une tâche, une semaine, un prix fixe. Tu juges sur un résultat en production avant de décider de la suite.</p></details><details><summary>Une semaine, c'est réaliste&nbsp;?</summary><p>Oui, parce qu'on choisit lundi une tâche qui tient en une semaine. Si la plus coûteuse est trop grosse, je livre une première partie utile et le reste va dans la roadmap.</p></details><details><summary>On n'a personne pour maintenir ça.</summary><p>C'est le rôle du transfert de connaissance&nbsp;: une automatisation lisible, documentée, et une passation avec l'équipe. Si tu veux, je reste disponible au mois.</p></details><details><summary>Pourquoi pas un outil no-code ou l'IA&nbsp;?</summary><p>Je les utilise quand ils servent. Le sur-mesure se justifie quand ta façon de vendre ne rentre pas dans un template, et c'est souvent là que se cachent les heures perdues.</p></details></div>
+      <div class="faq"><details><summary>C'est quoi, un agent&nbsp;?</summary><p>Un workflow qui fait une tâche de bout en bout, avec de l'IA quand elle sert et sans quand elle ne sert pas. Il tourne sans qu'on le lance, et il prévient dans Slack quand ça coince.</p></details><details><summary>Une semaine, c'est réaliste&nbsp;?</summary><p>Oui, parce qu'on choisit lundi une tâche qui tient en une semaine, et que je pars de briques déjà testées. Si la plus coûteuse est trop grosse, je livre une première partie utile et le reste va dans le Sprint chiffré.</p></details><details><summary>On n'a personne pour maintenir ça.</summary><p>C'est le rôle de la passation&nbsp;: agents documentés, alertes dans Slack, un référent formé. Après un Sprint, je surveille les agents pendant 30 jours.</p></details><details><summary>Et si on recrute quand même un RevOps&nbsp;?</summary><p>Tant mieux&nbsp;: les agents font la plomberie, lui pilote. Dans le Sprint, je t'écris la fiche de poste de ce RevOps, recentrée sur ce que les agents ne font pas.</p></details><details><summary>Pourquoi pas un outil no-code ou l'IA&nbsp;?</summary><p>Je les utilise quand ils servent. Le sur-mesure se justifie quand ta façon de vendre ne rentre pas dans un template, et c'est souvent là que se cachent les heures perdues.</p></details></div>
     </div>
   </section>
 
-  <section class="block alt" id="outils">
+  <section class="block" id="outils">
     <div class="wrap">
       <span class="eyebrow">Pas prêt pour un appel&nbsp;?</span>
       <h2>Commence par mesurer.</h2>
@@ -275,17 +302,17 @@ footer a:hover{color:#fff}
 
   <section class="final">
     <div class="wrap">
-      <h2>Quelle tâche ton équipe refait chaque lundi&nbsp;?</h2>
-      <p>Raconte-la-moi en 20 minutes. Je te dis si elle tient en 7&nbsp;jours, et combien d'heures elle te coûte.</p>
+      <h2>Envoie-moi ta fiche de poste.</h2>
+      <p>En 20 minutes, on la regarde ligne par ligne. Je te dis lesquelles de ses tâches des agents peuvent reprendre, et ce qu'elles te coûtent aujourd'hui.</p>
       <a class="btn btn-accent" href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="final" target="_blank" rel="noopener">Réserver 20 minutes</a>
-      <p class="micro">La Semaine Sans Ressaisie · Ta tâche la plus coûteuse, automatisée en 7&nbsp;jours · prix fixe</p>
+      <p class="micro">Le Premier Agent · Un agent en production en 7&nbsp;jours · 2&nbsp;000&nbsp;€ HT, crédités sur le Sprint</p>
     </div>
   </section>
 
   <footer>
     <div class="wrap">
-      <span>Florian Marin · Ton CRM branché sur toute ta stack · Montpellier</span>
-      <span><a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a><a href="/calculateur/">Calculateur</a><a href="/diagnostic/">Diagnostic</a><a href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="footer" target="_blank" rel="noopener">Réserver 20 minutes</a></span>
+      <span>Florian Marin · Méthode Fiche de Poste · Montpellier</span>
+      <span><a href="https://www.linkedin.com/in/florian-marin/" target="_blank" rel="noopener">LinkedIn</a> <a href="value-assets/methode-fiche-de-poste/">Méthode</a> <a href="/calculateur/">Calculateur</a> <a href="/diagnostic/">Diagnostic</a> <a href="https://calendly.com/florian-marin/revops-sprint-discovery" data-loc="footer" target="_blank" rel="noopener">Réserver 20 minutes</a></span>
     </div>
   </footer>
 

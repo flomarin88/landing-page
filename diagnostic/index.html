@@ -149,6 +149,9 @@
   .leak .big{font-size:38px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px}
   .leak .sub{color:var(--muted);font-size:13.5px;margin:0}
   .calc{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin-top:16px}
+  .leak .fte{margin-top:8px;color:var(--text);font-weight:600}
+  .final .micro a{color:var(--accent);font-weight:600}
+  .final .small-note{color:var(--muted);font-size:14.5px;margin:0 auto 18px;max-width:50ch}
   .calc b{color:var(--text)}
   .prio{display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
   .prio:first-of-type{border-top:none;padding-top:4px}
@@ -196,7 +199,7 @@
     </ul>
     <button class="cta-btn" id="start">Je fais mon diagnostic →</button>
     <p class="micro">Ton profil s'affiche tout de suite. Le diagnostic complet arrive par email.</p>
-    <p class="for">Pour les équipes commerciales SaaS et tech B2B, de 20 à 500 personnes.</p>
+    <p class="for">Pour les équipes commerciales SaaS et tech B2B, de 50 à 300 personnes.</p>
 
     <div class="card example" aria-label="Exemple de résultat">
       <div class="eyebrow">Exemple de résultat</div>
@@ -243,6 +246,11 @@
     <div class="field">
       <span class="lbl">Ton CRM aujourd'hui ?</span>
       <div class="chips" id="crmChips"></div>
+    </div>
+    <div class="field">
+      <span class="lbl">Qui fait le travail Ops aujourd'hui ?</span>
+      <p class="hint">Mettre à jour le CRM, rapprocher la facturation, relancer, préparer le forecast.</p>
+      <div class="chips" id="opsChips"></div>
     </div>
     <div class="field">
       <label for="people">Combien de personnes saisissent des données commerciales chaque semaine ?</label>
@@ -311,6 +319,7 @@
         <p class="sub">Ce que la ressaisie te coûte</p>
         <div class="big grad" id="rAnnual"></div>
         <p class="sub" id="rAnnualDetail"></p>
+        <p class="sub fte" id="rFte"></p>
       </div>
       <div class="card full">
         <h3>Ce que ça te coûte de rester comme ça</h3>
@@ -331,14 +340,20 @@
         </dl>
       </div>
       <div class="card final">
-        <h2>Ta première automatisation, en production en 7 jours.</h2>
-        <p>C'est La Semaine Sans Ressaisie : j'automatise la tâche qui coûte le plus à ton équipe, en production le vendredi. Prix fixe, et remboursé si ce n'est pas en production. Audit, roadmap et transfert de connaissance offerts.</p>
-        <div class="reasons">
-          <div class="reason"><b>Capacité réelle :</b> je travaille seul, une semaine, un client.</div>
-          <div class="reason"><b>Chaque semaine compte :</b> <span id="rWeekly"></span> qui partent en ressaisie.</div>
+        <div id="finalOffer">
+          <h2>Tes 3 priorités, c'est l'étape 1 de la Méthode Fiche de Poste.</h2>
+          <p><span id="rHiring"></span>La suite, c'est <b>Le Premier Agent</b> : en 7 jours, je décortique les tâches Ops de ton équipe (ou la fiche de poste du RevOps que tu allais recruter), je mets un premier agent en production et je chiffre le reste. 2 000 € HT, crédités à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.</p>
+          <div class="reasons">
+            <div class="reason"><b>Capacité réelle :</b> je travaille seul, 2 Premiers Agents par mois au maximum.</div>
+            <div class="reason"><b>Chaque semaine compte :</b> <span id="rWeekly"></span> qui partent en ressaisie.</div>
+          </div>
+          <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Envoie-moi ta fiche de poste · 20 min →</a>
+          <p class="micro">En 20 minutes, on regarde tes tâches Ops ligne par ligne et je te dis franchement lesquelles des agents peuvent reprendre. <a href="../value-assets/methode-fiche-de-poste/" target="_blank" rel="noopener">Voir la méthode en 4 étapes</a>.</p>
         </div>
-        <a class="cta-btn" id="book" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Réserver le Chrono 20 minutes →</a>
-        <p class="micro">En 20 minutes, on chronomètre la tâche ensemble et je te dis franchement si elle tient en 7 jours.</p>
+        <div id="finalSmall" style="display:none">
+          <h2>Tes 3 priorités, tu peux les lancer seul.</h2>
+          <p class="small-note">Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus. Chaque mardi, <i>Scaler sans alourdir</i> t'envoie un cas terrain pour avancer.</p>
+        </div>
         <button class="ghost restart" id="restart">Refaire le diagnostic</button>
       </div>
     </div>
@@ -577,7 +592,15 @@ function diagCompute(ans, ctx){
   function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
   function axisLabel(key){ for(var i=0;i<DIAG.axes.length;i++){ if(DIAG.axes[i].key===key) return DIAG.axes[i].label; } return ''; }
 
-  var answers = {}, size = null, crm = null, hoursTouched = false;
+  // Question de contexte hors bloc DIAG (le build n8n ne la voit pas) : qui porte le travail Ops.
+  var OPS = [
+    {id: 'personne', label: "Personne, quand on y pense"},
+    {id: 'a-cote', label: "Le VP Sales ou un commercial, en plus de son poste"},
+    {id: 'revops', label: "Un RevOps ou Sales Ops en poste"},
+    {id: 'recrute', label: "On recrute un RevOps"}
+  ];
+  var SMALL = ['lt20', '20-50']; // sous 50 personnes : pas de prise de rendez-vous, la newsletter suffit
+  var answers = {}, size = null, crm = null, ops = null, hoursTouched = false;
   var step = 0, started = false, completed = false, leadSent = false, result = null;
   // Ordre d'affichage tiré une fois : l'échelle ne se devine pas.
   var order = DIAG.questions.map(function(){ return shuffle([0,1,2,3]); });
@@ -653,7 +676,8 @@ function diagCompute(ans, ctx){
   }
   chips('sizeChips', DIAG.sizes, function(id){ size = id; });
   chips('crmChips', DIAG.crms, function(id){ crm = id; });
-  function ctxReady(){ $('seeResult').disabled = !(size && crm); }
+  chips('opsChips', OPS, function(id){ ops = id; });
+  function ctxReady(){ $('seeResult').disabled = !(size && crm && ops); }
   $('hours').addEventListener('input', function(){ $('hoursVal').textContent = $('hours').value; hoursTouched = true; });
   function openContext(){
     if(!hoursTouched){ var h = diagHours(answers); $('hours').value = h; $('hoursVal').textContent = h; }
@@ -693,6 +717,15 @@ function diagCompute(ans, ctx){
     $('rActions').textContent = r.recette.actions;
     $('rRemoves').textContent = r.recette.removes;
     $('rWeekly').textContent = euro(r.weekly)+' par semaine';
+    var fte = r.people * r.hours / 35;
+    var fr1 = new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1});
+    $('rFte').textContent = fte >= 1
+      ? "Soit l'équivalent de "+fr1.format(fte)+(fte >= 2 ? ' postes' : ' poste')+" à temps plein (base 35 h), payé"+(fte >= 2 ? 's' : '')+" à recopier."
+      : fte > 0 ? "Soit l'équivalent de "+Math.round(fte*100)+" % d'un poste à temps plein (base 35 h), payé à recopier." : '';
+    var small = SMALL.indexOf(size) >= 0;
+    $('finalOffer').style.display = small ? 'none' : 'block';
+    $('finalSmall').style.display = small ? 'block' : 'none';
+    $('rHiring').textContent = ops === 'recrute' ? "Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre. " : '';
   }
 
   $('seeResult').addEventListener('click', function(){
@@ -719,11 +752,11 @@ function diagCompute(ans, ctx){
       hp: $('website').value,
       elapsed_ms: Date.now() - LOADED_AT,
       answers: answers,
-      size: size, crm: crm,
+      size: size, crm: crm, ops: ops,
       people: result.people, hours: result.hours
     };
     leadSent = true;
-    track('Diagnostic Lead', { profil: result.profile.name, taille: size });
+    track('Diagnostic Lead', { profil: result.profile.name, taille: size, ops: ops });
 
     function reveal(){
       $('gate').style.display = 'none';
@@ -750,7 +783,7 @@ function diagCompute(ans, ctx){
   });
 
   $('restart').addEventListener('click', function(){
-    answers = {}; size = null; crm = null; hoursTouched = false; step = 0; completed = false; leadSent = false; result = null;
+    answers = {}; size = null; crm = null; ops = null; hoursTouched = false; step = 0; completed = false; leadSent = false; result = null;
     order = DIAG.questions.map(function(){ return shuffle([0,1,2,3]); });
     document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('sel'); });
     $('seeResult').disabled = true;

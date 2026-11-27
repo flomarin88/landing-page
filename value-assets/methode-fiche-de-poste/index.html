@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Méthode Fiche de Poste · Florian Marin</title>
+<meta name="description" content="Avant de recruter ton RevOps, donne sa fiche de poste à des agents. La Méthode Fiche de Poste en 4 étapes et 6 semaines.">
+<!--
+  Board « Méthode Fiche de Poste » (24/11/2026), même moteur que les boards Stack Possédée et Scalezia.
+  Chiffres du cas client : anonymisés (« réseau de 40 agences »). À publier seulement après l'accord écrit de Romain.
+  Mode intégré : dans une iframe (ou avec ?embed), la molette ne fait plus défiler les étapes et un bouton « Plein écran » apparaît.
+-->
+<style>
+  :root{
+    --bg:#f4f5f7; --dot:#d7dbe0; --ink:#1f2733; --sub:#5b6472;
+    --box:#ffffff; --line:#9aa4b2;
+    --blue:#2f6fed; --blueSoft:#eaf1ff;
+    --amber:#b9770a; --amberSoft:#fff5e2;
+    --red:#c23b3b; --redSoft:#fdecec;
+    --heart:#0f9d8f; --heartSoft:#e5f7f4;
+    --green:#1f9254; --greenSoft:#e7f6ee;
+    --gray:#586170; --graySoft:#eef0f3;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);}
+  #viewport{
+    position:fixed;inset:0;background:var(--bg);
+    background-image:radial-gradient(var(--dot) 1.4px, transparent 1.4px);
+    background-size:26px 26px;overflow:hidden;cursor:grab;touch-action:pan-y;
+  }
+  #world{position:absolute;top:0;left:0;transform-origin:0 0;transition:transform .95s cubic-bezier(.55,.06,.2,1);}
+  svg.wires{position:absolute;top:0;left:0;overflow:visible;pointer-events:none;}
+
+  .frame{position:absolute;border:2px dashed #c3cbd6;border-radius:20px;background:rgba(255,255,255,.35);}
+  .frame .tag{position:absolute;top:-14px;left:22px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:13px;font-weight:700;letter-spacing:.02em;color:var(--sub);white-space:nowrap;}
+
+  .node{position:absolute;background:var(--box);border:1px solid #e2e6ec;border-left:6px solid var(--blue);
+    border-radius:14px;padding:14px 16px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;
+    transition:box-shadow .2s, transform .2s;}
+  .node:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .node.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+  .node .n{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--sub);text-transform:uppercase;}
+  .node .t{font-size:19px;font-weight:800;line-height:1.15;margin-top:4px;}
+  .node .s{font-size:14px;color:var(--sub);line-height:1.3;margin-top:7px;}
+  .badge{position:absolute;top:-12px;right:-10px;background:var(--heart);color:#fff;font-size:12px;font-weight:800;
+    padding:4px 10px;border-radius:999px;box-shadow:0 4px 10px rgba(15,157,143,.4);}
+  .badge.blue{background:var(--blue);box-shadow:0 4px 10px rgba(47,111,237,.4);}
+
+  .node.problem{border-left-color:var(--amber);background:var(--amberSoft);}
+  .node.bad{border-left-color:var(--red);background:var(--redSoft);}
+  .node.heart{border-left-color:var(--heart);background:var(--heartSoft);}
+  .node.cta{border-left-color:var(--green);background:var(--greenSoft);}
+  .node.start{border-left-color:var(--gray);background:var(--graySoft);}
+  .node.agent{border-left-color:var(--heart);}
+  .node.quote .t{font-size:17px;font-style:italic;}
+
+  .pcard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-top:5px solid var(--blue);border-radius:14px;
+    padding:12px 15px;box-shadow:0 6px 18px rgba(31,39,51,.08);cursor:pointer;transition:box-shadow .2s;}
+  .pcard:hover{box-shadow:0 12px 28px rgba(31,39,51,.16);}
+  .pcard.why{background:var(--graySoft);border-top-color:var(--gray);}
+  .pcard .h{font-size:16px;font-weight:800;line-height:1.15;}
+  .pcard ul{margin:9px 0 0;padding-left:15px;}
+  .pcard li{font-size:12.5px;color:#3a4351;line-height:1.5;}
+  .pcard.active{box-shadow:0 0 0 3px rgba(47,111,237,.35),0 14px 30px rgba(31,39,51,.20);}
+
+  /* Départ : la fiche de poste */
+  .stackzone{position:absolute;border:2px dashed #c3cbd6;border-radius:18px;background:rgba(255,255,255,.35);cursor:pointer;padding:26px 14px 14px;}
+  .stackzone .zt{position:absolute;top:-14px;left:18px;background:#fff;border:1px solid #cfd6e0;border-radius:999px;
+    padding:3px 12px;font-size:12.5px;font-weight:800;color:var(--sub);white-space:nowrap;}
+  .jd{background:#fff;border:1px solid #e2e6ec;border-radius:14px;box-shadow:0 6px 18px rgba(31,39,51,.08);padding:14px 16px;}
+  .jd .k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);}
+  .jd .ttl{font-size:18px;font-weight:800;margin-top:3px;}
+  .jd .meta{font-size:11.5px;color:var(--sub);margin-top:2px;}
+  .jd ul{list-style:none;margin:12px 0 0;padding:0;}
+  .jd li{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:#3a4351;
+    line-height:1.25;border-top:1px dashed #e2e6ec;padding:8px 0 0;margin-top:8px;}
+  .jd li:first-child{margin-top:0;}
+  .tagA,.tagH{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 8px;white-space:nowrap;flex:0 0 auto;}
+  .tagA{background:var(--heartSoft);color:var(--heart);border:1px solid #bfe8e2;}
+  .tagH{background:var(--graySoft);color:var(--gray);border:1px solid #d5dae1;}
+
+  /* cartes preuve */
+  .casecard{position:absolute;background:#fff;border:1px solid #e2e6ec;border-left:6px solid var(--green);border-radius:14px;
+    padding:14px 16px;box-shadow:0 8px 22px rgba(31,39,51,.10);cursor:pointer;}
+  .casecard .ch{display:flex;align-items:center;gap:10px;}
+  .casecard .av{width:40px;height:40px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .casecard .ct{font-size:15px;font-weight:800;line-height:1.15;}
+  .casecard .cs{font-size:11.5px;color:var(--sub);margin-top:1px;}
+  .casecard .metrics{margin-top:10px;display:flex;flex-direction:column;gap:7px;}
+  .casecard .m{display:flex;align-items:baseline;gap:8px;}
+  .casecard .m b{font-size:14px;color:var(--green);min-width:112px;flex:0 0 auto;}
+  .casecard .m span{font-size:12px;color:#3a4351;}
+  .casecard.tight .m b{min-width:72px;}
+  .casecard .foot{margin-top:10px;font-size:11.5px;color:var(--sub);line-height:1.35;}
+
+  .ctalink{display:inline-block;margin-top:10px;background:var(--green);color:#fff;text-decoration:none;font-weight:800;
+    font-size:14px;border-radius:999px;padding:8px 14px;}
+  .ctalink:hover{background:#187a45;}
+
+  /* UI */
+  #bar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.96);border:1px solid #dfe3ea;border-radius:999px;padding:8px 10px;
+    box-shadow:0 10px 30px rgba(31,39,51,.16);z-index:50;font-size:14px;white-space:nowrap;}
+  #bar button,#bar a{border:none;background:#f0f2f5;border-radius:999px;padding:9px 14px;font-weight:700;cursor:pointer;color:var(--ink);font-size:14px;text-decoration:none;font-family:inherit;}
+  #bar button:hover,#bar a:hover{background:#e3e7ee;}
+  #bar .prim{background:var(--blue);color:#fff;}
+  #bar .prim:hover{background:#2560d8;}
+  #full{display:none;}
+  #counter{min-width:52px;text-align:center;font-variant-numeric:tabular-nums;color:var(--sub);font-weight:700;}
+  #titlechip{position:fixed;left:22px;top:20px;background:rgba(255,255,255,.96);border:1px solid #dfe3ea;
+    border-radius:12px;padding:10px 16px;box-shadow:0 8px 22px rgba(31,39,51,.12);z-index:50;max-width:60vw;}
+  #titlechip .k{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+  #titlechip .v{font-size:18px;font-weight:800;margin-top:2px;}
+  .hint{position:fixed;right:22px;top:20px;background:rgba(255,255,255,.9);border:1px solid #e2e6ec;border-radius:10px;
+    padding:8px 12px;font-size:12.5px;color:var(--sub);z-index:50;}
+  .hidden{opacity:0!important;pointer-events:none!important;}
+
+  /* mode intégré (iframe sur la page de vente) */
+  body.embed .hint{display:none;}
+  body.embed #full{display:inline-block;}
+  body.embed #bar{bottom:14px;padding:6px 8px;gap:6px;}
+  body.embed #bar button,body.embed #bar a{padding:7px 11px;font-size:13px;}
+  body.embed #titlechip{left:14px;top:12px;padding:8px 12px;}
+  body.embed #titlechip .v{font-size:15px;}
+  @media (max-width:640px){
+    .hint{display:none;}
+    #over{display:none;}
+    #titlechip{max-width:calc(100vw - 28px);left:14px;top:12px;}
+    #titlechip .v{font-size:15px;}
+  }
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="world">
+    <svg class="wires" id="wires"></svg>
+
+    <!-- Cadres (principes) -->
+    <div class="frame" data-cover="n-e1" style="left:670px;top:398px;width:310px;height:210px;"><span class="tag">Avant tout · Mesurer</span></div>
+    <div class="frame" data-cover="n-e2 n-e2b" style="left:1030px;top:388px;width:670px;height:250px;"><span class="tag">PRINCIPE 1 · Une tâche = un agent, testé</span></div>
+    <div class="frame" data-cover="n-e3" style="left:1750px;top:398px;width:310px;height:210px;"><span class="tag">PRINCIPE 2 · Une date, garantie</span></div>
+    <div class="frame" data-cover="n-e4" style="left:2110px;top:398px;width:320px;height:210px;"><span class="tag">PRINCIPE 3 · Je pars, tout reste chez toi</span></div>
+
+    <!-- Départ : la fiche de poste du RevOps -->
+    <div class="stackzone" id="n-start" style="left:2px;top:195px;width:350px;">
+      <span class="zt">La fiche de poste que tu allais publier</span>
+      <div class="jd">
+        <div class="k">Offre d'emploi · CDI</div>
+        <div class="ttl">RevOps Manager (H/F)</div>
+        <div class="meta">Scaleup B2B SaaS · 50 à 300 personnes</div>
+        <ul>
+          <li>Mettre à jour le CRM après chaque call<span class="tagA">agent</span></li>
+          <li>Rapprocher Stripe et le CRM<span class="tagA">agent</span></li>
+          <li>Relancer les deals inactifs<span class="tagA">agent</span></li>
+          <li>Dédoublonner la base<span class="tagA">agent</span></li>
+          <li>Préparer la revue pipeline du lundi<span class="tagA">agent</span></li>
+          <li>Router les leads entrants<span class="tagA">agent</span></li>
+          <li>Définir le process de vente<span class="tagH">humain</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Preuves sous la fiche -->
+    <div class="casecard" id="n-case" style="left:2px;top:715px;width:350px;">
+      <div class="ch">
+        <div class="av"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#e7f6ee" stroke="#1f9254" stroke-width="5"/><text x="50" y="62" text-anchor="middle" font-family="-apple-system,Segoe UI,Arial,sans-serif" font-weight="800" font-size="34" fill="#1f9254">40</text></svg></div>
+        <div><div class="ct">Cas réel · réseau de 40 agences</div><div class="cs">agents en production · mesurés vs baseline</div></div>
+      </div>
+      <div class="metrics">
+        <div class="m"><b>7 min 30 → 39 s</b><span>saisie d'une vente (médiane, ~370 ventes/mois)</span></div>
+        <div class="m"><b>19 onglets → 0</b><span>tableurs rapprochés à la main chaque mois</span></div>
+        <div class="m"><b>+7 700 tests</b><span>derrière les agents en production</span></div>
+      </div>
+    </div>
+    <div class="casecard" id="n-me" style="left:2px;top:960px;width:350px;">
+      <div class="ct">Pourquoi moi</div>
+      <div class="metrics">
+        <div class="m"><b>15 ans d'ingénierie</b><span>ex-CTO Tiime · ex-EM Senior Aircall (Sales Tech)</span></div>
+        <div class="m"><b>Je construis</b><span>je code les agents moi-même, je ne délègue pas</span></div>
+        <div class="m"><b>Agents au quotidien</b><span>mon propre atelier de dev tourne sur des agents</span></div>
+        <div class="m"><b>Je pars</b><span>prix fixe, pas de TJM, pas d'éditeur partenaire</span></div>
+      </div>
+    </div>
+
+    <!-- Le constat -->
+    <div class="node problem" id="n-prob" style="left:380px;top:450px;width:250px;">
+      <div class="n">Le constat</div>
+      <div class="t">Ton CRM ne suit plus à 50+</div>
+      <div class="s">saisie après chaque call · Stripe rapproché à la main · revue du lundi sous Excel</div>
+    </div>
+
+    <!-- La fausse route -->
+    <div class="node bad" id="n-b1" style="left:380px;top:640px;width:250px;">
+      <div class="n">La fausse route</div>
+      <div class="t" style="font-size:17px;">« Il nous faut un RevOps »</div>
+    </div>
+    <div class="node bad" id="n-b2" style="left:380px;top:760px;width:250px;">
+      <div class="t" style="font-size:17px;">Des mois de recrutement, puis d'onboarding</div>
+    </div>
+    <div class="node bad" id="n-b3" style="left:380px;top:880px;width:250px;">
+      <div class="t" style="font-size:17px;">60 à 90 k€ par an. Chaque année.</div>
+    </div>
+    <div class="node bad" id="n-b4" style="left:380px;top:1000px;width:250px;">
+      <div class="t" style="font-size:17px;">Il part.</div>
+      <div class="s">Ce qu'il savait part avec lui.</div>
+    </div>
+
+    <!-- ÉTAPE 1 · Décortiquer -->
+    <div class="node" id="n-e1" style="left:700px;top:450px;width:250px;">
+      <div class="n">Étape 1 · S1</div><div class="t">Décortiquer la fiche de poste</div>
+      <div class="s">chaque tâche découpée et chronométrée</div>
+    </div>
+    <div class="pcard why" id="n-e1-why" style="left:700px;top:600px;width:250px;">
+      <div class="h">Pourquoi d'abord</div>
+      <ul>
+        <li>Sans mesure, pas de résultat prouvé</li>
+        <li>La fiche dit déjà quoi automatiser</li>
+        <li>Agent ou humain : on tranche ligne par ligne</li>
+      </ul>
+    </div>
+    <div class="pcard" id="n-e1-p1" style="left:700px;top:600px;width:250px;">
+      <div class="h">1 · Lire la fiche</div>
+      <ul>
+        <li>Fiche de poste RevOps, ou tâches Ops actuelles</li>
+        <li>Une ligne = une tâche</li>
+        <li>Qui la fait aujourd'hui, à quelle fréquence</li>
+      </ul>
+    </div>
+    <div class="pcard" id="n-e1-p2" style="left:700px;top:600px;width:250px;">
+      <div class="h">2 · Chronométrer</div>
+      <ul>
+        <li>Heures de saisie par commercial</li>
+        <li>Réconciliation Stripe ↔ CRM</li>
+        <li>Fraîcheur du pipeline</li>
+      </ul>
+    </div>
+    <div class="pcard" id="n-e1-p3" style="left:700px;top:600px;width:250px;">
+      <div class="h">3 · Trancher</div>
+      <ul>
+        <li>Répétitif, à règles claires → agent</li>
+        <li>Jugement, arbitrage → humain</li>
+        <li>Ordre : les heures gagnées d'abord</li>
+      </ul>
+    </div>
+    <div class="node cta" id="n-e1-dod" style="left:700px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Fiche annotée + baseline</div>
+      <div class="s">chaque ligne : agent ou humain · 3 KPIs mesurés en S1</div>
+    </div>
+
+    <!-- ÉTAPE 2 · Automatiser (le cœur) -->
+    <div class="node heart" id="n-e2" style="left:1060px;top:445px;width:250px;">
+      <span class="badge">le cœur</span>
+      <div class="n">Étape 2 · S2-S4</div><div class="t">Une tâche = un agent</div>
+      <div class="s">8 à 10 agents et intégrations autour du CRM</div>
+    </div>
+    <div class="pcard why" id="n-e2-why" style="left:1060px;top:600px;width:250px;">
+      <div class="h">C'est quoi, un agent ?</div>
+      <ul>
+        <li>Un workflow qui fait une tâche de bout en bout</li>
+        <li>De l'IA quand elle sert, sans quand elle ne sert pas</li>
+        <li>Il tourne sans qu'on le lance</li>
+      </ul>
+    </div>
+    <div class="node agent" id="n-e2-a1" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Agent · 1</div><div class="t">CRM à jour après chaque call</div>
+      <div class="s">Aircall / Modjo → champs du deal → résumé Slack</div>
+    </div>
+    <div class="node agent" id="n-e2-a2" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Agent · 2</div><div class="t">Stripe rapproché du CRM</div>
+      <div class="s">paiements · abonnements · deal gagné sans paiement → alerte</div>
+    </div>
+    <div class="node agent" id="n-e2-a3" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Agent · 3</div><div class="t">Relances et dédoublonnage</div>
+      <div class="s">deal inactif → alerte au commercial · 1 société = 1 compte</div>
+    </div>
+    <div class="node agent" id="n-e2-a4" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Agent · 4</div><div class="t">Revue pipeline du lundi</div>
+      <div class="s">le forecast sort tout seul, dans le CRM</div>
+    </div>
+    <div class="node agent" id="n-e2-a5" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Agent · 5</div><div class="t">Leads routés</div>
+      <div class="s">le bon lead au bon commercial, avec son contexte</div>
+    </div>
+    <div class="node start" id="n-e2-h" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Reste à l'humain</div><div class="t">Process de vente, territoires</div>
+      <div class="s">le VP Sales décide, les agents exécutent</div>
+    </div>
+    <div class="node cta" id="n-e2-dod" style="left:1060px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Les tâches répétitives tournent</div>
+      <div class="s">chaque agent remplace une ligne de la fiche · heures re-mesurées</div>
+    </div>
+
+    <!-- ÉTAPE 2 · le mécanisme -->
+    <div class="node" id="n-e2b" style="left:1420px;top:445px;width:250px;">
+      <span class="badge blue">la différence</span>
+      <div class="n">Étape 2 · le mécanisme</div><div class="t">Construits comme du logiciel</div>
+      <div class="s">pas des workflows bricolés</div>
+    </div>
+    <div class="pcard why" id="n-e2b-why" style="left:1420px;top:600px;width:250px;">
+      <div class="h">Pourquoi c'est ce qui compte</div>
+      <ul>
+        <li>Un workflow non testé casse sans bruit</li>
+        <li>Je pars : ça doit tourner sans moi</li>
+        <li>Ingénieur, ex-CTO : c'est mon métier</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e2b-c1" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Comment · 1</div><div class="t">Tests automatisés</div>
+      <div class="s">chaque agent testé avant chaque mise en prod</div>
+    </div>
+    <div class="node" id="n-e2b-c2" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Comment · 2</div><div class="t">Code versionné dans ton GitHub</div>
+      <div class="s">historique · relecture · retour arrière possible</div>
+    </div>
+    <div class="node" id="n-e2b-c3" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Comment · 3</div><div class="t">Self-hosted, à toi</div>
+      <div class="s">n8n sur ton serveur · Postgres · secrets hors du code</div>
+    </div>
+    <div class="node" id="n-e2b-c4" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Comment · 4</div><div class="t">Logs et alertes Slack</div>
+      <div class="s">un agent qui échoue prévient, il ne se tait pas</div>
+    </div>
+    <div class="node" id="n-e2b-c5" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Comment · 5</div><div class="t">Workflow traceur</div>
+      <div class="s">un faux deal traverse la stack chaque jour</div>
+    </div>
+    <div class="node cta" id="n-e2b-dod" style="left:1420px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Ça casse ? On le sait.</div>
+      <div class="s">alerte Slack sur chaque échec · runbook de reprise écrit</div>
+    </div>
+    <div class="node problem quote" id="n-e2b-q" style="left:1420px;top:600px;width:250px;">
+      <div class="n">La question à poser</div>
+      <div class="t">« Combien de tests couvrent les workflows de ton agence ? »</div>
+    </div>
+
+    <!-- ÉTAPE 3 · Mettre en prod -->
+    <div class="node" id="n-e3" style="left:1780px;top:450px;width:250px;">
+      <div class="n">Étape 3 · S5-S6</div><div class="t">Mettre en production</div>
+      <div class="s">agents en prod · garantie Go-Live</div>
+    </div>
+    <div class="pcard why" id="n-e3-why" style="left:1780px;top:600px;width:250px;">
+      <div class="h">Pourquoi une date</div>
+      <ul>
+        <li>Un agent pas en prod ne rapporte rien</li>
+        <li>6 semaines, datées dès la signature</li>
+        <li>Sinon, je continue sans facturer</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e3-s1" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 1</div><div class="t">Recette avec l'équipe</div>
+      <div class="s">données réelles · cas limites · validation du référent</div>
+    </div>
+    <div class="node" id="n-e3-s2" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 2</div><div class="t">Bascule en production</div>
+      <div class="s">un agent à la fois · retour arrière prêt</div>
+    </div>
+    <div class="node" id="n-e3-s3" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 3</div><div class="t">Surveillance renforcée</div>
+      <div class="s">logs relus chaque jour la première semaine</div>
+    </div>
+    <div class="node" id="n-e3-s4" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Étape · 4</div><div class="t">Re-mesure vs baseline</div>
+      <div class="s">heures de saisie · réconciliation · fraîcheur du pipe</div>
+    </div>
+    <div class="pcard" id="n-e3-cond" style="left:1780px;top:600px;width:250px;">
+      <div class="h">Conditions de la garantie</div>
+      <ul>
+        <li>Accès sous 5 jours ouvrés</li>
+        <li>Un référent disponible</li>
+        <li>Validations sous 24 h</li>
+        <li>Scope figé (hors scope = avenant)</li>
+      </ul>
+    </div>
+    <div class="node cta" id="n-e3-dod" style="left:1780px;top:600px;width:250px;">
+      <div class="n">Definition of Done</div><div class="t">Go-Live garanti</div>
+      <div class="s">agents en prod en S6, sinon je continue sans facturer jusqu'au go-live</div>
+    </div>
+
+    <!-- ÉTAPE 4 · Transmettre et partir -->
+    <div class="node" id="n-e4" style="left:2140px;top:450px;width:260px;">
+      <div class="n">Étape 4 · S6 → J+30</div><div class="t">Transmettre et partir</div>
+      <div class="s">équipe formée · stack possédée · je pars</div>
+    </div>
+    <div class="pcard why" id="n-e4-why" style="left:2140px;top:600px;width:260px;">
+      <div class="h">Pourquoi je pars</div>
+      <ul>
+        <li>Un RevOps est payé pour rester, moi pour finir</li>
+        <li>L'adoption ne se décrète pas</li>
+        <li>Tout reste chez toi</li>
+      </ul>
+    </div>
+    <div class="node" id="n-e4-l1" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Levier · 1</div><div class="t">Tout documenter</div>
+      <div class="s">runbook : quoi, pourquoi, que faire si ça casse</div>
+    </div>
+    <div class="node" id="n-e4-l2" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Levier · 2</div><div class="t">Vidéos courtes</div>
+      <div class="s">pour les commerciaux, et pour le référent qui maintient</div>
+    </div>
+    <div class="node" id="n-e4-l3" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Levier · 3</div><div class="t">Un référent formé</div>
+      <div class="s">il sait lire un log, relancer un agent, en ajouter un</div>
+    </div>
+    <div class="node" id="n-e4-l4" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Levier · 4</div><div class="t">Mesure à J+30</div>
+      <div class="s">les 3 résultats re-mesurés vs la baseline de S1</div>
+    </div>
+    <div class="node cta" id="n-e4-dod" style="left:2140px;top:600px;width:260px;">
+      <div class="n">Definition of Done</div><div class="t">Stack Possédée</div>
+      <div class="s">tout est dans ton GitHub, sur ton serveur · si on arrête, ça tourne sans moi</div>
+    </div>
+
+    <!-- CTA + résultats + prix -->
+    <div class="node cta" id="n-cta" style="left:2500px;top:445px;width:280px;">
+      <div class="n">20 minutes</div><div class="t">Envoie-moi ta fiche de poste</div>
+      <div class="s">je te montre quelles tâches des agents peuvent faire en 6 semaines</div>
+      <a class="ctalink" href="https://calendly.com/florian-marin/revops-sprint-discovery" target="_blank" rel="noopener">Réserver 20 minutes →</a>
+    </div>
+    <div class="node cta" id="n-entry" style="left:2500px;top:600px;width:280px;">
+      <span class="badge">pour commencer</span>
+      <div class="n">La porte d'entrée · 7 jours</div><div class="t">Le Premier Agent</div>
+      <div class="s">fiche décortiquée et chronométrée · un agent en production · le Sprint chiffré ligne par ligne</div>
+      <div class="s"><b>2 000 € HT, crédités à 100 % sur le Sprint</b> signé sous 30 jours. Pas en prod le vendredi : remboursé.</div>
+    </div>
+    <div class="casecard tight" id="n-res" style="left:2500px;top:600px;width:280px;">
+      <div class="ct">Les 3 résultats mesurés</div>
+      <div class="metrics">
+        <div class="m"><b>Go-Live</b><span>en 6 semaines, garanti</span></div>
+        <div class="m"><b>Heures</b><span>de saisie et de réconciliation supprimées, par commercial</span></div>
+        <div class="m"><b>Forecast</b><span>à jour dans le CRM, lisible par la finance</span></div>
+      </div>
+      <div class="foot">Mesurés vs la baseline de S1, re-mesurés à J+30. Jamais promis : revenu, conversion, pipeline généré.</div>
+    </div>
+    <div class="node cta" id="n-price" style="left:2500px;top:600px;width:280px;">
+      <div class="n">Le Sprint</div><div class="t">25 000 € HT, prix fixe</div>
+      <div class="s">6 semaines · 8 à 10 agents et intégrations · un seul Sprint actif à la fois</div>
+      <div class="s">Inclus : la Fiche annotée, le Kit Référent, 30 jours de supervision, le Brief Recrutement</div>
+    </div>
+  </div>
+</div>
+
+<div id="titlechip"><div class="k">Vue</div><div class="v">Méthode Fiche de Poste</div></div>
+<div class="hint">← → naviguer · <b>O</b> vue d'ensemble · <b>H</b> masquer l'UI</div>
+
+<div id="bar">
+  <button id="prev" aria-label="Étape précédente">◀</button>
+  <span id="counter">1 / 23</span>
+  <button id="next" class="prim">Suivant ▶</button>
+  <button id="over">Vue d'ensemble</button>
+  <a id="full" href="./" target="_blank" rel="noopener">Plein écran ↗</a>
+</div>
+
+<script>
+const EMBED = window.self !== window.top || new URLSearchParams(location.search).has('embed');
+if (EMBED) document.body.classList.add('embed');
+
+const W = () => window.innerWidth, H = () => window.innerHeight;
+const world = document.getElementById('world');
+let bounds = {l:0,t:0,r:2860,b:2000};
+
+// chaînes verticales (mère + cases enfilées dessous)
+const chains = [
+  ['n-start','n-case','n-me'],
+  ['n-prob','n-b1','n-b2','n-b3','n-b4'],
+  ['n-e1','n-e1-why','n-e1-p1','n-e1-p2','n-e1-p3','n-e1-dod'],
+  ['n-e2','n-e2-why','n-e2-a1','n-e2-a2','n-e2-a3','n-e2-a4','n-e2-a5','n-e2-h','n-e2-dod'],
+  ['n-e2b','n-e2b-why','n-e2b-c1','n-e2b-c2','n-e2b-c3','n-e2b-c4','n-e2b-c5','n-e2b-dod','n-e2b-q'],
+  ['n-e3','n-e3-why','n-e3-s1','n-e3-s2','n-e3-s3','n-e3-s4','n-e3-cond','n-e3-dod'],
+  ['n-e4','n-e4-why','n-e4-l1','n-e4-l2','n-e4-l3','n-e4-l4','n-e4-dod'],
+  ['n-cta','n-entry','n-res','n-price'],
+];
+const STEP_CHAINS = chains.slice(2,7); // colonnes des 4 étapes (flèches bleues)
+
+function layoutChains(){
+  const GAP = 30;
+  chains.forEach(ch=>{
+    for(let k=1;k<ch.length;k++){
+      const prev=document.getElementById(ch[k-1]), cur=document.getElementById(ch[k]);
+      cur.style.top = (parseFloat(prev.style.top)+prev.offsetHeight+GAP)+'px';
+    }
+  });
+}
+function layoutFrames(){
+  document.querySelectorAll('.frame[data-cover]').forEach(f=>{
+    const bottom=Math.max(...f.dataset.cover.split(' ').map(id=>{const r=rectOf(id);return r.t+r.h;}));
+    f.style.height=(bottom+14-parseFloat(f.style.top))+'px';
+  });
+}
+function measureBounds(){
+  let l=Infinity,t=Infinity,r=-Infinity,b=-Infinity;
+  [...world.children].forEach(e=>{
+    if(e.tagName.toLowerCase()==='svg') return;
+    const x=parseFloat(e.style.left), y=parseFloat(e.style.top);
+    l=Math.min(l,x); t=Math.min(t,y-16); r=Math.max(r,x+e.offsetWidth); b=Math.max(b,y+e.offsetHeight);
+  });
+  bounds={l,t,r,b};
+}
+
+function c(id){const e=document.getElementById(id);return {x:parseFloat(e.style.left)+e.offsetWidth/2,y:parseFloat(e.style.top)+e.offsetHeight/2};}
+function rectOf(id){const e=document.getElementById(id);return {l:parseFloat(e.style.left),t:parseFloat(e.style.top),w:e.offsetWidth,h:e.offsetHeight};}
+
+// séquence des arrêts
+const steps = [
+  {k:'Intro', label:"Méthode Fiche de Poste", over:true},
+  {k:'Départ', label:"La fiche de poste que tu allais publier", id:'n-start', s:1.05},
+  {k:'Le constat', label:"Ton CRM ne suit plus à 50+", id:'n-prob', s:1.3},
+  {k:'La fausse route', label:"« Il nous faut un RevOps »", fit:['n-b1','n-b4']},
+  {k:'Preuves', label:"Cas réel + pourquoi moi", fit:['n-case','n-me']},
+  {k:'Étape 1', label:"Décortiquer la fiche de poste", fit:['n-e1','n-e1-why']},
+  {k:'1 · Détail', label:"Lire, chronométrer, trancher", fit:['n-e1-p1','n-e1-p3']},
+  {k:'1 · DoD', label:"Definition of Done", id:'n-e1-dod', s:1.28},
+  {k:'Étape 2', label:"Une tâche = un agent (le cœur)", fit:['n-e2','n-e2-why']},
+  {k:'2 · Agents', label:"Les agents, ligne par ligne", fit:['n-e2-a1','n-e2-a5']},
+  {k:'2 · Humain', label:"Ce qui reste à l'humain", fit:['n-e2-h','n-e2-dod']},
+  {k:'Le mécanisme', label:"Construits comme du logiciel", fit:['n-e2b','n-e2b-why']},
+  {k:'Mécanisme · comment', label:"Tests, versions, logs, alertes", fit:['n-e2b-c1','n-e2b-c5']},
+  {k:'Mécanisme · DoD', label:"Ça casse ? On le sait.", fit:['n-e2b-dod','n-e2b-q']},
+  {k:'Étape 3', label:"Mettre en production", fit:['n-e3','n-e3-why']},
+  {k:'3 · Bascule', label:"Recette, bascule, re-mesure", fit:['n-e3-s1','n-e3-s4']},
+  {k:'3 · Garantie', label:"Go-Live garanti", fit:['n-e3-cond','n-e3-dod']},
+  {k:'Étape 4', label:"Transmettre et partir", fit:['n-e4','n-e4-why']},
+  {k:'4 · Leviers', label:"Doc, vidéos, référent, J+30", fit:['n-e4-l1','n-e4-l4']},
+  {k:'4 · DoD', label:"Stack Possédée", id:'n-e4-dod', s:1.28},
+  {k:'Commencer', label:"Le Premier Agent, en 7 jours", fit:['n-cta','n-entry']},
+  {k:'Résultats', label:"Les 3 résultats, le prix", fit:['n-res','n-price']},
+  {k:'Récap', label:"La méthode complète", over:true},
+];
+
+let i = 0;
+function view(){ const top=EMBED?62:96, bot=EMBED?66:104; return {top, h:Math.max(120,H()-top-bot)}; }
+function fitBox(minL,minT,maxR,maxB,padX,cap){
+  const v=view();
+  const s=Math.min((W()-padX)/(maxR-minL), (v.h-20)/(maxB-minT), cap);
+  return {x:(minL+maxR)/2, y:(minT+maxB)/2, s};
+}
+function target(step){
+  if(step.over) return fitBox(bounds.l,bounds.t,bounds.r,bounds.b,60,1);
+  if(step.fit){
+    const rs=step.fit.map(rectOf);
+    return fitBox(Math.min(...rs.map(r=>r.l)),Math.min(...rs.map(r=>r.t)),
+                  Math.max(...rs.map(r=>r.l+r.w)),Math.max(...rs.map(r=>r.t+r.h)),120,1.1);
+  }
+  const p=c(step.id), r=rectOf(step.id), v=view();
+  const s=Math.min(step.s||1.3, (W()-60)/r.w, (v.h-30)/r.h);
+  return {x:p.x, y:p.y, s};
+}
+function apply(){
+  const st=steps[i], t=target(st), v=view();
+  world.style.transform=`translate(${W()/2-t.x*t.s}px,${v.top+v.h/2-t.y*t.s}px) scale(${t.s})`;
+  document.getElementById('counter').textContent=(i+1)+' / '+steps.length;
+  document.querySelector('#titlechip .k').textContent=st.k;
+  document.querySelector('#titlechip .v').textContent=st.label;
+  document.querySelectorAll('.node, .pcard').forEach(n=>n.classList.remove('active'));
+  if(st.id){const el=document.getElementById(st.id); if(el&&(el.classList.contains('node')||el.classList.contains('pcard'))) el.classList.add('active');}
+}
+function go(n){ i=Math.max(0,Math.min(steps.length-1,n)); apply(); }
+
+document.getElementById('next').onclick=()=>go(i+1);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.getElementById('over').onclick=()=>go(0);
+document.getElementById('full').href=location.pathname;
+
+// clic sur une case → focus
+document.querySelectorAll('.node, .pcard, .stackzone, .casecard').forEach(el=>{
+  el.addEventListener('click',e=>{
+    if(e.target.closest('a')) return;
+    const idx=steps.findIndex(s=>s.id===el.id || (s.fit&&s.fit.includes(el.id)));
+    if(idx>=0) go(idx);
+  });
+});
+
+// clavier
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(i+1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}
+  else if(e.key.toLowerCase()==='o'){go(0);}
+  else if(e.key.toLowerCase()==='h'){document.querySelectorAll('#bar,#titlechip,.hint').forEach(x=>x.classList.toggle('hidden'));}
+});
+// molette = avancer/reculer (désactivé en mode intégré pour ne pas bloquer le défilement de la page)
+if(!EMBED){
+  let wheelLock=false;
+  document.getElementById('viewport').addEventListener('wheel',e=>{
+    if(wheelLock)return; wheelLock=true; setTimeout(()=>wheelLock=false,650);
+    if(e.deltaY>0||e.deltaX>0)go(i+1); else go(i-1);
+  },{passive:true});
+}
+// glisser (mobile)
+let tx0=null, ty0=null;
+const vp=document.getElementById('viewport');
+vp.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX; ty0=e.touches[0].clientY;},{passive:true});
+vp.addEventListener('touchend',e=>{
+  if(tx0===null)return;
+  const dx=e.changedTouches[0].clientX-tx0, dy=e.changedTouches[0].clientY-ty0;
+  if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)) go(dx<0?i+1:i-1);
+  tx0=null;
+},{passive:true});
+
+// tracés
+function drawWires(){
+  const svg=document.getElementById('wires');
+  svg.setAttribute('width',bounds.r+100); svg.setAttribute('height',bounds.b+100);
+  let out=`<defs>
+    <marker id="ah" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa4b2"/></marker>
+    <marker id="ahr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 Z" fill="#c23b3b"/></marker>
+    <marker id="ahb" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 Z" fill="#2f6fed"/></marker>
+    <marker id="ahg" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 Z" fill="#1f9254"/></marker>
+  </defs>`;
+  const Y=507;
+  const main=['n-start','n-prob','n-e1','n-e2','n-e2b','n-e3','n-e4','n-cta'];
+  for(let k=0;k<main.length-1;k++){
+    const a=rectOf(main[k]), b=rectOf(main[k+1]);
+    out+=`<path d="M${a.l+a.w},${Y} L${b.l-9},${Y}" stroke="#9aa4b2" stroke-width="2.5" fill="none" marker-end="url(#ah)"/>`;
+  }
+  const vchain=(ch,color,marker,dash)=>{
+    for(let k=0;k<ch.length-1;k++){
+      const a=rectOf(ch[k]), b=rectOf(ch[k+1]); const cx=a.l+a.w/2;
+      out+=`<path d="M${cx},${a.t+a.h} L${cx},${b.t-9}" stroke="${color}" stroke-width="2.5" stroke-dasharray="${dash}" fill="none" marker-end="url(#${marker})"/>`;
+    }
+  };
+  vchain(chains[1],'#c23b3b','ahr','7 6');
+  STEP_CHAINS.forEach(ch=>vchain(ch,'#2f6fed','ahb','7 6'));
+  vchain(chains[7],'#1f9254','ahg','7 6');
+  svg.innerHTML=out;
+}
+
+function init(){
+  world.style.transition='none';
+  layoutChains(); layoutFrames(); measureBounds(); drawWires(); apply();
+  void world.offsetWidth; requestAnimationFrame(()=>{ world.style.transition=''; });
+}
+window.addEventListener('resize',apply);
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(init);}else{init();}
+init();
+</script>
+</body>
+</html>

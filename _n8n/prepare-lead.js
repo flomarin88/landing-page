@@ -170,6 +170,7 @@ function diagnosticEmail(d) {
     label('Ce que la ressaisie te coûte', '16px') +
     `<div style="font-family:${FONT};font-size:30px;font-weight:700;color:${C.accent};margin:0 0 6px">${euro(r.annual)} / an</div>` +
     p(`${formula}. Soit ${euro(r.weekly)} chaque semaine, sans compter les deals perdus sur des données en retard.`, 'font-size:14px') +
+    (fteLine(r) ? p(`<strong style="color:#FFFFFF">${fteLine(r)}</strong>`, 'font-size:14px') : '') +
     h3('Ce que ça te coûte de rester comme ça') + p(r.profile.cost) +
     p(`<strong style="color:#FFFFFF">Fais le calcul.</strong> ${r.profile.calc}`, `border-left:3px solid ${C.accent};padding-left:14px`) +
     h3('Tes 3 priorités') + `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${prios}</table>` +
@@ -179,9 +180,12 @@ function diagnosticEmail(d) {
 <div style="font-family:${FONT};font-size:17px;font-weight:700;color:#FFFFFF;margin:6px 0 4px">${r.recette.name}</div>
 ${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.recette.actions)}${recipeRow('Ce que ça supprime', r.recette.removes)}
 </td></tr></table>` +
-    p("Cette automatisation, je peux la mettre en production chez toi en une semaine. C'est La Semaine Sans Ressaisie : la tâche qui coûte le plus à ton équipe, en production le vendredi, ou je te rembourse. Je travaille seul : une semaine, un client.") +
-    p("En 20 minutes, on chronomètre la tâche ensemble et je te dis franchement si elle tient en 7 jours.") +
-    button('Réserver le Chrono 20 minutes →', CALENDLY) +
+    (d.small
+      ? p("Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus. Chaque mardi, la newsletter t'apporte un cas terrain pour avancer.")
+      : (d.hiring ? p("Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre.") : '') +
+        p(OFFER_DIAG) +
+        p("En 20 minutes, on regarde tes tâches Ops ligne par ligne et je te dis franchement lesquelles des agents peuvent reprendre.") +
+        button('Envoie-moi ta fiche de poste · 20 min →', CALENDLY)) +
     p('Tu recevras aussi ma newsletter, une idée RevOps chaque mardi.', 'font-size:14px');
 
   const text = [
@@ -190,12 +194,14 @@ ${recipeRow('Déclencheur', r.recette.trigger)}${recipeRow('Ce qui se passe', r.
     r.axes.map((a) => `- ${a.label} : ${a.pct} % (${a.key === r.weakest.key && r.profileKey !== 'solide' ? 'ton plafond' : a.level.name})`).join('\n') + `\nScore global : ${r.score} / 100`,
     `Ce qui te plafonne\n${r.profile.ceilText}`,
     'Où tu en es\n' + r.mirrors.map((m) => `- ${m}`).join('\n') + `\nTon point fort : ${r.strongest.label} (${r.strongest.pct} %).`,
-    `Ce que la ressaisie te coûte : ${euro(r.annual)} / an (${formula}, soit ${euro(r.weekly)} par semaine).`,
+    `Ce que la ressaisie te coûte : ${euro(r.annual)} / an (${formula}, soit ${euro(r.weekly)} par semaine).` + (fteLine(r) ? '\n' + fteLine(r) : ''),
     `Ce que ça te coûte de rester comme ça\n${r.profile.cost}\nFais le calcul. ${r.profile.calc}`,
     'Tes 3 priorités\n' + r.profile.prios.map((x, i) => `${i + 1}. ${x.t} : ${x.d}`).join('\n'),
     `Le plan de ta première automatisation : ${r.recette.name}\nDéclencheur : ${r.recette.trigger}\nCe qui se passe : ${r.recette.actions}\nCe que ça supprime : ${r.recette.removes}`,
-    "Cette automatisation, je peux la mettre en production chez toi en une semaine. C'est La Semaine Sans Ressaisie : en production le vendredi, ou je te rembourse.",
-    'Réserve le Chrono 20 minutes : ' + CALENDLY,
+    ...(d.small
+      ? ["Sous 50 personnes, mon Sprint n'est pas taillé pour ton équipe aujourd'hui : commence par la première priorité ci-dessus."]
+      : [(d.hiring ? "Tu recrutes un RevOps : avant de publier l'offre, regarde lesquelles de ses tâches des agents peuvent reprendre.\n\n" : '') + OFFER_DIAG,
+         'Envoie-moi ta fiche de poste, 20 minutes : ' + CALENDLY]),
     'Réponds à cet email. Je lis tout.',
     'Florian',
     '--\nPour ne plus rien recevoir, réponds STOP.'
@@ -229,16 +235,16 @@ function calculateurEmail(c) {
 </td></tr></table>` +
     `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:0 0 20px">${rows}</table>` +
     p(`Ta tâche la plus coûteuse : <strong style="color:#FFFFFF">${esc(top.name)}</strong>, ${top.hours} h et ${euro(top.cost)} par an.`) +
-    p("C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je te rembourse. Audit, roadmap et transfert de connaissance offerts. Je travaille seul : une semaine, un client.") +
-    button('Réserver le Chrono 20 minutes →', CALENDLY) +
-    p('En 20 minutes, je chronomètre la tâche avec toi et je te dis si elle tient en 7 jours.', 'font-size:14px');
+    p(OFFER_CALC) +
+    button('Envoie-moi ta fiche de poste · 20 min →', CALENDLY) +
+    p('En 20 minutes, on regarde tes tâches Ops ligne par ligne et je te dis lesquelles des agents peuvent reprendre.', 'font-size:14px');
   const text = [
     "Voici ton résultat. Garde-le : c'est ton point de départ le jour où tu voudras mesurer ce qui a changé.",
     `Ce que la ressaisie te coûte : ${c.hours} h / an, ${euro(c.cost)} / an (${c.weeks} semaines de travail à temps plein, base ${c.rate} €/h chargé).`,
     c.tasks.map((t) => `- ${t.name} : ${t.minutes} min ${FREQ[t.freq].label} × ${t.people} pers. = ${t.hours} h, ${euro(t.cost)} / an`).join('\n'),
     `Ta tâche la plus coûteuse : ${top.name}, ${top.hours} h et ${euro(top.cost)} par an.`,
-    "C'est exactement ce que supprime La Semaine Sans Ressaisie : j'automatise cette tâche en 7 jours, en production le vendredi, ou je te rembourse.",
-    'Réserve le Chrono 20 minutes : ' + CALENDLY,
+    OFFER_CALC,
+    'Envoie-moi ta fiche de poste, 20 minutes : ' + CALENDLY,
     'Réponds à cet email. Je lis tout.',
     'Florian',
     '--\nPour ne plus rien recevoir, réponds STOP.'
@@ -253,6 +259,24 @@ function calculateurEmail(c) {
     }),
     text
   };
+}
+
+// ---------- Offre (Le Premier Agent, depuis le 2026-11-25) et question « Qui fait le travail Ops ? »
+// OPS reprend les libellés de la page diagnostic (liste hors bloc DIAG) : changer les deux ensemble.
+const OPS = {
+  personne: 'Personne, quand on y pense',
+  'a-cote': 'Le VP Sales ou un commercial, en plus de son poste',
+  revops: 'Un RevOps ou Sales Ops en poste',
+  recrute: 'On recrute un RevOps'
+};
+const OFFER_DIAG = "Tes 3 priorités, c'est l'étape 1 de la Méthode Fiche de Poste. La suite, c'est Le Premier Agent : en 7 jours, je décortique les tâches Ops de ton équipe, je mets un premier agent en production et je chiffre le reste. 2 000 € HT, crédités à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
+const OFFER_CALC = "C'est souvent la première tâche qu'un agent reprend. Le Premier Agent : en 7 jours, je mets en production l'agent qui la supprime, je décortique tes autres tâches Ops et je chiffre la suite. 2 000 € HT, crédités à 100 % sur le Sprint si tu signes sous 30 jours. Pas en production le vendredi : remboursé.";
+function fteLine(r) {
+  const fte = r.people * r.hours / 35;
+  if (!(fte > 0)) return '';
+  if (fte < 1) return `Soit l'équivalent de ${Math.round(fte * 100)} % d'un poste à temps plein (base 35 h), payé à recopier.`;
+  const n = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 1 }).format(fte);
+  return fte >= 2 ? `Soit l'équivalent de ${n} postes à temps plein (base 35 h), payés à recopier.` : `Soit l'équivalent de ${n} poste à temps plein (base 35 h), payé à recopier.`;
 }
 
 // ---------- Traitement du payload
@@ -282,13 +306,16 @@ if (b.source === 'diagnostic-ressaisie') {
   const size = DIAG.sizes.find((x) => x.id === b.size);
   const crm = DIAG.crms.find((x) => x.id === b.crm);
   const firstName = String(lead.first_name || '').trim().replace(/\s+/g, ' ').slice(0, 40);
-  mail = diagnosticEmail({ r, firstName });
+  const small = !!size && (size.id === 'lt20' || size.id === '20-50');
+  const ops = OPS[b.ops];
+  mail = diagnosticEmail({ r, firstName, small, hiring: b.ops === 'recrute' });
   note = {
     title: `Diagnostic ressaisie : ${r.profile.name} (${r.score}/100)`,
     content: [
       `Profil : ${r.profile.name} · score ${r.score}/100`,
       'Axes : ' + r.axes.map((a) => `${a.label} ${a.pct} %`).join(' · '),
-      `Taille : ${size ? size.label : 'non renseignée'}${size && (size.id === 'lt20' || size.id === 'gt500') ? ' (hors cible 20-500)' : ''} · CRM : ${crm ? crm.label : 'non renseigné'}`,
+      `Taille : ${size ? size.label : 'non renseignée'}${size && (small || size.id === 'gt500') ? ' (hors cible 50-300)' : ''} · CRM : ${crm ? crm.label : 'non renseigné'}`,
+      `Travail Ops : ${ops || 'non renseigné'}${b.ops === 'recrute' ? ' (signal : recrute un RevOps)' : ''}`,
       `Ressaisie : ${r.people} pers. × ${r.hours} h/sem = ${euro(r.annual)} / an (${euro(r.weekly)} / semaine)`,
       'Ses réponses les plus basses :\n' + r.mirrors.map((m) => `- ${m}`).join('\n'),
       `Première automatisation proposée : ${r.recette.name}`,
