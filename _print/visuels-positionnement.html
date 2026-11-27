@@ -43,6 +43,12 @@
     .banner p { font-size: 22px; color: var(--muted); margin-top: 22px; font-weight: 500; }
     .banner p b { color: #fff; font-weight: 700; }
     .banner .pill { font-size: 13px; padding: 7px 14px; margin-bottom: 22px; align-self: flex-start; }
+    .banner .proof { display: flex; margin-top: 24px; padding-top: 20px; border-top: 1.5px solid #333; width: fit-content; }
+    .banner .proof div { padding: 0 28px; border-left: 1.5px solid #3a3a3a; }
+    .banner .proof div:first-child { padding-left: 0; border-left: 0; }
+    .banner .proof b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }
+    .banner .proof b .grad { display: inline-block; }
+    .banner .proof div > span { display: block; font-size: 18px; color: var(--muted); font-weight: 500; margin-top: 5px; white-space: nowrap; }
     /* Image de partage du diagnostic */
     .ogd { width: 1200px; height: 627px; display: none; }
     .ogd::before { background: radial-gradient(620px 420px at 82% 38%, rgba(255,122,0,.26), transparent 65%), radial-gradient(500px 300px at 0% 100%, rgba(255,216,77,.08), transparent 60%); }
@@ -96,6 +102,11 @@
       <span class="pill">VP Sales et CRO · Scaleups SaaS 50 à 300</span>
       <h1><span class="l">Avant de recruter ton RevOps,</span><span class="l grad">donne sa fiche de poste à des agents.</span></h1>
       <p><b>Un premier agent en production en 7 jours</b> · florianmarin.me</p>
+      <div class="proof">
+        <div><b>7 min 30 → <span class="grad">39 s</span></b><span>par vente saisie, chez un client</span></div>
+        <div><b>+7 700 tests</b><span>automatisés, chez ce même client</span></div>
+        <div><b>Ex-CTO Tiime</b><span>Ex-EM Senior Aircall · Teads</span></div>
+      </div>
     </div>
   </div>
   <div class="frame ogd">
