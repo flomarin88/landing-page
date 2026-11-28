@@ -10,6 +10,10 @@ Florian Marin a 15 ans d'expérience en développement logiciel : ex-CTO de Tiim
 - [Sprint Fiche de Poste](https://florianmarin.me/): les tâches du futur RevOps reprises par des agents en 6 semaines, à prix fixe, garantie Go-Live, passation et 30 jours de surveillance.
 - [Méthode Fiche de Poste](https://florianmarin.me/value-assets/methode-fiche-de-poste/): la méthode en 4 étapes, de la fiche de poste du RevOps aux agents en production.
 
+## Cas client
+
+- [Un réseau de ~60 points de vente franchisés, sans RevOps](https://florianmarin.me/cas-client/reseau-franchise/): onze tâches de la fiche de poste RevOps reprises par des automatisations testées. Saisie d'une vente de 7 min 30 à 40 s (médiane de septembre), 19 onglets de primes remplacés par un grand livre, listes d'appel du lundi construites par un cron à 7 h. Client anonyme.
+
 ## Outils gratuits
 
 - [Diagnostic « Tes équipes saisissent tout deux fois ? »](https://florianmarin.me/diagnostic/): 10 questions sur la stack commerciale, un profil, le coût de la ressaisie, 3 priorités et la fiche de poste du premier agent. 3 minutes.
