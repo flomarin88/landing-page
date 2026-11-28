@@ -10,6 +10,10 @@ Florian Marin a 15 ans d'expérience en développement logiciel : ex-CTO de Tiim
 - [Sprint Fiche de Poste](https://florianmarin.me/): les tâches du futur RevOps reprises par des agents en 6 semaines, à prix fixe, garantie Go-Live, passation et 30 jours de surveillance.
 - [Méthode Fiche de Poste](https://florianmarin.me/value-assets/methode-fiche-de-poste/): la méthode en 4 étapes, de la fiche de poste du RevOps aux agents en production.
 
+## Guides
+
+- [Faut-il recruter un RevOps ?](https://florianmarin.me/recruter-un-revops/): d'après 10 offres RevOps publiées en France en novembre 2026, 9 lignes sur 11 de la fiche de poste ont une part qu'un agent peut prendre. Ce qu'un agent prend et ce qui reste humain, salaires affichés (45 à 90 k€ brut selon le niveau), délai de recrutement (45 à 75 jours), et quand recruter quand même.
+
 ## Cas client
 
 - [Un réseau de ~60 points de vente franchisés, sans RevOps](https://florianmarin.me/cas-client/reseau-franchise/): onze tâches de la fiche de poste RevOps reprises par des automatisations testées. Saisie d'une vente de 7 min 30 à 40 s (médiane de septembre), 19 onglets de primes remplacés par un grand livre, listes d'appel du lundi construites par un cron à 7 h. Client anonyme.
